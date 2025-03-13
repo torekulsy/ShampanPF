@@ -242,16 +242,12 @@ Where vei.IsArchive=0 AND vei.IsActive=1
                 #region sql statement
                 #region sqlText
                 sqlText = @"
-SELECT 
-       ''[EmployeeCode]
-	  ,''[EmployeeOtherId]
-      ,''[Salutation_E]
-      ,''[MiddleName]
-      ,''[LastName]
-      ,''[Remarks]
-      ,''[EmpJobType]
-      ,''[EmpCategory]
-  FROM [User]";
+                SELECT
+                       [Code]
+                      ,[Name]     
+                      ,[Remarks]    
+                  FROM EmployeeInfo
+                ";
 
 
                 #endregion

@@ -183,7 +183,76 @@ namespace SymWebUI.Areas.PF.Controllers
         {
             return View();
         }
+        public ActionResult UploadExcel(EmployeeInfoForPFVM vm)
+        {
+            string[] result = new string[6];
+            try
+            {
+                vm.CreatedAt = DateTime.Now.ToString("yyyyMMddHHmmss");
+                vm.CreatedBy = identity.Name;
+                vm.CreatedFrom = identity.WorkStationIP;
 
+                result = new EmployeeInfoForPFRepo().ImportExcelFile(vm);
+                Session["result"] = result[0] + "~" + result[1];
+                return View("BonusProcess", vm);
+                ////return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                Session["result"] = result[0] + "~" + result[1];
+                FileLogger.Log(result[0].ToString() + Environment.NewLine + result[2].ToString() + Environment.NewLine + result[5].ToString(), this.GetType().Name, result[4].ToString() + Environment.NewLine + result[3].ToString());
+                return View("BonusProcess", vm);
+
+                ////return RedirectToAction("Index");
+            }
+        }
+
+        [Authorize]
+        public ActionResult ExportExcell(ExportImportVM VM)
+        {
+            identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+            SymUserRoleRepo _reposur = new SymUserRoleRepo();
+            DataTable dt = new DataTable();
+            ExcelPackage excel = new ExcelPackage();
+
+
+            try
+            {
+
+                ExportImportRepo _repo = new ExportImportRepo();
+
+                dt = _repo.SelectEmployeeInfo(VM); 
+               
+                #region Excel
+
+                string filename = "Employee Data";
+                var workSheet = excel.Workbook.Worksheets.Add("Employee Data");
+                workSheet.Cells[1, 1].LoadFromDataTable(dt, true);
+                using (var memoryStream = new MemoryStream())
+                {
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    //Response.AddHeader("content-disposition", "attachment;  filename=" + FileName);
+                    Response.AddHeader("content-disposition", "attachment;  filename=" + filename + ".xlsx");
+                    excel.SaveAs(memoryStream);
+                    memoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+
+                #endregion
+
+            }
+            catch (Exception ex)
+            {
+                Session["result"] = "Fail" + "~" + ex.Message.Replace("\r", "").Replace("\n", "");
+                return RedirectToAction("Index");
+            }
+
+            finally { }
+            return RedirectToAction("Index");
+
+            // return Json(rVM, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult Edit(int id)
         {
             EmployeeInfoForPFRepo _Repo = new EmployeeInfoForPFRepo();
