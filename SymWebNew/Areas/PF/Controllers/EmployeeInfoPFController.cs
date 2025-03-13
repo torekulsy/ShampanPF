@@ -178,6 +178,11 @@ namespace SymWebUI.Areas.PF.Controllers
                 return View(vm);
             }
         }
+        
+        public ActionResult Import()
+        {
+            return View();
+        }
 
         public ActionResult Edit(int id)
         {
