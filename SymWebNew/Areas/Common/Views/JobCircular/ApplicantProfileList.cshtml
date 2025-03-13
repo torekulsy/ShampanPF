@@ -1,0 +1,256 @@
+﻿@model IEnumerable<SymViewModel.Common.ApplicantInfoVM>
+@{
+    ViewBag.Title = "ApplicantProfileList";
+}
+
+
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<link href="~/assets/css/Applycant.css" rel="stylesheet" />
+
+<style>
+    .btn-rejected {
+        background-color: red;
+        color: white;
+    }
+
+    .btn-accepted {
+        background-color: green;
+        color: white;
+    }
+</style>
+
+<div class="dashborddatesarch">
+    <input type="date" placeholder="Select date range">
+    <form class="form-inline dashbordsear my-2 my-lg-0" novalidate="novalidate">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="dashboardserchicon btn btn-outline-success my-2 my-sm-0 " type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </form>
+</div>
+@foreach (var joblist in Model)
+{
+
+    <div class="appprolistcard">
+
+        <div class="sidebar">
+            <div class="profile-image-container">
+
+                <img src="~/Files/EmployeeInfo/@joblist.ImageFileName" />
+            </div>
+            <div class="empoproimgviewp">
+                <div style="margin-bottom: 1rem; text-align: center; font-size:14px">
+                    <div style="opacity: 0.8; margin-bottom: 1rem; font-size: 14px">Age: @joblist.Age</div>
+                    <div style="margin-bottom: 1rem; font-size: 14px">
+                        <div style="opacity: 0.8">Expected</div>
+                        <div>Tk: @joblist.ExpectedSalary</div>
+                    </div>
+                </div>
+
+                <a href="/Common/JobCircular/EmailSendApplicant?ApplicantId=@joblist.Id&Email=@joblist.Email" class="lnkEdit">
+                    <button class="message-btn" style="margin-top: 1rem; font-size: 14px">Message</button>
+                </a>
+                <a target="_blank" href="/Common/JobCircular/ApplicantProfile?Id=@joblist.Id">
+                    <button class="message-btn" style="margin-top: 1rem; font-size: 14px">View Profile</button>
+                </a>
+                <button class="message-btn @(joblist.Status == "Rejected" ? "btn-rejected" : "btn-accepted")"
+                        style="margin-top: 1rem; font-size: 14px;">
+                    @joblist.Status
+                </button>
+            </div>
+        </div>
+
+
+        <div class="main-contentemp">
+            <div class="candcardprotitle">
+                <div class="header">
+                    <div>
+                        <h2 class="Applicantname">@joblist.ApplicantName</h2>
+                        <div class="jbcontact-info">
+                            <p><i class="fa-solid fa-phone"></i><span>  @joblist.ContactNo</span></p>
+                            <p><i class="fa-regular fa-envelope"></i><span>  @joblist.Email</span></p>
+                            <p><i class="fa-solid fa-location-dot"></i><span>  @joblist.PresentAddress</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="match-indicator">
+                    <div class="progress-circle">
+                        <svg viewBox="0 0 36 36" class="circular-chart">
+                            <path d="M18 2.0845
+                              a 15.9155 15.9155 0 0 1 0 31.831
+                              a 15.9155 15.9155 0 0 1 0 -31.831"
+                                  fill="none"
+                                  stroke="#eee"
+                                  stroke-width="2"
+                                  stroke-dasharray="100, 100" />
+                            <path d="M18 2.0845
+                              a 15.9155 15.9155 0 0 1 0 31.831
+                              a 15.9155 15.9155 0 0 1 0 -31.831"
+                                  fill="none"
+                                  stroke="var(--primary)"
+                                  stroke-width="2"
+                                  stroke-dasharray="73, 100" />
+                        </svg>
+                        @foreach (var marks in joblist.MatchPerventsVMs)
+                        {
+                           <div class="progress-text">@marks.MatchPercentage %</div>
+                        }
+                        
+                    </div>
+                    <span style="color: var(--muted); font-size:13px">Matched</span>
+                </div>
+                <div class="dashbopro">
+                    <h4>Profile: </h4>
+                    <ul>
+                        <li><a target="_blank" href="@joblist.FaceBook">Facebook Profile: <span><i class="fa-brands fa-facebook" style="color: #1c81a9;"></i></span></a></li>
+                        <li><a target="_blank" href="@joblist.linkedIn">Linkdin Profile: <span><i class="fa-brands fa-linkedin" style="color: #1c81a9;"></i></span></a></li>
+                        <li><a href="/Common/RequirtmentApplicant/ReportView?Id=@joblist.Id">Download CV: <span><i class="fa-regular fa-file-pdf" style="color: red;"></i></span></a></li>
+                        <li><a target="_blank" href="@joblist.VideoCv">Video CV: <span><i class="fa-solid fa-file-video" style="color: #7a1461;"></i></span></a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="candcardpo">
+                <div class="education">
+                    <h3 class="section-title">@joblist.ExamTitle</h3>
+                    <div class="Jbinstitution">@joblist.Institute </div>
+                </div>
+
+                <div class="experience">
+                    <div>
+                        <h2>Experience</h2>
+                        <h3 class="section-title" style="display: flex;  align-items: center; margin:10px 0"><i class=" fa-classic fa-solid fa-id-card-clip fa-fw"></i>@joblist.Experience</h3>
+                    </div>
+                    <div>
+                        <p style="font-size: 14px; margin-bottom: 0.5rem;">
+                            @joblist.RecentCompany
+
+                        </p>
+
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <button style=" color: var(--primary); border: none; font-size: 14px;">
+                        Skills & Area of Expertise
+                    </button>
+                    <div>
+                        <p style="font-size: 14px; margin-bottom: 0.5rem;">
+                            @joblist.Skill
+                            <span style="color: var(--muted);">@joblist.SkillDescription</span>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="candcardright">
+                <div class="jbaction-buttons">
+                    <a href="/Common/JobCircular/EditShotListed?Id=@joblist.Id&JobId=@joblist.Jobid">
+                        <button class="btn btn-shortlist"><i class="fa-solid fa-check"></i>shortlist</button>
+                    </a>
+                    <a href="/Common/JobCircular/EditRejected?Id=@joblist.Id&JobId=@joblist.Jobid">
+                        <button class="btn btn-reject"><i class="fa-solid fa-xmark" style="background: red"></i>Reject</button>
+                    </a>
+                </div>
+                <div class="assessment-typesempo">
+                    <div class="jbassessment-item">
+                        <span class="assessment-icon">📝</span>
+                        Online Test
+                    </div>
+                    <div class="jbassessment-item">
+                        <span class="assessment-icon">👥</span>
+                        Face to Face
+                    </div>
+                    <div class="jbassessment-item">
+                        <span class="assessment-icon">✍️</span>
+                        Written Test
+                    </div>
+                    <div class="jbassessment-item">
+                        <span class="assessment-icon">🎥</span>
+                        Video Interview
+                    </div>
+                    <div class="jbassessment-item">
+                        <span class="assessment-icon">🤖</span>
+                        AI Assessment
+                        <span class="badge" style="font-size: 10px; height: 16px;">new</span>
+                    </div>
+                </div>
+                <a href="/Common/JobCircular/MarkForApplicant?Id=@joblist.Id&JobId=@joblist.Jobid" class="lnkEdit">
+                    <button class="btn plus-button" style="margin-top: 1rem;">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        Add Marks
+                    </button>
+                </a>
+                <br />
+                <a href="/Common/JobCircular/SalaryForApplicant?Id=@joblist.Id&JobId=@joblist.Jobid" class="lnkEdit">
+                    <button class="btn plus-button" style="margin-top: 1rem;">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        Add Salary
+                    </button>
+                </a>
+            </div>
+            <div class="applicantmarks">
+                <table id="marksTable">
+                    <thead>
+                        <tr style="background: #ddd">
+                            <th>Name</th>
+                            <th colspan="2" class="center">Marks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var marks in joblist.ApplicantMarksVMS)
+                        {
+                            <tr>
+                                <td>@marks.UserName</td>
+                                <td class="marks" data-username="@marks.UserName">@marks.Marks</td>
+                                <td>
+                                    <a href="@Url.Action("DeleteMarks", "JobCircular", new { Id = marks.Id, JobId = marks.JobId })">
+                                        <span class="sym-btn-remove-row"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        @foreach (var avmarks in joblist.ApplicatTotalMarksVMS)
+                        {
+                            <tr>
+                                <td class="textbold">Total</td>
+                                <td class="avmarks" data-username="@avmarks.Total">@avmarks.Total</td>
+
+                                <td class="avmarks" data-username="@avmarks.AvaMarks" style="text-align: center"><span style="display: block">Avg.</span>@avmarks.AvaMarks</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <table>
+                    <thead>
+                        <tr style="background: #ddd">
+                            <th colspan="3" style="text-align: center; color: green; border-bottom-width: 3px !important">Negotiable Date & Salary</th>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <th colspan="2" class="center">Salary</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var salary in joblist.ApplicantSalaryVMS)
+                        {
+                            <tr>
+                                <td>@salary.Date</td>
+                                <td>@salary.Salary</td>
+                                <td>
+                                    <a href="@Url.Action("DeleteSalary", "JobCircular", new { Id = salary.Id, JobId = salary.JobId })">
+                                        <span class="sym-btn-remove-row"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,75 @@
+﻿@model SymViewModel.Common.AppraisalScheduleVM
+@using UIHelper.MVC
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm("Create", "AppraisalAssignTo", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmAppraisalSchedule" }))
+{    @Html.ValidationSummary(true)
+
+    <div class="headrow">
+        <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+        <label class="pull-right"> Appraisal > Schedule</label>
+    </div>
+
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Appraisal Schedule</p>            
+        </div>
+        <div class="branch">            
+            <div class="col-md-6">
+                <br /><br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.ScheduleName)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.ScheduleName, new { @placeholder = "Schedule Name", @class = "required form-control" })
+                            @Html.ValidationMessageFor(model => model.ScheduleName)
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.QuestionSetName)
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(m => m.QuestionSetId, "/Config/DropDown/AppraisalQuestionSet", new { @class = " cQuestionSetId required form-control " })
+                        </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.StartDate)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.StartDate, new { @placeholder = "Start Date", @class = "required customDatePicker form-control" })
+                                @Html.ValidationMessageFor(model => model.StartDate)
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.EndDate)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.EndDate, new { @placeholder = "End Date", @class = "required customDatePicker form-control" })
+                                @Html.ValidationMessageFor(model => model.EndDate)
+                            </div>
+                        </div>
+
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="headrow">
+        <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+    </div>
+}
+
+<script>
+    $(function () {
+        valiDation("frmAppraisalSchedule");
+    });
+</script>

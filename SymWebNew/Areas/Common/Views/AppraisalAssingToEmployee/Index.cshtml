@@ -1,0 +1,71 @@
+﻿<div class="headrow">
+    <button type="button" title="Add New Appraisal Questions" data-url="/Common/AppraisalAssingToEmployee/Create" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>
+    <label class="pull-right">Question Set For Employee</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Question Set For Employee</p>
+    </div>
+
+    <br />
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                    <input type="checkbox" class="chkAll" />Select All
+                </th>
+                <th>Question Set Name</th>
+                <th>Employee Code</th>
+                <th>Department Name</th>
+                <th>Create Date</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <br />
+</div>
+<div class="headrow">
+    <button type="button" title="Add New" data-url="/Common/AppraisalAssingToEmployee/Create" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>
+    <button type="button" title="Delete" data-url="/Common/AppraisalAssingToEmployee/Delete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+</div>
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Common/AppraisalAssingToEmployee/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "10%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    console.log(oObj.aData[0]);
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;"   href=\"/Common/AppraisalAssingToEmployee/Edit/' + oObj.aData[0] + '\" class="sym-btn-edit-row"></a>' +
+                                    '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Common/AppraisalAssingToEmployee/Delete" onclick="deletedData(this, myDataTable,\'' + oObj.aData[0] + '\');"  class="sym-btn-remove-row"></a>';
+                                }
+                            }
+                            , { "sName": "QuestionSetName", "sWidth": "20%" }
+                            , { "sName": "EmployeeCode", "sWidth": "20%" }
+                            , { "sName": "DepartmentName", "sWidth": "20%" }
+                            , { "sName": "CreateDate", "sWidth": "20%" }
+            ]
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+            ]
+        });
+    });
+</script>

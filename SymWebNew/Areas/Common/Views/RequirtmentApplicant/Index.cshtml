@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .sorting {
+        background-image: none;
+    }
+    #myDataTable a {
+        height: 28px;
+        width: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Applicant Info List</p>
+    </div>
+
+    <br />
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                    Actions
+                </th>
+                <th>ApplicantName</th>
+                <th>Position</th>
+                <th>ContactNo</th>
+                <th>Experience</th>
+                <th>ExpectedSalary</th>
+                <th>AttachmentFile</th>
+                <th>IsActive</th>
+                <th>IsShortlisted</th>
+            </tr>
+            
+        </thead>
+        <tbody></tbody>
+    </table>
+    <br />
+</div>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Common/RequirtmentApplicant/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "10%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    console.log(oObj.aData[0]);
+                                    return ' <a title="Click on for Report" data-url="/Common/RequirtmentApplicant/ReportView"  onclick=reportData(this); data-Id="' + oObj.aData[0] + '\" class="sym-btn-report-row"></a>' +
+                                    '&nbsp;  <a title="Click on for Edit" style="text-decoration:none;"   href=\"/Common/RequirtmentApplicant/Edit/' + oObj.aData[0] + '\" class="sym-btn-edit-row"></a>' +
+                                    '&nbsp;  <a title="Click on for Delete" style="text-decoration:none;"   href=\"/Common/RequirtmentApplicant/Delete/' + oObj.aData[0] + '\"  class="sym-btn-remove-row"></a>' +
+                                    '&nbsp;  <a title="Click on for Confirm" style="text-decoration:none;"   href=\"/Common/RequirtmentApplicant/Shorlisted/' + oObj.aData[0] + '\" class="sym-btn-post-row"></a>'
+                                    ;
+                                }
+                            }
+                            , { "sName": "ApplicantName", "sWidth": "10%" }
+                            , { "sName": "Position", "sWidth": "10%" }
+                            , { "sName": "ContactNo", "sWidth": "10%" }
+                            , { "sName": "Experience", "sWidth": "5%" }
+                            , { "sName": "ExpectedSalary", "sWidth": "5%" }
+                            , {
+                                "sName": "AttachmentFile",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "10%",
+                                "fnRender": function (oObj) {
+                                    const filename = oObj.aData[6]; // File name from the server
+                                    if (filename) {
+                                        return '<button class="btn-download" onclick="window.open(\'/Files/RecruitmentCV/' + encodeURIComponent(filename) + '\', \'_blank\')">' +
+                                               '<i class="fa fa-download"></i> Download</button>';
+                                    } else {
+                                        return '<button class="btn-no-file" disabled>No File</button>';
+                                    }
+                                }
+                            }
+                               , { "sName": "IsActive", "sWidth": "5%" }
+                               , { "sName": "IsShorlisted", "sWidth": "5%" }
+            ]
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+
+            ]
+        });
+    });
+</script>
+<script>
+
+    function reportData(sender) {
+        var url = $(sender).attr('data-url');
+        var code = $(sender).attr('data-Id');
+        rptObj = new Object();
+        rptObj.id = code;
+
+
+        var rptParam = $.param(rptObj);
+        url = url + "?" + rptParam;
+        var win = window.open(url, '_blank');
+    }
+</script>

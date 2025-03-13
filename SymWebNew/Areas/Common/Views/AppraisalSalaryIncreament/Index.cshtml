@@ -1,0 +1,108 @@
+﻿
+<table id="myDataTable" class="display">
+    <thead>
+        <tr>
+            <th class="center">
+                Click edit for Show Data
+            </th>
+            <th>Department</th>
+            <th>EmployeeCode</th>
+            <th>EmpName</th>
+            <th>TotalMarks</th>
+        </tr>
+        <tr>
+            <th class="center">Actions</th>
+            <th>Department</th>
+            <th>EmployeeCode</th>
+            <th>EmpName</th>
+            <th>TotalMarks</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<div id="detailsDiv1"></div>
+
+<script>
+    $(document).ready(function () {
+        // Initialize DataTable
+        var myDataTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/AppraisalMarks/GetAppraisalHeightMarks",
+            "bProcessing": true,
+            "aLengthMenu": [[10, 25, 50], [10, 25, 50]],
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                {
+                    "sName": "Id",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "sWidth": "12%",
+                    "sClass": "center",
+                    "fnRender": function (oObj) {
+                        return '<a id="lnkEdit1"  title="Click on for Edit" style="text-decoration:none;"  data-Id="' + oObj.aData[2] + '"  Onclick="SelectEmployee(this)" class=" sym-btn-edit-row"></i></a>';
+                    }
+                },
+                { "sName": "Department", "sWidth": "20%" },
+                { "sName": "Employee Code", "sWidth": "20%" },
+                { "sName": "Employee Name", "sWidth": "25%" },
+                { "sName": "Total Marks", "sWidth": "15%" }
+            ]
+        });
+
+        // Column Filters
+        myDataTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [
+                { type: "checkbox", "sClass": "chkAll" }, // Checkbox column
+                { type: "text" },  // Department
+                { type: "text" },  // Employee Code
+                { type: "text" },  // Employee Name
+                { type: "text" }   // Total Marks
+            ]
+        });
+
+        // "Select All" checkbox functionality
+        $(".chkAll").click(function () {
+            var isChecked = $(this).prop("checked");
+            $('#myDataTable tbody input[type="checkbox"]').each(function () {
+                $(this).prop("checked", isChecked);
+            });
+        });
+
+        // Row checkbox click handler
+        window.CheckRow = function (checkbox) {
+            var isChecked = $(checkbox).prop("checked");
+            // Optionally, handle individual row logic
+        };
+
+        // Department Filter - Reload Table
+        $('#departmentFilter').change(function () {
+            myDataTable.fnDraw();
+        });
+
+    });
+
+
+    function SelectEmployee(sender) {
+        console.log(sender);  // Check if function is triggered
+        debugger;
+        var EmployeeId = $(sender).attr("data-id");
+        console.log("EmployeeId:", EmployeeId);  // Check if data-id is fetched correctly
+
+        var url = '/Common/AppraisalSalaryIncreament/AppraisalSalarySelectemployee?Code=' + EmployeeId;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function () { $(".loading").show(); },
+            success: function (data) {
+                $('#detailsDiv1').html(data);
+            },
+            complete: function () { $(".loading").fadeOut(200).hide("slow"); }
+        });
+    }
+
+</script>
+
+

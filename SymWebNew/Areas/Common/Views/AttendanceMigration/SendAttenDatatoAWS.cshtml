@@ -1,0 +1,35 @@
+﻿@model SymViewModel.Attendance.AttendanceMigrationVM
+@{
+    ViewBag.Title = "SendAttenDatatoAWS";
+}
+@using UIHelper.MVC
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Attendance Data send to AWS</p>
+    </div>
+   
+</div>
+<div class="headrow">
+    <button type="button" title="Click for Report" data-url="/Common/AttendanceMigration/PostAttendanceToAWS" onclick="selectData(this);" id="" class="sym-btn-report">&nbsp;Send Data to AWS</button>
+    &nbsp;   
+</div>
+
+<script>
+  
+    function selectData(sender) {
+        var url = $(sender).attr("data-url");     
+        window.location = url;
+    }
+</script>
+
+<script>
+     $(document).ready(function () {       
+         debugger;
+         var message = '@(Session["result"])';
+         if (message) {
+             debugger;
+             ShowResultProcess("Success", message);
+         }
+     });
+</script>
+

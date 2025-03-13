@@ -1,0 +1,360 @@
+﻿@model SymViewModel.Common.JobCircularVM
+@{
+    ViewBag.Title = "JobDetails";
+}
+<link href="~/assets/css/Applycant.css" rel="stylesheet" />
+
+<div class=" jobpostnew">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="jtitle">
+                <h2>@Model.JobTitle</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="jobdeatilsstiky">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="jobdetailsandbtn d-flex align-items-start justify-content-between gap-2">
+                    <p>Application Deadline: <span class="jobdeadlinetxt">@Model.Deadline</span></p>
+                    <div class="deadandapply d-flex align-items-center justify-content-end gap-2">
+                        <button type="button" title="Delete" data-url="/Jobs" onclick="GoTo(this)" id="" class="sym-btn-back">&nbsp;Back</button>
+                        <button type="button" title="Add New" data-url="/Jobs/ApplicantApply?Id=@Model.Id&JobTitle=@Model.JobTitle" onclick="GoTo(this)" id="" class=" sym-btn-save ">&nbsp;Apply</button>       
+                        <div id="shortlist">
+                            <div class="btn btnoutline">
+                                <i class="fa fa-star" aria-hidden="true"></i> Shortlist
+                            </div>
+                        </div>
+                        <div class=" btnoutline">
+                            <span class="d-flex align-items-center gap-1 "><i class="fa fa-share-alt" aria-hidden="true"></i>Share:</span>
+                            <span class="jobshareicon d-flex align-items-center gap-3">
+                                <a href="javascript:void(1);" target="_blank" style="background: #316FF6" data-toggle="tooltip" data-placement="top" title="Facebook">
+                                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                                </a>
+
+                                <a href="javascript:void(1);" target="_blank" style="background: #0A66C2" data-toggle="tooltip" data-placement="top" title="Linkedin">
+                                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                                </a>
+
+                                <a href="javascript:void(1);" target="_blank" style="background: #25D366" data-toggle="tooltip" data-placement="top" title="Whatsapp">
+                                    <i class="fa fa-whatsapp" aria-hidden="true"></i>
+                                </a>
+                            </span>
+                        </div>
+
+                        <div class="btnoutline">
+                            <a class="dropdown-item d-flex align-items-center gap-2" href="javascript:void(1);">
+                                <i class="fa fa-print" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-4 ">
+            <div class="col-sm-12">
+                <div class="landingmenu d-flex">
+                    <div class="left-arrow active">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"></path>
+                        </svg>
+                    </div>
+
+                    <div class="btn-group slidergrp">
+                        <a href="#sum" type="button" class="btn htab__item active">All</a>
+
+                        <a href="#req" type="button" class="btn htab__item">Requirements</a>
+
+                        <a href="#job_resp" type="button" class="btn htab__item">Responsibilities</a>
+
+                        <a href="#skill_exp" type="button" class="btn htab__item">Skills &amp; Expertise</a>
+
+                        <a href="#benefits" type="button" class="btn htab__item">Salary &amp; Benefits</a>
+
+
+                        <a href="#com_info" type="button" class="btn htab__item">Company Information</a>
+                    </div>
+                    <div class="right-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-sm-12 ">
+            <div class="summerycrd">
+                <h3 id="sum">Summary</h3>
+                <ul class="summery_items">
+                    <li>Vacancy: <span>@Model.Vacancy</span> Person</li>
+                    <li>Age: <span> @Model.AgeMin to @Model.AgeMax years</span></li>
+                    <li>Location: <span>@Model.JobLocation</span></li>
+                    <li>Salary: <span>@Model.SalaryMin to @Model.SalaryMax</span></li>
+                    <li>Experience: <span>@Model.Expriance</span></li>
+                    <li>Published: <span>@Model.CreatedAt</span></li>                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-sm-12">
+            <div class="jobcontent">
+                <div class="sectxt">
+                    <h4 id="req">Requirements</h4>
+                </div>
+                <div class="subheading mb-3">
+                    <h5 id="req">Education</h5>                  
+                    <ul>
+                       <li><span> A Degree in : @Model.DegreeName</span></li>                    
+                    </ul>
+                    <ul></ul>
+                </div>
+                <div class="subheading mb-3">
+                    <h5 id="req">Experience</h5>
+                    <ul>
+                        <li>Experience: <span>@Model.Expriance</span></li>
+                        <li>The applicants should have experience in the following area(s):<br><span>@Model.ShouldHaveArea</span></li>
+                        <li>The applicants should have experience in the following business area(s):<br><span>@Model.ShouldHaveBusiness</span></li>
+                    </ul>                  
+                </div>
+                <div class="subheading">
+                    <h5 id="req">Additional Requirements</h5>
+                    <ul>
+                        <li><span>@Model.AdditionalRequirement</span></li>
+                    </ul>                   
+                    <hr>
+                </div>
+                <div class="sectxt">
+                    <h4 id="job_resp">Responsibilities &amp; Context</h4>
+                    <ul>
+                        <li><span>@Model.Description</span></li>
+                    </ul>        
+                   <hr>
+                </div>
+
+                <div class="jobskilsbtn">
+                    <h4 id="skill_exp">Skills &amp; Expertise</h4>
+                    <ul>
+                        <li><span>@Model.SkillExperties</span></li>
+                    </ul>    
+                    <hr>
+                </div>
+                <div class="jobbenefits mb-3">
+                    <h4 id="benefits">Compensation &amp; Other Benefits </h4>
+                    <ul>
+                        <li><span>@Model.Benifit</span></li>
+                    </ul> 
+                </div>
+                <div class="jobworko mb-3">
+                    <h4>Workplace</h4>
+                    <ul>
+                        <li><span>@Model.Workplace</span></li>
+                    </ul> 
+                </div>
+                <div class="jobworko mb-3">
+                    <h4>Employment Status </h4>
+                    <ul>
+                        <li><span>@Model.EmploymentStatus</span></li>
+                    </ul> 
+                </div>
+               
+                <div class="jobworko mb-3">
+                    <h4 class="sectxt">Job Location </h4>
+                    <ul>
+                        <li><span>@Model.JobLocation</span></li>
+                    </ul> 
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-sm-12 ">
+            <div class="jobcontent readbefapply">
+                <h4>Read Before Apply</h4>
+                <ul>
+                    <li><span>@Model.ReadBeforeApply</span></li>
+                </ul> 
+            </div>
+        </div>
+    </div>
+   
+</div>
+
+<br /><br />
+<br /><br />
+
+<script>
+    $(document).ready(function () {
+        var stickyElement = $('.jobdeatilsstiky');
+        var stickyTop = stickyElement.offset().top;
+
+        // Initial check on page load
+        checkSticky();
+
+        $(window).scroll(function () {
+            checkSticky();
+        });
+
+        $(window).resize(function () {
+            checkSticky();
+        });
+
+        // Smooth scroll to section when clicking on links
+        $('.htab__item').on('click', function (e) {
+            e.preventDefault();
+            var targetId = $(this).attr('href').substring(1);
+            var targetElement = $('#' + targetId);
+
+            if (targetElement.length) {
+                var fixedHeaderHeight = stickyElement.outerHeight(); // Adjust this based on your fixed element's height
+                var targetPosition = targetElement.offset().top - fixedHeaderHeight;
+
+                $('html, body').animate({
+                    scrollTop: targetPosition
+                }, 800);
+            }
+        });
+
+        function checkSticky() {
+            var windowWidth = $(window).width();
+            var windowTop = $(window).scrollTop();
+
+            if (windowWidth > 992) {
+                if (windowTop > stickyTop) {
+                    stickyElement.addClass('stk');
+                } else {
+                    stickyElement.css('position', 'relative');
+                    stickyElement.removeClass('stk');
+                }
+            } else {
+                stickyElement.css('position', 'relative');
+                stickyElement.removeClass('stk');
+            }
+        };
+
+        const rightArrow = document.querySelector(".landingmenu .right-arrow svg");
+        const leftArrow = document.querySelector(".landingmenu .left-arrow svg");
+        const tabsList = document.querySelector(".landingmenu .slidergrp");
+        const leftArrowContainer = document.querySelector(".landingmenu .left-arrow");
+        const rightArrowContainer = document.querySelector(".landingmenu .right-arrow");
+
+        // Function to manage visibility of arrows
+        const manageIcons = () => {
+            if (tabsList.scrollLeft >= 20) {
+        leftArrowContainer.classList.add("active");
+    } else {
+        leftArrowContainer.classList.remove("active");
+    }
+
+    let maxScrollValue = tabsList.scrollWidth - tabsList.clientWidth - 20;
+
+    if (tabsList.scrollLeft >= maxScrollValue) {
+        rightArrowContainer.classList.remove("active");
+    } else {
+        rightArrowContainer.classList.add("active");
+    }
+
+    // Save the current scroll position in localStorage
+    localStorage.setItem("tabsScrollPosition", tabsList.scrollLeft);
+    };
+
+    // Add click event listeners for navigation
+    rightArrow.addEventListener("click", () => {
+        tabsList.scrollLeft += 200;
+    manageIcons();
+    });
+
+    leftArrow.addEventListener("click", () => {
+        tabsList.scrollLeft -= 200;
+    manageIcons();
+    });
+
+    // Restore scroll position on page load
+    window.addEventListener("load", () => {
+        const savedPosition = localStorage.getItem("tabsScrollPosition");
+    if (savedPosition) {
+        tabsList.scrollLeft = parseInt(savedPosition, 10);
+    }
+    manageIcons();
+    });
+
+    // Add scroll event listener to update arrow states
+    tabsList.addEventListener("scroll", manageIcons);
+
+    let dragging = false;
+
+    // Function to handle dragging
+    const drag = (e) => {
+        if (!dragging) return;
+    tabsList.classList.add("dragging");
+    tabsList.scrollLeft -= e.movementX;
+    manageIcons();
+    };
+
+    // Add mouse event listeners for dragging
+    tabsList.addEventListener("mousedown", () => {
+        dragging = true;
+    });
+
+    tabsList.addEventListener("mousemove", drag);
+
+    document.addEventListener("mouseup", () => {
+        dragging = false;
+    tabsList.classList.remove("dragging");
+    });
+
+
+    });
+</script>
+
+@*<div id="applyJobs">
+
+    <div class="row">
+        <div class="col-sm-12">           
+                <div class="jobtop">
+                    <div class="job-title-text">
+
+                        <label>@Model.JobTitle</label>
+
+                    </div>
+                    <div class="locon-text">
+                        <div class="locon-text-d">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i><label>@Model.JobLocation</label>
+                        </div>
+                    </div>
+                    <div class="edu-text">
+                        <div class="edu-text-in">
+                            <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                            <div class="qulifilist">
+                                <label>@Model.DegreeName</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dateexe">
+                    <div class="exp-text">
+                        <div class="exp-text-d">
+                            <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                            <label>@Model.Expriance</label>
+                        </div>
+                    </div>
+                    <div class="dead-text">
+                        <div class="dead-text-s"><i class="fa fa-calendar-o" aria-hidden="true"></i> <label>Deadline:&nbsp;</label></div>
+                        <div class="dead-text-d">
+                            <label>@Model.Deadline</label>
+                        </div>
+                    </div>
+                </div>           
+        </div>       
+
+    </div>
+
+    <div class="headrow">
+        <button type="button" title="Delete" data-url="/Jobs" onclick="GoTo(this)" id="" class="sym-btn-back">&nbsp;Back</button>
+        <button type="button" title="Add New" data-url="/Jobs/ApplicantApply" onclick="GoTo(this)" id="" class=" sym-btn-save ">&nbsp;Apply</button>       
+    </div>
+</div>*@

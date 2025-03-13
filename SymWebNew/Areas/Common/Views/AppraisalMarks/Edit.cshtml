@@ -1,0 +1,44 @@
+﻿@model SymViewModel.Common.AppraisalEvaluationVM
+@using UIHelper.MVC
+@{
+    ViewBag.Title = "Edit";
+}
+
+@using (Html.BeginForm("Edit", "AppraisalEvaluation", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmAppraisal" }))
+{    @Html.ValidationSummary(true)
+
+    <div class="headrow">
+        <button type="submit" title="Update Data" class="sym-btn-edit">&nbsp;Update</button>
+        <label class="pull-right"> Appraisal > Evaluation Edit</label>
+    </div>
+
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Appraisal Evaluation Edit</p>
+            @Html.HiddenFor(model => model.Id)
+        </div>
+        <div class="branch">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.EvaluationName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.EvaluationName, new { @placeholder = "Evaluation Name", @class = "required form-control" })
+                        @Html.ValidationMessageFor(model => model.EvaluationName)
+                    </div>
+                </div>               
+            </div>           
+        </div>
+    </div>
+
+    <div class="headrow">
+        <button type="submit" title="Update Data" class="sym-btn-edit">&nbsp;Update</button>
+    </div>
+}
+
+<script>
+    $(function () {
+        valiDation("frmAppraisal");
+    });
+</script>

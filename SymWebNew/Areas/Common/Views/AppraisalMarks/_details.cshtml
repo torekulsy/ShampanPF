@@ -1,0 +1,116 @@
+﻿@model SymViewModel.Common.AppraisalMarksVM
+
+@using UIHelper.MVC
+@{
+    Layout = null;
+}
+
+<div class="row details">
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+    }
+
+    @*<div class="row">
+        <div class="col-md-6">
+            .
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalMarksDetailVMs.FirstOrDefault().IsOwn)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalMarksDetailVMs.FirstOrDefault().IsTeamLead)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalMarksDetailVMs.FirstOrDefault().IsHR)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalMarksDetailVMs.FirstOrDefault().IsCOO)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalMarksDetailVMs.FirstOrDefault().IsMD)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+
+
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalMarksDetailVMs.FirstOrDefault().IsP1)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalMarksDetailVMs.FirstOrDefault().IsP2)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalMarksDetailVMs.FirstOrDefault().IsP3)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalMarksDetailVMs.FirstOrDefault().IsP4)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalMarksDetailVMs.FirstOrDefault().IsP5)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+
+        </div>
+    </div>*@
+
+    @foreach (var item in Model.AppraisalMarksDetailVMs)
+    {
+        @Html.Partial("~/Areas/Common/Views/AppraisalMarks/_DetailsView.cshtml", item);
+    }
+
+</div>
+
+

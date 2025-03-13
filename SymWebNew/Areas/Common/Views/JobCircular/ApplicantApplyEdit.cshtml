@@ -1,0 +1,1264 @@
+﻿@model SymViewModel.Common.ApplicantInfoVM
+@{
+    ViewBag.Title = "ApplicantApplyEdit";
+}
+@using UIHelper.MVC
+<link href="~/assets/css/Applycant.css" rel="stylesheet" />
+<style>
+    .applytabbtn button {
+        font-size: 13px;
+        position: relative;
+        font-weight: 500;
+        cursor: pointer;
+        width: calc(98% / 5);
+        padding: 1rem 0;
+        border: 0 !important;
+        border-bottom: 2.5px solid transparent !important;
+        color: #9194a1;
+        background: #ffffff;
+        transition: all 0.3s linear;
+        margin: 0;
+        border-radius: 0 !important;
+        white-space: nowrap;
+    }
+
+    .applyField h4 label {
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 1.5;
+        letter-spacing: 0;
+        padding: 0;
+        margin: 0;
+        color: #9194a1;
+    }
+
+    #basicInfo4 .formDesign {
+        grid-template-columns: 2fr 2fr 2fr 1fr 1fr 1fr 1fr;
+        display: grid;
+        gap: 2px;
+    }
+
+    .LanguageDesign {
+        grid-template-columns: 2fr 2fr 2fr 1fr !important;
+        display: grid;
+        gap: 18px;
+        align-items: end;
+    }
+
+    .LanguageDesignskl {
+        grid-template-columns: 2fr 2fr 2fr !important;
+        display: grid;
+        gap: 18px;
+        align-items: end;
+    }
+
+    .pqualification {
+        grid-template-columns: 2fr 2fr 2fr 1fr 1fr 1fr;
+        display: grid;
+        gap: 10px;
+        align-items: end;
+    }
+
+    .pqualificationPq {
+        grid-template-columns: 2fr 2fr 2fr 1fr 1fr;
+        gap: 18px;
+    }
+
+    #nav-tab {
+        display: flex;
+        gap: 2px;
+        margin-bottom: 4px;
+    }
+
+    .formDesign {
+        gap: 18px !important;
+    }
+    .fieldtextinput {
+       margin: 0;
+    }
+</style>
+
+
+@using (Html.BeginForm("ApplicantApplyInsertEdit", "JobCircular", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmApplicantInfo" }))
+{
+    @Html.HiddenFor(model => model.Jobid)
+    @Html.HiddenFor(model => model.Id)
+    <div class="applyForm">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="applyformTop">
+                    <p>Here you can edit your profile in five different steps (Personal, Education/Training, Employment, Other Information and Photograph). To enrich your resume provide authentic information. </p>
+                    <br />
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="applytabbtn">
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#basicInfo" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Basic Info</button>
+                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#basicInfo2" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Personal Info</button>
+                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#basicInfo3" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Education & Profession</button>
+                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#basicInfo4" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Training & Language</button>
+                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#basicInfo5" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">History & Skill</button>
+                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#basicInfo6" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Other's Information</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="tab-content" id="nav-tabContent">
+                    <div id="basicInfo" class="applyField tab-pane show active" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.ApplicantName)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.ApplicantName, new {  @required = "" })
+                                    <span>Applicant Name</span>
+                                </label>
+
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.Designation)</h4>
+                            <div class="fieldtextinput selectinput">
+                                @Html.DropDownListFor(
+                            model => model.Designation,
+                            new SelectList(new[]
+                            {
+                            new { Value = "0", Text = "Select a position" },
+                            new { Value = ".NET Developer", Text = ".NET Developer" },
+                            new { Value = "PHP Developer", Text = "PHP Developer" },
+                            new { Value = "Frontend Developer", Text = "Frontend Developer" },
+                            new { Value = "Apps Developer", Text = "Apps Developer" },
+                            new { Value = "Marketing Executive", Text = "Marketing Executive" },
+                            new { Value = "Accountant", Text = "Accountant" }
+                            }, "Value", "Text", Model.Designation),
+                            new { @class = "required form-control dropdownnew" }
+                            )
+                            </div>
+                        </div>
+
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.PresentAddress)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextAreaFor(model => model.PresentAddress, new { @required = "" })
+                                    <span>Present Address</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.PermanentAddress)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextAreaFor(model => model.PermanentAddress, new { @required = "" })
+                                    <span>Permanent Address</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.ContactNo)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.ContactNo, new { @required = "" })
+                                    <span>Contact No</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.Email)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.Email, new { @required = "" })
+                                    <span>Email</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="basicInfo2" class="applyField tab-pane" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.LastEducation)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.LastEducation, new { @required = "" })
+                                    <span>Last Education</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.RecentCompany)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.RecentCompany, new {  @required = "" })
+                                    <span>Recent Company</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.Gender)</h4>
+                            <div class="fieldtextinput selectinput">
+                                @Html.DropDownListFor(
+                            model => model.Gender,
+                            new SelectList(new[]
+                            {
+                            new { Value = "0", Text = "Select a Gender" },
+                            new { Value = "Male", Text = "Male" },
+                            new { Value = "Female", Text = "Female" },
+                            }, "Value", "Text", Model.Gender),
+                            new { @class = "required form-control dropdownnew" }
+                            )
+                            </div>
+                        </div>
+
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.Experience)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.Experience, new { @required = "" })
+                                    <span>Experience</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.NoticePeriod)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.NoticePeriod, new { @required = "" })
+                                    <span>Notice Period</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.Studying)</h4>
+                            <div class="fieldtextinput selectinput">
+                                @Html.DropDownListFor(
+                            model => model.Studying,
+                            new SelectList(new[]
+                            {
+                            new { Value = "0", Text = "Select Yes or No" },
+                            new { Value = "0", Text = "" },
+                            new { Value = "No", Text = "No" },
+                            new { Value = "Yes", Text = "Yes" },
+                            }, "Value", "Text", Model.Studying),
+                            new { @class = "form-control dropdownnew" }
+                            )
+                            </div>
+                        </div>
+
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.PresentSalary)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.PresentSalary, new { @required = "" })
+                                    <span>Present Salary</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.ExpectedSalary)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.ExpectedSalary, new { @required = "" })
+                                    <span>Expected Salary</span>
+                                </label>
+                            </div>
+                        </div>  
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.LookingFor)</h4>
+                            <div class="fieldtextinput selectinput">
+                                @Html.DropDownListFor(
+                            model => model.LookingFor,
+                            new SelectList(new[]
+                            {
+                            new { Value = "0", Text = "Select  Looking For" },
+                            new { Value = "Mid Level", Text = "Mid Level" },
+                            new { Value = "High Level", Text = "High Level" },
+                            new { Value = "Low Level", Text = "Low Level" },
+                            }, "Value", "Text", Model.LookingFor),
+                            new { @class = "form-control dropdownnew" }
+                            )
+                            </div>
+                        </div>
+
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.AvailableFor)</h4>
+                            <div class="fieldtextinput selectinput">
+                                @Html.DropDownListFor(
+                            model => model.AvailableFor,
+                            new SelectList(new[]
+                            {
+                            new { Value = "0", Text = "Select Available For" },
+                            new { Value = "Full Time", Text = "Full Time" },
+                            new { Value = "Part time", Text = "Part time" },
+                            new { Value = "Contactual", Text = "Contactual" },
+                            }, "Value", "Text", Model.AvailableFor),
+                            new { @class = "form-control dropdownnew" }
+                            )
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div id="basicInfo3" class="applyField tab-pane" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="applyField">
+                                    <div class="applyquliheding">
+                                        <h2><label>Educational Qualification:</label></h2>
+                                        <hr />
+                                    </div>
+
+                                    <div id="ProductDetail" class="formDesign pqualification">
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.educationVM.ExamTitle)
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(model => model.educationVM.ExamTitle, null, new { @placeholder = "ExamTitle", @class = "drExamTitle  form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.educationVM.Major)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.educationVM.Major, null, new { @placeholder = "Major", @class = "drMajor  form-control" })
+                                            </div>
+                                        </div>
+
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.educationVM.Institute)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.educationVM.Institute, null, new { @placeholder = "Institute", @class = "drInstitute  form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.educationVM.PassYear)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.educationVM.PassYear, null, new { @placeholder = "PassYear", @class = "  drPassYear  form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.educationVM.Duration)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.educationVM.Duration, null, new { @placeholder = "Duration", @class = "  drDuration  form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.educationVM.Achievment)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.educationVM.Achievment, null, new { @placeholder = "Achievment", @class = "  drAchievment form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="qulibtn">
+                                            <div class="editor-field">
+                                                <div id="ItemExist" title="Add Detail" class="sym-btn-add-row AddRow" data-container="editorItemRow">Add Row</div>
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            &nbsp
+                                        </div>
+
+
+                                    </div>
+                                    <div id="detailpq">
+
+                                        <div id="editorItemRows5" class="">
+                                            @if (Model.educationVMS != null)
+                                        {
+                                            Html.RenderPartial("~/Views/Jobs/_educationTable.cshtml", Model.educationVMS);
+                                        }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12">
+                                <div class="applyField">
+                                    <div class="applyquliheding">
+                                        <h2><label>Pofessional Qualification:</label></h2>
+                                        <hr />
+                                    </div>
+
+                                    <div id="ProductDetail" class="formDesign pqualificationPq">
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.professionalQualificationVM.Certification)
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(model => model.professionalQualificationVM.Certification, null, new { @placeholder = "Certification", @class = "drCertification  form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.professionalQualificationVM.PQInstitute)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.professionalQualificationVM.PQInstitute, null, new { @placeholder = "PQ Institute", @class = "drPQInstitute  form-control" })
+                                            </div>
+                                        </div>
+
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.professionalQualificationVM.Location)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.professionalQualificationVM.Location, null, new { @placeholder = "Location", @class = "drLocation  form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.professionalQualificationVM.FromDate)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.professionalQualificationVM.FromDate, null, new { @placeholder = "From Date", @class = "  drFromDate  form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.professionalQualificationVM.ToDate)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.professionalQualificationVM.ToDate, null, new { @placeholder = "To Date", @class = "  drToDate  form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="qulibtn">
+                                            <div class="editor-field">
+                                                <div id="ItemExist" title="Add Detail" class="sym-btn-add-row AddRowpq" data-container="editorItemRows5">Add Row</div>
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            &nbsp
+                                        </div>
+
+
+                                    </div>
+                                    <div id="detailpq">
+
+                                        <div id="editorItemRows5" class="">
+                                            @if (Model.professionalQualificationVMS != null)
+                                        {
+                                            Html.RenderPartial("~/Views/Jobs/_professional.cshtml", Model.professionalQualificationVMS);
+                                        }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="basicInfo6" class="applyField tab-pane" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.FatherName)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.FatherName, new { @required = "" })
+                                    <span>Father Name</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.MotherName)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.MotherName, new {@required = "" })
+                                    <span>Mother Name</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.DateOfBirth)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.DateOfBirth, new { @class = "customDatePicker", @required = "" })
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.MaritalStatus)</h4>
+                            <div class="fieldtextinput selectinput">
+                                @Html.DropDownListFor(
+                             model => model.MaritalStatus,
+                            new SelectList(new[]
+                            {
+                            new { Value = "0", Text = "Select Marital Status" },
+                            new { Value = "Single", Text = "Single" },
+                            new { Value = "Married", Text = "Married" },
+                            new { Value = "Divorced", Text = "Divorced" },
+                            }, "Value", "Text", Model.MaritalStatus),
+                            new { @class = "form-control dropdownnew" }
+                            )
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.Height)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.Height, new { @required = "" })
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.Weight)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.Weight, new { @required = "" })
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.FaceBook)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.FaceBook, new { @required = "" })
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.linkedIn)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.linkedIn, new { @required = "" })
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.VideoCv)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextBoxFor(model => model.VideoCv, new { @required = "" })
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.Nationality)</h4>
+                            <div class="fieldtextinput selectinput">
+                                @Html.DropDownListFor(
+                           model => model.Nationality,
+                            new SelectList(new[]
+                            {
+                            new { Value = "0", Text = "Select Nationality" },
+                            new { Value = "Bangladeshi", Text = "Bangladeshi" },
+                            new { Value = "Abroad", Text = "Abroad" },
+                            }, "Value", "Text", Model.Nationality),
+                            new { @class = "form-control dropdownnew" }
+                            )
+                            </div>
+                        </div>
+
+
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.Religion)</h4>
+                            <div class="fieldtextinput selectinput">
+                                @Html.DropDownListFor(
+                            model => model.Religion,
+                            new SelectList(new[]
+                            {
+                            new { Value = "0", Text = "Select Religion" },
+                            new { Value = "Islam", Text = "Islam" },
+                            new { Value = "Hindu", Text = "Hindu" },
+                            new { Value = "Crystan", Text = "Crystan" },
+                            new { Value = "Buddha", Text = "Buddha" },
+                            }, "Value", "Text", Model.Religion),
+                            new { @class = "form-control dropdownnew" }
+                            )
+                            </div>
+                        </div>
+
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.BloodGroup)</h4>
+                            <div class="fieldtextinput selectinput">
+                                @Html.DropDownListFor(
+                             model => model.BloodGroup,
+                            new SelectList(new[]
+                            {
+                            new { Value = "0", Text = "Select BloodGroup " },
+                            new { Value = "A+", Text = "A+" },
+                            new { Value = "A-", Text = "A-" },
+                            new { Value = "B+", Text = "B+" },
+                            new { Value = "B-", Text = "B-" },
+                            new { Value = "O+", Text = "O+" },
+                            new { Value = "O-", Text = "O-" },
+                            new { Value = "AB", Text = "AB" },
+                            new { Value = "AB-", Text = "AB-" },
+                            }, "Value", "Text", Model.BloodGroup),
+                            new { @class = "form-control dropdownnew" }
+                            )
+                            </div>
+                        </div>
+                        <div class="fildsectioninput">
+                            <h4>@Html.LabelFor(model => model.CoverLetter)</h4>
+                            <div class="fieldtextinput">
+                                <label>
+                                    @Html.TextAreaFor(model => model.CoverLetter, new { @required = "" })
+                                    <span>Career Objective</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="applyField applycvandimg">
+                                    <div class="applycv">
+                                        <label for="AttachmentFile">Upload CV</label>
+                                        <div class="uploadandcv">
+                                            <input type="file" name="AttachmentFile" id="AttachmentFile" style=" border-color: orange;" class="readOnlyColor" title="This field is readonly">
+                                        </div>
+                                    </div>
+                                    <div class="applypic">
+                                        <label for="AttachmentFile">Upload Picture</label>
+                                        <div class="uploadandpic">
+                                            <img src="@Url.Content(" ~ />Files/EmployeeInfo/" + Model.ImageFileName)" id="EmployeeImage" style="text-align: center; height:100px" alt="IMAGES" />
+                                            @using (Ajax.BeginForm("EmployeeImage", "EmployeeInfo", null, new AjaxOptions { UpdateTargetId = "FindEmployee" }, new { enctype = "multipart/form-data", id = "frmApplicantInfo" }))
+                                        {
+                                                <input type="file" accept=".jpg,.png,.gif,.jpeg" name="AttachmentImaage" id="AttachmentImaage" onchange="CheckImageSize(this);ShowpImagePreview(this); " />
+
+                                                <input type="hidden" id="employeeId" name="employeeId" value="@Model.Id" />
+                                        }
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <div class="formregbtn">
+                                    <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Update</button>
+
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="maininput">
+                                <h4>Upload CV</h4>
+                                <div class="fieldtextinput fileattach">
+                                    <div class="fileattachimgtext" id="filePreview">
+                                        <img src="~/assets/Images/file.svg" id="previewImg" alt="File Preview" />
+                                        <h5>
+                                            Drag and drop or
+                                            <span style="color: blue; cursor: pointer;">Browse</span>
+                                        </h5>
+                                        <p>
+                                            Please upload your CV or resume only in Word document or PDF file with your photograph in it.
+                                        </p>
+                                    </div>
+                                    <input type="file" id="fileInput" required accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                    <span id="fileName"></span>
+                                </div>
+                            </div>*@
+                    </div>
+                    <div id="basicInfo4" class="applyField tab-pane" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="applyField">
+                                    <div class="applyquliheding">
+                                        <h2><label>Training Summery:</label></h2>
+                                        <hr />
+                                    </div>
+
+                                    <div id="ProductDetail" class="formDesign">
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantTrainingVM.TrainingTitle)
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(model => model.applicantTrainingVM.TrainingTitle, null, new { @placeholder = "TrainingTitle", @class = "drTrainingTitle  form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantTrainingVM.Topic)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantTrainingVM.Topic, null, new { @placeholder = "Topic", @class = "drTopic form-control" })
+                                            </div>
+                                        </div>
+
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantTrainingVM.Institute)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantTrainingVM.Institute, null, new { @placeholder = "Institute ", @class = "drInstitute   form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantTrainingVM.Country)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantTrainingVM.Country, null, new { @placeholder = "Country ", @class = "drCountry form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantTrainingVM.Location)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantTrainingVM.Location, null, new { @placeholder = "Location ", @class = "drLocation form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantTrainingVM.Year)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantTrainingVM.Year, null, new { @placeholder = "Year  ", @class = "drYear form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantTrainingVM.Duration)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantTrainingVM.Duration, null, new { @placeholder = "Duration   ", @class = "drDuration form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="qulibtn">
+                                            <div class="editor-field">
+                                                <div id="ItemExist" title="Add Detail" class="sym-btn-add-row AddRowts" data-container="editorItemRows6">Add Row</div>
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            &nbsp
+                                        </div>
+
+
+                                    </div>
+                                    <div id="detailpq">
+
+                                        <div id="editorItemRows6" class="">
+                                            @if (Model.applicantTrainingVMS != null)
+                                        {
+                                            Html.RenderPartial("~/Views/Jobs/_applicantTraining.cshtml", Model.applicantTrainingVMS);
+                                        }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="applyField">
+                                    <div class="applyquliheding">
+                                        <h2><label>Language Proficiency:</label></h2>
+                                        <hr />
+                                    </div>
+
+                                    <div id="ProductDetail" class="formDesign LanguageDesign">
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantLanguageVM.Language)
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(model => model.applicantLanguageVM.Language, null, new { @placeholder = "Language", @class = "drLanguage  form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantLanguageVM.Reading)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantLanguageVM.Reading, null, new { @placeholder = "Reading", @class = "drReading form-control" })
+                                            </div>
+                                        </div>
+
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantLanguageVM.Writing)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantLanguageVM.Writing, null, new { @placeholder = "Writing  ", @class = "drWriting    form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantLanguageVM.Speaking)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantLanguageVM.Speaking, null, new { @placeholder = "Speaking ", @class = "drSpeaking form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="qulibtn">
+                                            <div class="editor-field">
+                                                <div id="ItemExist" title="Add Detail" class="sym-btn-add-row AddRowls" data-container="editorItemRows7">Add Row</div>
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            &nbsp
+                                        </div>
+
+
+                                    </div>
+                                    <div id="detailpq">
+
+                                        <div id="editorItemRows7" class="">
+                                            @if (Model.applicantLanguageVMS != null)
+                                        {
+                                            Html.RenderPartial("~/Views/Jobs/_language.cshtml", Model.applicantLanguageVMS);
+                                        }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="basicInfo5" class="applyField tab-pane" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="applyField">
+                                    <div class="applyquliheding">
+                                        <h2><label>Employment History:</label></h2>
+                                        <hr />
+                                    </div>
+
+                                    <div id="ProductDetail" class="formDesign2">
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantEmployeementHistoryVM.CompanyName)
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(model => model.applicantEmployeementHistoryVM.CompanyName, null, new { @placeholder = "CompanyName", @class = "drCompanyName  form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantEmployeementHistoryVM.CompanyBusiness)
+                                            </div>
+                                            <div class="editor-field ">
+                                                @Html.TextBoxFor(model => model.applicantEmployeementHistoryVM.CompanyBusiness, null, new { @placeholder = "CompanyBusiness", @class = "drCompanyBusiness form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="fildsectioninput">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantEmployeementHistoryVM.ApplicantDesignation)
+                                            </div>
+                                            <div class="fieldtextinput selectinput editor-field">
+                                                @Html.DropDownListFor(
+                                                model => model.applicantEmployeementHistoryVM.ApplicantDesignation,
+                                                Model.applicantEmployeementHistoryVM != null
+                                                    ? new SelectList(new[]
+                                                    {
+                                                        new { Value = "0", Text = "Select Applicant Designation " },
+                                                         new { Value = ".NET Developer", Text = ".NET Developer" },
+                                                new { Value = "PHP Developer", Text = "PHP Developer" },
+                                                 new { Value = "Frontend Developer", Text = "Frontend Developer" },
+                                                new { Value = "Apps Developer", Text = "Apps Developer" },
+                                                 new { Value = "Marketing Executive", Text = "Marketing Executive" },
+                                                new { Value = "Accountant", Text = "Accountant" },
+                                                    }, "Value", "Text", Model.applicantEmployeementHistoryVM.ApplicantDesignation)
+                                                    : new SelectList(new[]
+                                                    {
+                                                        new { Value = "0", Text = "Select Applicant Designation" },
+                                                         new { Value = ".NET Developer", Text = ".NET Developer" },
+                                                new { Value = "PHP Developer", Text = "PHP Developer" },
+                                                 new { Value = "Frontend Developer", Text = "Frontend Developer" },
+                                                new { Value = "Apps Developer", Text = "Apps Developer" },
+                                                 new { Value = "Marketing Executive", Text = "Marketing Executive" },
+                                                new { Value = "Accountant", Text = "Accountant" },
+                                                    }, "Value", "Text"),
+                                                new { @class = "form-control dropdownnew" }
+                                            )
+                                            </div>
+                                        </div>
+
+                                        @*<div class="quliitem">
+                                                <div class="fieldtextinput selectinput">
+                                                 @Html.DropDownListFor(
+                                                model => model.applicantEmployeementHistoryVM.ApplicantDesignation,
+                                                new SelectList(new[]
+                                                {
+                                                new { Value = "0", Text = "Select Designation" },
+                                                new { Value = ".NET Developer", Text = ".NET Developer" },
+                                                new { Value = "PHP Developer", Text = "PHP Developer" },
+                                                 new { Value = "Frontend Developer", Text = "Frontend Developer" },
+                                                new { Value = "Apps Developer", Text = "Apps Developer" },
+                                                 new { Value = "Marketing Executive", Text = "Marketing Executive" },
+                                                new { Value = "Accountant", Text = "Accountant" },
+                                                }, "Value", "Text", Model.applicantEmployeementHistoryVM.ApplicantDesignation),
+                                                new { @class = "form-control dropdownnew" }
+                                                )
+                                                </div>
+                                            </div>*@
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantEmployeementHistoryVM.ApplicantDepartment)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantEmployeementHistoryVM.ApplicantDepartment, null, new { @placeholder = "Department ", @class = "drDepartment form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantEmployeementHistoryVM.EmploymentPeriod)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantEmployeementHistoryVM.EmploymentPeriod, null, new { @placeholder = "EmploymentPeriod ", @class = "form-control customDatePicker" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantEmployeementHistoryVM.ToDate)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantEmployeementHistoryVM.ToDate, null, new { @placeholder = "ToDate  ", @class = "form-control customDatePicker" })
+                                            </div>
+                                        </div>
+                                       
+                                        <div class="fildsectioninput">
+                                            <div class="editor-label">
+                                            @Html.LabelFor(model => model.applicantEmployeementHistoryVM.CurrentlyWorking)</div>
+                                            <div class="fieldtextinput selectinput editor-field">
+                                                @Html.DropDownListFor(
+                                                model => model.applicantEmployeementHistoryVM.CurrentlyWorking,
+                                                Model.applicantEmployeementHistoryVM != null
+                                                    ? new SelectList(new[]
+                                                    {
+                                                        new { Value = "0", Text = "Select Currently Working " },
+                                                        new { Value = "No", Text = "No" },
+                                                        new { Value = "Yes", Text = "Yes" },
+                                                    }, "Value", "Text", Model.applicantEmployeementHistoryVM.CurrentlyWorking)
+                                                    : new SelectList(new[]
+                                                    {
+                                                        new { Value = "0", Text = "Select Currently Working " },
+                                                        new { Value = "No", Text = "No" },
+                                                        new { Value = "Yes", Text = "Yes" },
+                                                    }, "Value", "Text"),
+                                                new { @class = "form-control dropdownnew" }
+                                            )
+                                            </div>
+                                        </div>
+
+
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantEmployeementHistoryVM.Responsibilities)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantEmployeementHistoryVM.Responsibilities, null, new { @placeholder = "Responsibilities   ", @class = "drResponsibilities form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantEmployeementHistoryVM.AreaOfExperience)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantEmployeementHistoryVM.AreaOfExperience, null, new { @placeholder = "AreaOfExperience   ", @class = "drAreaOfExperience form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantEmployeementHistoryVM.CompanyLocation)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantEmployeementHistoryVM.CompanyLocation, null, new { @placeholder = "CompanyLocation   ", @class = "drCompanyLocation form-control" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="">
+                                        &nbsp
+                                    </div>
+                                    <div class="qulibtn">
+                                        <div class="editor-field">
+                                            <div id="ItemExist" title="Add Detail" class="sym-btn-add-row AddRoweh" data-container="editorItemRows7">Add Row</div>
+                                        </div>
+                                    </div>
+                                    <div class="">
+                                        &nbsp
+                                    </div>
+                                    <div id="detailpq">
+
+                                        <div id="editorItemRows6" class="">
+                                            @if (Model.applicantEmployeementHistoryVMS != null)
+                                        {
+                                            Html.RenderPartial("~/Views/Jobs/_applicantEmployeementHistory.cshtml", Model.applicantEmployeementHistoryVMS);
+                                        }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="applyField">
+                                    <div class="applyquliheding">
+                                        <h2><label>Skill:</label></h2>
+                                        <hr />
+                                    </div>
+
+                                    <div id="ProductDetail" class="formDesign LanguageDesignskl">
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantSkillVM.Skill)
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(model => model.applicantSkillVM.Skill, null, new { @placeholder = "Skill", @class = "drSkill  form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantSkillVM.SkillDescription)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantSkillVM.SkillDescription, null, new { @placeholder = "SkillDescription", @class = "drSkillDescription form-control" })
+                                            </div>
+                                        </div>
+
+                                        <div class="quliitem">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.applicantSkillVM.ExtraCurricular)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBoxFor(model => model.applicantSkillVM.ExtraCurricular, null, new { @placeholder = "ExtraCurricular  ", @class = "drExtraCurricular    form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="qulibtn">
+                                            <div class="editor-field">
+                                                <div id="ItemExist" title="Add Detail" class="sym-btn-add-row AddRowsk" data-container="editorItemRows9">Add Row</div>
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            &nbsp
+                                        </div>
+
+
+                                    </div>
+                                    <div id="detailpq">
+
+                                        <div id="editorItemRows7" class="">
+                                            @if (Model.applicantSkillVMS != null)
+                                        {
+                                            Html.RenderPartial("~/Views/Jobs/_skill.cshtml", Model.applicantSkillVMS);
+                                        }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br /><br />
+        <br /><br />
+        <br /><br />
+
+
+    </div>
+}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+@*<script>
+
+        $('.AddRow:not(.AddRowInited)').on("click", function () {
+            var container = $(this).attr('data-container');
+            AddRow(container)
+            return false;
+        }).addClass("AddRowInited");
+
+        function AddRow(container) {
+            debugger;
+            var ItemExist = 0;
+            var url = '/Jobs/BlankItem';
+            var oParam = { "ExamTitle": "", "Major": "", "Institute": "", "Result": "", "PassYear": "", "Duration": "", "Achievment": "" };
+
+            var ExamTitle = $('.drExamTitle').val();
+            var Major = $('.drMajor').val();
+            var Institute = $('.drInstitute').val();
+            var Result = $('.drResult').val();
+            var PassYear = $('.drPassYear').val();
+            var Duration = $('.drDuration').val();
+            var Achievment = $('.drAchievment').val();
+
+
+            if (ExamTitle == "") {
+                ShowResult("Fail", "Please select the ExamTitle!");
+                return;
+            }
+            if (Major == "") {
+                ShowResult("Fail", "Please Enter Major!");
+                return;
+            }
+            if (Institute == "") {
+                ShowResult("Fail", "Please Enter Institute!");
+                return;
+            }
+            if (Result == "") {
+                ShowResult("Fail", "Please Enter Result!");
+                return;
+            }
+            if (PassYear == "") {
+                ShowResult("Fail", "Please Enter PassYear!");
+                return;
+            }
+            if (Duration == "") {
+                ShowResult("Fail", "Please Enter Duration!");
+                return;
+            }
+            if (Achievment == "") {
+                ShowResult("Fail", "Please Enter Achievment!");
+                return;
+            }
+
+
+
+            oParam.ExamTitle = ExamTitle;
+            oParam.Major = Major;
+            oParam.Institute = Institute;
+            oParam.Result = Result;
+            oParam.PassYear = PassYear;
+            oParam.Duration = Duration;
+            oParam.Achievment = Achievment;
+
+            $.ajax({
+                url: url,
+                //type: 'POST',
+                cache: false,
+                data: oParam,
+                success: function (html) {
+                    $("#" + container).append(html);
+                }
+            });
+            $('#detail').show();
+            $(".drExamTitle").val("");
+            $(".drMajor").val("");
+            $(".drInstitute").val("");
+            $(".drResult").val("");
+            $(".drPassYear").val("");
+            $(".drDuration").val("");
+            $(".drAchievment").val("");
+        }
+
+        function RemoveEducation(sender) {
+            debugger;
+            Ask("Are you sure to delete the item!", function () {
+                $(sender).parents("div#detail").remove();
+            });
+        }
+    </script>*@
+
+<script>
+    $(function () {
+        valiDation("frmApplicantInfo");
+    });
+    $('.AddRow:not(.AddRowInited)').on("click", function () {
+        debugger;
+        var myData = $('#frmApplicantInfo').serialize();
+        var url = "/Common/JobCircular/InsertApplicantEducationlDetails";
+        var res = submit(url, myData);        
+        if (res == true) {
+            location.reload();
+        }
+        else {
+            location.reload();
+        }
+    });
+    $('.AddRowpq:not(.AddRowInited1)').on("click", function () {
+        debugger;
+        var myData = $('#frmApplicantInfo').serialize();
+        var url = "/Common/JobCircular/InsertQualificationDetails";
+        var res = submit(url, myData);
+        if (res == true) {
+            location.reload();
+        }
+        else {
+            location.reload();
+        }
+    });
+    $('.AddRowts:not(.AddRowInited2)').on("click", function () {
+        debugger;
+        var myData = $('#frmApplicantInfo').serialize();
+        var url = "/Common/JobCircular/InsertApplicantTrainingDetails";
+        var res = submit(url, myData);
+        if (res == true) {
+            location.reload();
+        }
+        else {
+            location.reload();
+        }
+    });
+    $('.AddRowls:not(.AddRowInited3)').on("click", function () {
+        debugger;
+        var myData = $('#frmApplicantInfo').serialize();
+        var url = "/Common/JobCircular/InsertApplicantLanguageDetails";
+        var res = submit(url, myData);
+
+        if (res == true) {
+            location.reload();
+        }
+        else {
+            location.reload();
+        }
+    });
+    $('.AddRoweh:not(.AddRowInited4)').on("click", function () {
+        debugger;
+        var myData = $('#frmApplicantInfo').serialize();
+        var url = "/Common/JobCircular/InsertApplicantEmployeementHistoryDetails";
+        var res = submit(url, myData);
+        if (res == true) {
+            location.reload();
+        }
+        else {
+            location.reload();
+        }
+    });
+    $('.AddRowsk:not(.AddRowInited5)').on("click", function () {
+        debugger;
+        var myData = $('#frmApplicantInfo').serialize();
+        var url = "/Common/JobCircular/InsertApplicantSkillDetails";
+        var res = submit(url, myData);
+        if (res == true) {
+            location.reload();
+        }
+        else {
+            location.reload();
+        }
+    });
+    $("#cancel").on('click', function () {
+        $(".thinbox :input").val("");
+    });
+    var submit1 = function (url, mydata) {
+        $.ajax({
+            type: 'POST',
+            data: mydata, // #2
+            url: url,
+            success: function (result) {
+                var msg1 = result.split('~')[0];
+                var msg2 = result.split('~')[1];
+                if (msg1 != "Fail") {
+                    ShowResult("Success", msg2);
+                }
+                else {
+                    ShowResult("Fail", msg2);
+                }
+            }
+        });
+    }
+    function ShowpImagePreview(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#EmployeeImage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

@@ -1,0 +1,150 @@
+﻿@model SymViewModel.Common.AppraisalQuestionSetVM
+
+@using UIHelper.MVC
+@{
+    Layout = null;
+}
+<style>
+    #searchBox {
+        margin-top: -8px;
+        height: 30px;
+        width: 179px;
+    }
+</style>
+<div class="details">
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+    }
+    <div class="row" style="background: #dddec5; padding: 9px 0" >
+        <div class="col-md-1" style="width:100px ">
+            <div class="editor-label">
+                <label>Sl.</label> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                <input type="checkbox" id="selectAllOwn" onclick="toggleColumn(this, 'IsActive')" />
+            </div> 
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+               <label>Category Name</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Question Name</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsOwn)
+                    <input type="checkbox" id="selectAllOwn" onclick="toggleColumn(this, 'IsOwn')" />                  
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsTeamLead)
+                    <input type="checkbox" id="selectAllOwn" onclick="toggleColumn(this, 'IsTeamLead')" /> 
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsHR)
+                    <input type="checkbox" id="selectAllOwn" onclick="toggleColumn(this, 'IsHR')" />
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsCOO)
+                    <input type="checkbox" id="selectAllOwn" onclick="toggleColumn(this, 'IsCOO')" />
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsMD)
+                    <input type="checkbox" id="selectAllOwn" onclick="toggleColumn(this, 'IsMD')" />
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsP1)
+                    <input type="checkbox" id="selectAllOwn" onclick="toggleColumn(this, 'IsP1')" />
+                </div>
+                <div class="editor-field">
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsP2)
+                    <input type="checkbox" id="selectAllOwn" onclick="toggleColumn(this, 'IsP2')" />
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsP3)
+                    <input type="checkbox" id="selectAllOwn" onclick="toggleColumn(this, 'IsP3')" />
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsP4)
+                    <input type="checkbox" id="selectAllOwn" onclick="toggleColumn(this, 'IsP4')" />
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsP5)
+                    <input type="checkbox" id="selectAllOwn" onclick="toggleColumn(this, 'IsP5')" />
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-field">
+
+                    @Html.TextBox("searchQuery", null, new { @class = "form-control", @id = "searchBox", @placeholder = "Search" })
+
+                </div>
+            </div>
+        </div>
+    </div>
+    @foreach (var item in Model.AppraisalQuestionSetDetaiVMs)
+    {
+        @Html.Partial("~/Areas/Common/Views/AppraisalQuestionSet/_DetailsView.cshtml", item);
+    }
+
+</div>
+
+
+<script>
+    function toggleColumn(selectAllCheckbox, columnClass) {
+        const checkboxes = document.querySelectorAll(`input[type='checkbox'][name$='.${columnClass}']`);
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
+    });
+    }
+</script>

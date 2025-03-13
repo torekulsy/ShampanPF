@@ -1,0 +1,43 @@
+﻿@model SymViewModel.Common.AppraisalEvaluationFor
+@using UIHelper.MVC
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm("Create", "AppraisalEvaluationFor", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmAppraisal" }))
+{    @Html.ValidationSummary(true)
+
+    <div class="headrow">
+        <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+        <label class="pull-right"> Appraisal > Evaluation</label>
+    </div>
+
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Appraisal Evaluation</p>
+        </div>
+        <div class="branch">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.EvaluationName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.EvaluationName, new { @placeholder = "Evaluation Name", @class = "required form-control" })
+                        @Html.ValidationMessageFor(model => model.EvaluationName)
+                    </div>
+                </div>               
+            </div>
+        </div>
+    </div>
+
+    <div class="headrow">
+        <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+    </div>
+}
+
+<script>
+    $(function () {
+        valiDation("frmAppraisal");
+    });
+</script>

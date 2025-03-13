@@ -1,0 +1,99 @@
+﻿@model SymViewModel.Common.AppraisalMarksDetailVM
+@using UIHelper.MVC
+
+<div class="row">
+    @using (Html.BeginCollectionItem("AppraisalMarksDetailVMs"))
+    {
+        <div class="col-md-1" style="margin-top: 10px;">
+
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.CategoryId)
+            @Html.HiddenFor(model => model.QuestionId)
+            @Html.HiddenFor(model => model.CategoryName)
+            @Html.HiddenFor(model => model.QuestionName)
+                        
+        </div>
+        <div class="col-md-2">
+            <div class="editor-field">
+                @Html.TextBoxFor(m => m.CategoryName, new { @class = "dCategoryName form-control", @readonly = "readonly" })
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="editor-field">
+                @Html.TextBoxFor(m => m.QuestionName, new { @class = "dQuestionName form-control", @readonly = "readonly" })
+            </div>
+        </div>
+      <div class="col-md-6">
+            <div class="col-md-1">
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.IsOwn, new { @class = "dIsOwn chk form-control"})
+            </div>
+           </div>
+            <div class="col-md-1">
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.IsTeamLead, new { @class = "dIsTeamLead chk form-control" })
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.IsHR, new { @class = "dIsHR chk form-control" })               
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.IsCOO, new { @class = "dIsCOO chk form-control" })                  
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.IsMD, new { @class = "dIsMD chk form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.IsP1, new { @class = "dIsP1 chk form-control" })
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.IsP2, new { @class = "dIsP2 chk form-control" })
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.IsP3, new { @class = "dIsP3 chk form-control" })
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.IsP4, new { @class = "dIsP4 chk form-control" })
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.IsP5, new { @class = "dIsP5 chk form-control" })
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.chk').each(function () {
+            const value = $(this).val().toLowerCase();
+            if (value === 'false') {
+                $(this).prop('disabled', true);
+                $(this).val('0');
+            } else if (value === 'true') {
+                $(this).val('0');
+            }
+        });
+    });
+</script>
+
+
+

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<SymViewModel.Common.JobCircularVM>
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    * {
+        font-family: inherit;
+    } 
+</style>
+@foreach (var job in Model)
+{
+<br />
+    <div id="applyJobs">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <a target="_blank" href="/Jobs/JobDetails?Id=@job.Id">
+                    <div class="jobtop">
+                        <div class="job-title-text">
+
+                            <label>@job.JobTitle</label>
+
+                        </div>
+                        <div class="locon-text">
+                            <div class="locon-text-d">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i><label>@job.JobLocation</label>
+                            </div>
+                        </div>
+                        <div class="edu-text">
+                            <div class="edu-text-in">
+                                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                                <div class="qulifilist">
+                                    <label>@job.DegreeName</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dateexe">
+                        <div class="exp-text">
+                            <div class="exp-text-d">
+                                <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                                <label>@job.Expriance</label>
+                            </div>
+                        </div>
+                        <div class="dead-text">
+                            <div class="dead-text-s"><i class="fa fa-calendar-o" aria-hidden="true"></i> <label>Deadline:&nbsp;</label></div>
+                            <div class="dead-text-d">
+                                <label>@job.Deadline</label>
+                            </div>
+                        </div>                       
+                    </div>                   
+                </a>               
+            </div>            
+        </div>       
+    </div>    
+}
+<br /><br />
+<br /><br />

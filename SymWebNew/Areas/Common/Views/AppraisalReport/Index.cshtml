@@ -1,0 +1,100 @@
+﻿@model SymViewModel.Common.AppraisalMarksVM
+
+@using UIHelper.MVC
+@{
+    ViewBag.Title = "Index";
+}
+
+@using (Html.BeginForm("Report", "AppraisalReport", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmAppraisalReport" }))
+{
+
+    <div class="thinbox">       
+        <div class="row">       
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.EvaluationFor)
+                </div>
+                <div style="font-size:14px" class="editor-field">
+                    @Html.SimpleDropDownFor(m => m.EvaluationForId, "/Config/DropDown/EvaluationFor", new { @class = " cEvaluationFor required form-control " })
+                </div>
+            </div>
+                
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.DepartmentName)
+                </div>
+                <div style="font-size:14px" class="editor-field">
+                    @Html.SimpleDropDownFor(m => m.DepartmentId, "/Config/DropDown/Department", new { @class = " cDepartmentId required form-control " })
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.EmployeeName)
+                </div>
+                <div style="font-size:14px" class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.EmployeeCode, "/Config/DropDown/EmployeeCodeName", new { @placeholder = "Multiple Employee", @class = "mulitpleEmployee form-control selectDropdown", @multiple = "multiple" })
+                    @*@Html.SimpleDropDownFor(m => m.EmployeeCode, "/Config/DropDown/EmployeeCodeName", new { @class = " cEmployeeCode required form-control ", @multiple = "multiple" })*@
+                </div>
+            </div>
+
+        </div>  
+    </div>
+
+    <button type="button" title="Click for Report" data-url="/Common/AppraisalReport/Report" onclick="reportData(this);" id="" class="sym-btn-report">&nbsp;Report</button>
+}
+
+<script>
+    $(document).ready(function () {
+
+        $('.cDepartmentId').change(function () {
+            const departmentId = $(this).val();
+            if (departmentId) {
+                $.ajax({
+                    url: '/Config/DropDown/EmployeeByDepartment',
+                    type: 'GET',
+                    data: { departmentId: departmentId },
+                    success: function (data) {
+                        const employeeDropdown = $('.cEmployeeCode');
+                        employeeDropdown.empty();
+                        employeeDropdown.append($('<option>', {
+                            value: '',
+                            text: 'Select Employee'
+                        }));
+                        data.forEach(function (employee) {
+                            employeeDropdown.append($('<option>', {
+                                value: employee.Value,
+                                text: employee.Text
+                            }));
+                        });
+                    },
+                    error: function (xhr) {
+                        console.error('Error fetching employees:', xhr);
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+<script>
+    $(function () {
+        InitDropdownsCommon();
+    });
+    function reportData(sender) {
+        debugger;
+        var url = $(sender).attr("data-url");
+        var codeFrom = $("#EmployeeCode").val();     
+
+        var rptObj = [];
+        rptObj.push(codeFrom); // Add more if needed
+
+        var rptParam = rptObj.map(item => "codeFrom=" + encodeURIComponent(item)).join("&");
+        url = url + "?" + rptParam;
+    
+        var win = window.open(url, '_blank');
+    }
+</script>
+
+

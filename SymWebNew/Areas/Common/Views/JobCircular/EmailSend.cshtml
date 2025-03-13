@@ -1,0 +1,45 @@
+﻿@model SymViewModel.Common.JobCircularVM
+@{
+    Layout = null;
+}
+@using UIHelper.MVC
+@using (Html.BeginForm("EmailSendTo", "JobCircular", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmSendMail" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Send email to cercular media</p>
+        </div>
+        <div id="ProductDetail" class="  formDesign">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.EmailSendTo)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.EmailSendTo, new { @placeholder = "Email Send To", @class = " required  form-control" })
+                        @Html.ValidationMessageFor(model => model.EmailSendTo)
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="headrow">
+      
+            <button type="submit" name="btnName" value="Save" title="Save Data" class="sym-btn-save">&nbsp;Send Mail</button>
+            <button type="button" title="Cancel Data" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+      
+    </div>
+}
+<script>
+    $(function () {       
+
+        valiDation("frmSendMail");
+    });
+
+</script>

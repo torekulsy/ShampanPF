@@ -1,0 +1,240 @@
+﻿@model IEnumerable<SymViewModel.Common.JobCircularVM>
+@{
+    ViewBag.Title = "JobDashboard";
+}
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="~/assets/css/Applycant.css" rel="stylesheet" />
+
+<main class="jobdedashboard">
+    <div class="jobsedashboardwrapper">
+        <section class="jobsenav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active tab" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#jobpublish" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Published (6)</button>
+            <button class="nav-link tab" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#basicInfo2" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Processing (0)</button>
+            <button class="nav-link tab" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#basicInfo3" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Drafted (0)</button>
+        </section>
+        <div class="dashborddatesarch">
+            <input type="date" placeholder="Select date range">
+            <form class="form-inline dashbordsear my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="dashboardserchicon btn btn-outline-success my-2 my-sm-0 " type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+        </div>
+    </div>
+    @foreach (var job in Model)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="jobprofilelistd">
+                    <div class="jobhetop">
+                        <select name="" id="">
+                            <option value="">Live</option>
+                        </select>
+                        <a href="" class="pay-online">Pay Online</a>
+                    </div>
+                    <div class="jobsecjob-status">
+                        <a href="#"><i class="fa-solid fa-pen-to-square"></i>Edit job</a>
+                        <a href="#"><i class="fa-solid fa-share"></i>Copy & Repost</a>
+                        <ul>
+                            <li><a href="#"><i class="fa-solid fa-bell"></i></a></li>
+                            <li><a href="#"><i class="fa-brands fa-rocketchat"></i></a></li>
+                            <li><a href="#"><i class="fa-solid fa-user"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <section class="tab-content" id="nav-tabContent">
+                        <div id="jobpublish" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-home-tab">
+                            <section class="jobjob-info">
+                                <div class="jobsejob-header">
+                                    <div class="jobhetop">
+                                        <h2>@job.JobTitle</h2>
+                                    </div>
+                                </div>
+                                <div class="jobdahtitleb">
+                                    <p><strong>Published On:</strong>@job.CreatedAt</p>
+                                    <p><strong>Deadline:</strong> @job.Deadline</p>
+                                    <p><strong>Service Type:</strong> Standard Listing</p>
+                                </div>
+                            </section>
+                            <section class="jobsestats">
+                                <div class="jobseapplications" style="border-right: 1px solid #ddd;">
+                                    <a target="_blank" href="/Common/jobCircular/ApplicantProfileList?JobId=@job.JobId">
+                                        <h3><span>@job.TotalApplicant</span> Applications</h3>
+                                    </a>
+                                    <div class="appcan" style="border-left: 1px solid #ddd; padding: 0 50px;">
+                                        <canvas id="profileMatchingChart" style="height: 100%; width: 100%"></canvas>
+                                    </div>
+                                </div>
+                                <div class="jobseexperience" style="border-right: 1px solid #ddd;">
+                                    <h3>Experience Distribution</h3>
+                                    <div class="appcan">
+                                        <canvas id="experienceChart" style="height: 100%; width: 100%"></canvas>
+                                    </div>
+                                </div>
+                                <div class="salary" style="border-right: 1px solid #ddd;">
+                                    <h3>Salary Expectations</h3>
+                                    <div class="appcan">
+                                        <canvas id="salaryChart" style="height: 100%; width: 100%"></canvas>
+                                    </div>
+                                </div>
+                                <div class="jobsedeshdetails">
+                                    <div class="dashborddv" style="border-right: 1px solid #ddd;">
+                                        <div class="jobsedashbdetail">@job.Viewed <br> <span><i class="fa-solid fa-eye"></i>Viewed</span> <br>@job.NotViewed <br><span><i class="fa-solid fa-eye-slash"></i>Yet to View</span></div>
+                                    </div>
+                                    <div class="dashborddv">
+                                        <div class="jobsedashbdetail">@job.Shortlisted <br> <span><i class="fa-solid fa-user"></i>Shortlisted </span><br>@job.Confirmed <br><span><i class="fa-solid fa-computer"></i>Confirmed</span></div>
+                                    </div>
+                                </div>
+                                <div class="applicantmarks" style="border-left: 1px solid #ddd;">
+                                    <table id="marksTable" style="margin-left:auto">
+                                        <thead>
+                                            <tr style="background: #ddd">
+                                                <th>Name</th>
+                                                <th colspan="2" class="center">Avg.Marks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var marks in job.ApplicatTotalMarksVMS)
+                                            {
+                                                <tr>
+                                                    <td>@marks.ApplicantName</td>
+                                                    <td class="marks" data-username="@marks.AvaMarks">@marks.AvaMarks</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        @*</a>*@
+    }
+</main>
+
+
+<script>
+    // Example dynamic data array
+    const dynamicData = [
+            { chartTitle: 'Chart 1 - Profile Matching (%)', data: [60, 25, 15] },
+            { chartTitle: 'Chart 2 - Profile Matching (%)', data: [60, 25, 15] },
+            { chartTitle: 'Chart 3 - Profile Matching (%)', data: [40, 35, 25] },
+            { chartTitle: 'Chart 4 - Profile Matching (%)', data: [30, 45, 220] },
+            { chartTitle: 'Chart 5 - Profile Matching (%)', data: [30, 45, 220] },
+            { chartTitle: 'Chart 6 - Profile Matching (%)', data: [30, 45, 220] },
+            { chartTitle: 'Chart 7 - Profile Matching (%)', data: [30, 45, 220] },
+            { chartTitle: 'Chart 8- Profile Matching (%)', data: [30, 45, 220] },
+            { chartTitle: 'Chart 9 - Profile Matching (%)', data: [30, 45, 220] },
+            { chartTitle: 'Chart 10- Profile Matching (%)', data: [30, 45, 220] },
+    ];
+    // Select all canvas elements
+    const canvasElements = document.querySelectorAll('.jobseapplications canvas');
+    canvasElements.forEach(function (canvas, index) {
+        const ctx = canvas.getContext('2d');
+        const chartData = dynamicData[index];
+        if (chartData) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['<50%', '50-70%', '70-90%'],
+                    datasets: [{
+                        label: chartData.chartTitle,
+                        data: chartData.data,
+                        backgroundColor: ['#ff6384', '#ff9f40', '#4bc0c0']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#000' }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#000' }
+                        }
+                    }
+                }
+            });
+        }
+    });
+
+    // Select all elements with the class or ID you want (for example, a class named 'chart-container')
+    document.querySelectorAll('#experienceChart').forEach(function (chartElement) {
+        const ctx = chartElement.getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['0-2 Years', '2-3 Years', '3-5 Years', '5-10 Years', '10+ Years'],
+                datasets: [{
+                    data: [15, 20, 25, 30, 10],
+                    backgroundColor: ['#36a2eb', '#ff6384', '#ff9f40', '#4bc0c0', '#9966ff']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: true }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#000' }
+                    },
+                    y: {
+                        beginAtZero: false,
+                        ticks: { color: '#000' }
+                    }
+                }
+            }
+        });
+    });
+    // Salary Expectations Chart
+    // Select all elements with the class 'salaryChart'
+    document.querySelectorAll('#salaryChart').forEach(function (chartElement) {
+        const ctx = chartElement.getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['15K-20K', '20K-30K', '30K+'],
+                datasets: [{
+                    data: [12, 50, 38],
+                    backgroundColor: ['#4bc0c0', '#ff9f40', '#9966ff']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Makes the chart fill its container
+                plugins: {
+                    legend: { display: true }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#000' } // Optional: Change tick color
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#000' } // Optional: Change tick color
+                    }
+                }
+            }
+        });
+    });
+
+
+</script>
+

@@ -1,0 +1,52 @@
+﻿@model SymViewModel.Common.AppraisalAssignToVM
+@using UIHelper.MVC
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm("Create", "AppraisalAssignTo", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmAppraisal" }))
+{    @Html.ValidationSummary(true)
+
+    <div class="headrow">
+        <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+        <label class="pull-right"> Appraisal > Assign To</label>
+    </div>
+
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Appraisal Evaluation</p>
+        </div>
+        <div class="branch">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.AssignToName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.AssignToName, new { @placeholder = "AssignTo Name", @class = "required form-control" })
+                        @Html.ValidationMessageFor(model => model.AssignToName)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Weightage)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Weightage, new { @placeholder = "Weightage", @class = "required form-control" })
+                        @Html.ValidationMessageFor(model => model.Weightage)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="headrow">
+        <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+    </div>
+}
+
+<script>
+    $(function () {
+        valiDation("frmAppraisal");
+    });
+</script>

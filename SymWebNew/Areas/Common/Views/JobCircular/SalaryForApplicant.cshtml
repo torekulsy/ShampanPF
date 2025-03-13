@@ -1,0 +1,45 @@
+﻿@model SymViewModel.Common.ApplicantInfoVM
+@{
+    Layout = null;
+}
+@using UIHelper.MVC
+@using (Html.BeginForm("InsertApplicantSalary", "JobCircular", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmApplicantSalary" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Save Applicant Salary</p>
+        </div>
+        <div id="ProductDetail" class="formDesign1">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.ApplicantSalaryVM.Salary)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.ApplicantSalaryVM.Salary, new { @placeholder = "Enter Salary", @class = " required  form-control" })
+                        @Html.ValidationMessageFor(model => model.ApplicantSalaryVM.Salary)
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="headrow">
+
+        <button type="submit" name="btnName" value="Save" title="Save Data" class="sym-btn-save">&nbsp;Save Salary</button>
+        <button type="button" title="Cancel Data" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+
+    </div>
+}
+<script>
+    $(function () {
+
+        valiDation("frmApplicantSalary");
+    });
+
+</script>

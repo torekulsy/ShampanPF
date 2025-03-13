@@ -1,0 +1,100 @@
+﻿@model SymViewModel.Common.RecruitmentRequisitionVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    string CompanyName = System.Configuration.ConfigurationManager.AppSettings["CompanyName"];
+}
+@{
+    ViewBag.Title = "Edit";
+    ViewBag.Location = "Edit";
+}
+@using (Html.BeginForm("CreateEdit", "RecruitmentRequisition", FormMethod.Post, new { @Id = "frmRecruitmentRequisitionEdit" }))
+{
+    @Html.HiddenFor(model => model.Id)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Recruitment Requisition</p>
+        </div>
+
+        <div class="rCr">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Department)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.Department, "/Config/DropDown/Department", new { @placeholder = "Department", @class = "required form-control " })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Designation)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.Designation, "/Config/DropDown/Designation", new { @placeholder = "Designation", @class = "required form-control " })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Experience)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Experience, new { @placeholder = "Experience", @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Deadline)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Deadline, new { @placeholder = "Deadline", @class = " customDatePicker form-control" })
+                        @Html.HiddenFor(model => model.Deadline)
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Description)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.Description, new { @placeholder = "Description", @rows = "3", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </div>
+                </div>
+
+
+                <div class="col-sm-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsActive)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.IsActive)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p>
+        <button type="submit" title="Save Data" class="sym-btn-update">&nbsp;Update</button>
+    </p>
+    <script>
+        $(function () {
+            valiDation("frmRecruitmentRequisitionEdit");
+        });
+    </script>
+}

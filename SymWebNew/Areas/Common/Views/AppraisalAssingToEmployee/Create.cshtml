@@ -1,0 +1,226 @@
+﻿@model SymViewModel.Common.AppraisalQuestionSetVM
+
+@using UIHelper.MVC
+@{
+    ViewBag.Title = "Create";
+}
+@using (Html.BeginForm("CreateEdit", "AppraisalAssingToEmployee", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmAppraisalEntry" }))
+{
+    @Html.HiddenFor(model => model.Id)
+
+    <button type="button" name="btnName" value="Save" title="Save Data" onclick="pageSubmit('frmAppraisalEntry')" class="sym-btn-save">&nbsp;Save</button>
+    <button type="button" title="Go To Index" data-url="/Common/AppraisalAssingToEmployee" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+
+    <div class="thinbox">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="editor-label">
+                    <label>Appraisal Question Set Name</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.QuestionSetName, new { @placeholder = "QuestionSet Name", @class = " form-control required" })
+                    @Html.ValidationMessageFor(model => model.QuestionSetName)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Year</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Year, new { @placeholder = "Year", @class = " form-control required" })
+                    @Html.ValidationMessageFor(model => model.Year)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Exam Date</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.ExDate, new { @placeholder = "Exam Date", @class = " form-control customDatePicker required" })
+                    @Html.ValidationMessageFor(model => model.ExDate)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Create Date</label>
+
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.CreateDate, new { @placeholder = "Create Date", @class = "trDate customDatePicker required form-control" })
+                    @Html.ValidationMessageFor(model => model.CreateDate)
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.EvaluationFor)
+                </div>
+                <div style="font-size:14px" class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.EvaluationForId, "/Config/DropDown/EvaluationFor", new { @class = " cEvaluationFor required form-control " })
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.DepartmentName)
+                </div>
+                <div style="font-size:14px" class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.DepartmentId, "/Config/DropDown/Department", new { @class = " cDepartmentId required form-control " })
+                </div>
+            </div>           
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.EmployeeName)
+                </div>
+                <div style="font-size:14px" class="editor-field">                   
+                    @Html.SimpleDropDownFor(model => model.EmployeeCode, "/Config/DropDown/EmployeeCodeName", new { @class = "cEmployeeCode form-control" })
+                </div>
+            </div>          
+
+        </div>
+    </div>
+
+    <div class="thinbox">
+        <div class="formDesign" id="detail">
+            <hr />
+            <div id="editorItemRows4">
+                @if (Model.AppraisalQuestionSetDetaiVMs != null)
+                {
+                    foreach (var item in Model.AppraisalQuestionSetDetaiVMs)
+                    {
+                        Html.RenderPartial("~/Areas/Common/Views/AppraisalAssingToEmployee/_details.cshtml", item);
+                    }
+                }
+
+            </div>
+            <hr style="margin-top: 10px!important; margin-bottom: 10px!important;" />
+
+        </div>
+    </div>
+
+}
+
+<script>
+    $(document).ready(function () {
+
+        $('.cDepartmentId').change(function () {
+            const departmentId = $(this).val();
+            if (departmentId) {
+                $.ajax({
+                    url: '/Config/DropDown/EmployeeByDepartment',
+                    type: 'GET',
+                    data: { departmentId: departmentId },
+                    success: function (data) {
+                        const employeeDropdown = $('.cEmployeeCode');
+                        employeeDropdown.empty();
+                        employeeDropdown.append($('<option>', {
+                            value: '',
+                            text: 'Select Employee'
+                        }));
+                        data.forEach(function (employee) {
+                            employeeDropdown.append($('<option>', {
+                                value: employee.Value,
+                                text: employee.Text
+                            }));
+                        });
+                    },
+                    error: function (xhr) {
+                        console.error('Error fetching employees:', xhr);
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
+
+<script>
+
+    function pageSubmit() {
+        debugger;
+        var model = @Html.Raw(Json.Encode(Model))
+        alert(model)
+        $.ajax({
+            url: "@Url.Action("CreateEdit", "AppraisalAssingToEmployee", new { area = "Common" })",
+            type: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify(model)
+    })
+    .done(function(data){
+        console.log(data);
+    });
+
+    }
+
+</script>
+
+<script>
+    $(document).on("click", ".RemoveRow", function () {
+        RemoveProduct(this);
+    });
+
+    // Function to remove a row
+    function RemoveProduct(sender) {
+        Ask("Are you sure to delete the item!", function () {
+            $(sender).closest("div.row").remove();
+            ShowHide();
+        });
+    }
+
+    function ShowHide() {
+        var accName = $('.dQuestionName').val();
+        if (!accName) {
+            $('#detail').hide();
+        } else {
+            $('#detail').show();
+        }
+    }
+
+    $(document).ready(function () {
+        $('#detail').show();
+        debugger;
+        var id = $("#Id").val();
+        if (parseInt(id) > 0)
+        {
+            setTimeout(function () {
+                SearchingbyEmp();
+            }, 1300);
+        }
+
+    });
+
+    $(".cDepartmentId").change(function () {
+        debugger;
+        SearchingbyEmp();
+    });
+
+    $(".cEmployeeCode").change(function () {
+        debugger;
+        SearchingbyEmp();
+    });
+    function SearchingbyEmp() {
+        debugger;
+        var DepartmentId = $(".cDepartmentId").val();
+        var EmployeeCode = $(".cEmployeeCode").val();
+        var EvaluationFor = $(".cEvaluationFor").val(); 
+        var EmployeeName = $(".cEmployeeCode").find("option:selected").text();
+        var QuestionSetName = "Appraisal Question For " + EmployeeName;
+        $("#QuestionSetName").val(QuestionSetName);
+        var url = '/Common/AppraisalAssingToEmployee/SelectQuestionByEmployee?DepartmentId=' + DepartmentId + '&EmployeeCode=' + EmployeeCode + '&EvaluationFor=' + EvaluationFor;
+
+        $.get(url, function (response) {
+            debugger;
+            $('#detail').html(response); // Update #detail with the new content
+            $('#detail').show();
+            valiDation("frmAppraisalEntry"); // Re-apply validation to new elements
+        }).fail(function () {
+            debugger;
+            ShowResult("Fail", "Failed to retrieve data. Please try again.");
+        });
+    }
+
+
+</script>

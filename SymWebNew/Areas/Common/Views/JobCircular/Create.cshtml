@@ -1,0 +1,397 @@
+﻿@model SymViewModel.Common.JobCircularVM
+@using UIHelper.MVC
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Common/Views/Shared/_HomeLayout.cshtml";
+}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+
+<link href="~/assets/css/Applycant.css" rel="stylesheet" />
+<style>
+    #frmJobCircular {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+        #frmJobCircular p {
+            font-size: 14px;
+            background: #ddd;
+            padding: 5px;
+        }
+
+    .select2-container .select2-choice {
+        min-height: 35px;
+        display: flex;
+        align-items: center;
+    }
+
+    .applytabbtn button {
+        width: calc(99% / 3);
+    }
+</style>
+@using (Html.BeginForm("Create", "JobCircular", FormMethod.Post, new { @Id = "frmJobCircular" }))
+{
+    @Html.ValidationSummary(true)
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="applytabbtn">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#basicInfo" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Basic Info</button>
+                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#basicInfo2" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Recruitment Information</button>
+                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#basicInfo3" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">HR Person</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-12">
+            <div class="tab-content" id="nav-tabContent">
+                <div id="basicInfo" class="applyField tab-pane show active" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                    <div class="companyecruitmentinfopage">
+                        <div class="comcircularpage">
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.JobTitle)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextBoxFor(model => model.JobTitle, new { @class = "required", @required = "" })
+                                        <span>JobTitle</span>
+                                    </label>
+                                </div>
+                            </div>
+
+
+                            <div class="fildsectioninput">
+                                <h4>
+                                    @Html.LabelFor(model => model.DesignationName)
+                                </h4>
+                                <div class="fieldtextinput selectinput">
+                                    @Html.SimpleDropDown("DesignationId", "/Config/DropDown/Designation", new { @class = "Designation form-control dropdownnew searchable-dropdown", @type = "dropdown" })
+                                </div>
+                            </div>
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.Deadline)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextBoxFor(model => model.Deadline, new { @placeholder = "Deadline ", @class = "customDatePicker form-control", @required = "" })
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.JobLocation)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextBoxFor(model => model.JobLocation, new { @class = "required", @required = "" })
+                                        <span>Job Location</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.Vacancy)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextBoxFor(model => model.Vacancy, new { @class = "required", @required = "" })
+                                        <span>Vacancy</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.EmploymentStatus)</h4>
+                                <div class="fieldtextinput selectinput">
+                                    <select id="EmploymentStatus" name="EmploymentStatus" class="required form-control dropdownnew">
+                                        <option value="FullTime">Full Time</option>
+                                        <option value="PartTime">Part Time</option>
+                                        <option value="Contractual">Contractual</option>
+                                        <option value="Intern">Intern</option>
+                                        <option value="Freelance">Freelance</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.Workplace)</h4>
+                                <div class="fieldtextinput selectinput">
+                                    <select id="Workplace" name="Workplace" class="required form-control dropdownnew">
+                                        <option value="Office">Office</option>
+                                        <option value="Home">Home</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.DegreeName)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextBoxFor(model => model.DegreeName, new { @class = "required", @required = "" })
+                                        <span>Degree Name</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.Expriance)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextBoxFor(model => model.Expriance, new { @class = "required", @required = "" })
+                                        <span>Experience</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.Benifit)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextAreaFor(model => model.Benifit, new { @class = "required", @required = "" })
+                                        <span>Benifit</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recruitmentbackbt">
+                            <div class="recruitmentbackbt">
+                                <button type="button" title="Next" class="">Next <i class="fa fa-arrow-right" style="margin-left: 5px"></i></button>
+                            </div>
+                            <button type="button" title="Back" onclick="" class="" style="display: none"><i class="fa fa-arrow-left" style="margin-right: 5px"></i> Back</button>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div id="basicInfo2" class="applyField tab-pane" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class="">
+
+                        <div class="comrecruiinfom">
+                            <div class="compreeqgrid">
+                            
+
+                                <div class="fildsectioninput">
+                                    <h4>@Html.LabelFor(model => model.SalaryMin)</h4>
+                                    <div class="fieldtextinput">
+                                        <label>
+                                            @Html.TextBoxFor(model => model.SalaryMin, new { @class = "required NumberCheck", @required = "" })
+                                            <span>Salary Min</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="fildsectioninput">
+                                    <h4>@Html.LabelFor(model => model.SalaryMax)</h4>
+                                    <div class="fieldtextinput">
+                                        <label>
+                                            @Html.TextBoxFor(model => model.SalaryMax, new { @class = "required NumberCheck", @required = "" })
+                                            <span>Salary Max</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="fildsectioninput">
+                                    <h4>@Html.LabelFor(model => model.AgeMin)</h4>
+                                    <div class="fieldtextinput">
+                                        <label>
+                                            @Html.TextBoxFor(model => model.AgeMin, new { @class = "required NumberCheck", @required = "" })
+                                            <span>Age Min</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="fildsectioninput">
+                                    <h4>@Html.LabelFor(model => model.AgeMax)</h4>
+                                    <div class="fieldtextinput">
+                                        <label>
+                                            @Html.TextBoxFor(model => model.AgeMax, new { @class = "required NumberCheck", @required = "" })
+                                            <span>Age Max</span>
+                                        </label>
+                                    </div>
+                                </div>
+                               
+
+                            </div>
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.Description)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextAreaFor(model => model.Description, new { @class = "required", @required = "" })
+                                        <span>Description</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.AdditionalRequirement)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextAreaFor(model => model.AdditionalRequirement, new { @class = "required", @required = "" })
+                                        <span>Additional Requirement</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.ShouldHaveArea)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextAreaFor(model => model.ShouldHaveArea, new { @class = "required", @required = "" })
+                                        <span>Should Have Area</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.ShouldHaveBusiness)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextAreaFor(model => model.ShouldHaveBusiness, new { @class = "required", @required = "" })
+                                        <span>Should Have Business</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.SkillExperties)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextAreaFor(model => model.SkillExperties, new { @class = "required", @required = "" })
+                                        <span>SkillExperties</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.Compensation)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextAreaFor(model => model.Compensation, new { @class = "required", @required = "" })
+                                        <span>Compensation</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.ReadBeforeApply)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextAreaFor(model => model.ReadBeforeApply, new { @class = "required", @required = "" })
+                                        <span>Read Before Apply</span>
+                                    </label>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <div class="recruitmentbackbt" style="justify-content: space-between">
+
+                            <button type="button" title="Back" onclick="" class=""><i class="fa fa-arrow-left"></i>Back</button>
+                            <button type="button" title="Next" class="" onclick="">Next <i class="fa fa-arrow-right" style="margin-left: 5px"></i></button>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="basicInfo3" class="applyField tab-pane" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                    <div class="">
+                        <div class="comphrform">
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.ContactPerson)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextBoxFor(model => model.ContactPerson, new { @class = "required", @required = "" })
+                                        <span>Contact Person</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.HRDesignation)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextBoxFor(model => model.HRDesignation, new { @class = "required", @required = "" })
+                                        <span>Contact Person</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="fildsectioninput">
+                                <h4>@Html.LabelFor(model => model.ContactNo)</h4>
+                                <div class="fieldtextinput">
+                                    <label>
+                                        @Html.TextBoxFor(model => model.ContactNo, new { @class = "required", @required = "" })
+                                        <span>Designation</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="recruibasave">
+                            <div class="recruitmentbackbt" style="justify-content:flex-start">
+                                <button type="button" title="Back" onclick="" class=""><i class="fa fa-arrow-left"></i> Back</button>
+                                <button type="button" title="Next" onclick="" class="" style="display: none">Next</button>
+                            </div>
+                            <div class="headrow">
+                                <button type="button" title="Save Data" onclick="pageSubmit('frmJobCircular');" class="Save sym-btn-save">&nbsp;Save</button>
+                                <button type="button" title="Cancel Data" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            valiDation("frmJobCircular");
+        });
+        $(function () {
+            InitDatePickers();
+            InitDropdownsCommon();
+        });
+        $(".btncancel").on('click', function () {
+            $("#frmJobCircular input").val("");
+        });
+
+    </script>
+}
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Handle Next button click
+        document.querySelectorAll('button[title="Next"]').forEach((nextButton) => {
+            nextButton.addEventListener('click', function () {
+                const currentTab = document.querySelector('.nav-link.active');
+                const allTabs = Array.from(document.querySelectorAll('.nav-link'));
+                const currentIndex = allTabs.indexOf(currentTab);
+
+                if (currentIndex < allTabs.length - 1) {
+                    const nextTab = allTabs[currentIndex + 1];
+
+                    // Switch to the next tab
+                    currentTab.classList.remove('active');
+                    currentTab.setAttribute('aria-selected', 'false');
+                    document.querySelector(currentTab.getAttribute('data-bs-target')).classList.remove('show', 'active');
+
+                    nextTab.classList.add('active');
+                    nextTab.setAttribute('aria-selected', 'true');
+                    document.querySelector(nextTab.getAttribute('data-bs-target')).classList.add('show', 'active');
+                }
+            });
+    });
+
+    // Handle Back button click
+    document.querySelectorAll('button[title="Back"]').forEach((backButton) => {
+        backButton.addEventListener('click', function () {
+            const currentTab = document.querySelector('.nav-link.active');
+            const allTabs = Array.from(document.querySelectorAll('.nav-link'));
+            const currentIndex = allTabs.indexOf(currentTab);
+
+            if (currentIndex > 0) {
+                const prevTab = allTabs[currentIndex - 1];
+
+                // Switch to the previous tab
+                currentTab.classList.remove('active');
+                currentTab.setAttribute('aria-selected', 'false');
+                document.querySelector(currentTab.getAttribute('data-bs-target')).classList.remove('show', 'active');
+
+                prevTab.classList.add('active');
+                prevTab.setAttribute('aria-selected', 'true');
+                document.querySelector(prevTab.getAttribute('data-bs-target')).classList.add('show', 'active');
+            }
+        });
+    });
+    });
+
+
+</script>

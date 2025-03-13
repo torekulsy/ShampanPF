@@ -1,0 +1,416 @@
+﻿@model SymViewModel.Common.AdminInfoDashboardVM
+
+<div id="mainDashbord">
+    <div class="row">
+        <div class="col-12 col-xs-6 col-sm-4 col-md-4">
+            <div class="flex-item">
+                <div class="flex-item-inner">
+                    <a href="#">
+                        <div class="card-front">
+                            <div class="card-top">
+                                <h2>ADMIN</h2>
+                            </div>
+                            <div class="char_canva">
+                                <canvas id="myChartPie" style="width: 400px !important; height: 200px !important;"></canvas>
+                            </div>
+
+                        </div>
+                        <div class="cardMain">
+                            <div class="card-flex">
+                                @Html.LabelFor(model => model.Present)
+                                <span>@Html.TextBoxFor(model => model.Present, new { @placeholder = "Present", @class = "form-control" })</span>
+                            </div>
+                            <div class="card-flex">
+                                @Html.LabelFor(model => model.Absent)
+                                <span>@Html.TextBoxFor(model => model.Absent, new { @placeholder = "Absent", @class = "form-control" })</span>
+                            </div>
+                            <div class="card-flex">
+                                @Html.LabelFor(model => model.Late)
+                                <span>@Html.TextBoxFor(model => model.Late, new { @placeholder = "Late", @class = "form-control" })</span>
+                            </div>
+                            <div class="card-flex">
+                                @Html.LabelFor(model => model.InMiss)
+                                <span>@Html.TextBoxFor(model => model.InMiss, new { @placeholder = "InMiss", @class = "form-control" })</span>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xs-6 col-sm-4 col-md-4">
+            <div class="flex-item">
+                <div class="flex-item-inner">
+                    <a href="#">
+                        <div class="card-front">
+                            <div class="card-top" style="background: #52becb">
+                                <h2>HRM</h2>
+                            </div>
+
+                            <div class="char_canva">
+                                <canvas id="myChartBar" style="width: 450px !important; height: 220px !important;"></canvas>
+                            </div>
+                            @*<div class="cardMain">
+                                    <div class="card-flex">
+                                        @Html.LabelFor(model => model.HrmInfoDashboardVMS.ActiveEmployee)
+                                        <span>@Html.TextBoxFor(model => model.HrmInfoDashboardVMS.ActiveEmployee, new { @placeholder = "ActiveEmployee", @class = "form-control" })</span>
+                                    </div>
+                                    <div class="card-flex">
+                                        @Html.LabelFor(model => model.HrmInfoDashboardVMS.InactiveEmployee)
+                                        <span>@Html.TextBoxFor(model => model.HrmInfoDashboardVMS.InactiveEmployee, new { @placeholder = "InactiveEmployee", @class = "form-control" })</span>
+                                    </div>
+                                    <div class="card-flex">
+                                        @Html.LabelFor(model => model.HrmInfoDashboardVMS.Male)
+                                        <span>@Html.TextBoxFor(model => model.HrmInfoDashboardVMS.Male, new { @placeholder = "Male", @class = "form-control" })</span>
+                                    </div>
+                                    <div class="card-flex">
+                                        @Html.LabelFor(model => model.HrmInfoDashboardVMS.Female)
+                                        <span>@Html.TextBoxFor(model => model.HrmInfoDashboardVMS.Female, new { @placeholder = "Female", @class = "form-control" })</span>
+                                    </div>
+                                    <div class="card-flex">
+                                        @Html.LabelFor(model => model.HrmInfoDashboardVMS.NotApplicable)
+                                        <span>@Html.TextBoxFor(model => model.HrmInfoDashboardVMS.NotApplicable, new { @placeholder = "NotApplicable", @class = "form-control" })</span>
+
+                                    </div>
+                                    <div class="card-flex">
+                                        @Html.LabelFor(model => model.HrmInfoDashboardVMS.TotalEmployee)
+                                        <span>@Html.TextBoxFor(model => model.HrmInfoDashboardVMS.TotalEmployee, new { @placeholder = "TotalEmployee", @class = "form-control" })</span>
+                                    </div>
+                                </div>*@
+
+                        </div>
+
+                    </a>
+                    <!-- /card -->
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xs-6 col-sm-4 col-md-4">
+            <div class="flex-item">
+                <div class="flex-item-inner">
+                    <a href="#">
+                        <div class="card-front">
+                            <div class="card-top" style="background: #e2d55c">
+                                <h2>PAYROLL</h2>
+
+                            </div>
+
+                            <div class="char_canva">
+                                <canvas id="myChartPiePayroll" style="width: 420px !important; height: 200px !important;"></canvas>
+                            </div>
+                            <div class="cardMain">
+                                <div class="card-flex">
+                                    @Html.LabelFor(model => model.PayrollInfoDashboardVMS.TotalPerson)
+                                    <span>@Html.TextBoxFor(model => model.PayrollInfoDashboardVMS.TotalPerson, new { @placeholder = "TotalPerson", @class = "form-control" })</span>
+                                </div>
+                                <div class="card-flex">
+                                    @Html.LabelFor(model => model.PayrollInfoDashboardVMS.GrossSalary)
+                                    <span>@Html.TextBoxFor(model => model.PayrollInfoDashboardVMS.GrossSalary, new { @placeholder = "GrossSalary", @class = "form-control" })</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </a>
+                    <!-- /card -->
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xs-6 col-sm-4 col-md-4">
+            <div class="flex-item">
+                <div class="flex-item-inner">
+                    <a href="#">
+                        <div class="card-front">
+                            <div class="card-top" style="background: #5fa6e4">
+                                <h2>Last Month TAX</h2>
+
+                            </div>
+
+                            <div class="char_canva">
+                                <canvas id="myChartBarTax" style="width: 450px !important; height: 210px !important;"></canvas>
+                            </div>
+
+                            <div class="cardMain">
+                                <div class="card-flex">
+                                    @Html.LabelFor(model => model.TaxInfoDashboardVMS.TotalPerson)
+                                    <span>@Html.TextBoxFor(model => model.TaxInfoDashboardVMS.TotalPerson, new { @placeholder = "TotalPerson", @class = "form-control" })</span>
+                                </div>
+                                <div class="card-flex">
+                                    @Html.LabelFor(model => model.TaxInfoDashboardVMS.TaxValue)
+                                    <span>@Html.TextBoxFor(model => model.TaxInfoDashboardVMS.TaxValue, new { @placeholder = "TaxValue", @class = "form-control" })</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </a>
+                    <!-- /card -->
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xs-6 col-sm-4 col-md-4">
+            <div class="flex-item">
+                <div class="flex-item-inner">
+                    <a href="#">
+                        <div class="card-front">
+                            <div class="card-top" style="background: #899d23">
+                                <h2>Last Month PF</h2>
+                            </div>
+                            <div class="char_canva">
+                                <canvas id="myChartPF" style="width: 420px !important; height: 200px !important;"></canvas>
+                            </div>
+                            <div class="cardMain">
+                                <div class="card-flex">
+                                    @Html.LabelFor(model => model.PfInfoDashboardVMS.TotalPerson)
+                                    <span>@Html.TextBoxFor(model => model.PfInfoDashboardVMS.TotalPerson, new { @placeholder = "TotalPerson", @class = "form-control" })</span>
+                                </div>
+                                <div class="card-flex">
+                                    @Html.LabelFor(model => model.PfInfoDashboardVMS.PFValue)
+                                    <span>@Html.TextBoxFor(model => model.PfInfoDashboardVMS.PFValue, new { @placeholder = "PFValue", @class = "form-control" })</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </a>
+                    <!-- /card -->
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xs-6 col-sm-4 col-md-4">
+            <div class="flex-item">
+                <div class="flex-item-inner">
+                    <a href="#">
+                        <div class="card-front">
+                            <div class="card-top" style="background: #d693d9">
+                                <h1>Last Month GF</h1>
+                            </div>
+
+                        </div>                        
+                        <div class="char_canva">
+                            <canvas id="myChartBarGF" style="width: 450px !important; height: 210px !important;"></canvas>
+                        </div>
+                        <div class="cardMain">
+                            <div class="card-flex">
+                                @Html.LabelFor(model => model.GfInfoDashboardVMS.TotalPerson)
+                                <span>@Html.TextBoxFor(model => model.GfInfoDashboardVMS.TotalPerson, new { @placeholder = "TotalPerson", @class = "form-control" })</span>
+                            </div>
+                            <div class="card-flex">
+                                @Html.LabelFor(model => model.GfInfoDashboardVMS.GFValue)
+                                <span>@Html.TextBoxFor(model => model.GfInfoDashboardVMS.GFValue, new { @placeholder = "GFValue", @class = "form-control" })</span>
+                            </div>
+                        </div>
+                        @*<div class="card-back">
+                                <h5>ERP Software</h5>
+                                <p class="desc">Sage 300 ERP offers ERP software to give you unprecedented flexibility to select from a robust suite of modules, comprehensive customization and scalability, and instant, seamless integration to a full set of end-to-end business</p>
+
+                            </div>*@
+                    </a>
+                    <!-- /card -->
+                </div>
+                </a>
+                <!-- /card -->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var backgroundColor = ["#2ecc71", "#3498db", "#95a5a6", "#e74c3c"];
+
+        setTimeout(function () { loadsPie() }, 0);
+        setTimeout(function () { loadsbar() }, 0);
+        setTimeout(function () { loadsPiePayroll() }, 0);
+        setTimeout(function () { loadsbarTax() }, 0);
+        setTimeout(function () { loadsPiePF() }, 0);
+        setTimeout(function () { loadsbarGF() }, 0);
+
+        function loadsPie() {
+            var labels = [];
+            var datas = [];
+            $.ajax({
+                url: "@Url.Action("AdminInfo", "Home", new { area = "Common" })",
+                type: 'GET',
+                beforeSend: function () { $(".loading").show(); },
+                complete: function () { $(".loading").fadeOut(200).hide("slow") },
+                success: function (data) {
+
+                    var labels = ["Present", "Absent", "Late", "InMiss"];
+                    var datas = [data.Present, data.Absent, data.Late, data.InMiss];
+
+                    var ctx = document.getElementById("myChartPie").getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                backgroundColor: backgroundColor,
+                                data: datas
+                            }],
+                        }
+                    });
+                },
+            });
+        }
+        function loadsbar() {
+            $.ajax({
+                url: "@Url.Action("HRMInfo", "Home", new { area = "Common" })",
+                type: 'GET',
+                beforeSend: function () {
+                    $(".loading").show();
+                },
+                complete: function () {
+                    $(".loading").fadeOut(200).hide("slow");
+                },
+                success: function (data) {
+                    console.log(data); // Debug the returned data
+                    var labels = ["TotalEmployee", "InactiveEmployee", "NotApplicable", "Male", "Female"];
+                    var datas = [data.TotalEmployee, data.InactiveEmployee, data.NotApplicable, data.Male, data.Female];
+
+                    var ctx = document.getElementById("myChartBar").getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: "",
+                                backgroundColor: backgroundColor,
+                                data: datas
+                            }]
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error: " + error);
+                }
+            });
+        }
+
+        function loadsPiePayroll() {
+            var labels = [];
+            var datas = [];
+            $.ajax({
+                url: "@Url.Action("PayrollInfo", "Home", new { area = "Common" })",
+                type: 'GET',
+                beforeSend: function () { $(".loading").show(); },
+                complete: function () { $(".loading").fadeOut(200).hide("slow") },
+                success: function (data) {
+
+                    var labels = ["TotalPerson", "GrossSalary"];
+                    var datas = [data.TotalPerson, data.GrossSalary];
+
+                    var ctx = document.getElementById("myChartPiePayroll").getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                backgroundColor: backgroundColor,
+                                data: datas
+                            }],
+                        }
+                    });
+                },
+            });
+        }
+
+        function loadsbarTax() {
+            $.ajax({
+                url: "@Url.Action("TaxInfo", "Home", new { area = "Common" })",
+                type: 'GET',
+                beforeSend: function () {
+                    $(".loading").show();
+                },
+                complete: function () {
+                    $(".loading").fadeOut(200).hide("slow");
+                },
+                success: function (data) {
+                    console.log(data); // Debug the returned data
+                    var labels = ["TotalPerson", "TaxValue"];
+                    var datas = [data.TotalPerson, data.TaxValue];
+
+                    var ctx = document.getElementById("myChartBarTax").getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: "",
+                                backgroundColor: backgroundColor,
+                                data: datas
+                            }]
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error: " + error);
+                }
+            });
+        }
+
+        function loadsPiePF() {
+            var labels = [];
+            var datas = [];
+            $.ajax({
+                url: "@Url.Action("PFInfo", "Home", new { area = "Common" })",
+                type: 'GET',
+                beforeSend: function () { $(".loading").show(); },
+                complete: function () { $(".loading").fadeOut(200).hide("slow") },
+                success: function (data) {
+
+                    var labels = ["TotalPerson", "PFValue"];
+                    var datas = [data.TotalPerson, data.PFValue];
+
+                    var ctx = document.getElementById("myChartPF").getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                backgroundColor: backgroundColor,
+                                data: datas
+                            }],
+                        }
+                    });
+                },
+            });
+        }
+
+        function loadsbarGF() {
+            $.ajax({
+                url: "@Url.Action("GFInfo", "Home", new { area = "Common" })",
+                type: 'GET',
+            beforeSend: function () {
+                $(".loading").show();
+            },
+            complete: function () {
+                $(".loading").fadeOut(200).hide("slow");
+            },
+            success: function (data) {
+                console.log(data); // Debug the returned data
+                var labels = ["TotalPerson", "GFValue"];
+                var datas = [data.TotalPerson, data.GFValue];
+
+                var ctx = document.getElementById("myChartBarGF").getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "",
+                            backgroundColor: backgroundColor,
+                            data: datas
+                        }]
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error: " + error);
+            }
+        });
+    }
+
+
+    });
+
+</script>

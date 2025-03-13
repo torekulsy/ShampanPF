@@ -1,0 +1,174 @@
+﻿@using UIHelper.MVC
+@{
+    ViewBag.Title = "heightmarks";
+}
+
+<div class="thinbox">
+ 
+<table id="myDataTable" class="display">
+    <thead>
+        <tr>
+            <th class="center">
+                <input type="checkbox" class="chkAll" />Select All
+            </th>
+            <th>Department</th>
+            <th>EmployeeCode</th>
+            <th>EmpName</th>
+            <th>TotalMarks</th>
+            <th>NOQ</th>
+        </tr>
+        <tr>
+            <th class="center">Actions</th>
+            <th>Department</th>
+            <th>EmployeeCode</th>
+            <th>EmpName</th>
+            <th>TotalMarks</th>
+            <th>NOQ</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="editor-label">
+               
+            </div>
+            <div class="editor-field">
+                @Html.TextBox("IncrementDate", "", new { @placeholder = "Increment Date", @class = "required incDate customDatePicker form-control" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+              
+            </div>
+            <div class="editor-field">
+                <button type="button" title="Add New Process" data-url="/Common/AppraisalMarks/Process" id="" class="btnProcess sym-btn-add ">&nbsp;Process</button>
+            </div>
+        </div>
+    
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        debugger;
+        // Initialize DataTable
+        var myDataTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/AppraisalMarks/GetAppraisalHeightMarks",
+            "bProcessing": true,
+            "aLengthMenu": [[10, 25, 50], [10, 25, 50]],
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                {
+                    "sName": "Id",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "sWidth": "12%",
+                    "sClass": "center",
+                    "fnRender": function (oObj) {
+                        return '<input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[2] + '">';
+                    }
+                },
+                { "sName": "Department", "sWidth": "20%" },
+                { "sName": "Employee Code", "sWidth": "20%" },
+                { "sName": "Employee Name", "sWidth": "25%" },
+                { "sName": "Total Marks", "sWidth": "15%" },
+                { "sName": "Total Marks", "sWidth": "15%" }
+            ]
+        });
+
+        // Column Filters
+        myDataTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [
+                { type: "checkbox", "sClass": "chkAll" }, // Checkbox column
+                { type: "text" },  // Department
+                { type: "text" },  // Employee Code
+                { type: "text" },  // Employee Name
+                { type: "text" },  // Total Marks
+                { type: "text" }   // NOQ
+            ]
+        });
+
+       
+
+        // Department Filter - Reload Table
+        $('#departmentFilter').change(function () {
+            myDataTable.fnDraw();
+        });
+
+    });
+ 
+</script>
+
+<script>
+    $(document).ready(function () {
+        $(".btnProcess").click(function () {
+            debugger;
+            var selectedData = [];
+            var IncrementDate = $("#IncrementDate").val();
+
+            $('#myDataTable tbody input[type="checkbox"]:checked').each(function () {
+                var row = $(this).closest('tr'); // Get the closest row
+                var employeeCode = row.find('td:eq(2)').text().trim(); // Get Employee Code (index 2)
+                var totalMarks = row.find('td:eq(4)').text().trim(); // Get Total Marks (index 4)
+                var NOQ = row.find('td:eq(5)').text().trim(); // Get NOQ (index 5)
+
+                selectedData.push({
+                    EmployeeCode: employeeCode,
+                    TotalMarks: totalMarks,
+                    NOQ: NOQ,
+                    IncrementDate:IncrementDate
+                });
+            });
+
+            if (IncrementDate==="") {
+
+                alert("Please select Increment Date.");
+                return;
+            }
+          
+            if (selectedData.length === 0) {
+                alert("Please select at least one employee.");
+                return;
+            }
+
+            // Send the selected data via AJAX
+            $.ajax({
+                url: '/Common/AppraisalMarks/Process',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ Employees: selectedData }),
+                beforeSend: function () {
+                    $(".loading").show();
+                },
+                success: function (response) {
+                    alert("Processing completed successfully!");
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    alert("Error processing data.");
+                    console.error(error);
+                },
+                complete: function () {
+                    $(".loading").fadeOut(200).hide("slow");
+                }
+            });
+        });
+    });
+
+    // "Select All" checkbox functionality
+    $(".chkAll").click(function () {
+        var isChecked = $(this).prop("checked");
+        $('#myDataTable tbody input[type="checkbox"]').each(function () {
+            $(this).prop("checked", isChecked);
+        });
+    });
+
+    // Row checkbox click handler
+    window.CheckRow = function (checkbox) {
+        var isChecked = $(checkbox).prop("checked");
+        // Optionally, handle individual row logic
+    };
+</script>

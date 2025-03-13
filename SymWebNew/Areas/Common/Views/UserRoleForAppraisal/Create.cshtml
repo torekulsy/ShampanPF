@@ -1,0 +1,153 @@
+﻿@model SymViewModel.Common.AppraisalQuestionSetVM
+
+@using UIHelper.MVC
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm("CreateEdit", "UserRoleForAppraisal", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmAppraisalUser" }))
+{
+    <div class="row">
+        <div class="col-md-2">
+            
+        </div>
+        <div class="col-md-4">
+            <h2>User Role for Appraisal</h2>
+        </div>
+    </div>
+     @Html.HiddenFor(model => model.Id)
+    
+    <button type="button" name="btnName" value="Save" title="Save Data" onclick="pageSubmit('frmAppraisalUser')" class="sym-btn-save">&nbsp;Save</button>
+        
+    <div class="thinbox">
+        <div class="formDesign" id="detail">        
+            <div class="row">
+                <div class="col-md-6">
+                    .
+                </div>
+                <div class="col-md-6">
+                    <div class="col-md-1">
+                        <div class="editor-label" style=" text-align: center;">
+                            @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsOwn)
+                        </div>
+                        <div class="editor-field">
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="editor-label" style=" text-align: center;">
+                            @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsTeamLead)
+                        </div>
+                        <div class="editor-field">
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="editor-label" style=" text-align: center;">
+                            @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsHR)
+                        </div>
+                        <div class="editor-field">
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="editor-label" style=" text-align: center;">
+                            @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsCOO)
+                        </div>
+                        <div class="editor-field">
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="editor-label" style=" text-align: center;">
+                            @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsMD)
+                        </div>
+                        <div class="editor-field">
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-1">
+                        <div class="editor-label" style=" text-align: center;">
+                            @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsP1)
+                        </div>
+                        <div class="editor-field">
+
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="editor-label" style=" text-align: center;">
+                            @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsP2)
+                        </div>
+                        <div class="editor-field">
+
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="editor-label" style=" text-align: center;">
+                            @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsP3)
+                        </div>
+                        <div class="editor-field">
+
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="editor-label" style=" text-align: center;">
+                            @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsP4)
+                        </div>
+                        <div class="editor-field">
+
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="editor-label" style=" text-align: center;">
+                            @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsP5)
+                        </div>
+                        <div class="editor-field">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="editorItemRows4">
+                @if (Model.AppraisalQuestionSetDetaiVMs != null)
+                {
+                    foreach (var item in Model.AppraisalQuestionSetDetaiVMs)
+                    {
+                        Html.RenderPartial("~/Areas/Common/Views/UserRoleForAppraisal/_DetailsView.cshtml", item);
+                    }
+                }
+
+            </div>
+            <hr style="margin-top: 10px!important; margin-bottom: 10px!important;" />
+
+        </div>
+    </div>
+}
+
+<script>
+
+    function pageSubmit() {
+        debugger;
+        var model = @Html.Raw(Json.Encode(Model))
+        alert(model)
+        $.ajax({
+            url: "@Url.Action("CreateEdit", "UserRoleForAppraisal", new { area = "Common" })",
+            type: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify(model)
+    })
+    .done(function(data){
+        console.log(data);
+    });
+
+    }
+
+</script>

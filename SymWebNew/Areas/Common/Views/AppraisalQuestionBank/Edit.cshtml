@@ -1,0 +1,82 @@
+﻿@model SymViewModel.Common.AppraisalQuestionBankVM
+@using UIHelper.MVC
+@{
+    ViewBag.Title = "Edit";
+}
+@using (Html.BeginForm("Edit", "AppraisalQuestionBank", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmAppraisal" }))
+{    @Html.ValidationSummary(true)
+
+    <div class="headrow">
+        <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+        <label class="pull-right"> Appraisal > Question</label>
+        @Html.HiddenFor(model => model.Id)
+    </div>
+
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Appraisal Question</p>
+        </div>
+        <div class="branch">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.DepartmentId)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(m => m.DepartmentId, "/Config/DropDown/Department", new { @class = " cDepartmentId required form-control " })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.CategoryId)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(m => m.CategoryId, "/Config/DropDown/AppraisalCategory", new { @class = " cCategoryId required form-control " })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Question)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Question, new { @placeholder = "Question", @class = "required form-control" })
+                        @Html.ValidationMessageFor(model => model.Question)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Mark)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.Mark, new { @placeholder = "Mark", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.Mark)
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Remark)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.Remark, new { @placeholder = "Remark", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.Remark)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="headrow">
+        <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Update</button>
+    </div>
+}
+
+<script>
+    $(function () {
+        valiDation("frmAppraisal");
+    });
+</script>

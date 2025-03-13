@@ -1,0 +1,74 @@
+﻿@model IEnumerable<SymViewModel.Common.EducationVM>
+@using UIHelper.MVC
+@{
+    ViewBag.Title = "_educationTable";
+}
+<style>
+    .details {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+        display: grid;
+        gap: 2px;
+        margin: 5px 0;
+    }
+
+    .qualifil input {
+        font-size: 14px;
+        font-weight: 400;
+    }
+</style>
+<div class="detailpq">
+    @using (Html.BeginCollectionItem("EducationVM"))
+    {
+        <section class="career-objectiveemp">
+            <h2>Educational Qualification</h2>
+            <table class="career-table">
+                <thead>
+                    <tr>
+                        <th>Actions</th>
+                        <th>ExamTitle</th>
+                        <th>Major</th>
+                        <th>Institute</th>
+                        <th>PassYear</th>
+                        <th>Duration</th>
+                        <th>Achievment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="@Url.Action("DeleteEducation", "JobCircular", new { Id = item.Id, ApplicantId = item.ApplicantId })">
+                                        <span class="sym-btn-remove-row"></span>
+                                    </a>
+                                </td>
+                                <td>@Html.DisplayFor(m => item.ExamTitle)</td>
+                                <td>@Html.DisplayFor(m => item.Major)</td>
+                                <td>@Html.DisplayFor(m => item.Institute)</td>
+                                <td>@Html.DisplayFor(m => item.PassYear)</td>
+                                <td>@Html.DisplayFor(m => item.Duration)</td>
+                                <td>@Html.DisplayFor(m => item.Achievment)</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" style="text-align: center;">No records found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
+    }
+</div>
+<script>
+    $(function () {
+
+    });
+    $(document).ready(function () {
+
+    });
+</script>

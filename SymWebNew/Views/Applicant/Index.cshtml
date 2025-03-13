@@ -1,0 +1,232 @@
+﻿@model SymViewModel.Common.ApplicantInfoVM
+@{
+    ViewBag.Title = "Create";
+}
+@using UIHelper.MVC
+
+
+<style>
+    ul li{
+        list-style: none
+    }
+    .aplicant {
+        /*background-image: url('/path/to/image.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;*/
+        background-color:white;
+    }
+
+    .editor-label {
+        font-size: 10px;
+        font-family: Arial;
+    }
+
+    .editor-field {
+        font-size: 10px;
+        font-family: Arial;
+    }
+
+    .marb {
+        margin-bottom: 15px;
+    }
+
+    .p {
+        font-size: 10px;
+        font-family: Arial;
+    }
+
+    .hsize {
+        font-size: 12px;
+        font-family: Arial;
+    }
+    .formregbtn{
+        display: flex;
+        justify-content: space-between;
+        margin-top: 5px
+    }
+</style>
+
+@using (Html.BeginForm("CreateEdit", "Applicant", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmApplicantInfo" }))
+{
+    @Html.HiddenFor(model => model.Id)
+    <div class="thinbox">
+        <div class="">
+            <div class="row">                
+                <div class="col-sm-4 col-sm-offset-4 aplicant">
+                    <div class="regisContent">
+                        <h3>Apply Here to @Model.CompanyName.</h3>
+                        <p>Please fill-in the form with as much accurate information as possible to process your application faster. Most of the fields are optional. </p>
+                        <div class="regiscont">
+                            <p>If you have any queries, feel free to contact us via </p>
+                            <ul>
+                                <li>Mobile: +@Model.Phone</li>
+                                <li>Email: @Model.Mail</li>
+                            </ul>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="marb">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.ApplicantName)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.ApplicantName, new { @class = "required form-control " })
+                        </div>
+                    </div>
+                    @*<div class="marb">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Position)
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.Position, "/Config/DropDown/Position", new { @class = "required form-control " })
+                </div>
+            </div>*@
+                    <div class="marb">
+                        <div class="editor-label">
+                            <label for="Designation">Select Position:</label>
+                        </div>
+                        <div class="editor-field">
+                            <select id="Designation" name="Designation" class="required form-control">
+                                <option value="0" disabled selected>Select a position</option>
+                                <option value=".NET Developer">.NET Developer</option>
+                                <option value="PHP Developer">PHP Developer</option>
+                                <option value="Frontend Develope">Frontend Developer</option>
+                                <option value="Apps Developer">Apps Developer</option>
+                                <option value="Marketing Executive">Marketing Executive</option>
+                                <option value="Accountant">Accountant</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="marb">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.PresentAddress)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextAreaFor(model => model.PresentAddress, new { @class = "required form-control " })
+                        </div>
+                    </div>
+                    <div class="marb">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.PermanentAddress)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextAreaFor(model => model.PermanentAddress, new { @class = "required form-control " })
+                        </div>
+                    </div>
+                    <div class="marb">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.ContactNo)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.ContactNo, new { @class = "required form-control " })
+                        </div>
+                    </div>
+                    <div class="marb">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Email)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control " })
+                        </div>
+                    </div>
+                    <div class="marb">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.LastEducation)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.LastEducation, new { @class = "form-control " })
+                        </div>
+                    </div>
+                    <div class="marb">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.RecentCompany)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.RecentCompany, new { @class = "form-control " })
+                        </div>
+                    </div>
+                    <div class="marb">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Gender)
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.Gender, "/Config/DropDown/Gender", new { @class = "required form-control " })
+                        </div>
+                    </div>
+                    <div class="marb">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Experience)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Experience, new { @class = " required form-control" })
+                            @Html.ValidationMessageFor(model => model.Experience)
+                        </div>
+                    </div>
+                    <div class="marb">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.NoticePeriod)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.NoticePeriod, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.NoticePeriod)
+                        </div>
+                    </div>
+                    <div class="marb">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Studying)
+                        </div>
+                        <div class="editor-field">
+                            <select id="Studying" name="Studying" class="required form-control">
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>                              
+                            </select>
+                        </div>
+                    </div>
+                    <div class="marb">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.ExpectedSalary)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.ExpectedSalary, new { @class = "required form-control" })
+                            @Html.ValidationMessageFor(model => model.ExpectedSalary)
+                        </div>
+                    </div>
+                    <div class="marb">
+                        <label for="AttachmentFile">Upload CV</label>
+                        <input type="file" name="AttachmentFile" id="AttachmentFile" style="width: 200px; border-color: orange;" class="readOnlyColor required" title="This field is readonly">
+                    </div>
+                    <div class="marb">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.CoverLetter)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextAreaFor(model => model.CoverLetter, new { @class = "form-control required" })
+                            @Html.ValidationMessageFor(model => model.CoverLetter)
+                        </div>
+                    </div>
+                    <div class="formregbtn">
+                        <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Submit</button>
+                        <button type="button" title="Cancel Data" id="cancel" class=" btncancel sym-btn-cancel">&nbsp;Clear</button>
+                    </div>
+                </div>                
+            </div>
+
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+        valiDation("frmApplicantInfo");
+    });
+
+    $("#cancel").on('click', function () {
+        $(".thinbox :input").val("");
+    });
+
+</script>
+
+
+

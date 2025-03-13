@@ -1,0 +1,295 @@
+﻿@model SymViewModel.Common.AppraisalMarksVM
+
+@using UIHelper.MVC
+@{
+    ViewBag.Title = "Create";
+}
+@using (Html.BeginForm("CreateEdit", "AppraisalMarks", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmAppraisalMarks" }))
+{
+            @Html.HiddenFor(model => model.Id)
+    
+    @Html.HiddenFor(model => model.EvaluationFor)
+    @Html.HiddenFor(model => model.EmployeeName)
+    @Html.HiddenFor(model => model.AssignToName)
+    @Html.HiddenFor(model => model.DepartmentName)
+    
+    <button type="button" name="btnName" value="Save" title="Save Data" onclick="pageSubmit('frmAppraisalMarks')" class="sym-btn-save">&nbsp;Save</button>
+    <button type="button" title="Go To Index" data-url="/Common/AppraisalMarks" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+
+        <div class="thinbox">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.AssignToName)
+                    </div>
+                    <div style="font-size:14px" class="editor-field">
+                        @Html.SimpleDropDownFor(m => m.AssignToId, "/Config/DropDown/AssignTo", new { @class = " cAssignToId required form-control " })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.EvaluationFor)
+                    </div>
+                    <div style="font-size:14px" class="editor-field">
+                        @Html.SimpleDropDownFor(m => m.EvaluationForId, "/Config/DropDown/EvaluationFor", new { @class = " cEvaluationFor required form-control " })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.DepartmentName)
+                    </div>
+                    <div style="font-size:14px" class="editor-field">
+                        @Html.SimpleDropDownFor(m => m.DepartmentId, "/Config/DropDown/Department", new { @class = " cDepartmentId required form-control " })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.EmployeeName)
+                    </div>
+                    <div style="font-size:14px" class="editor-field">
+                        @Html.SimpleDropDownFor(m => m.EmployeeCode, "/Config/DropDown/EmployeeCodeName", new { @class = " cEmployeeCode required form-control " })
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        <label>Set Marks to All</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.MarksToAll, new { @placeholder = "Marks To All", @class = " form-control" })
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="thinbox">
+            <div class="formDesign" id="detail">
+                <hr />
+                <div id="editorItemRows4">
+                    @if (Model.AppraisalMarksDetailVMs != null)
+                {
+                    foreach (var item in Model.AppraisalMarksDetailVMs)
+                    {
+                        Html.RenderPartial("~/Areas/Common/Views/AppraisalMarks/_details.cshtml", item);
+                    }
+                }
+
+                </div>
+                <hr style="margin-top: 10px!important; margin-bottom: 10px!important;" />
+
+            </div>
+        </div>
+}
+
+<button type="button" data-url="/Common/AppraisalMarks/PrintSheet" title="Click to see the Report" id="" class=" sendRpt sym-btn-report">&nbsp;Print</button>
+
+
+<script>
+    $(document).ready(function () {
+        
+        $('.cDepartmentId').change(function () {        
+            const departmentId = $(this).val();
+            if (departmentId) {              
+                $.ajax({
+                    url: '/Config/DropDown/EmployeeByDepartment',
+                    type: 'GET',
+                    data: { departmentId: departmentId },
+                    success: function (data) {
+                        const employeeDropdown = $('.cEmployeeCode');
+                        employeeDropdown.empty(); 
+                        employeeDropdown.append($('<option>', {
+                            value: '',
+                            text: 'Select Employee'
+                        }));                   
+                        data.forEach(function (employee) {
+                            employeeDropdown.append($('<option>', {
+                                value: employee.Value,
+                                text: employee.Text
+                            }));
+                        });
+                    },
+                    error: function (xhr) {
+                        console.error('Error fetching employees:', xhr);
+                    }
+                });
+            }
+        });
+    });
+
+    $('#MarksToAll').change(function () {
+        debugger;
+        var MarksToAll = parseFloat($("#MarksToAll").val()) || 0;
+
+        if (MarksToAll > 10) {
+            alert("Marks could not be greater than 10");
+            $("#MarksToAll").val(''); // Clear the input field
+            return;
+        }
+
+        $(".chk").each(function () {
+            $(this).val(MarksToAll);
+        });
+    });
+
+    $('.sendRpt').click(function () {       
+
+        var url = $(this).attr("data-url");              
+        $form = $('#frmAppraisalMarks');
+
+        $form.attr("action", url);
+        $form.attr("target", "_blank");
+        $form.submit();
+
+    });
+
+
+</script>
+
+<script>
+
+        function pageSubmit() {
+            debugger;
+            var model = @Html.Raw(Json.Encode(Model))
+            alert(model)
+            $.ajax({
+                url: "@Url.Action("CreateEdit", "AppraisalMarks", new { area = "Common" })",
+                type: "POST",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify(model)
+            })
+        .done(function(data){
+            console.log(data);
+        });
+
+        }
+
+</script>
+
+<script>
+    $(document).on("click", ".RemoveRow", function () {
+        RemoveProduct(this);
+    });
+
+    // Function to remove a row
+    function RemoveProduct(sender) {
+        Ask("Are you sure to delete the item!", function () {
+            $(sender).closest("div.row").remove();
+            ShowHide();
+        });
+    }
+
+    function ShowHide() {
+        var accName = $('.dQuestionName').val();
+        if (!accName) {
+            $('#detail').hide();
+        } else {
+            $('#detail').show();
+        }
+    }
+
+    $(document).ready(function () {
+        $('#detail').show();
+
+        var id = $("#Id").val();
+        if (parseInt(id) > 0)
+        {
+            setTimeout(function () {
+                SearchingbyEmp();
+            }, 800);
+        }        
+    });
+
+    $(".cAssignToId").change(function () {
+        var assignToName = $(this).find("option:selected").text();
+        $("input[name='AssignToName']").val(assignToName); 
+    });
+
+    $(".cDepartmentId").change(function () {
+        var departmentName = $(this).find("option:selected").text();
+        $("input[name='DepartmentName']").val(departmentName); 
+    });
+
+    $(".cEvaluationFor").change(function () {
+        var evaluationFor = $(this).find("option:selected").text();
+        $("input[name='EvaluationFor']").val(evaluationFor); 
+    });
+
+    $(".cEmployeeCode").change(function () {
+        var employeeName = $(this).find("option:selected").text();
+        $("input[name='EmployeeName']").val(employeeName); 
+    });
+
+    $(".cEmployeeCode").change(function () {
+        debugger;
+        var did = $(this).val(); 
+
+        SearchingbyEmp();
+    });
+    function SearchingbyEmp() {
+        debugger;
+        var DepartmentId = $(".cDepartmentId").val();
+        var EmployeeCode = $(".cEmployeeCode").val();
+        var EvaluationFor = $(".cEvaluationFor").val(); 
+        var AssignFrom = $(".cAssignToId").find("option:selected").text();
+
+        var url = '/Common/AppraisalMarks/SelectQuestionByEmployee?DepartmentId=' + DepartmentId + '&EmployeeCode=' + EmployeeCode + '&EvaluationFor=' + EvaluationFor + '&AssignFrom=' + AssignFrom;
+
+        $.get(url, function (response) {
+            debugger;
+            $('#detail').html(response); 
+            $('#detail').show();
+
+            var assignToText = $(".cAssignToId option:selected").text();
+            if (assignToText == "HR") {
+                $(".dIsHR").show();
+
+                $(".dIsOwn").hide();
+                $(".dIsTeamLead").hide(); 
+                $(".dIsCOO").hide();
+                $(".dIsMD").hide();
+                $(".dIsP1").hide();
+                $(".dIsP2").hide();
+                $(".dIsP3").hide();
+                $(".dIsP4").hide();
+                $(".dIsP5").hide();
+            }
+            if (assignToText == "COO") {
+                $(".dIsCOO").show();
+                $(".dIsHR").hide();
+                $(".dIsOwn").hide();
+                $(".dIsTeamLead").hide();               
+                $(".dIsMD").hide();
+                $(".dIsP1").hide();
+                $(".dIsP2").hide();
+                $(".dIsP3").hide();
+                $(".dIsP4").hide();
+                $(".dIsP5").hide();
+            }
+            if (assignToText == "MD") {
+                $(".dIsMD").show();
+
+                $(".dIsCOO").hide();
+                $(".dIsHR").hide();
+                $(".dIsOwn").hide();
+                $(".dIsTeamLead").hide();                
+                $(".dIsP1").hide();
+                $(".dIsP2").hide();
+                $(".dIsP3").hide();
+                $(".dIsP4").hide();
+                $(".dIsP5").hide();
+            }            
+
+            valiDation("frmAppraisalMarks"); 
+        }).fail(function () {
+            debugger;
+            ShowResult("Fail", "Failed to retrieve data. Please try again.");
+        });       
+    }
+
+</script>

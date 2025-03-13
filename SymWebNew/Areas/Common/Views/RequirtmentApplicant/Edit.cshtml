@@ -1,0 +1,364 @@
+﻿@model SymViewModel.Common.ApplicantInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    string CompanyName = System.Configuration.ConfigurationManager.AppSettings["CompanyName"];
+}
+@{
+    ViewBag.Title = "Edit";
+    ViewBag.Location = "Edit";
+}
+@using (Html.BeginForm("CreateEdit", "RequirtmentApplicant", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmApplicantInfoEdit" }))
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Jobid)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p> Update Applicant Information</p>
+        </div>
+
+        <div class="aplicant">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.ApplicantName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.ApplicantName, new { @placeholder = "ApplicantName", @class = "required form-control " })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Designation)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Designation, new { @placeholder = "Designation", @class = "required form-control " })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.PresentAddress)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.PresentAddress, new { @placeholder = "PresentAddress", @class = "required form-control " })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.PermanentAddress)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.PermanentAddress, new { @placeholder = "PermanentAddress", @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.ContactNo)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.ContactNo, new { @placeholder = "ContactNo", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ContactNo)
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Email)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Email, new { @placeholder = "Email", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.LastEducation)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.LastEducation, new { @placeholder = "LastEducation", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.LastEducation)
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Gender)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.Gender, "/Config/DropDown/Gender", new { @placeholder = "Gender", @class = "required form-control " })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Experience)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Experience, new { @placeholder = "Experience", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Experience)
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.NoticePeriod)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.NoticePeriod, new { @placeholder = "NoticePeriod", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.NoticePeriod)
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Studying)
+                    </div>
+                    <div class="editor-field">
+                        <select id="Studying" name="Studying" class="required form-control">
+                            <option value="No">No</option>
+                            <option value="Yes">Yes</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.ExpectedSalary)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.ExpectedSalary, new { @placeholder = "ExpectedSalary", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ExpectedSalary)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.EmploymentHistory)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.EmploymentHistory, new { @placeholder = "EmploymentHistory", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EmploymentHistory)
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.AcademicQualification)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.AcademicQualification, new { @placeholder = "AcademicQualification", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.AcademicQualification)
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.ProfessionalQualification)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.ProfessionalQualification, new { @placeholder = "ProfessionalQualification", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ProfessionalQualification)
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.LookingFor)
+                    </div>
+                    <div class="editor-field">
+                        <select id="LookingFor" name="LookingFor" class="required form-control dropdownnew">
+                            <option value="0" disabled selected>Select Looking For</option>
+                            <option value="Mid Level">Mid Level</option>
+                            <option value="High Level">High Level</option>
+                            <option value="Low Level">Low Level</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.AvailableFor)
+                    </div>
+                    <div class="editor-field">
+                        <select id="AvailableFor" name="AvailableFor" class="required form-control dropdownnew">
+                            <option value="0" disabled selected>Select Available For</option>
+                            <option value="Full Time">Full Time</option>
+                            <option value="Part time">Part time</option>
+                            <option value="Contactual">Contactual</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.FatherName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.FatherName, new { @placeholder = "FatherName", @class = "required form-control " })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.MotherName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.MotherName, new { @placeholder = "MotherName", @class = "required form-control " })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                        @Html.LabelFor(model => model.DateOfBirth)                 
+                    <label>
+                        @Html.TextBoxFor(model => model.DateOfBirth, new { @class = "required customDatePicker", @required = "" })
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.MaritalStatus)
+                    </div>
+                    <div class="editor-field">
+                        <select id="MaritalStatus" name="MaritalStatus" class="required form-control dropdownnew">
+                            <option value="0" disabled selected>Select Marital Status</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Divorced">Divorced</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Nationality)
+                    </div>
+                    <div class="editor-field">
+                        <select id="Nationality" name="Nationality" class="required form-control dropdownnew">
+                            <option value="Bangladeshi">Bangladeshi</option>
+                            <option value="Abroad">Abroad</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Religion)
+                    </div>
+                    <div class="editor-field">
+                        <select id="Religion" name="Religion" class="required form-control dropdownnew">
+                            <option value="Islam">Islam</option>
+                            <option value="Hindu">Hindu</option>
+                            <option value="Crystan">Christian</option>
+                            <option value="Buddha">Buddha</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.BloodGroup)
+                    </div>
+                    <div class="editor-field">
+                        <select id="BloodGroup" name="BloodGroup" class="required form-control dropdownnew">
+                            <option value="0" disabled selected>Select Blood Group</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="O+">O+</option>                                                   
+                            <option value="O-">O-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.CoverLetter)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.CoverLetter, new { @placeholder = "CoverLetter", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CoverLetter)
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="AttachmentFile">Update CV</label>
+                    <input type="file" name="AttachmentFile" id="AttachmentFile" style="width: 200px; border-color: orange;" class="readOnlyColor" title="This field is readonly">
+                </div>
+            </div>
+
+        </div>
+        <div class="row hidden">
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.InterviewDate)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.InterviewDate, new { @placeholder = "Interview Date", @class = " customDatePicker form-control PunchDate" })
+                    @Html.ValidationMessageFor(model => model.InterviewDate)
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.InterviewTime)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.InterviewTime, new { @placeholder = "Interview Time", @class = "customTimePicker form-control" })
+                    @Html.ValidationMessageFor(model => model.InterviewTime)
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.InterviewWrittenMarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.InterviewWrittenMarks, new { @placeholder = "Interview Written Marks", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.InterviewVivaMarks)
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.InterviewVivaMarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.InterviewVivaMarks, new { @placeholder = "Interview Viva Marks", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.InterviewVivaMarks)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">     
+    </div>
+    <br />
+    <p>
+        <button type="submit" title="Save Data" class="sym-btn-update">&nbsp;Update</button>
+    </p>
+}
+<script>
+    $(function () {
+        valiDation("frmApplicantInfoEdit");
+
+        $(function () {
+            InitDatePickers();
+            InitDateTimePickers();
+            $('.customTimePicker').ptTimeSelect();
+            fromWriteColor("attendance");
+            valiDation("frmAttendanceLog");
+            fnReadOnly("tPolicy");
+            fromReadColor("tPolicy");
+            timepolicycheck();
+        });
+
+    });
+</script>

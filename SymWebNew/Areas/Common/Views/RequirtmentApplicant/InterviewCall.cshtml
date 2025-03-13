@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .sorting {
+        background-image: none;
+    }
+</style>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Interview Date Setup</p>
+    </div>
+
+    <br />
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                  Actions
+                </th>
+                <th>ApplicantName</th>
+                <th>Designation</th>
+                <th>ContactNo</th>
+                <th>Experience</th>
+                <th>ExpectedSalary</th>
+                <th>Interview Date</th>              
+                <th>Is Shortlisted</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <br />
+</div>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Common/RequirtmentApplicant/_InterviewCallIndex",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "10%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    console.log(oObj.aData[0]);
+                                    return ' <a title="Click on for Edit" style="text-decoration:none;"   href=\"/Common/RequirtmentApplicant/EditInterviewCall/' + oObj.aData[0] + '\" class="sym-btn-edit-row"></a>'                                    
+                                    ;
+                                }
+                            }
+                            , { "sName": "ApplicantName", "sWidth": "10%" }
+                            , { "sName": "Designation", "sWidth": "10%" }
+                            , { "sName": "ContactNo", "sWidth": "10%" }
+                            , { "sName": "Experience", "sWidth": "5%" }
+                            , { "sName": "ExpectedSalary", "sWidth": "5%" }                           
+                            , { "sName": "InterviewDate", "sWidth": "10%" }                           
+                            , { "sName": "IsShorlisted", "sWidth": "5%" }
+                          
+            ]
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }     
+                       , { type: "text" }
+
+            ]
+        });
+    });
+</script>

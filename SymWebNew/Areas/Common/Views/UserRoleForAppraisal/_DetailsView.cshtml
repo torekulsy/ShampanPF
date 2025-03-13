@@ -1,0 +1,82 @@
+﻿@model SymViewModel.Common.AppraisalQuestionSetDetailVM
+@using UIHelper.MVC
+
+
+<div class="row">
+    @using (Html.BeginCollectionItem("AppraisalQuestionSetDetaiVMs"))
+    {
+        <div class="row">
+            <div class="col-md-1" style="margin-top: 10px;">
+
+                @Html.HiddenFor(model => model.Id)
+
+            </div>
+            <div class="col-md-2">
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.FullName, new { @class = "dFullName form-control", @readonly = "readonly" })
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.Logid, new { @class = "dLogid form-control", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(m => m.IsOwn, new { @class = "cIsOwn form-control" })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(m => m.IsTeamLead, new { @class = "cIsTeamLead form-control" })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(m => m.IsHR, new { @class = "cIsHR form-control" })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(m => m.IsCOO, new { @class = "cIsCOO form-control" })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(m => m.IsMD, new { @class = "cIsMD form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(m => m.IsP1, new { @class = "cIsP1 form-control" })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(m => m.IsP2, new { @class = "cIsP2 form-control" })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(m => m.IsP3, new { @class = "cIsP3 form-control" })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(m => m.IsP4, new { @class = "cIsP1 form-control" })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(m => m.IsP5, new { @class = "cIsP5 form-control" })
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    }
+</div>

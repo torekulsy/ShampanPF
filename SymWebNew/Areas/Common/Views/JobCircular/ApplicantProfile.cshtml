@@ -1,0 +1,416 @@
+﻿@model SymViewModel.Common.ApplicantInfoVM
+@{
+    ViewBag.Title = "ApplicantProfile";
+}
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/metismenu@3.0.7/dist/metisMenu.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/metismenu@3.0.7/dist/metisMenu.min.css">
+
+    <link href="~/assets/css/Applycant.css" rel="stylesheet" />
+       <style>
+           .career-objectiveemp table.career-table > thead > tr > th:first-child, .career-objectiveemp table.career-table > tbody > tr > td:first-child, table.pfltable tbody > tr > td:nth-child(4) {
+               display: none;
+           }
+
+       </style>
+        <div class="mainempolyeprofileviewpage">
+            <div class="empolyesidebarmenu">
+                <ul class="employecvdash metismenu" id="applicantmenu">
+                    <li class="sidebar-item3 Transfer">
+                        <a class="main-link3" href="/HRM/Home/">
+                            <span class="menu-icon"><i class="fa fa-home" aria-hidden="true"></i>Home</span>
+                        </a>
+                    </li>
+                   
+                        <li class="sidebar-item1" id="subMenu1">
+                            <a class="main-link1" href="#"><span><i class="fa-regular fa-file"></i>Dashboard</span></a>
+                        </li>
+                        <li class="sidebar-item1" id="subMenu1">
+                            <a class="main-link1" href="#empolyeviewprofileid"><span><i class="fa-regular fa-eye"></i>View Profile</span></a>
+                        </li>
+                        <li class="sidebar-item1" id="subMenu1">
+                            <a class="main-link1" href="ApplicantApplyEdit?Id=@Model.Id"><span><i class="fa-regular fa-file"></i>Edit Profile</span></a>
+                        </li>
+                        <li class="sidebar-item1" id="subMenu1">
+                            <a class="main-link1" href="#"><span><i class="fa-solid fa-video"></i>Video CV</span></a>
+                        </li>
+                        <li class="sidebar-item1" id="subMenu1">
+                            <a class="main-link1" href="#"><span><i class="fa-solid fa-file"></i> Customized CV </span></a>
+                        </li>
+                        <li class="sidebar-item1" id="subMenu1">
+                            <a class="main-link1" href="#"><span><i class="fa-regular fa-paper-plane"></i>Email CV</span></a>
+                        </li>
+                    
+                </ul>
+                <hr>
+                <ul>
+                    <li><a href=""><span><i class="fa-solid fa-gear"></i>Account Settings</span> </a></li>
+                    <li><a href=""> <span><i class="fa-solid fa-video"></i>Help Videos</span></a></li>
+                    <li><a href=""><span><i class="fa-solid fa-arrow-right-from-bracket"></i>Sign Out</span> </a></li>
+                </ul>
+
+            </div>
+            <div id="empolyeviewprofileid" class="empolyeviewprofile">
+                <div class="empolyeviewprofiletop">
+                    <div class="empolyeviewdown">
+                        
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="empolyeviewdownbtn">
+                                    <p> Download: </p>
+                                    <a href="/Common/RequirtmentApplicant/ReportView?Id=@Model.Id"><i class="fa-regular fa-file-pdf"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="employeeditresume">
+                                    <a href="ApplicantApplyEdit?Id=@Model.Id"><i class="fa-solid fa-pen-to-square"></i> Edit Profile</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="empolyemainprofilesec">
+                    <div class="mainproheader">
+                        <header>
+                            <h1>@Model.ApplicantName</h1>
+                            <p>@Model.Designation</p>
+                            <p><i class="fa-solid fa-location-dot"></i>@Model.PresentAddress</p>
+                            <p><i class="fa-solid fa-phone"></i>@Model.ContactNo</p>
+                            <p><a href="mailto:@Model.Email"><i class="fa-regular fa-envelope"></i>@Model.Email</a></p>
+                            <p><a href="" target="_blank"><i class="fa-brands fa-linkedin"></i>LinkedIn</a></p>
+                        </header>
+                        <div class="mainheaderimgleft">
+                            <img src="~/Files/EmployeeInfo/@Model.ImageFileName" />
+                        </div>
+                    </div>
+                    
+                    <section class="career-objectiveemp">
+                        <h2>Career Summary</h2>
+                        <p>@Model.CoverLetter</p>
+                    </section>
+
+                    <section class="career-objectiveemp">
+                        @if (Model.educationVMS != null)
+                        {
+                            Html.RenderPartial("~/Views/Jobs/_educationTable.cshtml", Model.educationVMS);
+                        }
+                    </section>
+
+                    <section class="career-objectiveemp">
+                         @if (Model.applicantEmployeementHistoryVMS != null)
+                        {
+                            Html.RenderPartial("~/Views/Jobs/_applicantEmployeementHistory.cshtml", Model.applicantEmployeementHistoryVMS);
+                        }
+                    </section>   
+
+                    <section class="career-objectiveemp">                    
+                        @if (Model.professionalQualificationVMS != null)
+                        {
+                            Html.RenderPartial("~/Views/Jobs/_professional.cshtml", Model.professionalQualificationVMS);
+                        }
+                    </section>
+                    <section class="career-objectiveemp">
+                        @if (Model.applicantTrainingVMS != null)
+                        {
+                            Html.RenderPartial("~/Views/Jobs/_applicantTraining.cshtml", Model.applicantTrainingVMS);
+                        }
+                    </section>
+                    <section class="career-objectiveemp">
+                        @if (Model.applicantLanguageVMS != null)
+                        {
+                            Html.RenderPartial("~/Views/Jobs/_language.cshtml", Model.applicantLanguageVMS);
+                        }
+                    </section>
+
+                    <section class="career-objectiveemp">
+
+
+
+                        <h2>Career and Application Information</h2>
+                        <table border="0" cellpadding="0" cellspacing="0" width="500">
+                            <tbody>
+
+                                <tr>
+                                    <th width="32%" style="padding-left:5px; text-align:left; font-weight:normal;">Looking For</th>
+                                    <th width="2%" style="text-align:center; font-weight:normal;">:</th>
+                                    <th width="66%" style="font-weight:normal; text-align:left;">
+                                        @Model.LookingFor
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <td width="32%" align="left" style="padding-left:5px;">Available  For</td>
+                                    <td width="2%" align="center">:</td>
+                                    <td width="66%" align="left">
+                                        @Model.AvailableFor
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="32%" align="left" style="padding-left:5px;">Present Salary</td>
+                                    <td width="2%" align="center">:</td>
+                                    <td width="66%" align="left">Tk.@Model.PresentSalary</td>
+                                </tr>
+
+                                @*<tr>
+                                    <td width="32%" align="left" style="padding-left:5px;">Preferred  Job Category</td>
+                                    <td width="2%" align="center">:</td>
+                                    <td width="66%" align="left">
+                                        IT/Telecommunication,Other Special Skilled Jobs
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="32%" align="left" style="padding-left:5px;">Preferred  District </td>
+                                    <td width="2%" align="center">:</td>
+                                    <td width="66%" align="left">
+                                        Dhaka
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="32%" align="left" style="padding-left:5px;" valign="top">Preferred Organization Types</td>
+                                    <td width="2%" align="center" valign="top">:</td>
+                                    <td width="66%" align="left">
+                                        Banks,Software Company,Multinational Companies,Market Research Firms,Garments,Hospital,Airline,Group of Companies,Research Organization,Importer
+                                    </td>
+                                </tr>*@
+
+                            </tbody>
+                        </table>
+
+                    </section>
+
+                    <section class="career-objectiveemp">
+                        @if (Model.applicantSkillVMS != null)
+                        {
+                            Html.RenderPartial("~/Views/Jobs/_skill.cshtml", Model.applicantSkillVMS);
+                        }
+                    </section>
+                   
+
+                    <section class="career-objectiveemp">
+                        <h2>Personal Details</h2>
+                        <table border="0" cellpadding="0" cellspacing="0" align="center" width="500" class="BDJNormalText01">
+                            <tbody>
+
+                                <tr>
+                                    <th width="22%" style="padding-left:5px; font-weight:normal; text-align:left;">Father's Name </th>
+                                    <th width="2%" style="font-weight:normal; text-align:center;">:</th>
+                                    <th width="76%" align="left" style="font-weight:normal; text-align:left">
+                                      @Model.FatherName
+                                    </th>
+                                </tr>
+
+                                <tr>
+                                    <td width="22%" align="left" style="padding-left:5px;">Mother's Name </td>
+                                    <td width="2%" align="center">:</td>
+                                    <td width="76%" align="left">
+                                        @Model.MotherName
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="22%" align="left" style="padding-left:5px;">Date  of Birth</td>
+                                    <td width="2%" align="center">:</td>
+                                    <td width="76%" align="left">
+                                        @Model.DateOfBirth
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td width="22%" align="left" style="padding-left:5px;">Gender</td>
+                                    <td width="2%" align="center">:</td>
+                                    <td width="76%" align="left">
+                                        @Model.Gender
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="22%" align="left" style="padding-left:5px;">Height (Meter)</td>
+                                    <td width="2%" align="center">:</td>
+                                    <td width="76%" align="left">
+                                        @Model.Height
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="22%" align="left" style="padding-left:5px;">Weight (Kg)</td>
+                                    <td width="2%" align="center">:</td>
+                                    <td width="76%" align="left">
+                                        @Model.Weight
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="22%" align="left" style="padding-left:5px;">Marital  Status </td>
+                                    <td width="2%" align="center">:</td>
+                                    <td width="76%" align="left">
+                                        @Model.MaritalStatus
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td align="left" style="padding-left:5px;">Nationality</td>
+                                    <td align="center">:</td>
+                                    <td align="left">
+                                        @Model.Nationality
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td align="left" style="padding-left:5px;">Religion</td>
+                                    <td align="center">:</td>
+                                    <td align="left">
+                                        @Model.Religion
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td align="left" style="padding-left:5px;">Permanent  Address</td>
+                                    <td align="center">:</td>
+                                    <td align="left">
+                                       @Model.PresentAddress
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td align="left" style="padding-left:5px;">Current  Location</td>
+                                    <td align="center">:</td>
+                                    <td align="left">
+                                        @Model.PermanentAddress
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td align="left" style="padding-left:5px;">Blood Group</td>
+                                    <td align="center">:</td>
+                                    <td align="left">
+                                        @Model.BloodGroup
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <section class="career-objectiveemp" style="display: none;">
+                        <h2>References</h2>
+                        <table border="0" width="500" align="justify" cellpadding="0" cellspacing="0" style="word-break: break-word;">
+                            <tbody>
+
+                                <tr>
+                                    <th width="12%" align="left" colspan="1">   </th>
+                                    <th width="2%" align="left" colspan="1">&nbsp;<span class="sr-only">   </span></th>
+                                    <th width="35%" align="left" class="BDJBoldText01" style="border-right:1px solid #666666;"><em>Reference: 01</em></th>
+                                    <th width="41%" align="left" class="BDJBoldText01" style="padding-left:15px;"><em>Reference: 02</em></th>
+                                </tr>
+
+                                <tr>
+                                    <td width="22%" align="left" style="padding-left:5px;">Name </td>
+                                    <td width="2%" align="center">:</td>
+                                    <td width="35%" align="left" style="border-right:1px solid #666666;">
+                                        Syed Zahidul Hassan
+                                    </td>
+                                    <td width="41%" align="left" style="padding-left: 10px;">
+                                        Md.Azman Ali
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td width="22%" align="left" style="padding-left:5px;">Organization</td>
+                                    <td width="2%" align="center">:</td>
+                                    <td width="35%" align="left" style="border-right:1px solid #666666;">
+                                        Show &amp; Tell Consulting  IsDB-BISEW IT scholarship Programme
+                                    </td>
+                                    <td width="41%" align="left" style="padding-left: 10px;">
+                                        PeopleNTech Institute of Information Technology
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="22%" align="left" style="padding-left:5px;">Designation</td>
+                                    <td width="2%" align="center">:</td>
+                                    <td width="35%" align="left" style="border-right:1px solid #666666;">
+                                        Consultant
+
+                                    </td>
+                                    <td width="41%" align="left" style="padding-left: 10px;">
+                                        Faculty . NET C#
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td width="22%" align="left" style="padding-left:5px;">Address</td>
+                                    <td width="2%" align="center">:</td>
+                                    <td width="35%" align="left" style="border-right:1px solid #666666;">
+                                        Mirpor Dhaka
+
+                                    </td>
+                                    <td width="41%" align="left" style="padding-left: 10px;">
+                                        Mirpur Shwrapara Dhaka
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td align="left" style="padding-left:5px;">Primary Mobile No</td>
+                                    <td align="center"> :</td>
+                                    <td align="left" style="border-right:1px solid #666666;">
+                                        01535110014
+
+                                    </td>
+                                    <td align="left" style="padding-left: 10px;">
+                                        01795885845
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td align="left" style="padding-left:5px;">Primary Email</td>
+                                    <td align="center">:</td>
+                                    <td align="left" style="border-right:1px solid #666666;">
+                                        Jewwlmir81@gmail.com
+
+                                    </td>
+                                    <td align="left" style="padding-left: 10px;">
+                                        Azman6363@gmail.com
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td align="left" style="padding-left:5px;">Relation</td>
+                                    <td align="center">:</td>
+                                    <td align="left" style="border-right:1px solid #666666;">
+                                        Academic
+
+                                    </td>
+                                    <td align="left" style="padding-left: 10px;">
+                                        Academic
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left"> </td>
+                                    <td align="center"> </td>
+                                    <td colspan="2" align="left"></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+            </div>
+        </div>
+   <script>
+       
+           $('#applicantmenu').metisMenu();
+      
+   </script>
+

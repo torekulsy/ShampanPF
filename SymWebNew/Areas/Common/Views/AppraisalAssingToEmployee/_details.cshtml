@@ -1,0 +1,128 @@
+﻿@model SymViewModel.Common.AppraisalQuestionSetVM
+
+@using UIHelper.MVC
+@{
+    Layout = null;
+}
+
+<div class=" details">
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+    }
+
+    <div class="row" style="background: #dddec5; padding: 5px 0">
+        <div class="col-md-1">
+            <div class="editor-label">
+                <label>Sl.</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Category Name</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Question Name</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsOwn)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsTeamLead)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsHR)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsCOO)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsMD)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+
+
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsP1)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsP2)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsP3)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsP4)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style=" text-align: center;">
+                    @Html.LabelFor(model => model.AppraisalQuestionSetDetaiVMs.FirstOrDefault().IsP5)
+                </div>
+                <div class="editor-field">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    @foreach (var item in Model.AppraisalQuestionSetDetaiVMs)
+    {
+        @Html.Partial("~/Areas/Common/Views/AppraisalAssingToEmployee/_DetailsView.cshtml", item);
+    }
+
+</div>
+
+

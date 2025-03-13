@@ -1,0 +1,76 @@
+﻿@model SymViewModel.Common.EducationVM
+
+@using UIHelper.MVC
+@{
+    Layout = null;
+}
+<style>
+    .details {
+        grid-template-columns: 1fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr;
+        display: grid;
+        gap: 2px;
+        margin: 5px 0;
+    }
+    .qualifil input {
+        font-size: 14px;
+        font-weight: 400;
+    }
+</style>
+<div class="details">
+    @using (Html.BeginCollectionItem("educationVM"))
+    {
+
+        @Html.HiddenFor(model => model.Id)
+    
+        <div class="" style="">
+            <a id="" onclick="RemoveEducation(this);" class="sym-btn-remove-row "></a>
+        </div>
+        <div class="qualifil">
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.ExamTitle, new {@class = " dExamTitle form-control", @readonly = "readonly" })
+            </div>
+        </div>
+    <div class="qualifil">
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Major, new { @class = "dMajor form-control", @readonly = "readonly" })
+        </div>
+    </div>
+
+    <div class="qualifil">
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Institute, new { @class = "dInstitute  form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="qualifil">
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Result, new { @class = "  form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="qualifil">
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.PassYear, new { @class = "  form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="qualifil">
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Duration, new { @class = "  form-control", @readonly = "readonly" })
+        </div>
+    </div>
+    <div class="qualifil">
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Achievment, new { @class = "  form-control", @readonly = "readonly" })
+        </div>
+    </div>
+
+    }
+</div>
+<script>
+    $(function () {
+
+    });
+    $(document).ready(function () {
+       
+    });
+
+</script>
+

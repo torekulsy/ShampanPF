@@ -1,0 +1,131 @@
+﻿@{
+    ViewBag.Title = "_index";
+}
+
+<style>
+    .dataTable tbody td:nth-child(2) {
+        padding-right: 20px;
+    }
+</style>
+
+<button type="button" title="Add New" data-url="/Common/RecruitmentRequisition/Create" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Recruitment Requisition List</p>
+    </div>
+
+    <br />
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>               
+                <th class="center">Actions</th>           
+                <th class="">Department</th>
+                <th>Designation</th>
+                <th>Experience</th>
+                <th>Deadline</th>              
+                <th>IsActive</th>  
+                <th>IsApproved</th>           
+            </tr>
+            <tr>
+                <th></th>
+                <th>Department</th>
+                <th>Designation</th>
+                <th>Experience</th>
+                <th>Deadline</th>               
+                <th>IsActive</th>
+                <th>IsApproved</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <br />
+</div>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Common/RecruitmentRequisition/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                {
+                    "sName": "Id",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "sWidth": "10%",
+                    "sClass": "center",
+                    "fnRender": function (oObj) {
+                        console.log(oObj.aData[0]);
+                        
+                        return '&nbsp; <a title="Click on for Edit" style="text-decoration:none;"   href=\"/Common/RecruitmentRequisition/Edit/' + oObj.aData[0] + '\" class="sym-btn-edit-row sym-sx"></a>' +
+                        '&nbsp;  <a title="Click on for Approve" style="text-decoration:none;"   href=\"/Common/RecruitmentRequisition/Approve/' + oObj.aData[0] + '\" class="sym-btn-post-row"></a>'+
+                        '&nbsp;  <a title="Click on for Delete" style="text-decoration:none;"   href=\"/Common/RecruitmentRequisition/Delete/' + oObj.aData[0] + '\"  class="sym-btn-remove-row"></a>'
+                        ;
+                    } 
+                },
+                { "sName": "Department", "sWidth": "20%" },
+                { "sName": "Designation", "sWidth": "20%" },
+                { "sName": "Experience", "sWidth": "10%" },
+                { "sName": "Deadline", "sWidth": "8%" },
+               
+                { "sName": "IsActive", "sWidth": "5%" },
+                { "sName": "IsApproved", "sWidth": "7%" },
+                  //{
+                  //    "sName": "IsApproved",
+                  //    "bSearchable": false,
+                  //    "bSortable": false,
+                  //    "sWidth": "7%",
+                  //    "sClass": "center",
+                  //    "fnRender": function (oObj) {
+                  //        console.log(oObj.aData[7]);
+
+                  //        return '<input onclick=btnApproved(this); type="checkbox" data-Id="' + oObj.aData[7] + '">';
+
+                  //        ;
+                  //    }
+                  //},
+            ]
+        });
+
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [
+                null, // No filter for the first column
+                { type: "text" },
+                { type: "text" },
+                { type: "text" },
+                { type: "text" },
+                { type: "text" },
+                { type: "text" },               
+            ]
+        });
+        
+    });
+</script>
+
+
+@*<script>
+    function btnApproved(sender) {
+
+        var Id = $(sender).attr("data-Id");
+
+        var getURL = "/@ViewBag.TransType/RecruitmentRequisition/Approved" + "?" + "Id=" + Id;
+
+        $.getJSON(getURL, function (vm) {
+
+            if (vm.Post) {
+                ShowResult("Fail", "Data Already Posted!");
+                return true;
+            }
+            else {
+                var url = $(sender).attr("data-url") + "?ids=" + Id + '~';
+                var questionMSG = "Are you sure to Post Data!";
+                singleOperation(questionMSG, url);
+            }
+
+        });
+
+    }
+</script>*@

@@ -1,0 +1,188 @@
+﻿@model SymViewModel.Common.AppraisalQuestionSetVM
+
+@using UIHelper.MVC
+@using (Html.BeginForm("CreateEdit", "AppraisalQuestionSet", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmAppraisalEntry" }))
+{
+<div class="thinbox">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="editor-label">
+                <label>Appraisal Question Set Name</label>
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.QuestionSetName, new { @placeholder = "QuestionSet Name", @class = " form-control required" })
+                @Html.ValidationMessageFor(model => model.QuestionSetName)
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Year</label>
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Year, new { @placeholder = "Year", @class = " form-control required" })
+                @Html.ValidationMessageFor(model => model.Year)
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Exam Date</label>
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.ExDate, new { @placeholder = "Exam Date", @class = " form-control customDatePicker required" })
+                @Html.ValidationMessageFor(model => model.ExDate)
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Create Date</label>
+
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.CreateDate, new { @placeholder = "Create Date", @class = "trDate customDatePicker required form-control" })
+                @Html.ValidationMessageFor(model => model.CreateDate)
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.DepartmentName)
+            </div>
+            <div style="font-size:14px" class="editor-field">
+                @Html.SimpleDropDownFor(m => m.DepartmentId, "/Config/DropDown/Department", new { @class = " cDepartmentId required form-control " })
+            </div>
+        </div>
+    </div>
+</div>
+}
+<button type="button" name="btnName" value="Save" title="Save Data" onclick="pageSubmit('frmAppraisalEntry')" class="sym-btn-save">&nbsp;Save</button>
+<button type="button" title="Go To Index" data-url="/Common/AppraisalQuestionSet" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+<div class="thinbox">
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">Active / InActive</th>
+                <th>Category Name</th>
+                <th>Question Name</th>
+                <th>Own</th>
+                <th>TL</th>
+                <th>HR</th>
+                <th>COO </th>
+                <th>MD</th>
+                <th>P-1</th>
+                <th>P-2</th>
+                <th>P-3</th>
+                <th>P-4</th>
+                <th>P-5</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <br />
+</div>
+<script>
+    $(document).on("click", ".RemoveRow", function () {
+        RemoveProduct(this);
+    });
+    // Function to remove a row
+    function RemoveProduct(sender) {
+        Ask("Are you sure to delete the item!", function () {
+            $(sender).closest("div.row").remove();
+            ShowHide();
+        });
+    }
+    function ShowHide() {
+        var accName = $('.dQuestionName').val();
+        if (!accName) {
+            $('#detail').hide();
+        } else {
+            $('#detail').show();
+        }
+    }
+    $(document).ready(function () {
+        $('#detail').show();
+
+        var id = $("#Id").val();
+        if (parseInt(id) > 0) {
+            setTimeout(function () {
+                Searching();
+            }, 500);
+        }
+    });
+    $(".cDepartmentId").change(function () {
+        debugger;
+        var did = $(this).val(); // get the selected value of the department
+
+        Searching();
+    });
+    function Searching() {
+        debugger;
+        var DepartmentId = $(".cDepartmentId").val();
+        var url = '/Common/AppraisalQuestionSet/SelectQuestionByDepartmentForEmploye?DepartmentId=' + DepartmentId;
+
+        $.get(url, function (response) {
+            debugger;
+            $('#detail').html(response); // Update #detail with the new content
+            $('#detail').show();
+            valiDation("frmAppraisalEntry"); // Re-apply validation to new elements
+        }).fail(function () {
+            debugger;
+            ShowResult("Fail", "Failed to retrieve data. Please try again.");
+        });
+        $(document).ready(function () {
+            var oTable = $('#myDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Common/AppraisalQuestionSet/_index2",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                                {
+                                    "sName": "Id",
+                                    "bSearchable": false,
+                                    "bSortable": false,
+                                    "sWidth": "10%",
+                                    "sClass": "center",
+                                    "fnRender": function (oObj) {
+                                        console.log(oObj.aData[0]);
+                                        return '<input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">';
+                                    }
+                                }
+                                , { "sName": "CategoryName", "sWidth": "15%" }
+                                , { "sName": "QuestionName", "sWidth": "15%" }
+                                , { "sName": "IsOwn", "sWidth": "5%" }
+
+                                , { "sName": "IsTeamLead", "sWidth": "5%" }
+                                , { "sName": "IsHR", "sWidth": "5%" }
+                                , { "sName": "IsCOO", "sWidth": "5%" }
+                                , { "sName": "IsMD", "sWidth": "5%" }
+                                , { "sName": "IsP1", "sWidth": "5%" }
+                                , { "sName": "IsP2", "sWidth": "5%" }
+                                , { "sName": "IsP3", "sWidth": "5%" }
+                                , { "sName": "IsP4", "sWidth": "5%" }
+                                , { "sName": "IsP5", "sWidth": "5%" }
+                ]
+            });
+            oTable.columnFilter({
+                sPlaceHolder: "head:after",
+                aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                ]
+            });
+        });
+    }
+</script>
+
+
+
