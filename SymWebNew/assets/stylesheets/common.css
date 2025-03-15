@@ -1132,7 +1132,7 @@ table thead tr:last-of-type th input {
     min-height: 60px !important;
 }
 
-.headrow {
+/*.headrow {
     overflow: auto;
     min-width: 30px;
     min-height: 40px;
@@ -1150,6 +1150,25 @@ table thead tr:last-of-type th input {
     -webkit-border-radius: 5px;
     border-radius: 5px;
     width: 100%;
+}*/
+.headrow {
+    overflow: auto;
+    min-width: 30px;
+    min-height: 40px;
+    padding: 6px 4px 1px 10px !important;
+    background: rgba(252,249,249,1);
+    background: -moz-linear-gradient(left, rgba(252,249,249,1) 0%, rgba(245,242,242,1) 0%, rgba(242,242,242,1) 0%, rgba(240,238,237,1) 0%, rgba(85,196,57,1) 68%, rgba(85,196,57,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(252,249,249,1)), color-stop(0%, rgba(245,242,242,1)), color-stop(0%, rgba(242,242,242,1)), color-stop(0%, rgba(240,238,237,1)), color-stop(68%, rgba(85,196,57,1)), color-stop(100%, rgba(85,196,57,1)));
+    background: -webkit-linear-gradient(left, rgba(252,249,249,1) 0%, rgba(245,242,242,1) 0%, rgba(242,242,242,1) 0%, rgba(240,238,237,1) 0%, rgba(85,196,57,1) 68%, rgba(85,196,57,1) 100%);
+    background: -o-linear-gradient(left, rgba(252,249,249,1) 0%, rgba(245,242,242,1) 0%, rgba(242,242,242,1) 0%, rgba(240,238,237,1) 0%, rgba(85,196,57,1) 68%, rgba(85,196,57,1) 100%);
+    background: -ms-linear-gradient(left, rgba(252,249,249,1) 0%, rgba(245,242,242,1) 0%, rgba(242,242,242,1) 0%, rgba(240,238,237,1) 0%, rgba(85,196,57,1) 68%, rgba(85,196,57,1) 100%);
+    background: linear-gradient(to right, rgba(252,249,249,1) 0%, rgba(245,242,242,1) 0%, rgba(242,242,242,1) 0%, rgba(240,238,237,1) 0%, rgba(85,196,57,1) 68%, rgba(85,196,57,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcf9f9', endColorstr='#55c439', GradientType=1 );
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    /* overflow: hidden; */
+    width: 100%;
 }
 
     .headrow .btn-breadcrumb {
@@ -1159,7 +1178,7 @@ table thead tr:last-of-type th input {
     .headrow label {
         font-size: 1.4em;
         margin: 2px;
-        color: #000;
+        color: #fff;
     }
 /***********************Location **********************/
 

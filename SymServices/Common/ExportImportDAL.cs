@@ -242,11 +242,17 @@ Where vei.IsArchive=0 AND vei.IsActive=1
                 #region sql statement
                 #region sqlText
                 sqlText = @"
-                SELECT
-                       [Code]
-                      ,[Name]     
-                      ,[Remarks]    
-                  FROM EmployeeInfo
+               SELECT TOP 1  
+                    ISNULL(Code,'1001') Code, 
+                    ISNULL(Name,'Enter Name') Name, 
+	                '1_1' Department,
+	                '1_18' Designation,
+	                '1_1' Project,
+	                '1_1' Section,
+                      0 BasicSalary,
+                     0 GrossSalary,
+                    Remarks 
+                FROM EmployeeInfo
                 ";
 
 
