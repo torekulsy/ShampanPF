@@ -62,7 +62,16 @@ namespace SymRepository.PF
 
         public string[] ImportExcelFile(EmployeeInfoForPFVM vm)
         {
-            throw new NotImplementedException();
+            try
+            {
+                EmployeeInfoForPFDAL dal = new EmployeeInfoForPFDAL(); // Create an instance
+                return dal.InsertExportData(vm, null, null); // Call the method on the instance
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
+
     }
 }

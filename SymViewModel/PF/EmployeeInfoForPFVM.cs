@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace SymViewModel.PF
 {
@@ -66,6 +67,14 @@ namespace SymViewModel.PF
         public string NomineeNID { get; set; }
         [Display(Name = "Nominee Remarks")]
         public string NomineeRemarks { get; set; }
-       
+
+        public HttpPostedFileBase File { get; set; }
+        public string DesignationId { get; set; }
+        public string DepartmentId { get; set; }
+        public string SectionId { get; set; }
+        public string ProjectId { get; set; }
+        public string EmployeeId { get; set; }
+        public string GradeId { get; set; }
+
     }
 }

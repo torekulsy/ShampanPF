@@ -652,5 +652,325 @@ namespace SymServices.PF
             return retResults;
             #endregion
         }
+        public string[] InsertExportData(EmployeeInfoForPFVM paramVM, SqlConnection VcurrConn, SqlTransaction Vtransaction)
+        {
+            #region Initializ
+            string sqlText = "";
+            int Id = 0;
+            string[] retResults = new string[6];
+            retResults[0] = "Fail";//Success or Fail
+            retResults[1] = "Fail";// Success or Fail Message
+            retResults[2] = Id.ToString();// Return Id
+            retResults[3] = sqlText; //  SQL Query
+            retResults[4] = "ex"; //catch ex
+            retResults[5] = "ImportExcelFile"; //Method Name
+
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+            #endregion
+
+            #region try
+            try
+            {
+                DataSet ds = new DataSet();
+                DataTable dt = new DataTable();
+                #region Excel Reader
+
+                string FileName = paramVM.File.FileName;
+                string Fullpath = AppDomain.CurrentDomain.BaseDirectory + "Files\\Export\\" + FileName;
+                File.Delete(Fullpath);
+                if (paramVM.File != null && paramVM.File.ContentLength > 0)
+                {
+                    paramVM.File.SaveAs(Fullpath);
+                }
+
+
+                FileStream stream = File.Open(Fullpath, FileMode.Open, FileAccess.Read);
+                IExcelDataReader reader = null;
+                if (FileName.EndsWith(".xls"))
+                {
+                    reader = ExcelReaderFactory.CreateBinaryReader(stream);
+                }
+                else if (FileName.EndsWith(".xlsx"))
+                {
+                    reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                }
+                reader.IsFirstRowAsColumnNames = true;
+                ds = reader.AsDataSet();
+
+
+                dt = ds.Tables[0];
+                reader.Close();
+
+                File.Delete(Fullpath);
+                #endregion
+
+                #region open connection and transaction
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+                if (transaction == null)
+                {
+                    transaction = currConn.BeginTransaction("");
+                }
+                #endregion open connection and transaction
+                #region Save
+                string Code = "";
+
+                EmployeeInfoForPFVM vEmployeeInfoVM = new EmployeeInfoForPFVM();
+             
+                #region Assign Data
+                int i = 0;
+                foreach (DataRow dr in dt.Rows)
+                {
+                    vEmployeeInfoVM.Code = dr["Code"].ToString();
+                    vEmployeeInfoVM.Name = dr["Name"].ToString();
+                    //vEmployeeInfoVM.DateOfBirth = dr["DateOfBirth"].ToString();
+                    //vEmployeeInfoVM.JoinDate = dr["JoinDate"].ToString();
+                    //vEmployeeInfoVM.ResignDate = dr["ResignDate"].ToString();
+                    //vEmployeeInfoVM.Department = dr["Department"].ToString();
+                    //vEmployeeInfoVM.Designation = dr["Designation"].ToString();
+                    //vEmployeeInfoVM.Section = dr["Section"].ToString();
+                    //vEmployeeInfoVM.Project = dr["Project"].ToString();
+                    //vEmployeeInfoVM.BasicSalary = Convert.ToDecimal(dr["BasicSalary"].ToString());
+                    //vEmployeeInfoVM.GrossSalary = Convert.ToDecimal(dr["GrossSalary"].ToString());
+                    vEmployeeInfoVM.Remarks = dr["Remarks"].ToString();                   
+                    retResults = Insert(vEmployeeInfoVM, currConn, transaction);
+                }
+                #endregion
+
+                #region Data Insert
+
+               
+                if (retResults[0] == "Fail")
+                {
+                    throw new ArgumentNullException("", retResults[1]);
+                }
+                #endregion
+                #endregion
+                #region Commit
+                if (transaction != null)
+                {
+                    transaction.Commit();
+                }
+                #endregion Commit
+
+                #region SuccessResult
+                retResults[0] = "Success";
+                retResults[1] = "Data Save Successfully.";
+                //retResults[2] = vm.Id.ToString();
+                #endregion SuccessResult
+            }
+            #endregion try
+            #region Catch and Finall
+            catch (Exception ex)
+            {
+                retResults[4] = ex.Message.ToString(); //catch ex
+                transaction.Rollback();
+                return retResults;
+            }
+            finally
+            {
+            }
+            #endregion
+            #region Results
+            return retResults;
+            #endregion
+           
+        }
+
+
+
+        public string[] Insert(EmployeeInfoForPFVM vEmployeeInfoVM, SqlConnection VcurrConn, SqlTransaction Vtransaction)
+        {
+
+            #region Initializ
+            string sqlText = "";
+            int Id = 0;
+            string[] retResults = new string[6];
+            retResults[0] = "Fail";//Success or Fail
+            retResults[1] = "Fail";// Success or Fail Message
+            retResults[2] = Id.ToString();// Return Id
+            retResults[3] = sqlText; //  SQL Query
+            retResults[4] = "ex"; //catch ex
+            retResults[5] = "InsertEmplyeeInfoPF"; //Method Name
+            EmployeeInfoForPFDAL _dal = new EmployeeInfoForPFDAL();
+
+            #endregion
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+            #region Try
+
+            try
+            {
+                #region open connection and transaction
+                #region New open connection and transaction
+                if (VcurrConn != null)
+                {
+                    currConn = VcurrConn;
+                }
+
+                if (Vtransaction != null)
+                {
+                    transaction = Vtransaction;
+                }
+
+                #endregion New open connection and transaction
+
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+                if (transaction == null)
+                {
+                    transaction = currConn.BeginTransaction("");
+                }
+
+                #endregion open connection and transaction
+
+                #region Save
+                //vm.Id = cdal.NextId("BonusProcess", currConn, transaction).ToString();
+            
+                    #region SqlText
+
+                    sqlText = "  ";
+                    sqlText += @" INSERT INTO EmployeeInfo
+                                (
+                                 Code                                
+                                ,Name  
+                                ,DateOfBirth
+                                ,JoinDate
+                                ,Department
+                                ,Designation
+                                ,Project
+                                ,Section 
+                                ,BasicSalary
+                                ,GrossSalary                          
+                                ,Remarks
+                                ,IsActive
+                                ,IsArchive
+                                ,CreatedBy
+                                ,CreatedAt
+                                ,CreatedFrom
+                                ,LastUpdateBy
+                                ,LastUpdateAt
+                                ,LastUpdateFrom
+                                ) VALUES (
+                                 @Code
+                                ,@Name 
+                                ,@DateOfBirth
+                                ,@JoinDate
+                                ,@Department
+                                ,@Designation
+                                ,@Project
+                                ,@Section 
+                                ,@BasicSalary
+                                ,@GrossSalary 
+                                ,@Remarks
+                                ,@IsActive
+                                ,@IsArchive
+                                ,@CreatedBy
+                                ,@CreatedAt
+                                ,@CreatedFrom
+                                ,@LastUpdateBy
+                                ,@LastUpdateAt
+                                ,@LastUpdateFrom
+                                 ) ";
+                    #endregion
+
+                    #region SqlExecution
+                                    
+
+                        SqlCommand cmdInsert = new SqlCommand(sqlText, currConn, transaction);
+                        cmdInsert.Parameters.AddWithValue("@Code", vEmployeeInfoVM.Code);
+                        cmdInsert.Parameters.AddWithValue("@Name", vEmployeeInfoVM.Name);
+                        cmdInsert.Parameters.AddWithValue("@Department", vEmployeeInfoVM.Department);
+                        cmdInsert.Parameters.AddWithValue("@Designation", vEmployeeInfoVM.Designation);
+                        cmdInsert.Parameters.AddWithValue("@Project", vEmployeeInfoVM.Project);
+                        cmdInsert.Parameters.AddWithValue("@Section", vEmployeeInfoVM.Section);
+                        cmdInsert.Parameters.AddWithValue("@BasicSalary", vEmployeeInfoVM.BasicSalary);
+                        cmdInsert.Parameters.AddWithValue("@GrossSalary", vEmployeeInfoVM.GrossSalary);
+                        cmdInsert.Parameters.AddWithValue("@Remarks", vEmployeeInfoVM.Remarks);
+                        cmdInsert.Parameters.AddWithValue("@IsActive", true);
+                        cmdInsert.Parameters.AddWithValue("@IsArchive", true);
+                        cmdInsert.Parameters.AddWithValue("@CreatedBy", "");
+                        cmdInsert.Parameters.AddWithValue("@CreatedAt", "");
+                        cmdInsert.Parameters.AddWithValue("@CreatedFrom", "");
+                        cmdInsert.Parameters.AddWithValue("@LastUpdateBy", "");
+                        cmdInsert.Parameters.AddWithValue("@LastUpdateAt", "");
+                        cmdInsert.Parameters.AddWithValue("@LastUpdateFrom", "");
+                      
+                        cmdInsert.ExecuteNonQuery();
+                  
+
+                    #endregion
+              
+
+                #endregion Save
+
+                #region Commit
+                if (Vtransaction == null)
+                {
+                    if (transaction != null)
+                    {
+                        transaction.Commit();
+                    }
+                }
+                #endregion Commit
+
+                #region SuccessResult
+
+                retResults[0] = "Success";
+                retResults[1] = "Data Save Successfully.";
+
+
+                #endregion SuccessResult
+
+            }
+
+            #endregion try
+            #region Catch and Finall
+
+
+
+            catch (Exception ex)
+            {
+                retResults[0] = "Fail";//Success or Fail
+                retResults[4] = ex.Message.ToString(); //catch ex
+
+                if (Vtransaction == null) { transaction.Rollback(); }
+                return retResults;
+            }
+
+            finally
+            {
+                if (VcurrConn == null)
+                {
+                    if (currConn != null)
+                    {
+                        if (currConn.State == ConnectionState.Open)
+                        {
+                            currConn.Close();
+                        }
+                    }
+                }
+
+            }
+
+            #endregion
+            #region Results
+
+            return retResults;
+            #endregion
+        }
     }
 }
