@@ -1905,45 +1905,45 @@ WHERE  1=1
 
 ---------------------PFStatus-----------------------------------
 ----------------------------------------------------------------
-, PFStatus AS
-(
-SELECT 
-ROW_NUMBER() OVER (PARTITION BY pf.EmployeeId ORDER BY pf.FiscalYearDetailId ASC) AS RowNumber
-, pf.* 
-FROM PFDetails pf
-WHERE 1=1
-AND pf.EmployeePFValue > 0
-)
+                    , PFStatus AS
+                    (
+                    SELECT 
+                    ROW_NUMBER() OVER (PARTITION BY pf.EmployeeId ORDER BY pf.FiscalYearDetailId ASC) AS RowNumber
+                    , pf.* 
+                    FROM PFDetails pf
+                    WHERE 1=1
+                    AND pf.EmployeePFValue > 0
+                    )
 
 
-, PFStart AS
-(
-SELECT * FROM PFStatus
-WHERE RowNumber = 1
-)
+                    , PFStart AS
+                    (
+                    SELECT * FROM PFStatus
+                    WHERE RowNumber = 1
+                    )
 
 
----------------------PFEndStatus--------------------------------
-----------------------------------------------------------------
-, PFEndStatus AS
-(
-SELECT 
+                    ---------------------PFEndStatus--------------------------------
+                    ----------------------------------------------------------------
+                    , PFEndStatus AS
+                    (
+                    SELECT 
 
-ROW_NUMBER() OVER (PARTITION BY pf.EmployeeId ORDER BY pf.FiscalYearDetailId DESC) AS RowNumber
-, pf.* 
+                    ROW_NUMBER() OVER (PARTITION BY pf.EmployeeId ORDER BY pf.FiscalYearDetailId DESC) AS RowNumber
+                    , pf.* 
 
-from PFDetails pf
+                    from PFDetails pf
 
-WHERE 1=1
+                    WHERE 1=1
 
-AND pf.EmployeePFValue > 0
-)
+                    AND pf.EmployeePFValue > 0
+                    )
 
-, PFEnd AS
-(
-SELECT * FROM PFEndStatus
-WHERE RowNumber = 1
-)
+                    , PFEnd AS
+                    (
+                    SELECT * FROM PFEndStatus
+                    WHERE RowNumber = 1
+                    )
 
 
 ----------------------------------------------------------------
