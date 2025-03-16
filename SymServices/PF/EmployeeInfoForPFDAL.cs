@@ -369,7 +369,7 @@ namespace SymServices.PF
                 #region sql statement
                 sqlText = @"SELECT ve.EmployeeId, ve.Code, ve.EmpName, ve.DateOfBirth, ve.JoinDate, ve.LeftDate, ve.Branch, ve.Grade, ISNULL(ve.GrossSalary, 0) AS GrossSalary, ISNULL(ve.BasicSalary, 0) AS BasicSalary, ve.PhotoName, 
                          ve.IsActive, ve.IsArchive, ve.LastUpdateAt, ve.LastUpdateBy, ve.LastUpdateFrom, ve.Other1, ve.Remarks, ve.Department, ve.Designation, ve.Section, ve.Project
-                         FROM ViewEmployeeInfo AS ve";
+                         FROM ViewEmployeeInformation AS ve";
 
                 SqlCommand objComm = new SqlCommand();
                 objComm.Connection = currConn;
