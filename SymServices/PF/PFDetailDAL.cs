@@ -65,29 +65,56 @@ namespace SymServices.PF
 
                 #region sql statement
                 #region SqlText
+//                sqlText = @"
+//                            SELECT  
+//                            pfd.Id
+//                            ,pfd.PFHeaderId
+//                            ,pfd.EmployeeId
+//                            ,fyd.PeriodName
+//                            ,ve.EmpName 
+//                            ,ve.Code 
+//                            ,pf.Code PFHeaderCode
+//                            ,ve.Designation
+//                            ,ve.Department
+//                            ,ve.Section
+//                            ,ve.Project
+//                            ,pfd.BasicSalary
+//                            ,pfd.GrossSalary
+//                            ,pfd.EmployeePFValue
+//                            ,pfd.EmployeerPFValue
+//                            FROM PFDetails pfd
+//                            LEFT OUTER JOIN PFHeader pf ON pf.Id=pfd.PFHeaderId 
+//";
+//                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[FiscalYearDetail] fyd ON pfd.FiscalYearDetailId=fyd.Id";
+//                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].ViewEmployeeInformation ve ON pfd.EmployeeId=ve.EmployeeId";
+//                sqlText += @" WHERE  1=1  AND pfd.IsArchive = 0 and fyd.PeriodName is not null
+//";
                 sqlText = @"
-                            SELECT  
-                            pfd.Id
-                            ,pfd.PFHeaderId
-                            ,pfd.EmployeeId
-                            ,fyd.PeriodName
-                            ,ve.EmpName 
-                            ,ve.Code 
-                            ,pf.Code PFHeaderCode
-                            ,ve.Designation
-                            ,ve.Department
-                            ,ve.Section
-                            ,ve.Project
-                            ,pfd.BasicSalary
-                            ,pfd.EmployeePFValue
-                            ,pfd.EmployeerPFValue
-                            FROM PFDetails pfd
-                            LEFT OUTER JOIN PFHeader pf ON pf.Id=pfd.PFHeaderId 
+            SELECT  
+            pfd.Id
+            ,pfd.PFHeaderId
+            ,pfd.EmployeeId
+            ,fyd.PeriodName
+            ,ve.EmpName 
+            ,ve.Code 
+            ,pf.Code PFHeaderCode
+            ,ve.Designation
+            ,ve.Department
+            ,ve.Section
+            ,ve.Project
+            ,pfd.BasicSalary
+            ,pfd.GrossSalary
+            ,pfd.EmployeePFValue
+            ,pfd.EmployeerPFValue
+            FROM PFDetails pfd
+            LEFT OUTER JOIN PFHeader pf ON pf.Id = pfd.PFHeaderId 
 ";
-                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[FiscalYearDetail] fyd ON pfd.FiscalYearDetailId=fyd.Id";
-                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].ViewEmployeeInformation ve ON pfd.EmployeeId=ve.EmployeeId";
-                sqlText += @" WHERE  1=1  AND pfd.IsArchive = 0 and fyd.PeriodName is not null
-";
+
+                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[FiscalYearDetail] fyd ON pfd.FiscalYearDetailId = fyd.Id";
+                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].ViewEmployeeInformation ve ON pfd.EmployeeId = ve.EmployeeId";
+                sqlText += @" WHERE 1=1 AND pfd.IsArchive = 0 AND fyd.PeriodName IS NOT NULL ";
+                sqlText += "AND PFHeaderId = 1";             
+
                 string cField = "";
                 if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
                 {
@@ -517,7 +544,6 @@ FROM PFHeader pfd
                             ,pfd.EmployeerPFValue
                             ,pfd.BasicSalary
                             ,pfd.GrossSalary
-
                             ,pfd.IsDistribute
                             ,pfd.Post
                             ,ISNULL(pfd.IsBankDeposited,0) IsBankDeposited
@@ -2222,43 +2248,37 @@ And ProjectId = @ProjectId
                 #region SqlText
 
                 sqlText = @"
-select 
-ts.PFHeaderId
-,PeriodName
-,Project
-,Section
-,SectionOrderNo
-,Designation
-,DesignationOrderNo
-,ts.BasicAmount
-,ts.EmployeePFValue
-,ts.EmployeerPFValue
-,ts.TotalAmount
-  from (
-select distinct ts.PFHeaderId
-,fs.PeriodName
-,p.Name Project
-,st.Name Section
-,st.OrderNo SectionOrderNo
-,dgg.Name Designation
-,dgg.Serial DesignationOrderNo
-,count(ts.employeeid)TotalEmployee
-,sum(isnull(ts.BasicSalary,0))BasicAmount
-,sum(isnull(ts.EmployeePFValue,0))EmployeePFValue
-,sum(isnull(ts.EmployeerPFValue,0))EmployeerPFValue
-,sum(isnull(ts.EmployeePFValue,0)+isnull(ts.EmployeerPFValue,0))TotalAmount
-,0 EmployeeContribution
-,0 EmployerContribution
-from PFDetails ts 
+                    select 
+                    ts.PFHeaderId
+                    ,PeriodName
+                    ,Project
+                    ,Section
+                    ,SectionOrderNo
+                    ,ts.BasicAmount
+                    ,ts.EmployeePFValue
+                    ,ts.EmployeerPFValue
+                    ,ts.TotalAmount
+                      from (
+                    select distinct ts.PFHeaderId
+                    ,fs.PeriodName
+                    ,p.Name Project
+                    ,st.Name Section
+                    ,st.OrderNo SectionOrderNo
+                    ,count(ts.employeeid)TotalEmployee
+                    ,sum(isnull(ts.BasicSalary,0))BasicAmount
+                    ,sum(isnull(ts.EmployeePFValue,0))EmployeePFValue
+                    ,sum(isnull(ts.EmployeerPFValue,0))EmployeerPFValue
+                    ,sum(isnull(ts.EmployeePFValue,0)+isnull(ts.EmployeerPFValue,0))TotalAmount
+                    ,0 EmployeeContribution
+                    ,0 EmployerContribution
+                    from PFDetails ts 
 
-";
-                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[Section] st on ts.SectionId = st.Id";
-                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[Project] p on ts.ProjectId = p.Id ";
-                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[FiscalYearDetail] fs on ts.FiscalYearDetailId = fs.Id";
-                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[Designation] dg on ts.DesignationId = dg.Id";
-                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[DesignationGroup] dgg on dg.DesignationGroupId = dgg.Id";
-                sqlText += @" WHERE  1=1 
-";
+                     LEFT OUTER JOIN ShampanPF_DB.[dbo].[Section] st on ts.SectionId = st.Id 
+                     LEFT OUTER JOIN ShampanPF_DB.[dbo].[Project] p on ts.ProjectId = p.Id  
+                     LEFT OUTER JOIN ShampanPF_DB.[dbo].[FiscalYearDetail] fs on ts.FiscalYearDetailId = fs.Id 
+                     LEFT OUTER JOIN ShampanPF_DB.[dbo].[Designation] dg on ts.DesignationId = dg.Id
+
+                    ";
 
                 string cField = "";
                 if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
@@ -2280,9 +2300,9 @@ from PFDetails ts
 
                 sqlText += @" 
 group by  ts.PFHeaderId
-,fs.PeriodName  ,p.Name  ,st.Name  ,st.OrderNo  ,dgg.Name  ,dgg.Serial  
+,fs.PeriodName  ,p.Name  ,st.Name  ,st.OrderNo 
 ) as ts
-order by SectionOrderNo,DesignationOrderNo ";
+order by SectionOrderNo ";
 
                 SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
                 da.SelectCommand.Transaction = transaction;
