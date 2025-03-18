@@ -2395,8 +2395,8 @@ order by SectionOrderNo ";
 
                 #region sql statement
                 sqlText = @"
-                 Select ve.Code EmpCode, ve.EmpName, JoinDate, ISNULL(GradeSL,99) GradeSL,ISNULL(Grade+'-'+StepName,'NA') 
-                 Grade,Designation,Department,Section,Project,ve.BasicSalary, ISNULL(EmployeePFValue,0) Amount,0 FYDId 
+                 Select ve.Code EmpCode, ve.EmpName, JoinDate, 0 GradeSL,0 
+                 Grade,Designation,Department,Section,Project,ve.BasicSalary, ISNULL((ve.BasicSalary*.1),0) Amount,0 FYDId 
                  from " + hrmDB + ".[dbo].ViewEmployeeInformation ve Left Outer Join " + pfDB + @".[dbo].[PFDetails] pd on pd.EmployeeId=ve.EmployeeId and FiscalYearDetailId=@FiscalYearDetailId  where 1=1 AND ve.IsActive=1 AND ve.IsArchive=0 ";
 
                 //if (ProjectId != "0_0" && ProjectId != "0" && ProjectId != "" && ProjectId != "null" && ProjectId != null)
@@ -2700,7 +2700,7 @@ order by SectionOrderNo ";
                      {
                          empVM = _dalemp.ViewSelectAllEmployee(item["EmpCode"].ToString(), null, null, null, null, null, null, null, null).FirstOrDefault();
 
-                         if (empVM == null || empVM.Id == null)
+                         if (empVM == null)
                          {
                              throw new ArgumentNullException("Employee Code " + item["EmpCode"].ToString() + " Not in System", "Employee Code " + item["EmpCode"].ToString() + " Not in System");
                          }
@@ -2842,7 +2842,7 @@ order by SectionOrderNo ";
                 cmd = new SqlCommand(sqlText, currConn, transaction);
                 cmd.Parameters.AddWithValue("@PFHeaderId", vm.PFHeaderId);
                 cmd.Parameters.AddWithValue("@FiscalYearDetailId", vm.FiscalYearDetailId);
-                cmd.Parameters.AddWithValue("@PFStructureId", vm.PFStructureId);
+                cmd.Parameters.AddWithValue("@PFStructureId", 1);
                 cmd.Parameters.AddWithValue("@ProjectId", vm.ProjectId);
                 cmd.Parameters.AddWithValue("@DepartmentId", vm.DepartmentId);
                 cmd.Parameters.AddWithValue("@SectionId", vm.SectionId);

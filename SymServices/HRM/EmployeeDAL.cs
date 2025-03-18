@@ -295,8 +295,8 @@ WHERE IsArchive=0
                 #region sql statement
 
                 sqlText = @"SELECT
-Id
-,Code,(MiddleName+' '+ ISNULL(LastName,'')) Name
+EmployeeId
+,Code,EMpName as Name
    FROM ViewEmployeeInformation
 WHERE IsArchive=0 and IsActive=1
     ORDER BY Code
@@ -312,7 +312,7 @@ WHERE IsArchive=0 and IsActive=1
                 while (dr.Read())
                 {
                     vm = new EmployeeInfoVM();
-                    vm.Id = dr["Id"].ToString();
+                    vm.Id = dr["EmployeeId"].ToString();
                     vm.Code = dr["Code"].ToString();
                     vm.EmpName = dr["Code"].ToString() + "~" + dr["Name"].ToString();
                     VMs.Add(vm);
