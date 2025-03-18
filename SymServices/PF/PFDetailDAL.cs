@@ -65,29 +65,56 @@ namespace SymServices.PF
 
                 #region sql statement
                 #region SqlText
+//                sqlText = @"
+//                            SELECT  
+//                            pfd.Id
+//                            ,pfd.PFHeaderId
+//                            ,pfd.EmployeeId
+//                            ,fyd.PeriodName
+//                            ,ve.EmpName 
+//                            ,ve.Code 
+//                            ,pf.Code PFHeaderCode
+//                            ,ve.Designation
+//                            ,ve.Department
+//                            ,ve.Section
+//                            ,ve.Project
+//                            ,pfd.BasicSalary
+//                            ,pfd.GrossSalary
+//                            ,pfd.EmployeePFValue
+//                            ,pfd.EmployeerPFValue
+//                            FROM PFDetails pfd
+//                            LEFT OUTER JOIN PFHeader pf ON pf.Id=pfd.PFHeaderId 
+//";
+//                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[FiscalYearDetail] fyd ON pfd.FiscalYearDetailId=fyd.Id";
+//                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].ViewEmployeeInformation ve ON pfd.EmployeeId=ve.EmployeeId";
+//                sqlText += @" WHERE  1=1  AND pfd.IsArchive = 0 and fyd.PeriodName is not null
+//";
                 sqlText = @"
-SELECT  
-pfd.Id
-,pfd.PFHeaderId
-,pfd.EmployeeId
-,fyd.PeriodName
-,ve.EmpName 
-,ve.Code 
-,pf.Code PFHeaderCode
-,ve.Designation
-,ve.Department
-,ve.Section
-,ve.Project
-,pfd.BasicSalary
-,pfd.EmployeePFValue
-,pfd.EmployeerPFValue
-FROM PFDetails pfd
-LEFT OUTER JOIN PFHeader pf ON pf.Id=pfd.PFHeaderId 
+            SELECT  
+            pfd.Id
+            ,pfd.PFHeaderId
+            ,pfd.EmployeeId
+            ,fyd.PeriodName
+            ,ve.EmpName 
+            ,ve.Code 
+            ,pf.Code PFHeaderCode
+            ,ve.Designation
+            ,ve.Department
+            ,ve.Section
+            ,ve.Project
+            ,pfd.BasicSalary
+            ,pfd.GrossSalary
+            ,pfd.EmployeePFValue
+            ,pfd.EmployeerPFValue
+            FROM PFDetails pfd
+            LEFT OUTER JOIN PFHeader pf ON pf.Id = pfd.PFHeaderId 
 ";
-                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[FiscalYearDetail] fyd ON pfd.FiscalYearDetailId=fyd.Id";
-                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].ViewEmployeeInformation ve ON pfd.EmployeeId=ve.EmployeeId";
-                sqlText += @" WHERE  1=1  AND pfd.IsArchive = 0 and fyd.PeriodName is not null
-";
+
+                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[FiscalYearDetail] fyd ON pfd.FiscalYearDetailId = fyd.Id";
+                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].ViewEmployeeInformation ve ON pfd.EmployeeId = ve.EmployeeId";
+                sqlText += @" WHERE 1=1 AND pfd.IsArchive = 0 AND fyd.PeriodName IS NOT NULL ";
+                sqlText += "AND PFHeaderId = 1";             
+
                 string cField = "";
                 if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
                 {
@@ -503,41 +530,40 @@ FROM PFHeader pfd
                 #region sql statement
                 #region SqlText
                 sqlText = @"
-SELECT
-pfd.Id
-,pfd.PFHeaderId
-,pfd.FiscalYearDetailId
-,pfd.PFStructureId
-,pfd.ProjectId
-,pfd.DepartmentId
-,pfd.SectionId
-,pfd.DesignationId
-,pfd.EmployeeId
-,pfd.EmployeePFValue
-,pfd.EmployeerPFValue
-,pfd.BasicSalary
-,pfd.GrossSalary
+                            SELECT
+                            pfd.Id
+                            ,pfd.PFHeaderId
+                            ,pfd.FiscalYearDetailId
+                            ,pfd.PFStructureId
+                            ,pfd.ProjectId
+                            ,pfd.DepartmentId
+                            ,pfd.SectionId
+                            ,pfd.DesignationId
+                            ,pfd.EmployeeId
+                            ,pfd.EmployeePFValue
+                            ,pfd.EmployeerPFValue
+                            ,pfd.BasicSalary
+                            ,pfd.GrossSalary
+                            ,pfd.IsDistribute
+                            ,pfd.Post
+                            ,ISNULL(pfd.IsBankDeposited,0) IsBankDeposited
 
-,pfd.IsDistribute
-,pfd.Post
-,ISNULL(pfd.IsBankDeposited,0) IsBankDeposited
-
-,pfd.Remarks
-,pfd.IsActive
-,pfd.IsArchive
-,pfd.CreatedBy
-,pfd.CreatedAt
-,pfd.CreatedFrom
-,pfd.LastUpdateBy
-,pfd.LastUpdateAt
-,pfd.LastUpdateFrom
-,pfh.code
+                            ,pfd.Remarks
+                            ,pfd.IsActive
+                            ,pfd.IsArchive
+                            ,pfd.CreatedBy
+                            ,pfd.CreatedAt
+                            ,pfd.CreatedFrom
+                            ,pfd.LastUpdateBy
+                            ,pfd.LastUpdateAt
+                            ,pfd.LastUpdateFrom
+                            ,pfh.code
 
 
-FROM PFDetails pfd
-left outer join  PFHeader pfh on pfh.id=pfd.PFHeaderId
-WHERE  1=1
-";
+                            FROM PFDetails pfd
+                            left outer join  PFHeader pfh on pfh.id=pfd.PFHeaderId
+                            WHERE  1=1
+                            ";
                 if (Id > 0)
                 {
                     sqlText += @" and pfd.Id=@Id";
@@ -883,40 +909,7 @@ WHERE  1=1
                 #endregion
 
 
-                SettingDAL _settingDal = new SettingDAL();
-                string PFFromPayroll = _settingDal.settingValue("PF", "FromPayroll").Trim();
-
-                if (PFFromPayroll == "N")
-                {
-                    SalaryProcessDAL _salaryProcessDAL = new SalaryProcessDAL();
-                    FiscalYearVM fiscalYearVM = new FiscalYearVM();
-                    fiscalYearVM.BranchId = 1;
-                    fiscalYearVM.CreatedAt = DateTime.Now.ToString("yyyyMMddhh:mm");
-                    fiscalYearVM.CreatedBy = "Admin";
-                    fiscalYearVM.CreatedFrom = "";
-
-                   _salaryProcessDAL.SalaryPreProcessNew(Convert.ToInt32(FiscalYearDetailId), ProjectId, "0_0", "0_0", "0_0"
-                , "0_0", "0_0", fiscalYearVM, "PF", "EGCB", null, null);
-
-                }
-
-                #region Checkpoint
-
-
-                #region PF Check
-
-                decimal PFAmount = 0;
-                PFAmount = GetPFAmount(Convert.ToInt32(FiscalYearDetailId), null, null, null);
-
-                if (PFAmount <= 0)
-                {
-                    retResults[1] = "No Data Found in Salary PF!";
-                    return retResults;
-                }
-
-                #endregion
-
-                #endregion
+           
                 if (chkAll == "true")
                 {
                     string fyid = @"Select Id from " + hrmDB + ".dbo.Project";
@@ -1024,109 +1017,47 @@ WHERE  1=1
                 #endregion
 
                 #endregion
-
-
-                SettingDAL _settingDal = new SettingDAL();
-                string PFFromPayroll = _settingDal.settingValue("PF", "FromPayroll").Trim();
-
-                if (PFFromPayroll == "N")
-                {
-                    SalaryProcessDAL _salaryProcessDAL = new SalaryProcessDAL();
-                    FiscalYearVM fiscalYearVM = new FiscalYearVM();
-                    fiscalYearVM.BranchId = 1;
-                    fiscalYearVM.CreatedAt = DateTime.Now.ToString("yyyyMMddhh:mm");
-                    fiscalYearVM.CreatedBy = "Admin";
-                    fiscalYearVM.CreatedFrom = "";
-
-                   _salaryProcessDAL.SalaryPreProcessNew(Convert.ToInt32(FiscalYearDetailId), ProjectId, "0_0", "0_0", "0_0"
-                , "0_0", "0_0", fiscalYearVM, "PF", "EGCB", null, null);
-
-                }
-
             
-                #region PF Check
-
-                decimal PFAmount = 0;
-                PFAmount = GetPFAmount(Convert.ToInt32(FiscalYearDetailId), null, null, null);
-
-                if (PFAmount <= 0)
-                {
-                    retResults[1] = "No Data Found in Salary PF!";
-                    return retResults;
-                }
-
-                #endregion
 
                 #region Single Project
                 sqlText = " ";
                 sqlText = @"
                         insert into PFHeader (
-                        Code       
-                        ,[Id]
-                        ,[FiscalYearDetailId]
-                        ,[ProjectId]
-                        ,[EmployeePFValue]
-                        ,[EmployeerPFValue]
-                        ,[Post]
-                        ,[Remarks]
-                        ,[IsActive]
-                        ,[IsArchive]
-                        ,[CreatedBy]
-                        ,[CreatedAt]
-                        ,[CreatedFrom]
-                        ,[LastUpdateBy]
-                        ,[LastUpdateAt]
-                        ,[LastUpdateFrom]
-                        )
-                        select 
-                        @code
-                        ,@Id
-                        ,@FiscalYearDetailId
-                        ,SalaryPFDetail.ProjectId
-                        ,sum(SalaryPFDetail.PFValue)PFValue
-                        ,sum(SalaryPFDetailEmployeer.PFValue)EmployeerPF
-                        ,@Post
-                        ,'-' Remarks
-                        ,@IsActive
-                        ,@IsArchive
-                        ,@CreatedBy
-                        ,@CreatedAt
-                        ,@CreatedFrom
-                        ,@LastUpdateBy
-                        ,@LastUpdateAt
-                        ,@LastUpdateFrom
-                        ";
-                sqlText += " FROM " + hrmDB + ".dbo.SalaryPFDetail";
-                sqlText += " left outer join " + hrmDB + ".dbo.SalaryPFDetailEmployeer on " + hrmDB +
-                           ".dbo.SalaryPFDetail.EmployeeId=" + hrmDB + ".dbo.SalaryPFDetailEmployeer.EmployeeId";
-                sqlText += " AND " + hrmDB + ".dbo.SalaryPFDetail.FiscalYearDetailId=" + hrmDB +
-                           ".dbo.SalaryPFDetailEmployeer.FiscalYearDetailId";
-                sqlText += " WHERE 1=1 ";
-                sqlText += " AND " + hrmDB + ".dbo.SalaryPFDetail.FiscalYearDetailId=@FiscalYearDetailId";
-                sqlText += " AND " + hrmDB + ".dbo.SalaryPFDetail.ProjectId=@ProjectId";
-                sqlText += " AND " + hrmDB + ".dbo.SalaryPFDetailEmployeer.FiscalYearDetailId=@FiscalYearDetailId";
-                sqlText += " AND " + hrmDB + ".dbo.SalaryPFDetail.PFValue>0";
-                sqlText += " AND " + hrmDB + ".dbo.SalaryPFDetail.EmployeeStatus not in('left')";
-                sqlText += " AND " + hrmDB + ".dbo.SalaryPFDetailEmployeer.PFValue>0";
-
-                sqlText += @"  AND " + hrmDB + @".dbo.SalaryPFDetail.EmployeeId not in(select distinct  EmployeeId 
-                from  " + hrmDB + @".dbo.SalaryEmployee
-                where FiscalYearDetailId=@FiscalYearDetailId 
-               -- and ProjectId=@ProjectId
-                and IsHold=1)";
-
-                sqlText += @"
-
-                group by SalaryPFDetail.ProjectId
-                --,SalaryPFDetail.Remarks
-                --,SalaryPFDetail.IsActive
-                --,SalaryPFDetail.IsArchive
-                --,SalaryPFDetail.CreatedBy
-                --,SalaryPFDetail.CreatedAt
-                --,SalaryPFDetail.CreatedFrom
-                --,SalaryPFDetail.LastUpdateBy
-                --,SalaryPFDetail.LastUpdateAt
-                --,SalaryPFDetail.LastUpdateFrom
+                            Code       
+                            ,[Id]
+                            ,[FiscalYearDetailId]
+                            ,[ProjectId]
+                            ,[EmployeePFValue]
+                            ,[EmployeerPFValue]
+                            ,[Post]
+                            ,[Remarks]
+                            ,[IsActive]
+                            ,[IsArchive]
+                            ,[CreatedBy]
+                            ,[CreatedAt]
+                            ,[CreatedFrom]
+                            ,[LastUpdateBy]
+                            ,[LastUpdateAt]
+                            ,[LastUpdateFrom]
+                            )
+                            select 
+                            @code
+                            ,@Id
+                            ,@FiscalYearDetailId
+                            ,@ProjectId
+                            ,sum(ei.BasicSalary*.10)PFValue
+                            ,sum(ei.BasicSalary*.10)EmployeerPF
+                            ,@Post
+                            ,'-' Remarks
+                            ,@IsActive
+                            ,@IsArchive
+                            ,@CreatedBy
+                            ,@CreatedAt
+                            ,@CreatedFrom
+                            ,@LastUpdateBy
+                            ,@LastUpdateAt
+                            ,@LastUpdateFrom
+                            FROM ViewEmployeeInformation ei
                 ";
 
                 string deleteCurrent =
@@ -1209,78 +1140,66 @@ WHERE  1=1
 
                 sqlText = "";
                 sqlText = @"
---declare @FiscalYearDetailId as varchar(20)
-declare @FiscalYear as varchar(20)
-declare @FiscalYearId as varchar(20)
---set @FiscalYearDetailId=9
-select @FiscalYear=[year],@FiscalYearId=FiscalYearId from " + hrmDB +
+                --declare @FiscalYearDetailId as varchar(20)
+                declare @FiscalYear as varchar(20)
+                declare @FiscalYearId as varchar(20)
+                --set @FiscalYearDetailId=9
+                select @FiscalYear=[year],@FiscalYearId=FiscalYearId from " + hrmDB +
                           ".dbo.FiscalYearDetail where Id=@FiscalYearDetailId";
                 sqlText += @" SELECT @FiscalYear,@FiscalYearId";
 
                 sqlText += @" DELETE FROM PFDetails  WHERE FiscalYearDetailId=@FiscalYearDetailId and ProjectId=@ProjectId
 ------------------------------------------------
 ------------------------------------------------
-declare @maxId as int
-set @maxId = 0 
-select @maxId=isnull(max(Id),0) from PFDetails
+                declare @maxId as int
+                set @maxId = 0 
+                select @maxId=isnull(max(Id),0) from PFDetails
 
 
-DBCC CHECKIDENT ('PFDetails', RESEED, @maxId)
-------------------------------------------------
-------------------------------------------------
-INSERT INTO PFDetails 
-(
-FiscalYearDetailId
-,PFStructureId
-,ProjectId
-,DepartmentId
-,SectionId
-,DesignationId
-,EmployeeId
-,EmployeePFValue,EmployeerPFValue
-,IsDistribute
-,Remarks,IsActive,IsArchive,CreatedBy,CreatedAt,CreatedFrom,LastUpdateBy,LastUpdateAt,LastUpdateFrom
-,BasicSalary,GrossSalary
-,Post
-,PFHeaderId
-) 
-
-select 
-@FiscalYearDetailId
-,SalaryPFDetail.PFStructureId
-,SalaryPFDetail.ProjectId
-,SalaryPFDetail.DepartmentId
-,SalaryPFDetail.SectionId
-,SalaryPFDetail.DesignationId
-,SalaryPFDetail.EmployeeId
-,SalaryPFDetail.PFValue,SalaryPFDetailEmployeer.PFValue
-,0
-,SalaryPFDetail.Remarks,SalaryPFDetail.IsActive
-,SalaryPFDetail.IsArchive
-,SalaryPFDetail.CreatedBy,SalaryPFDetail.CreatedAt
-,SalaryPFDetail.CreatedFrom,SalaryPFDetail.LastUpdateBy,SalaryPFDetail.LastUpdateAt
-,SalaryPFDetail.LastUpdateFrom
-,SalaryPFDetail.BasicSalary
-,SalaryPFDetail.GrossSalary
-,@Post
-,@PFHeaderId
-";
-                sqlText += " FROM " + hrmDB + ".dbo.SalaryPFDetail";
-                sqlText += " left outer join " + hrmDB + ".dbo.SalaryPFDetailEmployeer on " + hrmDB +
-                           ".dbo.SalaryPFDetail.EmployeeId=" + hrmDB + ".dbo.SalaryPFDetailEmployeer.EmployeeId";
-                sqlText += " AND " + hrmDB + ".dbo.SalaryPFDetail.FiscalYearDetailId=" + hrmDB +
-                           ".dbo.SalaryPFDetailEmployeer.FiscalYearDetailId";
-                sqlText += " WHERE 1=1 ";
-                sqlText += " AND " + hrmDB + ".dbo.SalaryPFDetail.FiscalYearDetailId=@FiscalYearDetailId";
-                sqlText += " AND " + hrmDB + ".dbo.SalaryPFDetail.ProjectId=@ProjectId";
-                sqlText += " AND " + hrmDB + ".dbo.SalaryPFDetailEmployeer.FiscalYearDetailId=@FiscalYearDetailId";
-                sqlText += " AND " + hrmDB + ".dbo.SalaryPFDetail.PFValue>0";
-                sqlText += " AND " + hrmDB + ".dbo.SalaryPFDetailEmployeer.PFValue>0";
-                sqlText += @"  AND " + hrmDB + @".dbo.SalaryPFDetail.EmployeeId not in(select distinct  EmployeeId 
-                from  " + hrmDB + @".dbo.SalaryEmployee
-                where FiscalYearDetailId=@FiscalYearDetailId 
-               -- and ProjectId=@ProjectId
-                and IsHold=1)";
+                DBCC CHECKIDENT ('PFDetails', RESEED, @maxId)
+                ------------------------------------------------
+                ------------------------------------------------
+                INSERT INTO PFDetails 
+                (
+                FiscalYearDetailId
+                ,PFStructureId
+                ,ProjectId
+                ,DepartmentId
+                ,SectionId
+                ,DesignationId
+                ,EmployeeId
+                ,EmployeePFValue,EmployeerPFValue
+                ,IsDistribute
+                ,Remarks,IsActive,IsArchive,CreatedBy,CreatedAt,CreatedFrom,LastUpdateBy,LastUpdateAt,LastUpdateFrom
+                ,BasicSalary,GrossSalary
+                ,Post
+                ,PFHeaderId
+                ) 
+                select 
+                1
+                ,1
+                ,Vei.ProjectId
+                ,Vei.DepartmentId
+                ,Vei.SectionId
+                ,Vei.DesignationId
+                ,Vei.EmployeeId
+                ,(Vei.BasicSalary *.10) PFValue
+                ,(Vei.BasicSalary *.10) PFValuee
+                ,0
+                ,Vei.Remarks
+                ,Vei.IsActive
+                ,Vei.IsArchive
+                ,Vei.CreatedBy
+                ,Vei.CreatedAt
+                ,Vei.CreatedFrom
+                ,Vei.LastUpdateBy
+                ,Vei.LastUpdateAt
+                ,Vei.LastUpdateFrom
+                ,Vei.BasicSalary
+                ,Vei.GrossSalary
+                ,1
+                ,1
+                FROM ViewEmployeeInfo Vei";
                 #endregion SqlText
 
                 #region SqlExecution
@@ -1351,18 +1270,18 @@ select
                 sqlText = " ";
                 sqlText += @"
 --------------------------------
-----declare @EmployeeId as varchar(100)
-----declare @FiscalYearDetailId as int
+            ----declare @EmployeeId as varchar(100)
+            ----declare @FiscalYearDetailId as int
 
-----set @EmployeeId = '1_1'
-----set @FiscalYearDetailId = 1054
+            ----set @EmployeeId = '1_1'
+            ----set @FiscalYearDetailId = 1054
 --------------------------------
 
-select ISNULL(sum(PFValue),0) Amount from SalaryPFDetail 
-WHERE 1=1
-AND FiscalYearDetailId=@FiscalYearDetailId
-AND EmployeeId=@EmployeeId
-";
+                select ISNULL(sum(PFValue),0) Amount from SalaryPFDetail 
+                WHERE 1=1
+                AND FiscalYearDetailId=@FiscalYearDetailId
+                AND EmployeeId=@EmployeeId
+                ";
                 if (string.IsNullOrWhiteSpace(EmployeeId))
                 {
                     sqlText = sqlText.Replace("EmployeeId=@EmployeeId", "1=1");
@@ -1651,10 +1570,7 @@ AND EmployeeId=@EmployeeId
                     sqlText += "  Post=@Post";
 
                     sqlText += @" where Id=@Id
-
-update PFDetails set Post=@Post where PFHeaderId=@Id
-
-";
+                    update PFDetails set Post=@Post where PFHeaderId=@Id";
                     SqlCommand cmdUpdate = new SqlCommand(sqlText, currConn, transaction);
                     cmdUpdate.Parameters.AddWithValue("@Id", vm.Id);
                     cmdUpdate.Parameters.AddWithValue("@Post", true);
@@ -1729,23 +1645,23 @@ update PFDetails set Post=@Post where PFHeaderId=@Id
                 string hrmDB = _dbsqlConnection.HRMDB;
                 #region sql statement
                 sqlText = @"
-SELECT  
-pfd.Id
-,pfd.EmployeeId
-,ve.EmpName 
-,ve.Code 
-,ve.Designation
-,ve.Department
-,ve.Section
-,ve.Project
-,pfd.EmployeePFValue
-,pfd.EmployeerPFValue
-,fyd.PeriodName
-,fyd.PeriodStart
-,fyd.PeriodEnd
-,pfd.FiscalYearDetailId
-FROM PFDetails pfd
-";
+                            SELECT  
+                            pfd.Id
+                            ,pfd.EmployeeId
+                            ,ve.EmpName 
+                            ,ve.Code 
+                            ,ve.Designation
+                            ,ve.Department
+                            ,ve.Section
+                            ,ve.Project
+                            ,pfd.EmployeePFValue
+                            ,pfd.EmployeerPFValue
+                            ,fyd.PeriodName
+                            ,fyd.PeriodStart
+                            ,fyd.PeriodEnd
+                            ,pfd.FiscalYearDetailId
+                            FROM PFDetails pfd
+                            ";
                 sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[FiscalYearDetail] fyd ON pfd.FiscalYearDetailId=fyd.Id";
                 sqlText += "  LEFT OUTER JOIN " + hrmDB + ".[dbo].ViewEmployeeInformation ve ON pfd.EmployeeId=ve.EmployeeId";
                 sqlText += @" WHERE  1=1  AND pfd.IsArchive = 0
@@ -1848,24 +1764,24 @@ FROM PFDetails pfd
                 #region sql statement
                 #region SqlText
                 sqlText = @"
---------declare @FiscalYearDetailIdTo as int
---------
---------set @FiscalYearDetailIdTo = 1042
+                        --------declare @FiscalYearDetailIdTo as int
+                        --------
+                        --------set @FiscalYearDetailIdTo = 1042
 
-SELECT
-SUM(pfd.EmployeePFValue) TotalEmployeeContribution
-,SUM(pfd.EmployeerPFValue) TotalEmployerContribution
+                        SELECT
+                        SUM(pfd.EmployeePFValue) TotalEmployeeContribution
+                        ,SUM(pfd.EmployeerPFValue) TotalEmployerContribution
 
-FROM PFDetails pfd
-WHERE  1=1
-AND pfd.Post = 1
---------AND pfd.IsDistribute = 0
-AND pfd.FiscalYearDetailId <= @FiscalYearDetailIdTo
+                        FROM PFDetails pfd
+                        WHERE  1=1
+                        AND pfd.Post = 1
+                        --------AND pfd.IsDistribute = 0
+                        AND pfd.FiscalYearDetailId <= @FiscalYearDetailIdTo
 
-HAVING 1=1
-AND sum(pfd.EmployeePFValue) > 0
-AND sum(pfd.EmployeerPFValue) > 0
-";
+                        HAVING 1=1
+                        AND sum(pfd.EmployeePFValue) > 0
+                        AND sum(pfd.EmployeerPFValue) > 0
+                        ";
 
                 #endregion SqlText
                 #region SqlExecution
@@ -1956,138 +1872,138 @@ AND sum(pfd.EmployeerPFValue) > 0
 
 
 
-                sqlText = @"
---------declare @FiscalYearDetailIdTo as int
---------declare @EmployeeId as nvarchar(100)
---------
---------set @FiscalYearDetailIdTo = 1042
---------set @EmployeeId = '1_1'
+                                    sqlText = @"
+                    --------declare @FiscalYearDetailIdTo as int
+                    --------declare @EmployeeId as nvarchar(100)
+                    --------
+                    --------set @FiscalYearDetailIdTo = 1042
+                    --------set @EmployeeId = '1_1'
 
----------------------PF Summary Contribution--------------------
-----------------------------------------------------------------
-;WITH PFSummaryContribution AS
-(
-SELECT
- pfd.ProjectId
-,pfd.DepartmentId
-,pfd.SectionId
-,pfd.DesignationId
-,pfd.EmployeeId
-,SUM(pfd.EmployeePFValue) EmployeeTotalContribution
-,SUM(pfd.EmployeerPFValue) EmployerTotalContribution
-,0 EmployerProfit
-,0 EmployeeProfit
+                    ---------------------PF Summary Contribution--------------------
+                    ----------------------------------------------------------------
+                    ;WITH PFSummaryContribution AS
+                    (
+                    SELECT
+                     pfd.ProjectId
+                    ,pfd.DepartmentId
+                    ,pfd.SectionId
+                    ,pfd.DesignationId
+                    ,pfd.EmployeeId
+                    ,SUM(pfd.EmployeePFValue) EmployeeTotalContribution
+                    ,SUM(pfd.EmployeerPFValue) EmployerTotalContribution
+                    ,0 EmployerProfit
+                    ,0 EmployeeProfit
 
-FROM PFDetails pfd
-WHERE  1=1
-AND pfd.Post = 0
---------AND pfd.IsDistribute = 0
-AND pfd.FiscalYearDetailId <= @FiscalYearDetailIdTo
-AND pfd.EmployeeId=@EmployeeId
+                    FROM PFDetails pfd
+                    WHERE  1=1
+                    AND pfd.Post = 0
+                    --------AND pfd.IsDistribute = 0
+                    AND pfd.FiscalYearDetailId <= @FiscalYearDetailIdTo
+                    AND pfd.EmployeeId=@EmployeeId
 
-GROUP BY pfd.EmployeeId
-,pfd.ProjectId
-,pfd.DepartmentId
-,pfd.SectionId
-,pfd.DesignationId
+                    GROUP BY pfd.EmployeeId
+                    ,pfd.ProjectId
+                    ,pfd.DepartmentId
+                    ,pfd.SectionId
+                    ,pfd.DesignationId
 
-HAVING 1=1
-AND SUM(pfd.EmployeePFValue) > 0
-AND SUM(pfd.EmployeerPFValue) > 0
+                    HAVING 1=1
+                    AND SUM(pfd.EmployeePFValue) > 0
+                    AND SUM(pfd.EmployeerPFValue) > 0
 
-UNION ALL
+                    UNION ALL
 
-SELECT
- '' ProjectId
-,'' DepartmentId
-,'' SectionId
-,'' DesignationId
-,pfd.EmployeeId
-,pfd.EmployeeContribution EmployeeTotalContribution
-,pfd.EmployerContribution EmployerTotalContribution
-,pfd.EmployerProfit
-,pfd.EmployeeProfit
-FROM EmployeePFOpeinig pfd
-WHERE  1=1
-AND pfd.EmployeeId=@EmployeeId
-)
+                    SELECT
+                     '' ProjectId
+                    ,'' DepartmentId
+                    ,'' SectionId
+                    ,'' DesignationId
+                    ,pfd.EmployeeId
+                    ,pfd.EmployeeContribution EmployeeTotalContribution
+                    ,pfd.EmployerContribution EmployerTotalContribution
+                    ,pfd.EmployerProfit
+                    ,pfd.EmployeeProfit
+                    FROM EmployeePFOpeinig pfd
+                    WHERE  1=1
+                    AND pfd.EmployeeId=@EmployeeId
+                    )
 
 
 ---------------------PFStatus-----------------------------------
 ----------------------------------------------------------------
-, PFStatus AS
-(
-SELECT 
-ROW_NUMBER() OVER (PARTITION BY pf.EmployeeId ORDER BY pf.FiscalYearDetailId ASC) AS RowNumber
-, pf.* 
-FROM PFDetails pf
-WHERE 1=1
-AND pf.EmployeePFValue > 0
-)
+                    , PFStatus AS
+                    (
+                    SELECT 
+                    ROW_NUMBER() OVER (PARTITION BY pf.EmployeeId ORDER BY pf.FiscalYearDetailId ASC) AS RowNumber
+                    , pf.* 
+                    FROM PFDetails pf
+                    WHERE 1=1
+                    AND pf.EmployeePFValue > 0
+                    )
 
 
-, PFStart AS
-(
-SELECT * FROM PFStatus
-WHERE RowNumber = 1
-)
+                    , PFStart AS
+                    (
+                    SELECT * FROM PFStatus
+                    WHERE RowNumber = 1
+                    )
 
 
----------------------PFEndStatus--------------------------------
+                    ---------------------PFEndStatus--------------------------------
+                    ----------------------------------------------------------------
+                    , PFEndStatus AS
+                    (
+                    SELECT 
+
+                    ROW_NUMBER() OVER (PARTITION BY pf.EmployeeId ORDER BY pf.FiscalYearDetailId DESC) AS RowNumber
+                    , pf.* 
+
+                    from PFDetails pf
+
+                    WHERE 1=1
+
+                    AND pf.EmployeePFValue > 0
+                    )
+
+                    , PFEnd AS
+                    (
+                    SELECT * FROM PFEndStatus
+                    WHERE RowNumber = 1
+                    )
+
+
 ----------------------------------------------------------------
-, PFEndStatus AS
-(
-SELECT 
-
-ROW_NUMBER() OVER (PARTITION BY pf.EmployeeId ORDER BY pf.FiscalYearDetailId DESC) AS RowNumber
-, pf.* 
-
-from PFDetails pf
-
-WHERE 1=1
-
-AND pf.EmployeePFValue > 0
-)
-
-, PFEnd AS
-(
-SELECT * FROM PFEndStatus
-WHERE RowNumber = 1
-)
-
-
 ----------------------------------------------------------------
-----------------------------------------------------------------
-SELECT 
- ve.EmpName 
-,ve.Code 
-,ve.Designation
-,ve.Department
-,ve.Section
-,ve.Project
-,ve.JoinDate
-,ve.DateOfPermanent
-,ve.LeftDate
-, fyd.PeriodStart PFStartDate
-, fyd.PeriodName
+                SELECT 
+                 ve.EmpName 
+                ,ve.Code 
+                ,ve.Designation
+                ,ve.Department
+                ,ve.Section
+                ,ve.Project
+                ,ve.JoinDate
+                ,ve.DateOfPermanent
+                ,ve.LeftDate
+                , fyd.PeriodStart PFStartDate
+                , fyd.PeriodName
 
-, fydEnd.PeriodEnd PFEndDate
-, fydEnd.PeriodName PFEndPeriodName
+                , fydEnd.PeriodEnd PFEndDate
+                , fydEnd.PeriodName PFEndPeriodName
 
-,pfsc.ProjectId
-,pfsc.DepartmentId
-,pfsc.SectionId
-,pfsc.DesignationId
-,pfsc.EmployeeId
-,IsNull(pfsc.EmployeeTotalContribution,0)   EmployeeTotalContribution
-,IsNull(pfsc.EmployerTotalContribution,0)  EmployerTotalContribution
-,IsNull(pd.EmployerProfit,0)+pfsc.EmployerProfit  EmployerProfit 
-,IsNull(pd.EmployeeProfit,0)+pfsc.EmployeeProfit EmployeeProfit
+                ,pfsc.ProjectId
+                ,pfsc.DepartmentId
+                ,pfsc.SectionId
+                ,pfsc.DesignationId
+                ,pfsc.EmployeeId
+                ,IsNull(pfsc.EmployeeTotalContribution,0)   EmployeeTotalContribution
+                ,IsNull(pfsc.EmployerTotalContribution,0)  EmployerTotalContribution
+                ,IsNull(pd.EmployerProfit,0)+pfsc.EmployerProfit  EmployerProfit 
+                ,IsNull(pd.EmployeeProfit,0)+pfsc.EmployeeProfit EmployeeProfit
 
-FROM PFSummaryContribution pfsc
-LEFT OUTER JOIN PFStart pfs ON pfs.EmployeeId = pfsc.EmployeeId
-LEFT OUTER JOIN PFEnd pfe ON pfe.EmployeeId = pfsc.EmployeeId
-";
+                FROM PFSummaryContribution pfsc
+                LEFT OUTER JOIN PFStart pfs ON pfs.EmployeeId = pfsc.EmployeeId
+                LEFT OUTER JOIN PFEnd pfe ON pfe.EmployeeId = pfsc.EmployeeId
+                ";
                 sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].ViewEmployeeInformation ve ON pfsc.EmployeeId=ve.EmployeeId";
                 sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].FiscalYearDetail fyd ON pfs.FiscalYearDetailId = fyd.Id";
                 sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].FiscalYearDetail fydEnd ON pfe.FiscalYearDetailId = fydEnd.Id";
@@ -2332,43 +2248,37 @@ And ProjectId = @ProjectId
                 #region SqlText
 
                 sqlText = @"
-select 
-ts.PFHeaderId
-,PeriodName
-,Project
-,Section
-,SectionOrderNo
-,Designation
-,DesignationOrderNo
-,ts.BasicAmount
-,ts.EmployeePFValue
-,ts.EmployeerPFValue
-,ts.TotalAmount
-  from (
-select distinct ts.PFHeaderId
-,fs.PeriodName
-,p.Name Project
-,st.Name Section
-,st.OrderNo SectionOrderNo
-,dgg.Name Designation
-,dgg.Serial DesignationOrderNo
-,count(ts.employeeid)TotalEmployee
-,sum(isnull(ts.BasicSalary,0))BasicAmount
-,sum(isnull(ts.EmployeePFValue,0))EmployeePFValue
-,sum(isnull(ts.EmployeerPFValue,0))EmployeerPFValue
-,sum(isnull(ts.EmployeePFValue,0)+isnull(ts.EmployeerPFValue,0))TotalAmount
-,0 EmployeeContribution
-,0 EmployerContribution
-from PFDetails ts 
+                    select 
+                    ts.PFHeaderId
+                    ,PeriodName
+                    ,Project
+                    ,Section
+                    ,SectionOrderNo
+                    ,ts.BasicAmount
+                    ,ts.EmployeePFValue
+                    ,ts.EmployeerPFValue
+                    ,ts.TotalAmount
+                      from (
+                    select distinct ts.PFHeaderId
+                    ,fs.PeriodName
+                    ,p.Name Project
+                    ,st.Name Section
+                    ,st.OrderNo SectionOrderNo
+                    ,count(ts.employeeid)TotalEmployee
+                    ,sum(isnull(ts.BasicSalary,0))BasicAmount
+                    ,sum(isnull(ts.EmployeePFValue,0))EmployeePFValue
+                    ,sum(isnull(ts.EmployeerPFValue,0))EmployeerPFValue
+                    ,sum(isnull(ts.EmployeePFValue,0)+isnull(ts.EmployeerPFValue,0))TotalAmount
+                    ,0 EmployeeContribution
+                    ,0 EmployerContribution
+                    from PFDetails ts 
 
-";
-                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[Section] st on ts.SectionId = st.Id";
-                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[Project] p on ts.ProjectId = p.Id ";
-                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[FiscalYearDetail] fs on ts.FiscalYearDetailId = fs.Id";
-                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[Designation] dg on ts.DesignationId = dg.Id";
-                sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].[DesignationGroup] dgg on dg.DesignationGroupId = dgg.Id";
-                sqlText += @" WHERE  1=1 
-";
+                     LEFT OUTER JOIN ShampanPF_DB.[dbo].[Section] st on ts.SectionId = st.Id 
+                     LEFT OUTER JOIN ShampanPF_DB.[dbo].[Project] p on ts.ProjectId = p.Id  
+                     LEFT OUTER JOIN ShampanPF_DB.[dbo].[FiscalYearDetail] fs on ts.FiscalYearDetailId = fs.Id 
+                     LEFT OUTER JOIN ShampanPF_DB.[dbo].[Designation] dg on ts.DesignationId = dg.Id
+
+                    ";
 
                 string cField = "";
                 if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
@@ -2390,9 +2300,9 @@ from PFDetails ts
 
                 sqlText += @" 
 group by  ts.PFHeaderId
-,fs.PeriodName  ,p.Name  ,st.Name  ,st.OrderNo  ,dgg.Name  ,dgg.Serial  
+,fs.PeriodName  ,p.Name  ,st.Name  ,st.OrderNo 
 ) as ts
-order by SectionOrderNo,DesignationOrderNo ";
+order by SectionOrderNo ";
 
                 SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
                 da.SelectCommand.Transaction = transaction;
@@ -2485,8 +2395,8 @@ order by SectionOrderNo,DesignationOrderNo ";
 
                 #region sql statement
                 sqlText = @"
-                 Select ve.Code EmpCode, ve.EmpName, JoinDate, ISNULL(GradeSL,99) GradeSL,ISNULL(Grade+'-'+StepName,'NA') 
-                 Grade,Designation,Department,Section,Project,ve.BasicSalary, ISNULL(EmployeePFValue,0) Amount,0 FYDId 
+                 Select ve.Code EmpCode, ve.EmpName, JoinDate, 0 GradeSL,0 
+                 Grade,Designation,Department,Section,Project,ve.BasicSalary, ISNULL((ve.BasicSalary*.1),0) Amount,0 FYDId 
                  from " + hrmDB + ".[dbo].ViewEmployeeInformation ve Left Outer Join " + pfDB + @".[dbo].[PFDetails] pd on pd.EmployeeId=ve.EmployeeId and FiscalYearDetailId=@FiscalYearDetailId  where 1=1 AND ve.IsActive=1 AND ve.IsArchive=0 ";
 
                 //if (ProjectId != "0_0" && ProjectId != "0" && ProjectId != "" && ProjectId != "null" && ProjectId != null)
@@ -2790,7 +2700,7 @@ order by SectionOrderNo,DesignationOrderNo ";
                      {
                          empVM = _dalemp.ViewSelectAllEmployee(item["EmpCode"].ToString(), null, null, null, null, null, null, null, null).FirstOrDefault();
 
-                         if (empVM == null || empVM.Id == null)
+                         if (empVM == null)
                          {
                              throw new ArgumentNullException("Employee Code " + item["EmpCode"].ToString() + " Not in System", "Employee Code " + item["EmpCode"].ToString() + " Not in System");
                          }
@@ -2932,7 +2842,7 @@ order by SectionOrderNo,DesignationOrderNo ";
                 cmd = new SqlCommand(sqlText, currConn, transaction);
                 cmd.Parameters.AddWithValue("@PFHeaderId", vm.PFHeaderId);
                 cmd.Parameters.AddWithValue("@FiscalYearDetailId", vm.FiscalYearDetailId);
-                cmd.Parameters.AddWithValue("@PFStructureId", vm.PFStructureId);
+                cmd.Parameters.AddWithValue("@PFStructureId", 1);
                 cmd.Parameters.AddWithValue("@ProjectId", vm.ProjectId);
                 cmd.Parameters.AddWithValue("@DepartmentId", vm.DepartmentId);
                 cmd.Parameters.AddWithValue("@SectionId", vm.SectionId);

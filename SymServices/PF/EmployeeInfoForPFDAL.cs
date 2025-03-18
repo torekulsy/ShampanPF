@@ -367,18 +367,9 @@ namespace SymServices.PF
                 #endregion open connection and transaction
 
                 #region sql statement
-                sqlText = @"SELECT 
-                            d.Name AS Department, 
-                            dg.Name AS Designation, 
-                            p.Name AS Project, 
-                            s.Name AS Section 
-                            ,rr.*
-                            FROM EmployeeInfo rr
-                            LEFT OUTER JOIN Department d ON d.Id = rr.Department
-                            LEFT OUTER JOIN Designation dg ON dg.Id = rr.Designation
-                            LEFT OUTER JOIN Project p ON p.Id = rr.Project 
-                            LEFT OUTER JOIN Section s ON s.Id = rr.Section  
-                            WHERE rr.IsActive = 1 AND rr.IsArchive = 0";
+                sqlText = @"SELECT ve.EmployeeId, ve.Code, ve.EmpName, ve.DateOfBirth, ve.JoinDate, ve.LeftDate, ve.Branch, ve.Grade, ISNULL(ve.GrossSalary, 0) AS GrossSalary, ISNULL(ve.BasicSalary, 0) AS BasicSalary, ve.PhotoName, 
+                         ve.IsActive, ve.IsArchive, ve.LastUpdateAt, ve.LastUpdateBy, ve.LastUpdateFrom, ve.Other1, ve.Remarks, ve.Department, ve.Designation, ve.Section, ve.Project
+                         FROM ViewEmployeeInformation AS ve";
 
                 SqlCommand objComm = new SqlCommand();
                 objComm.Connection = currConn;
@@ -389,9 +380,9 @@ namespace SymServices.PF
                 while (dr.Read())
                 {
                     EmployeeInfoForPFVM = new EmployeeInfoForPFVM();
-                    EmployeeInfoForPFVM.Id = Convert.ToInt32(dr["Id"]);
+                    EmployeeInfoForPFVM.Id = Convert.ToInt32(dr["EmployeeId"]);
                     EmployeeInfoForPFVM.Code = dr["Code"].ToString();
-                    EmployeeInfoForPFVM.Name = dr["Name"].ToString();
+                    EmployeeInfoForPFVM.Name = dr["EmpName"].ToString();
                     EmployeeInfoForPFVM.Department = dr["Department"].ToString();
                     EmployeeInfoForPFVM.Designation = dr["Designation"].ToString();
                     EmployeeInfoForPFVM.Project = dr["Project"].ToString();
@@ -733,12 +724,12 @@ namespace SymServices.PF
                     //vEmployeeInfoVM.DateOfBirth = dr["DateOfBirth"].ToString();
                     //vEmployeeInfoVM.JoinDate = dr["JoinDate"].ToString();
                     //vEmployeeInfoVM.ResignDate = dr["ResignDate"].ToString();
-                    //vEmployeeInfoVM.Department = dr["Department"].ToString();
-                    //vEmployeeInfoVM.Designation = dr["Designation"].ToString();
-                    //vEmployeeInfoVM.Section = dr["Section"].ToString();
-                    //vEmployeeInfoVM.Project = dr["Project"].ToString();
-                    //vEmployeeInfoVM.BasicSalary = Convert.ToDecimal(dr["BasicSalary"].ToString());
-                    //vEmployeeInfoVM.GrossSalary = Convert.ToDecimal(dr["GrossSalary"].ToString());
+                    vEmployeeInfoVM.Department = dr["Department"].ToString();
+                    vEmployeeInfoVM.Designation = dr["Designation"].ToString();
+                    vEmployeeInfoVM.Section = dr["Section"].ToString();
+                    vEmployeeInfoVM.Project = dr["Project"].ToString();
+                    vEmployeeInfoVM.BasicSalary = Convert.ToDecimal(dr["BasicSalary"].ToString());
+                    vEmployeeInfoVM.GrossSalary = Convert.ToDecimal(dr["GrossSalary"].ToString());
                     vEmployeeInfoVM.Remarks = dr["Remarks"].ToString();                   
                     retResults = Insert(vEmployeeInfoVM, currConn, transaction);
                 }
@@ -846,9 +837,7 @@ namespace SymServices.PF
                     sqlText += @" INSERT INTO EmployeeInfo
                                 (
                                  Code                                
-                                ,Name  
-                                ,DateOfBirth
-                                ,JoinDate
+                                ,Name                                
                                 ,Department
                                 ,Designation
                                 ,Project
@@ -866,9 +855,7 @@ namespace SymServices.PF
                                 ,LastUpdateFrom
                                 ) VALUES (
                                  @Code
-                                ,@Name 
-                                ,@DateOfBirth
-                                ,@JoinDate
+                                ,@Name                                
                                 ,@Department
                                 ,@Designation
                                 ,@Project
@@ -901,7 +888,7 @@ namespace SymServices.PF
                         cmdInsert.Parameters.AddWithValue("@GrossSalary", vEmployeeInfoVM.GrossSalary);
                         cmdInsert.Parameters.AddWithValue("@Remarks", vEmployeeInfoVM.Remarks);
                         cmdInsert.Parameters.AddWithValue("@IsActive", true);
-                        cmdInsert.Parameters.AddWithValue("@IsArchive", true);
+                        cmdInsert.Parameters.AddWithValue("@IsArchive", false);
                         cmdInsert.Parameters.AddWithValue("@CreatedBy", "");
                         cmdInsert.Parameters.AddWithValue("@CreatedAt", "");
                         cmdInsert.Parameters.AddWithValue("@CreatedFrom", "");

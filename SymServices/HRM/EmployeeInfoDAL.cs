@@ -1116,41 +1116,24 @@ Where 1=1
                     while (dr.Read())
                     {
                         empViewVM = new ViewEmployeeInfoVM();
-                        empViewVM.Id = dr["Id"].ToString();
-                        empViewVM.Code = dr["Code"].ToString();
-                        empViewVM.Salutation_E = dr["Salutation_E"].ToString();
-                        empViewVM.MiddleName = dr["MiddleName"].ToString();
-                        empViewVM.LastName = dr["LastName"].ToString();
+                        empViewVM.EmployeeId = dr["EmployeeId"].ToString();
+                        empViewVM.Code = dr["Code"].ToString();             
                         empViewVM.EmpName = dr["EmpName"].ToString();
-                        empViewVM.JoinDate = dr["JoinDate"].ToString();
-                        empViewVM.ProbationEnd = dr["ProbationEnd"].ToString();
-                        empViewVM.DateOfPermanent = dr["DateOfPermanent"].ToString();
-                        empViewVM.EmploymentStatus = dr["EmploymentStatus"].ToString();
-                        empViewVM.EmploymentType = dr["EmploymentType"].ToString();
+                        empViewVM.JoinDate = dr["JoinDate"].ToString();                       
                         empViewVM.Project = dr["Project"].ToString();
-                        empViewVM.Branch = dr["Branch"].ToString();
                         empViewVM.Department = dr["Department"].ToString();
-                        empViewVM.Section = dr["Section"].ToString();
-                        empViewVM.TransferDate = dr["TransferDate"].ToString();
+                        empViewVM.Section = dr["Section"].ToString();                      
                         empViewVM.Designation = dr["Designation"].ToString();
-                        empViewVM.Grade = dr["Grade"].ToString();
-                        empViewVM.IsPromotion = Convert.ToBoolean(dr["IsPromotion"]);
-                        empViewVM.PromotionDate = dr["PromotionDate"].ToString();
+                        empViewVM.Grade = dr["Grade"].ToString();                      
                         empViewVM.ProjectId = dr["ProjectId"].ToString();
                         empViewVM.SectionId = dr["SectionId"].ToString();
                         empViewVM.DepartmentId = dr["DepartmentId"].ToString();
-                        empViewVM.DesignationId = dr["DesignationId"].ToString();
-                        empViewVM.GradeId = dr["GradeId"].ToString();
-                        empViewVM.BranchId = dr["BranchId"].ToString();
+                        empViewVM.DesignationId = dr["DesignationId"].ToString();                    
                         empViewVM.IsActive = Convert.ToBoolean(dr["IsActive"]);
-                        empViewVM.IsArchive = Convert.ToBoolean(dr["IsArchive"]);
-                        empViewVM.AttnUserId = dr["AttnUserId"].ToString();
+                        empViewVM.IsArchive = Convert.ToBoolean(dr["IsArchive"]);                   
                         empViewVM.GrossSalary = Convert.ToDecimal(dr["GrossSalary"]);
-                        empViewVM.BasicSalary = Convert.ToDecimal(dr["BasicSalary"]);
-                        empViewVM.EmployeeId = dr["EmployeeId"].ToString();
-                        empViewVM.EmpEmail = dr["Email"].ToString();
-                        empViewVM.PFStructureId = dr["PFStructureId"].ToString();
-                    //    empViewVM.Password = dr["Password"].ToString();
+                        empViewVM.BasicSalary = Convert.ToDecimal(dr["BasicSalary"]);                    
+                    
                         employeeInfoVMs.Add(empViewVM);
                     }
                     dr.Close();
