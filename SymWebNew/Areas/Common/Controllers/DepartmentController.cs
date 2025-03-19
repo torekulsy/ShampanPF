@@ -4,10 +4,25 @@ using SymRepository.Common;
 using SymViewModel.Common;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
-
+using CrystalDecisions.CrystalReports.Engine;
+using Newtonsoft.Json;
+using OfficeOpenXml;
+using SymOrdinary;
+using SymRepository.Common;
+using SymRepository.HRM;
+using SymViewModel.Common;
+using SymViewModel.HRM;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Web;
 namespace SymWebUI.Areas.Common.Controllers
 {
     [Authorize]
@@ -15,6 +30,7 @@ namespace SymWebUI.Areas.Common.Controllers
     {
         //
         // GET: /Common/Bank/
+        ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
         SymUserRoleRepo _reposur = new SymUserRoleRepo();
         DepartmentRepo _repo = new DepartmentRepo();
         //#region Actions
@@ -229,5 +245,75 @@ namespace SymWebUI.Areas.Common.Controllers
        
         //#endregion Actions
 
+
+        public ActionResult Import()
+        {
+            return View();
+        }
+        public ActionResult ExportExcell(ExportImportVM VM)
+        {
+            identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+            SymUserRoleRepo _reposur = new SymUserRoleRepo();
+            DataTable dt = new DataTable();
+            ExcelPackage excel = new ExcelPackage();
+
+            try
+            {
+
+                ExportImportRepo _repo = new ExportImportRepo();
+
+                dt = _repo.SelectDepartmentInfo(VM);
+
+                #region Excel
+
+                string filename = "DepartmentInfo Data";
+                var workSheet = excel.Workbook.Worksheets.Add("Departmentinfo Data");
+                workSheet.Cells[1, 1].LoadFromDataTable(dt, true);
+                using (var memoryStream = new MemoryStream())
+                {
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    //Response.AddHeader("content-disposition", "attachment;  filename=" + FileName);
+                    Response.AddHeader("content-disposition", "attachment;  filename=" + filename + ".xlsx");
+                    excel.SaveAs(memoryStream);
+                    memoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+
+                #endregion
+
+            }
+            catch (Exception ex)
+            {
+                Session["result"] = "Fail" + "~" + ex.Message.Replace("\r", "").Replace("\n", "");
+                return RedirectToAction("Index");
+            }
+
+            finally { }
+            return RedirectToAction("Index");
+
+            // return Json(rVM, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult UploadExcel(DepartmentVM vm)
+        {
+            string[] result = new string[6];
+            try
+            {
+                vm.CreatedAt = DateTime.Now.ToString("yyyyMMddHHmmss");
+                vm.CreatedBy = identity.Name;
+                vm.CreatedFrom = identity.WorkStationIP;
+
+                result = new DepartmentRepo().ImportExcelFile(vm);
+                Session["result"] = result[0] + "~" + result[1];
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                Session["result"] = result[0] + "~" + result[1];
+                FileLogger.Log(result[0].ToString() + Environment.NewLine + result[2].ToString() + Environment.NewLine + result[5].ToString(), this.GetType().Name, result[4].ToString() + Environment.NewLine + result[3].ToString());
+                return RedirectToAction("Index");
+            }
+        }
     }
 }

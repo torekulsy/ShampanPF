@@ -630,5 +630,31 @@ namespace SymRepository.Common
                throw ex;
            }
        }
+
+       public DataTable SelectDepartmentInfo(ExportImportVM VM)
+       {
+           try
+           {
+               return new ExportImportDAL().SelectDepartmentInfo(VM);
+           }
+           catch (Exception ex)
+           {
+               throw ex;
+           }
+
+       }
+
+       public DataTable SelectAssetInfo(ExportImportVM VM)
+       {
+           try
+           {
+               return new ExportImportDAL().SelectAssetInfo(VM);
+           }
+           catch (Exception ex)
+           {
+               throw ex;
+           }
+
+       }
     }
 }

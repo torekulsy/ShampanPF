@@ -101,5 +101,17 @@ namespace SymRepository.Common
             }
         }
         #endregion
+        public string[] ImportExcelFile(AssetVM vm)
+        {
+            try
+            {
+                AssetDAL dal = new AssetDAL();
+                return dal.InsertExportData(vm, null, null);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

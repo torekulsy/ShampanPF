@@ -10360,7 +10360,134 @@ VALUES (@Id,@EmployeeId,@PFStructureId,@PFValue,@IsFixed,
             return retResults;
             #endregion
         }
+        public DataTable SelectDepartmentInfo(ExportImportVM VM)
+        {
+            #region Variables
+            SqlConnection currConn = null;
+            string sqlText = "";
+            DataTable dt = new DataTable();
+            #endregion
 
+            try
+            {
+                #region open connection and transaction
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
+                #endregion open connection and transaction
+                #region sql statement
+                #region sqlText
+                sqlText = @"
+               SELECT *
+                FROM Department
+                ";
+
+
+                #endregion
+                #region More Conditions
+
+
+                #endregion
+
+
+                SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
+
+
+                da.Fill(dt);
+
+
+                #endregion
+            }
+            #region catch
+            catch (SqlException sqlex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+            #endregion
+            #region finally
+            finally
+            {
+                if (currConn != null)
+                {
+                    if (currConn.State == ConnectionState.Open)
+                    {
+                        currConn.Close();
+                    }
+                }
+            }
+            #endregion
+            return dt;
+        }
+        public DataTable SelectAssetInfo(ExportImportVM VM)
+        {
+            #region Variables
+            SqlConnection currConn = null;
+            string sqlText = "";
+            DataTable dt = new DataTable();
+            #endregion
+
+            try
+            {
+                #region open connection and transaction
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
+                #endregion open connection and transaction
+                #region sql statement
+                #region sqlText
+                sqlText = @"
+               SELECT *
+                FROM Asset
+                ";
+
+
+                #endregion
+                #region More Conditions
+
+
+                #endregion
+
+
+                SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
+
+
+                da.Fill(dt);
+
+
+                #endregion
+            }
+            #region catch
+            catch (SqlException sqlex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+            #endregion
+            #region finally
+            finally
+            {
+                if (currConn != null)
+                {
+                    if (currConn.State == ConnectionState.Open)
+                    {
+                        currConn.Close();
+                    }
+                }
+            }
+            #endregion
+            return dt;
+        }
     }
 
 }

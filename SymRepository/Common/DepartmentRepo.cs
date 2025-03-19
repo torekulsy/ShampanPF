@@ -205,5 +205,17 @@ namespace SymRepository.Common
                 throw ex;
             }
         }
+        public string[] ImportExcelFile(DepartmentVM vm)
+        {
+            try
+            {
+                DepartmentDAL dal = new DepartmentDAL();
+                return dal.InsertExportData(vm, null, null);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

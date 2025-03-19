@@ -1,10 +1,12 @@
-﻿using SymOrdinary;
+﻿using Excel;
+using SymOrdinary;
 using SymViewModel.Common;
 using SymViewModel.HRM;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 namespace SymServices.Common
 {
     public class DepartmentDAL
@@ -239,69 +241,82 @@ Where  id=@Id  and IsArchive=0
                 CommonDAL cdal = new CommonDAL();
                 bool check = false;
                 string tableName = "Department";	
-                string[] fieldName = { "Code", "Name" };
+                string[] fieldName = { "Code"};
                 string[] fieldValue = { vm.Code.Trim(), vm.Name.Trim() };
                 for (int i = 0; i < fieldName.Length; i++)
                 {
                     check = cdal.CheckDuplicateInInsertWithBranch(tableName, fieldName[i], fieldValue[i], vm.BranchId, currConn, transaction);
                     if (check == true)
                     {
-                        retResults[1] = "This " + fieldName[i] + ": \"" + fieldValue[i] + "\" already used!";
-                        throw new ArgumentNullException("This " + fieldName[i] + ": \"" + fieldValue[i] + "\" already used!", "");
+
+                        sqlText = "  ";
+                        sqlText += @"UPDATE Department SET 
+                                    BranchId = @BranchId, 
+                                    Code = @Code, 
+                                    Name = @Name, 
+                                    Remarks = @Remarks, 
+                                    IsActive = @IsActive, 
+                                    IsArchive = @IsArchive, 
+                                    CreatedBy = @CreatedBy, 
+                                    CreatedAt = @CreatedAt, 
+                                    CreatedFrom = @CreatedFrom
+                                WHERE Id = @Id;
+                                ";
+                        SqlCommand cmdInsert = new SqlCommand(sqlText, currConn);
+                        cmdInsert.Parameters.AddWithValue("@Id", vm.Id);
+                        cmdInsert.Parameters.AddWithValue("@BranchId", vm.BranchId);
+                        cmdInsert.Parameters.AddWithValue("@Code", vm.Code.Trim());
+                        cmdInsert.Parameters.AddWithValue("@Name", vm.Name.Trim());
+                        cmdInsert.Parameters.AddWithValue("@Remarks", vm.Remarks ?? Convert.DBNull);
+                        cmdInsert.Parameters.AddWithValue("@IsActive", true);
+                        cmdInsert.Parameters.AddWithValue("@IsArchive", false);
+                        cmdInsert.Parameters.AddWithValue("@CreatedBy", vm.CreatedBy);
+                        cmdInsert.Parameters.AddWithValue("@CreatedAt", vm.CreatedAt);
+                        cmdInsert.Parameters.AddWithValue("@CreatedFrom", vm.CreatedFrom);
+                        cmdInsert.Transaction = transaction;
+                        cmdInsert.ExecuteNonQuery();                       
+                    }
+                    else
+                    {
+                        #region Save
+                        sqlText = "Select isnull(max(convert(int,  SUBSTRING(CONVERT(varchar(10), id),CHARINDEX('_', CONVERT(varchar(10), id))+1,10))),0) from Department where BranchId=@BranchId";
+                        SqlCommand cmd2 = new SqlCommand(sqlText, currConn);
+                        cmd2.Parameters.AddWithValue("@BranchId", vm.BranchId);
+                        cmd2.Transaction = transaction;
+                        var exeRes = cmd2.ExecuteScalar();
+                        int count = Convert.ToInt32(exeRes);
+                        vm.Id = vm.BranchId.ToString() + "_" + (count + 1);
+                        //int foundId = (int)objfoundId;
+                        if (1 == 1)
+                        {
+                            sqlText = "  ";
+                            sqlText += @" INSERT INTO Department(Id,BranchId,Code,Name,Remarks,IsActive,IsArchive,CreatedBy,CreatedAt,CreatedFrom) 
+                                VALUES (@Id,@BranchId,@Code,@Name,@Remarks,@IsActive,@IsArchive,@CreatedBy,@CreatedAt,@CreatedFrom) 
+                                        ";
+                            SqlCommand cmdInsert = new SqlCommand(sqlText, currConn);
+                            cmdInsert.Parameters.AddWithValue("@Id", vm.Id);
+                            cmdInsert.Parameters.AddWithValue("@BranchId", vm.BranchId);
+                            cmdInsert.Parameters.AddWithValue("@Code", vm.Code.Trim());
+                            cmdInsert.Parameters.AddWithValue("@Name", vm.Name.Trim());
+                            cmdInsert.Parameters.AddWithValue("@Remarks", vm.Remarks ?? Convert.DBNull);
+                            cmdInsert.Parameters.AddWithValue("@IsActive", true);
+                            cmdInsert.Parameters.AddWithValue("@IsArchive", false);
+                            cmdInsert.Parameters.AddWithValue("@CreatedBy", vm.CreatedBy);
+                            cmdInsert.Parameters.AddWithValue("@CreatedAt", vm.CreatedAt);
+                            cmdInsert.Parameters.AddWithValue("@CreatedFrom", vm.CreatedFrom);
+                            cmdInsert.Transaction = transaction;
+                            cmdInsert.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            retResults[1] = "This Department already used!";
+                            throw new ArgumentNullException("Please Input Department Value", "");
+                        }
+                        #endregion Save
                     }
                 }
                 #endregion Exist	
-                //#region Exist
-                //sqlText = "  ";
-                //sqlText += " SELECT COUNT(DISTINCT Id)Id FROM Department ";
-                //sqlText += " WHERE EmployeeId=@EmployeeId And Name=@Name";
-                //SqlCommand cmdExist = new SqlCommand(sqlText, currConn);
-                //cmdExist.Transaction = transaction;
-                //cmdExist.Parameters.AddWithValue("@EmployeeId", DepartmentVM.EmployeeId);
-                //cmdExist.Parameters.AddWithValue("@Name", DepartmentVM.Name);
-                //object objfoundId = cmdExist.ExecuteScalar();
-                //if (objfoundId == null)
-                //{
-                //    retResults[1] = "Please Input Employee Travel Value";
-                //    retResults[3] = sqlText;
-                //    throw new ArgumentNullException("Please Input Employee Travel Value", "");
-                //}
-                //#endregion Exist
-                #region Save
-                sqlText = "Select isnull(max(convert(int,  SUBSTRING(CONVERT(varchar(10), id),CHARINDEX('_', CONVERT(varchar(10), id))+1,10))),0) from Department where BranchId=@BranchId";
-                SqlCommand cmd2 = new SqlCommand(sqlText, currConn);
-                cmd2.Parameters.AddWithValue("@BranchId", vm.BranchId);
-                cmd2.Transaction = transaction;
-				var exeRes = cmd2.ExecuteScalar();
-				int count = Convert.ToInt32(exeRes);
-                vm.Id = vm.BranchId.ToString() + "_" + (count + 1);
-                //int foundId = (int)objfoundId;
-                if (1 == 1)
-                {
-                    sqlText = "  ";
-                    sqlText += @" INSERT INTO Department(Id,BranchId,Code,Name,Remarks,IsActive,IsArchive,CreatedBy,CreatedAt,CreatedFrom) 
-                                VALUES (@Id,@BranchId,@Code,@Name,@Remarks,@IsActive,@IsArchive,@CreatedBy,@CreatedAt,@CreatedFrom) 
-                                        ";
-                    SqlCommand cmdInsert = new SqlCommand(sqlText, currConn);
-                    cmdInsert.Parameters.AddWithValue("@Id", vm.Id);
-                    cmdInsert.Parameters.AddWithValue("@BranchId", vm.BranchId);
-                    cmdInsert.Parameters.AddWithValue("@Code", vm.Code.Trim());
-                    cmdInsert.Parameters.AddWithValue("@Name", vm.Name.Trim());
-                    cmdInsert.Parameters.AddWithValue("@Remarks", vm.Remarks ?? Convert.DBNull);
-                    cmdInsert.Parameters.AddWithValue("@IsActive", true);
-                    cmdInsert.Parameters.AddWithValue("@IsArchive", false);
-                    cmdInsert.Parameters.AddWithValue("@CreatedBy", vm.CreatedBy);
-                    cmdInsert.Parameters.AddWithValue("@CreatedAt", vm.CreatedAt);
-                    cmdInsert.Parameters.AddWithValue("@CreatedFrom", vm.CreatedFrom);
-                    cmdInsert.Transaction = transaction;
-                    cmdInsert.ExecuteNonQuery();
-                }
-                else
-                {
-                    retResults[1] = "This Department already used!";
-                    throw new ArgumentNullException("Please Input Department Value", "");
-                }
-                #endregion Save
+               
                 #region Commit
                 if (Vtransaction == null)
                 {
@@ -1393,5 +1408,141 @@ Id
             #endregion
             return VMs;
         }
+
+
+        public string[] InsertExportData(DepartmentVM paramVM, SqlConnection VcurrConn, SqlTransaction Vtransaction)
+        {
+            #region Initializ
+            string sqlText = "";
+            int Id = 0;
+            string[] retResults = new string[6];
+            retResults[0] = "Fail";//Success or Fail
+            retResults[1] = "Fail";// Success or Fail Message
+            retResults[2] = Id.ToString();// Return Id
+            retResults[3] = sqlText; //  SQL Query
+            retResults[4] = "ex"; //catch ex
+            retResults[5] = "ImportExcelFile"; //Method Name
+
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+            #endregion
+
+            #region try
+            try
+            {
+                DataSet ds = new DataSet();
+                DataTable dt = new DataTable();
+                #region Excel Reader
+
+                string FileName = paramVM.File.FileName;
+                string Fullpath = AppDomain.CurrentDomain.BaseDirectory + "Files\\Export\\" + FileName;
+                File.Delete(Fullpath);
+                if (paramVM.File != null && paramVM.File.ContentLength > 0)
+                {
+                    paramVM.File.SaveAs(Fullpath);
+                }
+
+
+                FileStream stream = File.Open(Fullpath, FileMode.Open, FileAccess.Read);
+                IExcelDataReader reader = null;
+                if (FileName.EndsWith(".xls"))
+                {
+                    reader = ExcelReaderFactory.CreateBinaryReader(stream);
+                }
+                else if (FileName.EndsWith(".xlsx"))
+                {
+                    reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                }
+                reader.IsFirstRowAsColumnNames = true;
+                ds = reader.AsDataSet();
+
+
+                dt = ds.Tables[0];
+                reader.Close();
+
+                File.Delete(Fullpath);
+                #endregion
+
+                #region open connection and transaction
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+                if (transaction == null)
+                {
+                    transaction = currConn.BeginTransaction("");
+                }
+                #endregion open connection and transaction
+                #region Save
+                string Code = "";
+
+                DepartmentVM vDepartmentVM = new DepartmentVM();
+
+                #region Assign Data
+                int i = 0;
+                foreach (DataRow dr in dt.Rows)
+                {
+                    vDepartmentVM.Id = dr["Id"].ToString();
+                    vDepartmentVM.BranchId = Convert.ToInt32(dr["BranchId"].ToString());
+                    vDepartmentVM.Code = dr["Code"].ToString();
+                    vDepartmentVM.Name = dr["Name"].ToString();
+                    vDepartmentVM.OrderNo = Convert.ToInt32(dr["OrderNo"].ToString());
+                    vDepartmentVM.Remarks = dr["Remarks"].ToString();
+                    //vDepartmentVM.IsActive =Convert.ToBoolean (dr["IsActive"].ToString());
+                    //vDepartmentVM.IsArchive = Convert.ToBoolean(dr["IsArchive"].ToString());
+                    vDepartmentVM.CreatedAt = paramVM.CreatedAt;
+                    vDepartmentVM.CreatedBy = paramVM.CreatedBy;
+                    vDepartmentVM.CreatedFrom = paramVM.CreatedFrom;
+                    //vDepartmentVM.LastUpdateBy = dr["LastUpdateBy"].ToString();
+                    //vDepartmentVM.LastUpdateAt = dr["LastUpdateAt"].ToString();
+                    //vDepartmentVM.LastUpdateFrom = dr["LastUpdateFrom"].ToString();
+                    retResults = Insert(vDepartmentVM, currConn, transaction);
+                }
+                #endregion
+
+                #region Data Insert
+
+
+                if (retResults[0] == "Fail")
+                {
+                    throw new ArgumentNullException("", retResults[1]);
+                }
+                #endregion
+                #endregion
+                #region Commit
+                if (transaction != null)
+                {
+                    transaction.Commit();
+                }
+                #endregion Commit
+
+                #region SuccessResult
+                retResults[0] = "Success";
+                retResults[1] = "Data Save Successfully.";
+                //retResults[2] = vm.Id.ToString();
+                #endregion SuccessResult
+            }
+            #endregion try
+            #region Catch and Finall
+            catch (Exception ex)
+            {
+                retResults[4] = ex.Message.ToString(); //catch ex
+                transaction.Rollback();
+                return retResults;
+            }
+            finally
+            {
+            }
+            #endregion
+            #region Results
+            return retResults;
+            #endregion
+
+        }
+
     }
 }
