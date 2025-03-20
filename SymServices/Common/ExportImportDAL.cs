@@ -10472,6 +10472,247 @@ VALUES (@Id,@EmployeeId,@PFStructureId,@PFValue,@IsFixed,
             #endregion
             return dt;
         }
+
+
+
+        public DataTable SelectDesignationGroupInfo(ExportImportVM VM)
+        {
+            #region Variables
+            SqlConnection currConn = null;
+            string sqlText = "";
+            DataTable dt = new DataTable();
+            #endregion
+
+            try
+            {
+                #region open connection and transaction
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
+                #endregion open connection and transaction
+                #region sql statement
+                #region sqlText
+                sqlText = @"SELECT Serial,BranchId,Code,Name,Remarks
+                            FROM DesignationGroup";
+                #endregion
+                #region More Conditions
+                #endregion
+                SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
+                da.Fill(dt);
+                #endregion
+            }
+            #region catch
+            catch (SqlException sqlex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+            #endregion
+            #region finally
+            finally
+            {
+                if (currConn != null)
+                {
+                    if (currConn.State == ConnectionState.Open)
+                    {
+                        currConn.Close();
+                    }
+                }
+            }
+            #endregion
+            return dt;
+        }
+
+
+        public DataTable SelectBranchInfo(ExportImportVM VM)
+        {
+            #region Variables
+            SqlConnection currConn = null;
+            string sqlText = "";
+            DataTable dt = new DataTable();
+            #endregion
+
+            try
+            {
+                #region open connection and transaction
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
+                #endregion open connection and transaction
+                #region sql statement
+                #region sqlText
+                sqlText = @" SELECT 
+	                         CompanyId,
+	                         Code,
+	                         Name,
+	                         Address,
+	                         District,
+	                         Division,
+	                         Country,
+	                         City,
+	                         PostalCode,
+	                         Phone,
+	                         Mobile
+	                         ,Fax
+	                         ,Remarks
+                         FROM Branch";
+                #endregion
+                #region More Conditions
+                #endregion
+                SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
+                da.Fill(dt);
+                #endregion
+            }
+            #region catch
+            catch (SqlException sqlex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+            #endregion
+            #region finally
+            finally
+            {
+                if (currConn != null)
+                {
+                    if (currConn.State == ConnectionState.Open)
+                    {
+                        currConn.Close();
+                    }
+                }
+            }
+            #endregion
+            return dt;
+        }
+
+        public DataTable SelectSectionInfo(ExportImportVM VM)
+        {
+            #region Variables
+            SqlConnection currConn = null;
+            string sqlText = "";
+            DataTable dt = new DataTable();
+            #endregion
+
+            try
+            {
+                #region open connection and transaction
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
+                #endregion open connection and transaction
+                #region sql statement
+                #region sqlText
+                sqlText = @"SELECT 
+	                       BranchId
+                          ,Code
+                          ,Name
+                          ,Remarks
+                          ,OrderNo
+                          FROM Section";
+                #endregion
+                #region More Conditions
+                #endregion
+                SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
+                da.Fill(dt);
+                #endregion
+            }
+            #region catch
+            catch (SqlException sqlex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+            #endregion
+            #region finally
+            finally
+            {
+                if (currConn != null)
+                {
+                    if (currConn.State == ConnectionState.Open)
+                    {
+                        currConn.Close();
+                    }
+                }
+            }
+            #endregion
+            return dt;
+        }
+
+        
+        public DataTable SelectGradeInfo(ExportImportVM VM)
+        {
+            #region Variables
+            SqlConnection currConn = null;
+            string sqlText = "";
+            DataTable dt = new DataTable();
+            #endregion
+
+            try
+            {
+                #region open connection and transaction
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
+                #endregion open connection and transaction
+                #region sql statement
+                #region sqlText
+                sqlText = @"SELECT 
+	                       SL
+                          ,BranchId
+                          ,Code
+                          ,Name
+                          ,MinSalary
+                          ,MaxSalary
+                          ,Remarks
+                          FROM Grade";
+                #endregion
+                #region More Conditions
+                #endregion
+                SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
+                da.Fill(dt);
+                #endregion
+            }
+            #region catch
+            catch (SqlException sqlex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+            #endregion
+            #region finally
+            finally
+            {
+                if (currConn != null)
+                {
+                    if (currConn.State == ConnectionState.Open)
+                    {
+                        currConn.Close();
+                    }
+                }
+            }
+            #endregion
+            return dt;
+        }
     }
 
 }

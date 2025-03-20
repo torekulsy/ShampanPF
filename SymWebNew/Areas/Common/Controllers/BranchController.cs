@@ -8,7 +8,38 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
+using JQueryDataTables.Models;
+using SymOrdinary;
+using SymRepository.Common;
+using SymViewModel.Common;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Web.Mvc;
+using CrystalDecisions.CrystalReports.Engine;
+using Newtonsoft.Json;
+using OfficeOpenXml;
+using System.Web;
 
+using JQueryDataTables.Models;
+using SymOrdinary;
+using SymRepository.Common;
+using SymViewModel.Common;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Web.Mvc;
+using CrystalDecisions.CrystalReports.Engine;
+using Newtonsoft.Json;
+using OfficeOpenXml;
+using SymRepository.HRM;
+using SymViewModel.HRM;
+using System.Data;
+using System.Web;
 namespace SymWebUI.Areas.Common.Controllers
 {
     [Authorize]
@@ -215,6 +246,54 @@ namespace SymWebUI.Areas.Common.Controllers
             vm.LastUpdateFrom = identity.WorkStationIP;
             result = new BranchRepo().Delete(vm, a);
             return Json(result[1], JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Import()
+        {
+            return View();
+        }
+        public ActionResult ExportExcell(ExportImportVM VM)
+        {
+            identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+            SymUserRoleRepo _reposur = new SymUserRoleRepo();
+            DataTable dt = new DataTable();
+            ExcelPackage excel = new ExcelPackage();
+
+            try
+            {
+
+                ExportImportRepo _repo = new ExportImportRepo();
+
+                dt = _repo.SelectBranchInfo(VM);
+
+                #region Excel
+
+                string filename = "DesignationGroupInfo Data";
+                var workSheet = excel.Workbook.Worksheets.Add("DesignationGroupInfo Data");
+                workSheet.Cells[1, 1].LoadFromDataTable(dt, true);
+                using (var memoryStream = new MemoryStream())
+                {
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    //Response.AddHeader("content-disposition", "attachment;  filename=" + FileName);
+                    Response.AddHeader("content-disposition", "attachment;  filename=" + filename + ".xlsx");
+                    excel.SaveAs(memoryStream);
+                    memoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+
+                #endregion
+
+            }
+            catch (Exception ex)
+            {
+                Session["result"] = "Fail" + "~" + ex.Message.Replace("\r", "").Replace("\n", "");
+                return RedirectToAction("Index");
+            }
+
+            finally { }
+            return RedirectToAction("Index");
+
+            // return Json(rVM, JsonRequestBehavior.AllowGet);
         }
     }
 }

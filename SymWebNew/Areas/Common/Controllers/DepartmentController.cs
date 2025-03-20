@@ -11,17 +11,24 @@ using System.Web.Mvc;
 using CrystalDecisions.CrystalReports.Engine;
 using Newtonsoft.Json;
 using OfficeOpenXml;
+using System.Web;
+
+using JQueryDataTables.Models;
 using SymOrdinary;
 using SymRepository.Common;
-using SymRepository.HRM;
 using SymViewModel.Common;
-using SymViewModel.HRM;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Web.Mvc;
+using CrystalDecisions.CrystalReports.Engine;
+using Newtonsoft.Json;
+using OfficeOpenXml;
+using SymRepository.HRM;
+using SymViewModel.HRM;
+using System.Data;
 using System.Web;
 namespace SymWebUI.Areas.Common.Controllers
 {
