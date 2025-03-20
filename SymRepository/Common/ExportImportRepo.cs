@@ -706,5 +706,17 @@ namespace SymRepository.Common
                 throw ex;
             }
         }
+
+        public DataTable SelectLeaveTypeInfo(ExportImportVM VM)
+        {
+            try
+            {
+                return new ExportImportDAL().SelectLeaveTypeInfo(VM);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

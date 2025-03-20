@@ -6044,6 +6044,7 @@
     <Content Include="Areas\Common\Views\Section\Import.cshtml" />
     <Content Include="Areas\Common\Views\Grade\Import.cshtml" />
     <Content Include="Areas\Common\Views\Designation\Import.cshtml" />
+    <Content Include="Areas\Common\Views\LeaveType\Import.cshtml" />
     <None Include="Properties\PublishProfiles\PFEGCB.pubxml" />
     <None Include="Properties\PublishProfiles\SymphonyHRM_New.pubxml" />
     <Content Include="Views\Home\ForgotPasswordView.cshtml" />

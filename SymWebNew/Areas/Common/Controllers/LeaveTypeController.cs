@@ -1,9 +1,12 @@
 ﻿using JQueryDataTables.Models;
+using OfficeOpenXml;
 using SymOrdinary;
 using SymRepository.Common;
 using SymViewModel.Common;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web;
@@ -221,6 +224,54 @@ namespace SymWebUI.Areas.Common.Controllers
         }
 
         //#endregion Actions
+        public ActionResult Import()
+        {
+            return View();
+        }
+        ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+        public ActionResult ExportExcell(ExportImportVM VM)
+        {
+            identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+            SymUserRoleRepo _reposur = new SymUserRoleRepo();
+            DataTable dt = new DataTable();
+            ExcelPackage excel = new ExcelPackage();
 
+            try
+            {
+
+                ExportImportRepo _repo = new ExportImportRepo();
+
+                dt = _repo.SelectLeaveTypeInfo(VM);
+
+                #region Excel
+
+                string filename = "LeaveTypeInfo Data";
+                var workSheet = excel.Workbook.Worksheets.Add("SectionInfo Data");
+                workSheet.Cells[1, 1].LoadFromDataTable(dt, true);
+                using (var memoryStream = new MemoryStream())
+                {
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    //Response.AddHeader("content-disposition", "attachment;  filename=" + FileName);
+                    Response.AddHeader("content-disposition", "attachment;  filename=" + filename + ".xlsx");
+                    excel.SaveAs(memoryStream);
+                    memoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+
+                #endregion
+
+            }
+            catch (Exception ex)
+            {
+                Session["result"] = "Fail" + "~" + ex.Message.Replace("\r", "").Replace("\n", "");
+                return RedirectToAction("Index");
+            }
+
+            finally { }
+            return RedirectToAction("Index");
+
+            // return Json(rVM, JsonRequestBehavior.AllowGet);
+        }
     }
 }
