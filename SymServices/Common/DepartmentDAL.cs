@@ -317,15 +317,6 @@ Where  id=@Id  and IsArchive=0
                 }
                 #endregion Exist	
                
-                #region Commit
-                if (Vtransaction == null)
-                {
-                    if (transaction != null)
-                    {
-                        transaction.Commit();
-                    }
-                }
-                #endregion Commit
                 #region SuccessResult
                 retResults[0] = "Success";
                 retResults[1] = "Data Save Successfully.";
