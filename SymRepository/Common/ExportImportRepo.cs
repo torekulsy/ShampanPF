@@ -718,5 +718,30 @@ namespace SymRepository.Common
                 throw ex;
             }
         }
+
+
+        public DataTable SelectBankInfo(ExportImportVM VM)
+        {
+            try
+            {
+                return new ExportImportDAL().SelectBankInfo(VM);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public DataTable SelectProjectInfo(ExportImportVM VM)
+        {
+            try
+            {
+                return new ExportImportDAL().SelectProjectInfo(VM);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

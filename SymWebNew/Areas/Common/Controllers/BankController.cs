@@ -10,6 +10,9 @@ using System.Threading;
 using SymViewModel.HRM;
 using SymRepository.HRM;
 using JQueryDataTables.Models;
+using System.Data;
+using OfficeOpenXml;
+using System.IO;
 namespace SymWebUI.Areas.Common.Controllers
 {
     [Authorize]
@@ -267,6 +270,55 @@ namespace SymWebUI.Areas.Common.Controllers
 
             // Return the result in json
             return Json(jsonData);
+        }
+        public ActionResult Import()
+        {
+            return View();
+        }
+
+        public ActionResult ExportExcell(ExportImportVM VM)
+        {
+            identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+            SymUserRoleRepo _reposur = new SymUserRoleRepo();
+            DataTable dt = new DataTable();
+            ExcelPackage excel = new ExcelPackage();
+
+            try
+            {
+
+                ExportImportRepo _repo = new ExportImportRepo();
+
+                dt = _repo.SelectBankInfo(VM);
+
+                #region Excel
+
+                string filename = "BankInfo Data";
+                var workSheet = excel.Workbook.Worksheets.Add("BankInfo Data");
+                workSheet.Cells[1, 1].LoadFromDataTable(dt, true);
+                using (var memoryStream = new MemoryStream())
+                {
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    //Response.AddHeader("content-disposition", "attachment;  filename=" + FileName);
+                    Response.AddHeader("content-disposition", "attachment;  filename=" + filename + ".xlsx");
+                    excel.SaveAs(memoryStream);
+                    memoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+
+                #endregion
+
+            }
+            catch (Exception ex)
+            {
+                Session["result"] = "Fail" + "~" + ex.Message.Replace("\r", "").Replace("\n", "");
+                return RedirectToAction("Index");
+            }
+
+            finally { }
+            return RedirectToAction("Index");
+
+            // return Json(rVM, JsonRequestBehavior.AllowGet);
         }
     }
 }

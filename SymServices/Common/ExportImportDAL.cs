@@ -10771,6 +10771,134 @@ VALUES (@Id,@EmployeeId,@PFStructureId,@PFValue,@IsFixed,
             #endregion
             return dt;
         }
+
+        public DataTable SelectBankInfo(ExportImportVM VM)
+        {
+            #region Variables
+            SqlConnection currConn = null;
+            string sqlText = "";
+            DataTable dt = new DataTable();
+            #endregion
+
+            try
+            {
+                #region open connection and transaction
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
+                #endregion open connection and transaction
+                #region sql statement
+                #region sqlText
+                sqlText = @"SELECT 
+	                           BranchId
+                              ,Code
+                              ,Name
+                              ,Remarks
+                          FROM Bank";
+                #endregion
+                #region More Conditions
+                #endregion
+                SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
+                da.Fill(dt);
+                #endregion
+            }
+            #region catch
+            catch (SqlException sqlex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+            #endregion
+            #region finally
+            finally
+            {
+                if (currConn != null)
+                {
+                    if (currConn.State == ConnectionState.Open)
+                    {
+                        currConn.Close();
+                    }
+                }
+            }
+            #endregion
+            return dt;
+        }
+
+        public DataTable SelectProjectInfo(ExportImportVM VM)
+        {
+            #region Variables
+            SqlConnection currConn = null;
+            string sqlText = "";
+            DataTable dt = new DataTable();
+            #endregion
+
+            try
+            {
+                #region open connection and transaction
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
+                #endregion open connection and transaction
+                #region sql statement
+                #region sqlText
+                sqlText = @"SELECT 
+	                              BranchId
+                                  ,Code
+                                  ,Name
+                                  ,Startdate
+                                  ,EndDate
+                                  ,ManpowerRequired
+                                  ,ContactPerson
+                                  ,ContactPersonDesignation
+                                  ,Address
+                                  ,District
+                                  ,Division
+                                  ,Country
+                                  ,City
+                                  ,PostalCode
+                                  ,Phone
+                                  ,Mobile
+                                  ,Fax
+                                  ,Remarks
+                          FROM Project";
+                #endregion
+                #region More Conditions
+                #endregion
+                SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
+                da.Fill(dt);
+                #endregion
+            }
+            #region catch
+            catch (SqlException sqlex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+            #endregion
+            #region finally
+            finally
+            {
+                if (currConn != null)
+                {
+                    if (currConn.State == ConnectionState.Open)
+                    {
+                        currConn.Close();
+                    }
+                }
+            }
+            #endregion
+            return dt;
+        }
     }
 
 }
