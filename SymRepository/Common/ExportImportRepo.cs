@@ -743,5 +743,17 @@ namespace SymRepository.Common
                 throw ex;
             }
         }
+
+        public DataTable SelectDesignationInfo(ExportImportVM VM)
+        {
+            try
+            {
+                return new ExportImportDAL().SelectDesignationInfo(VM);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

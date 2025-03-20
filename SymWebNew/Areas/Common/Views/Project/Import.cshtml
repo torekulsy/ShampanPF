@@ -4,7 +4,7 @@
 
 <div class="thinbox">
     <div class="th_thinbox">
-        <p>Section Import </p>
+        <p>Projct Import </p>
     </div>
     <div class="row">
         @using (Ajax.BeginForm("UploadExcel", "Projct", null, new AjaxOptions { }, new { enctype = "multipart/form-data", id = "frmUploadExcel" }))
@@ -28,6 +28,7 @@
 </div>
 <script>
     function ExportExcell() {
+
         var questionMSG = "Are you sure you want to export data?";
         Ask(questionMSG, function () {
             window.location.href = '/Projct/ExportExcell'; // Ensure correct controller name
