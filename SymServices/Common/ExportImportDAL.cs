@@ -10379,25 +10379,13 @@ VALUES (@Id,@EmployeeId,@PFStructureId,@PFValue,@IsFixed,
                 #endregion open connection and transaction
                 #region sql statement
                 #region sqlText
-                sqlText = @"
-               SELECT *
-                FROM Department
-                ";
-
-
+                sqlText = @" SELECT BranchId,Code,Name,OrderNo,Remarks
+                FROM Department";
                 #endregion
                 #region More Conditions
-
-
                 #endregion
-
-
                 SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
-
-
                 da.Fill(dt);
-
-
                 #endregion
             }
             #region catch
@@ -10443,12 +10431,8 @@ VALUES (@Id,@EmployeeId,@PFStructureId,@PFValue,@IsFixed,
                 #endregion open connection and transaction
                 #region sql statement
                 #region sqlText
-                sqlText = @"
-               SELECT *
-                FROM Asset
-                ";
-
-
+                sqlText = @"SELECT Code, Name, Remarks
+                            FROM Asset";
                 #endregion
                 #region More Conditions
 
