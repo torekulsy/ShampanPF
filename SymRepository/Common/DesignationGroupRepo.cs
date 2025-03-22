@@ -116,5 +116,20 @@ namespace SymRepository.Common
         }
         #endregion
 
+
+        public string[] ImportExcelFile(DesignationGroupVM vm)
+        {
+
+            try
+            {
+                DesignationGroupDAL dal = new DesignationGroupDAL();
+                return dal.InsertExportData(vm, null, null);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    
     }
 }
