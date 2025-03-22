@@ -1705,20 +1705,15 @@ Where IsArchive=0 AND IsActive=1
                 #endregion open connection and transaction
                 #region sql statement
                 sqlText = @"
-SELECT
+     SELECT
      e.Id
-    ,e.BranchId
     ,e.Code
-    ,ve.EmpName, ve.Code, ve.Designation, ve.Department,ej.DepartmentId,ve.Project,ve.Section
-    ,e.Salutation_E
-    ,e.AttnUserId
-    ,e.MiddleName
-    ,e.LastName
+    ,ve.EmpName, ve.Code, ve.Designation, ve.Department,ve.Project,ve.Section
+    ,e.EmpName
     ,ve.JoinDate
     ,e.Remarks
     ,e.IsActive
     ,e.IsArchive
-	,ej.IsNoProfit
     ,e.CreatedBy
     ,e.CreatedAt
     ,e.CreatedFrom
@@ -1726,16 +1721,10 @@ SELECT
     ,e.LastUpdateAt
     ,e.LastUpdateFrom
     ,e.PhotoName
-    ,ep.GradeId
-    ,ep.stepid
-    ,isnull(pd.Gender_E,'NA')Gender_E
-    ,IsNull(ej.IsPermanent, 0) IsPermanent
 	,ve.Email
-    From EmployeeInfo e
-    LEFT OUTER JOIN EmployeeJob ej on ej.EmployeeId=e.id
-    LEFT OUTER JOIN EmployeePromotion ep on ej.EmployeeId=ep.EmployeeId and ep.IsCurrent=1
-    LEFT OUTER JOIN ViewEmployeeInformation ve on e.Id=ve.id
-    LEFT OUTER JOIN EmployeePersonalDetail pd on e.Id=pd.EmployeeId
+    From EmployeeInfo e  
+    LEFT OUTER JOIN ViewEmployeeInformation ve on e.Id=ve.EmployeeId
+   
     Where e.id=@Id and e.IsArchive=0 And e.IsActive=1
 ";
                 SqlCommand objComm = new SqlCommand(sqlText, currConn, transaction);
@@ -1746,36 +1735,20 @@ SELECT
                 {
                     vm = new EmployeeInfoVM();
                     vm.Id = dr["Id"].ToString();
-                    vm.BranchId = Convert.ToInt32(dr["BranchId"]);
+                 
                     vm.Code = dr["Code"].ToString();
-                    vm.AttnUserId = dr["AttnUserId"].ToString();
-                    vm.Salutation_E = dr["Salutation_E"].ToString();
-                    vm.MiddleName = dr["MiddleName"].ToString();
-                    vm.LastName = dr["LastName"].ToString();
-                    //gmployeeInfoVM.AttnUserId = dr["AttnUserId"].ToString();
+                    vm.EmpName = dr["EmpName"].ToString();                
                     vm.JoinDate = Ordinary.StringToDate(dr["JoinDate"].ToString());
                     vm.Remarks = dr["Remarks"].ToString();
-                    vm.IsActive = Convert.ToBoolean(dr["IsActive"]);                    
-                    vm.IsPermanent = Convert.ToBoolean(dr["IsPermanent"]);
+                    vm.IsActive = Convert.ToBoolean(dr["IsActive"]);    
                     vm.CreatedAt = Ordinary.StringToDate(dr["CreatedAt"].ToString());
                     vm.CreatedBy = dr["CreatedBy"].ToString();
                     vm.CreatedFrom = dr["CreatedFrom"].ToString();
                     vm.LastUpdateAt = Ordinary.StringToDate(dr["LastUpdateAt"].ToString());
-
                     vm.LastUpdateBy = dr["LastUpdateBy"].ToString();
-                    vm.LastUpdateFrom = dr["LastUpdateFrom"].ToString();
-                    vm.EmpName = dr["EmpName"].ToString();
-                    vm.Code = dr["Code"].ToString();
-                    vm.Designation = dr["Designation"].ToString();
-                    vm.Department = dr["Department"].ToString();
-                    vm.DepartmentId = dr["DepartmentId"].ToString();
-                    vm.Project = dr["Project"].ToString();
-                    vm.Section = dr["Section"].ToString();
+                    vm.LastUpdateFrom = dr["LastUpdateFrom"].ToString();     
                     vm.PhotoName = dr["PhotoName"].ToString();
-                    vm.Email = dr["Email"].ToString();
-                    vm.Gender_E = dr["Gender_E"].ToString();
-                    //vm.GradeId = dr["GradeId"].ToString();
-                    //vm.StepId = dr["StepId"].ToString();
+                    vm.Email = dr["Email"].ToString();                  
                 }
                 dr.Close();
                 #endregion
