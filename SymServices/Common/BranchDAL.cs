@@ -1,9 +1,11 @@
-﻿using SymOrdinary;
+﻿using Excel;
+using SymOrdinary;
 using SymViewModel.Common;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -336,36 +338,15 @@ Where  id=@Id and IsArchive=0
                     check = cdal.CheckDuplicateInInsert(tableName, fieldName[i], fieldValue[i], currConn, transaction);
                     if (check == true)
                     {
-                        retResults[1] = "This " + fieldName[i] + ": \"" + fieldValue[i] + "\" already used!";
-                        throw new ArgumentNullException("This " + fieldName[i] + ": \"" + fieldValue[i] + "\" already used!", "");
+                      
                     }
-                }
-                #endregion Exist	
-                //#region Exist
-                //sqlText = "  ";
-                //sqlText += " SELECT COUNT(DISTINCT Id)Id FROM Branch ";
-                //sqlText += " WHERE EmployeeId=@EmployeeId And Name=@Name";
-                //SqlCommand cmdExist = new SqlCommand(sqlText, currConn);
-                //cmdExist.Transaction = transaction;
-                //cmdExist.Parameters.AddWithValue("@EmployeeId", BranchVM.EmployeeId);
-                //cmdExist.Parameters.AddWithValue("@Name", BranchVM.Name.Trim());
-                //object objfoundId = cmdExist.ExecuteScalar();
+                    else
+                    {
+                        if (1 == 1)
+                        {
 
-                //if (objfoundId == null)
-                //{
-                //    retResults[1] = "Please Input Employee Travel Value";
-                //    retResults[3] = sqlText;
-                //    throw new ArgumentNullException("Please Input Employee Travel Value", "");
-                //}
-                //#endregion Exist
-                #region Save
-
-                //int foundId = (int)objfoundId;
-                if (1 == 1)
-                {
-
-                    sqlText = "  ";
-                    sqlText += @" INSERT INTO Branch(
+                            sqlText = "  ";
+                            sqlText += @" INSERT INTO Branch(
                                             CompanyId,Code,Name
                                             ,Address,District,Division,Country,City,PostalCode,Phone,Mobile,Fax
                                 ,Remarks,IsActive,IsArchive,CreatedBy,CreatedAt,CreatedFrom) 
@@ -374,48 +355,51 @@ Where  id=@Id and IsArchive=0
                                         ,@Remarks,@IsActive,@IsArchive,@CreatedBy,@CreatedAt,@CreatedFrom) 
                                         SELECT SCOPE_IDENTITY()";
 
-                    SqlCommand cmdInsert = new SqlCommand(sqlText, currConn);
+                            SqlCommand cmdInsert = new SqlCommand(sqlText, currConn);
 
-                    cmdInsert.Parameters.AddWithValue("@CompanyId", 1);
-                    cmdInsert.Parameters.AddWithValue("@Code", vm.Code.Trim());
-                    cmdInsert.Parameters.AddWithValue("@Name", vm.Name.Trim());
+                            cmdInsert.Parameters.AddWithValue("@CompanyId", 1);
+                            cmdInsert.Parameters.AddWithValue("@Code", vm.Code.Trim());
+                            cmdInsert.Parameters.AddWithValue("@Name", vm.Name.Trim());
 
-                    cmdInsert.Parameters.AddWithValue("@Address", vm.Address ?? Convert.DBNull);
-                    cmdInsert.Parameters.AddWithValue("@District", vm.District ?? Convert.DBNull);
-                    cmdInsert.Parameters.AddWithValue("@Division", vm.Division ?? Convert.DBNull);
-                    cmdInsert.Parameters.AddWithValue("@Country", vm.Country ?? Convert.DBNull);
-                    cmdInsert.Parameters.AddWithValue("@City", vm.City ?? Convert.DBNull);
-                    cmdInsert.Parameters.AddWithValue("@PostalCode", vm.PostalCode ?? Convert.DBNull);
-                    cmdInsert.Parameters.AddWithValue("@Phone", vm.Phone ?? Convert.DBNull);
-                    cmdInsert.Parameters.AddWithValue("@Mobile", vm.Mobile);
-                    cmdInsert.Parameters.AddWithValue("@Fax", vm.Fax ?? Convert.DBNull);
+                            cmdInsert.Parameters.AddWithValue("@Address", vm.Address ?? Convert.DBNull);
+                            cmdInsert.Parameters.AddWithValue("@District", vm.District ?? Convert.DBNull);
+                            cmdInsert.Parameters.AddWithValue("@Division", vm.Division ?? Convert.DBNull);
+                            cmdInsert.Parameters.AddWithValue("@Country", vm.Country ?? Convert.DBNull);
+                            cmdInsert.Parameters.AddWithValue("@City", vm.City ?? Convert.DBNull);
+                            cmdInsert.Parameters.AddWithValue("@PostalCode", vm.PostalCode ?? Convert.DBNull);
+                            cmdInsert.Parameters.AddWithValue("@Phone", vm.Phone ?? Convert.DBNull);
+                            cmdInsert.Parameters.AddWithValue("@Mobile", vm.Mobile);
+                            cmdInsert.Parameters.AddWithValue("@Fax", vm.Fax ?? Convert.DBNull);
 
-                    cmdInsert.Parameters.AddWithValue("@Remarks", vm.Remarks ?? Convert.DBNull);//, branchVM.Remarks);
-                    cmdInsert.Parameters.AddWithValue("@IsActive", true);
-                    cmdInsert.Parameters.AddWithValue("@IsArchive", false);
-                    cmdInsert.Parameters.AddWithValue("@CreatedBy", vm.CreatedBy);
-                    cmdInsert.Parameters.AddWithValue("@CreatedAt", vm.CreatedAt);
-                    cmdInsert.Parameters.AddWithValue("@CreatedFrom", vm.CreatedFrom);
+                            cmdInsert.Parameters.AddWithValue("@Remarks", vm.Remarks ?? Convert.DBNull);//, branchVM.Remarks);
+                            cmdInsert.Parameters.AddWithValue("@IsActive", true);
+                            cmdInsert.Parameters.AddWithValue("@IsArchive", false);
+                            cmdInsert.Parameters.AddWithValue("@CreatedBy", vm.CreatedBy);
+                            cmdInsert.Parameters.AddWithValue("@CreatedAt", vm.CreatedAt);
+                            cmdInsert.Parameters.AddWithValue("@CreatedFrom", vm.CreatedFrom);
 
-                    cmdInsert.Transaction = transaction;
-				    var exeRes = cmdInsert.ExecuteScalar();
-				    Id = Convert.ToInt32(exeRes);
+                            cmdInsert.Transaction = transaction;
+                            var exeRes = cmdInsert.ExecuteScalar();
+                            Id = Convert.ToInt32(exeRes);
 
-                    if (Id <= 0)
-                    {
-                        retResults[1] = "Please Input Branch Value";
-                        retResults[3] = sqlText;
-                        throw new ArgumentNullException("Please Input Branch Value", "");
+                            if (Id <= 0)
+                            {
+                                retResults[1] = "Please Input Branch Value";
+                                retResults[3] = sqlText;
+                                throw new ArgumentNullException("Please Input Branch Value", "");
+                            }
+                        }
+                        else
+                        {
+                            retResults[1] = "This Branch already used";
+                            throw new ArgumentNullException("Please Input Branch Value", "");
+                        }
+                       #endregion Save
                     }
                 }
-                else
-                {
-                    retResults[1] = "This Branch already used";
-                    throw new ArgumentNullException("Please Input Branch Value", "");
-                }
-
-
-                #endregion Save
+                #endregion Exist	           
+                #region Save
+              
                 #region Commit
                 if (Vtransaction == null)
                 {
@@ -1061,5 +1045,142 @@ WHERE IsArchive=0 and IsActive=1
             return VMs;
         }
         #endregion
+
+
+
+        public string[] InsertExportData(BranchVM paramVM, SqlConnection VcurrConn, SqlTransaction Vtransaction)
+        {
+            #region Initializ
+            string sqlText = "";
+            int Id = 0;
+            string[] retResults = new string[6];
+            retResults[0] = "Fail";//Success or Fail
+            retResults[1] = "Fail";// Success or Fail Message
+            retResults[2] = Id.ToString();// Return Id
+            retResults[3] = sqlText; //  SQL Query
+            retResults[4] = "ex"; //catch ex
+            retResults[5] = "ImportExcelFile"; //Method Name
+
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+            #endregion
+
+            #region try
+            try
+            {
+                DataSet ds = new DataSet();
+                DataTable dt = new DataTable();
+                #region Excel Reader
+
+                string FileName = paramVM.File.FileName;
+                string Fullpath = AppDomain.CurrentDomain.BaseDirectory + "Files\\Export\\" + FileName;
+                File.Delete(Fullpath);
+                if (paramVM.File != null && paramVM.File.ContentLength > 0)
+                {
+                    paramVM.File.SaveAs(Fullpath);
+                }
+
+
+                FileStream stream = File.Open(Fullpath, FileMode.Open, FileAccess.Read);
+                IExcelDataReader reader = null;
+                if (FileName.EndsWith(".xls"))
+                {
+                    reader = ExcelReaderFactory.CreateBinaryReader(stream);
+                }
+                else if (FileName.EndsWith(".xlsx"))
+                {
+                    reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                }
+                reader.IsFirstRowAsColumnNames = true;
+                ds = reader.AsDataSet();
+
+
+                dt = ds.Tables[0];
+                reader.Close();
+
+                File.Delete(Fullpath);
+                #endregion
+
+                #region open connection and transaction
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+                if (transaction == null)
+                {
+                    transaction = currConn.BeginTransaction("");
+                }
+                #endregion open connection and transaction
+                #region Save
+                string Code = "";
+
+                BranchVM vBranchVM = new BranchVM();
+
+                #region Assign Data
+                int i = 0;
+                foreach (DataRow dr in dt.Rows)
+                {
+                    vBranchVM.CompanyId = Convert.ToInt32(dr["CompanyId"].ToString());
+                    vBranchVM.Code = dr["Code"].ToString();
+                    vBranchVM.Name = dr["Name"].ToString();
+                    vBranchVM.Address = dr["Address"].ToString();
+                    vBranchVM.District = dr["District"].ToString();
+                    vBranchVM.Division = dr["Division"].ToString();
+                    vBranchVM.City = dr["City"].ToString();
+                    vBranchVM.PostalCode = dr["PostalCode"].ToString();
+                    vBranchVM.Phone = dr["Phone"].ToString();
+                    vBranchVM.Mobile = dr["Mobile"].ToString();
+                    vBranchVM.Fax = dr["Fax"].ToString();
+                    vBranchVM.Remarks = dr["Remarks"].ToString();
+                    vBranchVM.CreatedAt = paramVM.CreatedAt;
+                    vBranchVM.CreatedBy = paramVM.CreatedBy;
+                    vBranchVM.CreatedFrom = paramVM.CreatedFrom;
+                    retResults = Insert(vBranchVM, currConn, transaction);
+                }
+                #endregion
+
+                #region Data Insert
+
+
+                if (retResults[0] == "Fail")
+                {
+                    throw new ArgumentNullException("", retResults[1]);
+                }
+                #endregion
+                #endregion
+                #region Commit
+                if (transaction != null)
+                {
+                    transaction.Commit();
+                }
+                #endregion Commit
+
+                #region SuccessResult
+                retResults[0] = "Success";
+                retResults[1] = "Data Save Successfully.";
+                //retResults[2] = vm.Id.ToString();
+                #endregion SuccessResult
+            }
+            #endregion try
+            #region Catch and Finall
+            catch (Exception ex)
+            {
+                retResults[4] = ex.Message.ToString(); //catch ex
+                transaction.Rollback();
+                return retResults;
+            }
+            finally
+            {
+            }
+            #endregion
+            #region Results
+            return retResults;
+            #endregion
+
+        }
     }
 }
