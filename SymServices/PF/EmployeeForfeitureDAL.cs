@@ -98,7 +98,7 @@ SELECT
 From EmployeeForfeiture pfo
 
 ";
-                sqlText += " left outer join " + hrmDB + ".dbo.ViewEmployeeInformation e on pfo.EmployeeId=e.Id";
+                sqlText += " left outer join " + hrmDB + ".dbo.ViewEmployeeInformation e on pfo.EmployeeId=e.EmployeeId";
                 sqlText += " Where 1=1 and  pfo.IsArchive=0 and  pfo.IsActive=1";
 
                 #endregion
@@ -592,7 +592,7 @@ SELECT
 ,pfo.LastUpdateFrom
 From EmployeeForfeiture pfo
 ";
-                sqlText += " left outer join " + hrmDB + ".dbo.ViewEmployeeInformation e on pfo.EmployeeId=e.Id";
+                sqlText += " left outer join " + hrmDB + ".dbo.ViewEmployeeInformation e on pfo.EmployeeId=e.EmployeeId";
                 sqlText += " Where 1=1";
 
                 if (!string.IsNullOrEmpty(Id))

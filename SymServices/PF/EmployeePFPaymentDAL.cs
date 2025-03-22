@@ -57,8 +57,7 @@ namespace SymServices.PF
 
                 sqlText = @"
 SELECT
- pfo.Id
-,pfo.EmployeeId
+ pfo.EmployeeId
 ,e.EmpName
 ,e.Code
 ,e.Designation
@@ -84,7 +83,7 @@ SELECT
 From EmployeePFPayment pfo
 
 ";
-                sqlText += " left outer join " + hrmDB + ".dbo.ViewEmployeeInformation e on pfo.EmployeeId=e.Id";
+                sqlText += " left outer join " + hrmDB + ".dbo.ViewEmployeeInformation e on pfo.EmployeeId=e.EmployeeId";
                 sqlText += " Where 1=1 and  pfo.IsArchive=0 and  pfo.IsActive=1";
 
                 #endregion
@@ -112,7 +111,6 @@ From EmployeePFPayment pfo
                 while (dr.Read())
                 {
                     vm = new EmployeePFPaymentVM();
-                    vm.Id = (dr["Id"]).ToString();
                     vm.EmployeeId = dr["EmployeeId"].ToString();
                     vm.EmployeeContribution = Convert.ToDecimal(dr["EmployeeContribution"]);
                     vm.EmployerContribution = Convert.ToDecimal(dr["EmployerContribution"]);
@@ -345,8 +343,7 @@ From EmployeePFPayment pfo
 
                 sqlText = @"
 SELECT
- pfo.Id
-,pfo.EmployeeId
+pfo.EmployeeId
 ,e.EmpName
 ,e.Code
 ,e.Designation
@@ -368,7 +365,7 @@ SELECT
 ,pfo.LastUpdateFrom
 From EmployeePFPayment pfo
 ";
-                sqlText += " left outer join " + hrmDB + ".dbo.ViewEmployeeInformation e on pfo.EmployeeId=e.Id";
+                sqlText += " left outer join " + hrmDB + ".dbo.ViewEmployeeInformation e on pfo.EmployeeId=e.EmployeeId";
                 sqlText += " Where 1=1";
 
                 if (!string.IsNullOrEmpty(Id))
@@ -401,7 +398,6 @@ From EmployeePFPayment pfo
                 while (dr.Read())
                 {
                     vm = new EmployeePFPaymentVM();
-                    vm.Id = dr["Id"].ToString();
                     vm.EmployeeId = dr["EmployeeId"].ToString();
                     vm.EmployeeContribution = Convert.ToDecimal(dr["EmployeeContribution"]);
                     vm.EmployerContribution = Convert.ToDecimal(dr["EmployerContribution"]);
