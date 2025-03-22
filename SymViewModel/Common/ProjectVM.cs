@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace SymViewModel.Common
 {
@@ -50,5 +51,6 @@ namespace SymViewModel.Common
        public string LastUpdateBy { get; set; }
        public string LastUpdateAt { get; set; }
        public string LastUpdateFrom { get; set; }
+       public HttpPostedFileBase File { get; set; }
     }
 }
