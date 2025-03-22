@@ -7,7 +7,7 @@
         <p>Bank Import </p>
     </div>
     <div class="row">
-        @using (Ajax.BeginForm("UploadExcel", "LeaveType", null, new AjaxOptions { }, new { enctype = "multipart/form-data", id = "frmUploadExcel" }))
+        @using (Ajax.BeginForm("UploadExcel", "Bank", null, new AjaxOptions { }, new { enctype = "multipart/form-data", id = "frmUploadExcel" }))
         {
 
             <div class="col-md-2 col-md-offset-3">
@@ -30,7 +30,7 @@
     function ExportExcell() {
         var questionMSG = "Are you sure you want to export data?";
         Ask(questionMSG, function () {
-            window.location.href = '/LeaveType/ExportExcell'; // Ensure correct controller name
+            window.location.href = '/Bank/ExportExcell'; // Ensure correct controller name
         });
     }
 </script>
