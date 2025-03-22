@@ -2942,12 +2942,12 @@ Where IsArchived=0 and BranchId=@BranchId and UserInfoId=@UserInfoId
                 #region sql statement
                 sqlText = @"
 	SELECT
-	e.Id
+	e.EmployeeId
 	,e.EmpName, e.Code, e.Designation, e.Department
 	,e.JoinDate
 	From ViewEmployeeInformation e
 	Where e.IsArchive=0 AND e.IsActive = 1
-	and id not in(
+	and EmployeeId not in(
 	select EmployeeId from [User])
 	ORDER BY e.Code
 ";
@@ -2962,7 +2962,7 @@ Where IsArchived=0 and BranchId=@BranchId and UserInfoId=@UserInfoId
                 while (dr.Read())
                 {
                     vm = new EmployeeInfoVM();
-                    vm.Id = dr["Id"].ToString();
+                    vm.Id = dr["EmployeeId"].ToString();
                     vm.EmpName = dr["EmpName"].ToString();
                     vm.Code = dr["Code"].ToString();
                     vm.Designation = dr["Designation"].ToString();

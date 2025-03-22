@@ -59,13 +59,10 @@
                                         <a href="#" class="dropdown-toggle btn btn-info" data-toggle="dropdown">Master Data</a>
                                         <ul class="dropdown-menu">                                          
                                             
-                                            <li><a class="btn btn-info" href="/Common/DesignationGroup">Designation Group</a></li>                                                                                 
-                                            <li><a class="btn btn-info" href="/Common/Asset">Asset</a></li>
+                                            <li><a class="btn btn-info" href="/Common/DesignationGroup">Designation Group</a></li>  
                                             <li><a class="btn btn-info" href="/Common/Branch">Branch</a></li>                                            
                                             <li><a class="btn btn-info" href="/Common/Section">@Session["SectionLabel"]</a></li>
-                                            <li><a class="btn btn-info" href="/Common/Grade">Salary Grade</a></li>
-                                            <li><a class="btn btn-info" href="/Common/ExportImport">Export/Import</a></li>
-                                            <li><a class="btn btn-info" href="/Common/LeaveType">Leave Type</a></li>                                           
+                                            <li><a class="btn btn-info" href="/Common/ExportImport">Export/Import</a></li>                                                                            
                                             <li><a class="btn btn-info" href="/Common/Department">@Session["DepartmentLabel"]</a></li>
                                             <li><a class="btn btn-info" href="/Common/Designation">Designation</a></li>     
                                             <li><a class="btn btn-info" href="/Common/Bank">Bank</a></li>
@@ -78,38 +75,7 @@
                                         
                                     <li><a class="btn btn-info" href="/Common/FiscalYear">Fiscal Year</a></li>
                                     <li><a class="btn btn-info" href="/Common/Settings">Settings</a></li>
-
-                                    <li class="dropdown dropdown-submenu">
-                                        <a href="#" class="dropdown-toggle btn btn-info" data-toggle="dropdown">User</a>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="btn btn-info" href="/Common/SymUserRoll">Sym User Roll</a></li>
-                                              
-                                        </ul>
-                                    </li> 
-                                
-                                    @if (CompanyName != "EGCB")
-                                    {
-                                        <li class="dropdown dropdown-submenu">
-                                        <a href="#" class="dropdown-toggle btn btn-info" data-toggle="dropdown">Other Info</a>
-                                        <ul class="dropdown-menu">
-                                            @if (Session["LabelOther1"].ToString() != "")
-                                            {
-                                                <li><a class="btn btn-info" href="/Common/OtherInfo?infoType=Other1">@Session["LabelOther1"]</a></li>
-                                            }
-                                            @if (Session["LabelOther2"].ToString() != "")
-                                            {
-                                                <li><a class="btn btn-info" href="/Common/OtherInfo?infoType=Other2">@Session["LabelOther2"]</a></li>
-                                            }
-                                            @if (Session["LabelOther3"].ToString() != "")
-                                            {
-                                                <li><a class="btn btn-info" href="/Common/OtherInfo?infoType=Other3">@Session["LabelOther3"]</a></li>
-                                            }
-                                            @*<li><a class="btn btn-info" href="/Common/OtherInfo?infoType=Other5">Department</a></li>*@
-                                        </ul>
-                                    </li>
-                                        <li><a class="btn btn-info" href="/Common/HoliDay">Holiday</a></li>
-                                        <li><a class="DBUpdate btn btn-info" href="/Common/DBUpdate/DBUpdate">DB Update </a></li>          
-                                    }
+                                   
                                                               
                                 </ul>
                             </div>
