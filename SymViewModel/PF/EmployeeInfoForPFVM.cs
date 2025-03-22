@@ -75,6 +75,8 @@ namespace SymViewModel.PF
         public string ProjectId { get; set; }
         public string EmployeeId { get; set; }
         public string GradeId { get; set; }
-
+        public string Email { get; set; }
+        [Display(Name ="Contact No")]
+        public string ContactNo { get; set; }
     }
 }

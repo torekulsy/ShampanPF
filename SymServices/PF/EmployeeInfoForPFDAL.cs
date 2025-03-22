@@ -116,7 +116,8 @@ namespace SymServices.PF
                                      ,NomineeNID=@NomineeNID
                                      ,GrossSalary=@GrossSalary
                                      ,BasicSalary=@BasicSalary 
-                         
+                                     ,Email=@Email
+                                     ,ContactNo=@ContactNo
                                      where Id=@Id   
                                  ";
                         SqlCommand cmdInsert = new SqlCommand(sqlText, currConn, transaction);
@@ -158,6 +159,8 @@ namespace SymServices.PF
                         cmdInsert.Parameters.AddWithValue("@NomineeNID", vm.NomineeNID);
                         cmdInsert.Parameters.AddWithValue("@GrossSalary", vm.GrossSalary);
                         cmdInsert.Parameters.AddWithValue("@BasicSalary", vm.BasicSalary);
+                        cmdInsert.Parameters.AddWithValue("@ContactNo", vm.ContactNo);
+                        cmdInsert.Parameters.AddWithValue("@Email", vm.Email);
                         cmdInsert.ExecuteNonQuery();
                     }
                     else
@@ -200,7 +203,9 @@ namespace SymServices.PF
                                   ,[NomineeRemarks]
                                   ,[NomineeNID]
                                   ,[GrossSalary]
-                                  ,[BasicSalary]                                           
+                                  ,[BasicSalary] 
+                                  ,[Email]
+                                  ,[ContactNo]                                          
                                 ) 
                                    VALUES (
                                    @Code
@@ -239,7 +244,9 @@ namespace SymServices.PF
                                   ,@NomineeRemarks
                                   ,@NomineeNID
                                   ,@GrossSalary
-                                  ,@BasicSalary          
+                                  ,@BasicSalary     
+                                  ,@Email
+                                  ,@ContactNo     
                                 ) 
                                  ";
                         SqlCommand cmdInsert = new SqlCommand(sqlText, currConn, transaction);
@@ -279,6 +286,8 @@ namespace SymServices.PF
                         cmdInsert.Parameters.AddWithValue("@NomineeNID", vm.NomineeNID);
                         cmdInsert.Parameters.AddWithValue("@GrossSalary", vm.GrossSalary);
                         cmdInsert.Parameters.AddWithValue("@BasicSalary", vm.BasicSalary);
+                        cmdInsert.Parameters.AddWithValue("@ContactNo", vm.ContactNo);
+                        cmdInsert.Parameters.AddWithValue("@Email", vm.Email);
                         cmdInsert.ExecuteNonQuery();
                     }
                 }
@@ -492,6 +501,8 @@ namespace SymServices.PF
                     EmployeeInfoForPFVM.NomineeRemarks = dr["NomineeRemarks"].ToString();
                     EmployeeInfoForPFVM.Remarks = dr["Remarks"].ToString();
                     EmployeeInfoForPFVM.IsActive = Convert.ToBoolean(dr["IsActive"].ToString());
+                    EmployeeInfoForPFVM.ContactNo = dr["ContactNo"].ToString();
+                    EmployeeInfoForPFVM.Email = dr["Email"].ToString();
                 }
                 dr.Close();
 
