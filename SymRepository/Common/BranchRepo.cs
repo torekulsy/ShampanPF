@@ -99,6 +99,20 @@ namespace SymRepository.Common
         }
         #endregion
 
-       
-   }
+
+
+        public string[] ImportExcelFile(BranchVM vm)
+        {
+
+            try
+            {
+                BranchDAL dal = new BranchDAL();
+                return dal.InsertExportData(vm, null, null);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
 }
