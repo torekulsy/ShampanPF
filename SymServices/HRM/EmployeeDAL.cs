@@ -628,7 +628,7 @@ WHERE IsArchive=0 and IsActive=1
 
                 sqlText = @"SELECT
 Id
-,Code,(MiddleName+' '+ ISNULL(LastName,'')) Name
+,Code,Name
    FROM EmployeeInfo
 WHERE 1=1
     ORDER BY Code

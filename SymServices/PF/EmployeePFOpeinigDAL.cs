@@ -57,8 +57,7 @@ namespace SymServices.PF
 
                 sqlText = @"
 SELECT
- pfo.Id
-,pfo.EmployeeId
+ pfo.EmployeeId
 ,e.EmpName
 ,e.Code
 ,e.Designation
@@ -82,7 +81,7 @@ SELECT
 From EmployeePFOpeinig pfo
 
 ";
-                sqlText += " left outer join " + hrmDB + ".dbo.ViewEmployeeInformation e on pfo.EmployeeId=e.Id";
+                sqlText += " left outer join " + hrmDB + ".dbo.ViewEmployeeInformation e on pfo.EmployeeId=e.EmployeeId";
                 sqlText += " Where 1=1 and  pfo.IsArchive=0 and  pfo.IsActive=1";
 
                 #endregion
@@ -109,8 +108,7 @@ From EmployeePFOpeinig pfo
                 dr = objComm.ExecuteReader();
                 while (dr.Read())
                 {
-                    vm = new EmployeePFOpeinigVM();
-                    vm.Id = (dr["Id"]).ToString();
+                    vm = new EmployeePFOpeinigVM();                   
                     vm.EmployeeId = dr["EmployeeId"].ToString();
                     vm.EmployeeContribution = Convert.ToDecimal(dr["EmployeeContribution"]);
                     vm.EmployerContribution = Convert.ToDecimal(dr["EmployerContribution"]);
@@ -1694,7 +1692,7 @@ From EmployeePFOpeinig pfo
                 #region sql statement
                 sqlText = @"
 select Code EmpCode,EmpName, 
-ISNULL(Grade+'-'+StepName,'NA') Grade,
+ISNULL(Grade,'NA') Grade,
 (case when Designation is null and Designation='=NA=' then 'NA' else Designation end) Designation,
 (case when Department is null and Department='=NA=' then 'NA' else Department end) Department ,
 (case when Section is null and Section='=NA=' then 'NA' else Section end) Section,

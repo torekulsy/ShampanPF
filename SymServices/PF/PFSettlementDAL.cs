@@ -63,8 +63,7 @@ namespace SymServices.PF
                 #region SqlText
                 sqlText = @"
 SELECT DISTINCT 
-ve.Id
-,ve.EmployeeId
+ ve.EmployeeId
 ,ve.EmpName 
 ,ve.Code 
 ,ve.Designation
@@ -74,7 +73,7 @@ ve.Id
 ,ve.LeftDate
 ";
                 sqlText += " FROM " + hrmDB + ".[dbo].ViewEmployeeInformation ve";
-                sqlText += @" WHERE  1=1 AND ve.IsActive = 0  AND ve.EmployeeId <> '1_0'
+                sqlText += @" WHERE  1=1 AND ve.IsActive = 0  
 ";
                 sqlText += @" 
 AND ve.EmployeeId NOT IN (

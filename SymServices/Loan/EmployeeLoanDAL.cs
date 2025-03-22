@@ -63,7 +63,7 @@ ve.EmpName,ve.Department ,ve.Designation
  ,l.Id
 ,l.IsEarlySellte
  from EmployeeLoan l
-left outer join ViewEmployeeInformation ve on l.EmployeeId=ve.id
+left outer join ViewEmployeeInformation ve on l.EmployeeId=ve.EmployeeId
 left outer join EnumLoanType t on t.Id=l.LoanType_E
 WHERE l.IsArchive=0  and l.BranchId=@BranchId
 ";
@@ -2569,7 +2569,7 @@ emp.Code
             #endregion
             try
             {
-                HRMHRMDB = new AppSettingsReader().GetValue("HRMDB", typeof(string)).ToString();
+                HRMHRMDB = new AppSettingsReader().GetValue("PFDB", typeof(string)).ToString();
                 string pfDb = new AppSettingsReader().GetValue("PFDB", typeof(string)).ToString();
 
                 #region open connection and transaction
@@ -2638,14 +2638,6 @@ left outer join HRMHRMDB.dbo.EnumLoanType elt on elt.id=loan.LoanType_E
 where 1=1 and loan.EmployeeId=@EmployeeId and loan.IsApproved=1
 and elt.Name = 'PF Loan' and loan.StartDate <= @ToDate
 
-union all
-select fyd.PeriodEnd, EmployeeId, 0 EmployeeContribution
-,0 LoanAmount, (LoanAmount+InterestAmount) PaymentAmount, 'Loan Payment' TransactionType 
-from HRMHRMDB.dbo.SalaryLoanDetail loan
-left outer join HRMHRMDB.dbo.EnumLoanType elt on elt.id=loan.LoanType_E
-left outer join HRMHRMDB.dbo.FiscalYearDetail fyd on loan.FiscalYearDetailId=fyd.Id
-where 1=1 and loan.EmployeeId=@EmployeeId
-and elt.Name = 'PF Loan' and fyd.PeriodEnd <= @ToDate
 ) as a
 group by EmployeeId
 ) as bal

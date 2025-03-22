@@ -36,7 +36,7 @@ using SymRepository.Enum;
 using OfficeOpenXml.Style;
 using SymServices.Common;
 
-namespace SymWebUI.Areas.Payroll.Controllers
+namespace SymWebUI.Areas.PF.Controllers
 {
     public class LoanController : Controller
     {
@@ -75,7 +75,7 @@ namespace SymWebUI.Areas.Payroll.Controllers
                Session["permission"] = permission;
                if (permission=="False")
                {
-                   return Redirect("/Payroll/Home");
+                   return Redirect("/PF/Home");
                }
             return View();
         }

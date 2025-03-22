@@ -115,7 +115,7 @@ END Designation
 From EmployeeBreakMonthPF pfo
 
 ";
-                sqlText += " left outer join " + hrmDB + ".dbo.ViewEmployeeInformation e on pfo.EmployeeId=e.Id";
+                sqlText += " left outer join " + hrmDB + ".dbo.ViewEmployeeInformation e on pfo.EmployeeId=e.EmployeeId";
                 sqlText += "  left outer join  " + hrmDB + @".dbo.ViewEmployeeInformation eOld  on pfo.EmployeeId=eold.EmployeeId";
 
                 sqlText += " Where 1=1 and  pfo.IsArchive=0 and  pfo.IsActive=1";
@@ -583,7 +583,7 @@ SELECT
 ,pfo.LastUpdateFrom
 From EmployeeBreakMonthPF pfo
 ";
-                sqlText += " left outer join " + hrmDB + ".dbo.ViewEmployeeInformation e on pfo.EmployeeId=e.Id";
+                sqlText += " left outer join " + hrmDB + ".dbo.ViewEmployeeInformation e on pfo.EmployeeId=e.EmployeeId";
                 sqlText += " Where 1=1 ";
 
                 if (!string.IsNullOrEmpty(Id))

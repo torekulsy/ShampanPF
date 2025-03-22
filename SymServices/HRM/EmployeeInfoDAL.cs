@@ -1480,12 +1480,8 @@ Where 1=1 AND IsArchive=0
                 #region sql statement
                 sqlText = @"
 SELECT
- Id
-,BranchId
-,EmpName ,Code, Designation, Branch, Department, Section, Project 
-,Salutation_E
-,MiddleName
-,LastName
+ EmployeeId
+,EmpName ,Code, Designation, Department, Section, Project 
 ,JoinDate
 ,ISNULL(IsActive, 0) IsActive
 From ViewEmployeeInformation 
@@ -1514,17 +1510,13 @@ Where 1=1 AND IsArchive=0
                 while (dr.Read())
                 {
                     vm = new EmployeeInfoVM();
-                    vm.Id = dr["Id"].ToString();
-                    vm.BranchId = Convert.ToInt32(dr["BranchId"]);
+                    vm.Id = dr["EmployeeId"].ToString();
                     vm.Code = dr["Code"].ToString();
-                    vm.Salutation_E = dr["Salutation_E"].ToString();
-                    vm.MiddleName = dr["MiddleName"].ToString();
-                    vm.LastName = dr["LastName"].ToString();
+                  
                     vm.JoinDate = Ordinary.StringToDate(dr["JoinDate"].ToString());
                     vm.EmpName = dr["EmpName"].ToString();
                     vm.Code = dr["Code"].ToString();
                     vm.Designation = dr["Designation"].ToString();
-                    vm.Branch = dr["Branch"].ToString();
                     vm.Department = dr["Department"].ToString();
                     vm.Section = dr["Section"].ToString();
                     vm.Project = dr["Project"].ToString();
@@ -2366,9 +2358,7 @@ Where 1=1
                 while (dr.Read())
                 {
                     gmployeeInfoVM = new EmployeeInfoVM();
-                    gmployeeInfoVM.Id = dr["Id"].ToString();
                     gmployeeInfoVM.EmployeeId = dr["EmployeeId"].ToString();
-                    gmployeeInfoVM.BranchId = Convert.ToInt32(dr["BranchId"]);
                     gmployeeInfoVM.Code = dr["Code"].ToString();
                     gmployeeInfoVM.Department = dr["Department"].ToString();
                     gmployeeInfoVM.Designation = dr["Designation"].ToString();
@@ -2735,23 +2725,17 @@ Where 1=1 and IsArchive=0
                 }
                 #endregion open connection and transaction
                 #region sql statement
-                sqlText = @"SELECT E.ID,E.CODE,E.SALUTATION_E,E.MiddleName,E.LASTNAME,E.REMARKS
-,P.PROMOTIONDATE,DG.NAME DESIGNATION
-,T.TRANSFERDATE,DP.NAME DEPARTMENT
-,PJ.NAME PROJECT 
-,S.NAME SECTION
-,J.JOINDATE
-,isnull(j.IsPermanent,0)IsPermanent
-FROM EMPLOYEEINFO E
-LEFT OUTER JOIN EMPLOYEEPROMOTION P ON P.EmployeeId=E.Id AND P.ISCURRENT=1
-LEFT OUTER JOIN DESIGNATION DG ON DG.ID=P.DESIGNATIONID
-LEFT OUTER JOIN EMPLOYEETRANSFER T ON T.EmployeeId=E.Id AND T.ISCURRENT=1
-LEFT OUTER JOIN DEPARTMENT DP ON DP.ID=T.DEPARTMENTID
-LEFT OUTER JOIN PROJECT PJ ON PJ.ID=T.PROJECTID
-LEFT OUTER JOIN SECTION S ON S.ID=T.SECTIONID
-LEFT OUTER JOIN EMPLOYEEJOB J ON J.EmployeeId=E.Id
-WHERE E.ID=@Id
-";
+                sqlText = @"
+                 SELECT E.EMPLOYEEID,E.CODE,E.REMARKS,E.Name EmpName               
+                ,E.JOINDATE   
+				,ve.Section
+				,ve.Designation
+				,ve.Department
+				,ve.Project
+                FROM EMPLOYEEINFO E
+				Left Outer Join ViewEmployeeInformation ve on ve.EmployeeId=E.Id
+                WHERE E.ID=@Id
+                ";
                 SqlCommand objComm = new SqlCommand();
                 objComm.Connection = currConn;
                 objComm.CommandText = sqlText;
@@ -2761,18 +2745,15 @@ WHERE E.ID=@Id
                 dr = objComm.ExecuteReader();
                 while (dr.Read())
                 {
-                    employeeVM.Id = dr["Id"].ToString();
+                    employeeVM.Id = dr["EMPLOYEEID"].ToString();
                     employeeVM.Code = dr["Code"].ToString();
-                    employeeVM.FullName = dr["SALUTATION_E"].ToString() + " " + dr["MiddleName"].ToString() + " " + dr["LastName"].ToString();
-                    employeeVM.Remarks = dr["Remarks"].ToString();
-                    employeeVM.PromotionDate = Ordinary.StringToDate(dr["PROMOTIONDATE"].ToString());
-                    employeeVM.Designation = dr["DESIGNATION"].ToString();
-                    employeeVM.TransferDate = Ordinary.StringToDate(dr["TRANSFERDATE"].ToString());
+                    employeeVM.FullName = dr["EmpName"].ToString();
+                    employeeVM.Remarks = dr["Remarks"].ToString();                  
+                    employeeVM.Designation = dr["DESIGNATION"].ToString();                  
                     employeeVM.jobjoinDate = Ordinary.StringToDate(dr["JOINDATE"].ToString());
                     employeeVM.Department = dr["DEPARTMENT"].ToString();
                     employeeVM.Project = dr["PROJECT"].ToString();
-                    employeeVM.Section = dr["SECTION"].ToString();
-                    employeeVM.IsPermanent = Convert.ToBoolean(dr["IsPermanent"].ToString());
+                    employeeVM.Section = dr["SECTION"].ToString();                  
                 }
                 dr.Close();
                 #endregion
