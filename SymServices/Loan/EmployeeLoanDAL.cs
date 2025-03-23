@@ -61,7 +61,6 @@ ve.EmpName,ve.Department ,ve.Designation
 ,t.Name
 ,t.Name LoanType
  ,l.Id
-,l.IsEarlySellte
  from EmployeeLoan l
 left outer join ViewEmployeeInformation ve on l.EmployeeId=ve.EmployeeId
 left outer join EnumLoanType t on t.Id=l.LoanType_E
@@ -103,7 +102,6 @@ WHERE l.IsArchive=0  and l.BranchId=@BranchId
                     vm.Code = dr["Code"].ToString();
                     vm.Designation = dr["Designation"].ToString();
                     vm.Department = dr["Department"].ToString();
-                    vm.IsEarlySellte = Convert.ToBoolean(dr["IsEarlySellte"]);
                     VMs.Add(vm);
                 }
                 #endregion
@@ -2776,7 +2774,7 @@ end HaveDuplicate
 , SUM(CASE WHEN ELD.IsPaid = '1' THEN ELD.InterestAmount ELSE 0 END) OVER () AS InterestPaid
 from " + hrmDB + @".dbo.EmployeeLoanDetail ELD 
 left outer join " + hrmDB + @".dbo.EmployeeLoan I on ELD.EmployeeLoanId=I.Id
-left outer join " + hrmDB + @".dbo.ViewEmployeeInformation ve on I.EmployeeId=ve.id
+left outer join " + hrmDB + @".dbo.ViewEmployeeInformation ve on I.EmployeeId=ve.EmployeeId
 left outer join " + hrmDB + @".dbo.EnumLoanType t on t.Id=I.LoanType_E
 where ELD.IsArchive=0 
  
