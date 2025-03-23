@@ -2927,7 +2927,7 @@ FROM
 LEFT OUTER JOIN 
     " + hrmDB + @".dbo.EmployeeLoan I ON ELD.EmployeeLoanId = I.Id
 LEFT OUTER JOIN 
-    " + hrmDB + @".dbo.ViewEmployeeInformation ve ON I.EmployeeId = ve.id
+    " + hrmDB + @".dbo.ViewEmployeeInformation ve ON I.EmployeeId = ve.EmployeeId
 LEFT OUTER JOIN 
     " + hrmDB + @".dbo.EnumLoanType t ON t.Id = I.LoanType_E
 WHERE 
@@ -2994,7 +2994,7 @@ FROM
 LEFT OUTER JOIN 
     " + hrmDB + @".dbo.EmployeeLoan I ON ELD.EmployeeLoanId = I.Id
 LEFT OUTER JOIN 
-    " + hrmDB + @".dbo.ViewEmployeeInformation ve ON I.EmployeeId = ve.id
+    " + hrmDB + @".dbo.ViewEmployeeInformation ve ON I.EmployeeId = ve.EmployeeId
 LEFT OUTER JOIN 
     " + hrmDB + @".dbo.EnumLoanType t ON t.Id = I.LoanType_E
 WHERE 

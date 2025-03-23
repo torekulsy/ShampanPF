@@ -249,7 +249,7 @@ FROM ProfitDistributionNew pd
                 #endregion New open connection and transaction
                 if (currConn == null)
                 {
-                    currConn = _dbsqlConnection.GetConnection();
+                    currConn = _dbsqlConnection.GetConnectionPF();
                     if (currConn.State != ConnectionState.Open)
                     {
                         currConn.Open();
@@ -300,7 +300,7 @@ FROM ProfitDistributionNew pd
                     EmployeeProfits
                     group by EmployeeId
                     ) select c.*,ej.IsNoProfit from cat c
-                    Left Outer Join "+hrmDB+@".[dbo].[EmployeeJob] ej on ej.EmployeeId=c.EmployeeId
+                    Left Outer Join " + hrmDB + @".[dbo].[EmployeeJob] ej on ej.EmployeeId=c.EmployeeId
                     
                     
                     select  sum(EmployeeContribution)EmployeeContribution
@@ -348,7 +348,7 @@ FROM ProfitDistributionNew pd
                         FROM 
                             PFDetails pd
                         LEFT OUTER JOIN 
-                            "+hrmDB+@".dbo.FiscalYearDetail fd 
+                            " + hrmDB + @".dbo.FiscalYearDetail fd 
                             ON fd.id = pd.FiscalYearDetailId
                         WHERE 
                             fd.Year = @Year
@@ -416,7 +416,7 @@ FROM ProfitDistributionNew pd
                     FROM 
                         cat c
                     LEFT OUTER JOIN 
-                        " + hrmDB + @".[dbo].[EmployeeJob] ej 
+                        " + hrmDB + @".[dbo].EmployeeInfo ej 
                         ON ej.EmployeeId = c.EmployeeId;
 
                     -- Calculate Total
@@ -506,7 +506,7 @@ FROM ProfitDistributionNew pd
                     FROM 
                         cat c
                     LEFT OUTER JOIN 
-                        " + hrmDB + @".[dbo].[EmployeeJob] ej 
+                        " + hrmDB + @".[dbo].EmployeeInfo ej 
                         ON ej.EmployeeId = c.EmployeeId;
                     ";
                 }
