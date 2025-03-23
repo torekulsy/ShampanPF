@@ -177,7 +177,7 @@ SELECT
 ,l.Remarks
 ,t.Name LoanType
  from EmployeeLoan l
-left outer join ViewEmployeeInformation ve on l.EmployeeId=ve.id
+left outer join ViewEmployeeInformation ve on l.EmployeeId=ve.EmployeeId
 left outer join EnumLoanType t on t.Id=l.LoanType_E
 WHERE l.IsArchive=0 and l.Id=@loanID
 ";
@@ -205,8 +205,6 @@ WHERE l.IsArchive=0 and l.Id=@loanID
                     vm.EndDate = Ordinary.StringToDate(dr["EndDate"].ToString());
                     vm.IsHold = Convert.ToBoolean(dr["IsHold"]);
                     vm.IsApproved = Convert.ToBoolean(dr["IsApproved"]);
-                    vm.RefundAmount = Convert.ToDecimal(dr["RefundAmount"]);
-                    vm.RefundDate = Ordinary.StringToDate(dr["RefundDate"].ToString());
                     vm.Remarks = dr["Remarks"].ToString();
                     vm.ApplicationDate = Ordinary.StringToDate(dr["ApplicationDate"].ToString());
                     vm.ApprovedDate = Ordinary.StringToDate(dr["ApprovedDate"].ToString());

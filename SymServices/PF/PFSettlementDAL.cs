@@ -1126,7 +1126,7 @@ Id
 
                 #region Contribution
 
-                PFDetailVM varPFDetailVM = new PFDetailVM();
+                PFSettlementVM varPFDetailVM = new PFSettlementVM();
                 PFDetailDAL _PFDetailDAL = new PFDetailDAL();
 
                 varPFDetailVM = _PFDetailDAL.SelectDetailContribution_TillMonth(vm.FiscalYearDetailId, vm.EmployeeId, currConn, transaction).FirstOrDefault();
@@ -1142,22 +1142,11 @@ Id
                     vm.Designation = varPFDetailVM.Designation;
                     vm.EmpName = varPFDetailVM.EmpName;
                     vm.Department = varPFDetailVM.Department;
-
-                    DateTime joinDate = Convert.ToDateTime(varPFDetailVM.JoinDate);
-                    DateTime pfEndDate = Convert.ToDateTime(varPFDetailVM.LeftDate);
-                    int months = (pfEndDate.Year - joinDate.Year) * 12 + pfEndDate.Month - joinDate.Month;
-                    if (months >= 24)
-                    {
-                        vm.NetPayAmount = varPFDetailVM.EmployeeTotalContribution + varPFDetailVM.EmployerTotalContribution;
-                    }
-                    else
-                    {
-                        vm.NetPayAmount = varPFDetailVM.EmployeeTotalContribution;
-                        vm.TotalForfeitValue = varPFDetailVM.EmployerTotalContribution;
-                    }
+                    vm.NetPayAmount = varPFDetailVM.EmployeeTotalContribution;
+                    vm.TotalForfeitValue = varPFDetailVM.EmployerTotalContribution;
                     vm.ProvidentFundAmount = varPFDetailVM.EmployeeTotalContribution + varPFDetailVM.EmployerTotalContribution;
-                    vm.EmployerProfitValue = varPFDetailVM.EmployerProfit;
-                    vm.EmployeeProfitValue = varPFDetailVM.EmployeeProfit;
+                    vm.EmployerProfitValue = varPFDetailVM.EmployerProfitValue;
+                    vm.EmployeeProfitValue = varPFDetailVM.EmployeeProfitValue;
                     vm.EmployeeTotalContribution = varPFDetailVM.EmployeeTotalContribution;
                     vm.EmployerTotalContribution = varPFDetailVM.EmployerTotalContribution;
                     #endregion

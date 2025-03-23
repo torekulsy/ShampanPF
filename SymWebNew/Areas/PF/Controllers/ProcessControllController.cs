@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
-namespace SymWebUI.Areas.Payroll.Controllers
+namespace SymWebUI.Areas.PF.Controllers
 {
     public class ProcessControllController : Controller
     {
@@ -16,17 +16,6 @@ namespace SymWebUI.Areas.Payroll.Controllers
 				ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
         public ActionResult Index()
         {
-
-            if(identity.Name != "PayrollAdmin")
-            {
-                var permission = _reposur.SymRoleSession(identity.UserId, "1_37", "index").ToString();
-                Session["permission"] = permission;
-                if (permission == "False")
-                {
-                    return Redirect("/Payroll/Home");
-                }
-            }
-               
             return View();
         }
         public ActionResult _index(JQueryDataTableParamModel param, string code, string name)

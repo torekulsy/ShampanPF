@@ -1828,14 +1828,14 @@ WHERE  1=1
         }
 
         //==================SelectDetailContribution=================
-        public List<PFDetailVM> SelectDetailContribution_TillMonth(int FiscalYearDetailIdTo, string EmployeeId="", SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
+        public List<PFSettlementVM> SelectDetailContribution_TillMonth(int FiscalYearDetailIdTo, string EmployeeId = "", SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
         {
             #region Variables
             SqlConnection currConn = null;
             SqlTransaction transaction = null;
             string sqlText = "";
-            List<PFDetailVM> VMs = new List<PFDetailVM>();
-            PFDetailVM vm;
+            List<PFSettlementVM> VMs = new List<PFSettlementVM>();
+            PFSettlementVM vm;
             #endregion
             try
             {
@@ -1982,7 +1982,6 @@ WHERE  1=1
                 ,ve.Section
                 ,ve.Project
                 ,ve.JoinDate
-                ,ve.DateOfPermanent
                 ,ve.LeftDate
                 , fyd.PeriodStart PFStartDate
                 , fyd.PeriodName
@@ -2008,12 +2007,13 @@ WHERE  1=1
                 sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].FiscalYearDetail fyd ON pfs.FiscalYearDetailId = fyd.Id";
                 sqlText += " LEFT OUTER JOIN " + hrmDB + ".[dbo].FiscalYearDetail fydEnd ON pfe.FiscalYearDetailId = fydEnd.Id";
                 sqlText += "  LEFT OUTER JOIN ProfitDistributionNew pd on pd.EmployeeId=ve.EmployeeId";
-                sqlText += " ORDER BY ve.Code";
+               
 
-                if (string.IsNullOrWhiteSpace(EmployeeId))
+                if (!string.IsNullOrWhiteSpace(EmployeeId))
                 {
-                    sqlText = sqlText.Replace("pfd.EmployeeId=@EmployeeId","1=1");
+                    sqlText += " where pfsc.EmployeeId=@EmployeeId";
                 }
+                sqlText += " ORDER BY ve.Code";
                 #endregion SqlText
                 #region SqlExecution
                 SqlCommand objComm = new SqlCommand(sqlText, currConn, transaction);
@@ -2026,24 +2026,15 @@ WHERE  1=1
                 dr = objComm.ExecuteReader();
                 while (dr.Read())
                 {
-                    vm = new PFDetailVM();
+                    vm = new PFSettlementVM();
                     vm.EmpName = dr["EmpName"].ToString();
                     vm.Code = dr["Code"].ToString();
                     vm.Designation = dr["Designation"].ToString();
                     vm.Department = dr["Department"].ToString();
                     vm.Section = dr["Section"].ToString();
-                    vm.Project = dr["Project"].ToString();
-                    vm.JoinDate = Ordinary.StringToDate(dr["JoinDate"].ToString());
-                    vm.DateOfPermanent = Ordinary.StringToDate(dr["DateOfPermanent"].ToString());
-                    vm.LeftDate = Ordinary.StringToDate(dr["LeftDate"].ToString());
+                    vm.Project = dr["Project"].ToString();                
                     vm.PFStartDate = Ordinary.StringToDate(dr["PFStartDate"].ToString());
-                    vm.PeriodName = Convert.ToString(dr["PeriodName"]);
-                    
-                    vm.PFEndDate = Ordinary.StringToDate(dr["PFEndDate"].ToString());
-                    vm.PFEndPeriodName = Convert.ToString(dr["PFEndPeriodName"]);
-
-
-
+                    vm.PFEndDate = Ordinary.StringToDate(dr["PFEndDate"].ToString());                  
                     vm.ProjectId = Convert.ToString(dr["ProjectId"]);
                     vm.DepartmentId = Convert.ToString(dr["DepartmentId"]);
                     vm.SectionId = Convert.ToString(dr["SectionId"]);
@@ -2051,8 +2042,8 @@ WHERE  1=1
                     vm.EmployeeId = Convert.ToString(dr["EmployeeId"]);
                     vm.EmployeeTotalContribution = Convert.ToDecimal(dr["EmployeeTotalContribution"]);
                     vm.EmployerTotalContribution = Convert.ToDecimal(dr["EmployerTotalContribution"]);
-                    vm.EmployeeProfit = Convert.ToDecimal(dr["EmployeeProfit"]);
-                    vm.EmployerProfit = Convert.ToDecimal(dr["EmployerProfit"]);
+                    vm.EmployeeProfitValue = Convert.ToDecimal(dr["EmployeeProfit"]);
+                    vm.EmployerProfitValue = Convert.ToDecimal(dr["EmployerProfit"]);
 
                     VMs.Add(vm);
                 }
