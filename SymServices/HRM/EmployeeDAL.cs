@@ -792,13 +792,11 @@ WHERE e.IsArchive=0 and e.IsActive=1 AND ISNULL(ejob.IsPermanent, 0) = 1
                 #region sql statement
 
                 sqlText = @"SELECT
-Code,AttnUserId,(MiddleName+' '+ ISNULL(LastName,'')) Name
-   FROM EmployeeInfo
-WHERE  1=1
-AND Id != '1_0' AND (IsArchive=1 OR IsActive = 0)
-    ORDER BY Code
-";
-
+                            Code,Name
+                            FROM EmployeeInfo
+                            WHERE  1=1
+                            AND (IsArchive=1 OR IsActive = 0)
+                            ORDER BY Code ";
                 SqlCommand _objComm = new SqlCommand();
                 _objComm.Connection = currConn;
                 _objComm.CommandText = sqlText;
@@ -810,8 +808,8 @@ AND Id != '1_0' AND (IsArchive=1 OR IsActive = 0)
                 {
                     vm = new EmployeeInfoVM();
                     //vm.Id = dr["Id"].ToString();
-                    vm.Code = dr["AttnUserId"].ToString();
-                    vm.EmpName = dr["AttnUserId"].ToString() + "~" + dr["Name"].ToString();
+                    vm.Code = dr["Code"].ToString();
+                    vm.EmpName = dr["Code"].ToString() + "~" + dr["Name"].ToString();
                     VMs.Add(vm);
                 }
                 dr.Close();
