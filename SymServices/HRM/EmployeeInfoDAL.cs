@@ -8820,34 +8820,24 @@ where 1=1
                 }
                 #endregion open connection and transaction
                 #region sql statement
-                sqlText = @"
-SELECT
- e.Id
-,e.BranchId
-,e.EmpName 
-,e.Code
-,e.Designation
-,e.Branch
-,e.Department
-,e.Section
-,e.Project 
-,e.Salutation_E
-,e.MiddleName
-,e.LastName
-,e.JoinDate
-,empt.Other1
-,empt.Other2
-,empt.Other3
-,empt.Other4
-,empt.Other5
-From ViewEmployeeInformation e
-left outer join EmployeeTransfer empt on  e.EmployeeId=empt.EmployeeId
-Where e.IsArchive=0 AND e.IsActive=1
-and empt.IsCurrent=1
+                                    sqlText = @"
+                                    SELECT                                     
+                                    e.EmpName, 
+                                    e.Code,
+                                    e.Designation,
+                                    e.Branch,
+                                    e.Department,
+                                    e.Section,
+                                    e.Project,                          
+                                    e.JoinDate                                                           
+                                FROM ViewEmployeeInformation e
+                                LEFT OUTER JOIN EmployeeTransfer empt 
+                                    ON CAST(e.EmployeeId AS NVARCHAR) = CAST(empt.EmployeeId AS NVARCHAR)
+                                     WHERE e.IsArchive = 0 
+                                    AND e.IsActive = 1
+                                    ";
 
-";
-
-                sqlText += "     ORDER BY e.Department, e.EmpName desc";
+                //sqlText += "     ORDER BY e.Department, e.EmpName desc";
                 SqlCommand objComm = new SqlCommand(sqlText, currConn);
 
                 SqlDataReader dr;
@@ -8855,25 +8845,25 @@ and empt.IsCurrent=1
                 while (dr.Read())
                 {
                     vm = new EmployeeInfoVM();
-                    vm.Id = dr["Id"].ToString();
-                    vm.BranchId = Convert.ToInt32(dr["BranchId"]);
+                    //vm.Id = dr["Id"].ToString();
+                    //vm.BranchId = Convert.ToInt32(dr["BranchId"]);
                     vm.Code = dr["Code"].ToString();
-                    vm.Salutation_E = dr["Salutation_E"].ToString();
-                    vm.MiddleName = dr["MiddleName"].ToString();
-                    vm.LastName = dr["LastName"].ToString();
+                    //vm.Salutation_E = dr["Salutation_E"].ToString();
+                    //vm.MiddleName = dr["MiddleName"].ToString();
+                    //vm.LastName = dr["LastName"].ToString();
                     vm.JoinDate = Ordinary.StringToDate(dr["JoinDate"].ToString());
                     vm.EmpName = dr["EmpName"].ToString();
                     vm.Code = dr["Code"].ToString();
                     vm.Designation = dr["Designation"].ToString();
-                    vm.Branch = dr["Branch"].ToString();
+                    //vm.Branch = dr["Branch"].ToString();
                     vm.Department = dr["Department"].ToString();
                     vm.Section = dr["Section"].ToString();
                     vm.Project = dr["Project"].ToString();
-                    vm.Other1 = dr["Other1"].ToString();
-                    vm.Other2 = dr["Other2"].ToString();
-                    vm.Other3 = dr["Other3"].ToString();
-                    vm.Other4 = dr["Other4"].ToString();
-                    vm.Other5 = dr["Other5"].ToString();
+                    //vm.Other1 = dr["Other1"].ToString();
+                    //vm.Other2 = dr["Other2"].ToString();
+                    //vm.Other3 = dr["Other3"].ToString();
+                    //vm.Other4 = dr["Other4"].ToString();
+                    //vm.Other5 = dr["Other5"].ToString();
                     VMs.Add(vm);
                 }
                 dr.Close();
