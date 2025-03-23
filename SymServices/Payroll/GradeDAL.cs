@@ -1,10 +1,12 @@
-﻿using SymOrdinary;
+﻿using Excel;
+using SymOrdinary;
 using SymViewModel.Common;
 using SymViewModel.Payroll;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -1030,5 +1032,6 @@ WHERE IsArchive=0 and IsActive=1
         }
 
         #endregion
+       
     }
 }

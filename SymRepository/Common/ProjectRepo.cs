@@ -120,5 +120,18 @@ namespace SymRepository.Common
             }
         }
         #endregion
+
+        public string[] ImportExcelFile(ProjectVM vm)
+        {
+            try
+            {
+                ProjectDAL dal = new ProjectDAL();
+                return dal.InsertExportData(vm, null, null);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

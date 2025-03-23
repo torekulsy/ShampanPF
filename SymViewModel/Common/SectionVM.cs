@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace SymViewModel.Common
 {
@@ -29,6 +30,7 @@ namespace SymViewModel.Common
         public string LastUpdateFrom { get; set; }
         [Display(Name = "Order No")]
         public int OrderNo { get; set; }
+        public HttpPostedFileBase File { get; set; }
 
     }
 }

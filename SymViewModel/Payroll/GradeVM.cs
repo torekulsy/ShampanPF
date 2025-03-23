@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 namespace SymViewModel.Payroll
 {
     public class GradeVM
@@ -63,5 +64,7 @@ namespace SymViewModel.Payroll
         public string LastUpdateBy { get; set; }
         public string LastUpdateAt { get; set; }
         public string LastUpdateFrom { get; set; }
+        public HttpPostedFileBase File { get; set; }
+        public int SL { get; set; }
     }
 }
