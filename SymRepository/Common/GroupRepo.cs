@@ -1,5 +1,4 @@
-﻿using SymServices.Attendance;
-using SymServices.Common;
+﻿using SymServices.Common;
 using SymViewModel.Attendance;
 using SymViewModel.Common;
 using System;

@@ -7,14 +7,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.IO;
-using SymRepository.Leave;
-using SymRepository.Attendance;
 using SymRepository.Payroll;
 using SymOrdinary;
 using System.Threading;
 using SymRepository.PF;
-using SymRepository.Tax;
-using SymRepository.GF;
 using SymServices.Enum;
 
 namespace SymWebUI.Areas.Config.Controllers
@@ -22,21 +18,7 @@ namespace SymWebUI.Areas.Config.Controllers
     public class DropDownController : Controller
     {
 
-        #region GF
-
-        public JsonResult GFPolicy()
-        {
-            return Json(new SelectList(new GFPolicyRepo().DropDown(), "Id", "Name"), JsonRequestBehavior.AllowGet);
-        }
-        #endregion GF
-
-        #region TAX
-        public JsonResult TAX_TaxSlab()
-        {
-            return Json(new SelectList(new TaxSlabRepo().DropDown(), "Id", "Name"), JsonRequestBehavior.AllowGet);
-        }
-        #endregion TAX
-
+        
         #region PF - Module
         //public JsonResult PF_WithdrawDebitHead(string WithdrawTypeId = "0")
         //{
@@ -362,22 +344,13 @@ namespace SymWebUI.Areas.Config.Controllers
             ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
             return Json(new SelectList(new GroupRepo().DropDown(Convert.ToInt32(identity.BranchId)), "Id", "Name"), JsonRequestBehavior.AllowGet);
         }
-        public JsonResult TaxStructureList()
-        {
-            ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
-            return Json(new SelectList(new TaxStructureRepo().DropDown(Convert.ToInt32(identity.BranchId)), "Id", "Name"), JsonRequestBehavior.AllowGet);
-        }
+      
         public JsonResult PFStructureList()
         {
             ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
             return Json(new SelectList(new PFStructureRepo().DropDown(Convert.ToInt32(identity.BranchId)), "Id", "Name"), JsonRequestBehavior.AllowGet);
         }
-        public JsonResult EarningDeductionStructureList()
-        {
-            ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
-            return Json(new SelectList(new EarningDeductionStructureRepo().DropDown(), "Id", "Name"), JsonRequestBehavior.AllowGet);
-        }
-
+       
         public JsonResult BonusStructureList()
         {
             ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
@@ -502,14 +475,7 @@ namespace SymWebUI.Areas.Config.Controllers
         {
             return Json(new SelectList(new StructureGroupRepo().DropDown(), "Id", "Name"), JsonRequestBehavior.AllowGet);
         }
-        public JsonResult LeaveStructure()
-        {
-            return Json(new SelectList(new LeaveStructureRepo().DropDown(), "Id", "Name"), JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult AttendanceStructure()
-        {
-            return Json(new SelectList(new AttendanceStructureRepo().DropDown(), "Id", "Name"), JsonRequestBehavior.AllowGet);
-        }
+            
         public JsonResult Result()
         {
             return Json(new SelectList(new EnumResultRepo().DropDown(), "Name", "Name"), JsonRequestBehavior.AllowGet);
@@ -629,16 +595,7 @@ namespace SymWebUI.Areas.Config.Controllers
         {
             return Json(new SelectList(new DesignationRepo().DropDown(), "Id", "Name"), JsonRequestBehavior.AllowGet);
         }
-
-        public JsonResult EmpLeaveType(string employeeId, int year)
-        {
-            return Json(new SelectList(new EmployeeLeaveStructureRepo().DropDown(employeeId, year), "LeaveType_E", "LeaveType_E"), JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult EmpLeaveType(int year)
-        {
-            return Json(new SelectList(new EmployeeLeaveStructureRepo().DropDown(year), "LeaveType_E", "LeaveType_E"), JsonRequestBehavior.AllowGet);
-        }
+             
         public ActionResult Index()
         {
             return View();

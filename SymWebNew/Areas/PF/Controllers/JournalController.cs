@@ -9,7 +9,6 @@ using System.Web.Mvc;
 using JQueryDataTables.Models;
 using SymRepository.HRM;
 using SymRepository.PF;
-using SymRepository.Tax;
 using SymViewModel.HRM;
 using CrystalDecisions.CrystalReports.Engine;
 using System.Data;

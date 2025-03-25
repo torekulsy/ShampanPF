@@ -92,19 +92,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attendance\AttendanceDailyDAL.cs" />
-    <Compile Include="Attendance\AttendanceMigrationDAL.cs" />
-    <Compile Include="Attendance\AttendanceRosterAllDAL.cs" />
-    <Compile Include="Attendance\AbsentDeductionStructureDAL.cs" />
-    <Compile Include="Attendance\EmployeeWeeklyHolidayDAL.cs" />
-    <Compile Include="Attendance\DailyAttendanceProcessDAL.cs" />
-    <Compile Include="Attendance\EarningDeductionStructureDAL.cs" />
-    <Compile Include="Attendance\DownloadDataDAL.cs" />
-    <Compile Include="Attendance\EmployeeDailyAbsenceDAL.cs" />
-    <Compile Include="Attendance\EmployeeDailyOvertimeDAL.cs" />
-    <Compile Include="Attendance\EmployeeMonthlyAbsenceDAL.cs" />
-    <Compile Include="Attendance\EmployeeMonthlyOvertimeDAL.cs" />
-    <Compile Include="Attendance\MonthlyAttendanceDAL.cs" />
     <Compile Include="Common\ApplicantInfoDAL.cs" />
     <Compile Include="Common\Appraisal360DAL.cs" />
     <Compile Include="Common\Appraisal360DetailsDAL.cs" />
@@ -120,7 +107,6 @@
     <Compile Include="Common\AppraisalQuestionSetDAL.cs" />
     <Compile Include="Common\AppraisalScheduleDAL.cs" />
     <Compile Include="Common\ELProcessDAL.cs" />
-    <Compile Include="Common\EmployeeEarnLeaveEncashmentDAL.cs" />
     <Compile Include="Common\ExportImportDAL.cs" />
     <Compile Include="Common\HomePageInfoDashboardDAL.cs" />
     <Compile Include="Common\LeaveTypeDAL.cs" />
@@ -131,10 +117,6 @@
     <Compile Include="Enum\EnumEMPTypeRepo.cs" />
     <Compile Include="Enum\EnumForceDAL.cs" />
     <Compile Include="Enum\EnumProfessionalDegreeDAL.cs" />
-    <Compile Include="GF\GFEmployeeBreakMonthDAL.cs" />
-    <Compile Include="GF\GFEmployeeForfeitureDAL.cs" />
-    <Compile Include="GF\GFEmployeeOpeinigDAL.cs" />
-    <Compile Include="GF\GFEmployeePaymentDAL.cs" />
     <Compile Include="Common\DatabaseTableDAL.cs" />
     <Compile Include="Common\BlockEmployerDAL.cs" />
     <Compile Include="Common\BlockJobSeekerDAL.cs" />
@@ -144,14 +126,11 @@
     <Compile Include="Common\PreEmployementInformationDAL.cs" />
     <Compile Include="Common\PublicApplicantDAL.cs" />
     <Compile Include="Common\JobCircularDAL.cs" />
-    <Compile Include="Common\DataMigrationDAL.cs" />
     <Compile Include="Common\DBUpdateDAL.cs" />
     <Compile Include="Common\EmailSenderDAL.cs" />
     <Compile Include="Common\EMJobOfferDAL.cs" />
     <Compile Include="Common\EMJobDAL.cs" />
-    <Compile Include="Common\EmployeeStructureGroupRepo.cs" />
     <Compile Include="Common\GroupDAL.cs" />
-    <Compile Include="Attendance\AttendanceStructureDAL.cs" />
     <Compile Include="Common\BankDAL.cs" />
     <Compile Include="Common\InfoAgentDAL.cs" />
     <Compile Include="Common\InfoEmployerDAL.cs" />
@@ -168,9 +147,6 @@
     <Compile Include="Enum\EnumSalaryStepDAL.cs" />
     <Compile Include="Enum\EnumSalaryPortionDAL.cs" />
     <Compile Include="Enum\EnumDAL.cs" />
-    <Compile Include="GF\GFEmployeeProvisionDAL.cs" />
-    <Compile Include="GF\EmployeeSettlementDAL.cs" />
-    <Compile Include="GF\GFPolicyDAL.cs" />
     <Compile Include="HRM\AppraisalEvaluationDAL.cs" />
     <Compile Include="HRM\EmployeeFilesDAL.cs" />
     <Compile Include="HRM\EmployeeProfessionalDegreeDAL.cs" />
@@ -178,8 +154,6 @@
     <Compile Include="HRM\EmployeeAssetDAL.cs" />
     <Compile Include="HRM\HomeDAL.cs" />
     <Compile Include="HRM\SetUpDAL.cs" />
-    <Compile Include="Leave\EmployeeCompensatoryLeaveDAL.cs" />
-    <Compile Include="Leave\EmployeeLeaveDAL.cs" />
     <Compile Include="Loan\EmployeeLoanDAL.cs" />
     <Compile Include="Loan\SalaryLoanDAL.cs" />
     <Compile Include="Payroll\BonusNameDAL.cs">
@@ -188,7 +162,6 @@
     <Compile Include="Payroll\BonusProcessDAL.cs" />
     <Compile Include="Payroll\BonusStructureDAL.cs" />
     <Compile Include="Common\CompanyDAL.cs" />
-    <Compile Include="Attendance\HoliDayDAL.cs" />
     <Compile Include="Payroll\EarningDeductionTypeDAL.cs" />
     <Compile Include="Payroll\EmployeeEarningLeaveDAL.cs" />
     <Compile Include="Payroll\EmployeeOtherDeductionDAL.cs" />
@@ -204,9 +177,6 @@
     <Compile Include="Payroll\SalaryOtherDeductionDAL.cs" />
     <Compile Include="Payroll\SalaryOtherEarningDAL.cs" />
     <Compile Include="Payroll\EmployeeBonusDAL.cs" />
-    <Compile Include="Payroll\SalaryEarningDAL.cs" />
-    <Compile Include="Payroll\SalaryProcessDAL_.cs" />
-    <Compile Include="Payroll\SalaryProcessDAL.cs" />
     <Compile Include="Payroll\SalaryStructureMatrixDAL.cs" />
     <Compile Include="Payroll\SingleEmployeeDAL.cs" />
     <Compile Include="Payroll\TAX108ADAL.cs" />
@@ -235,9 +205,6 @@
     <Compile Include="PF\LoanRepaymentToBankDAL.cs" />
     <Compile Include="PF\LoanMonthlyPaymentDAL.cs" />
     <Compile Include="PF\PFSettlementDetailDAL.cs" />
-    <Compile Include="PF\SalaryPFDAL.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="PF\BankBranchDAL.cs" />
     <Compile Include="PF\TransactionMediaDAL.cs" />
     <Compile Include="PF\InvestmentNameDAL.cs" />
@@ -256,34 +223,6 @@
     <Compile Include="Common\ProjectDAL.cs" />
     <Compile Include="Common\RoleDAL.cs" />
     <Compile Include="PF\WithdrawDAL.cs" />
-    <Compile Include="Tax\AdvanceTaxDAL.cs" />
-    <Compile Include="Tax\EmloyeeTAXSlabDAL.cs" />
-    <Compile Include="Tax\EmployeeSchedule2TaxSlabDetailMonthlyDAL.cs" />
-    <Compile Include="Tax\EmployeeSchedule2TaxSlabDetailYearlyDAL.cs" />
-    <Compile Include="Tax\EmployeeSchedule3TaxSlabDetailMonthlyDAL.cs" />
-    <Compile Include="Tax\EmployeeSchedule3TaxSlabDetailYearlyDAL.cs" />
-    <Compile Include="Tax\EmployeeTaxDAL.cs" />
-    <Compile Include="Tax\EmployeeTaxSlabDetailMonthlyDAL.cs" />
-    <Compile Include="Tax\EmployeeTaxSlabDetailYearlyDAL.cs" />
-    <Compile Include="Tax\Schedule1SalaryMonthlyDAL.cs" />
-    <Compile Include="Tax\Schedule1SalaryYearlyDAL.cs" />
-    <Compile Include="Tax\Schedule2HousePropertyMonthlyDAL.cs" />
-    <Compile Include="Tax\Schedule2HousePropertyYearlyDAL.cs" />
-    <Compile Include="Tax\Schedule2TaxSlabDAL.cs" />
-    <Compile Include="Tax\Schedule2TaxSlabDetailDAL.cs" />
-    <Compile Include="Tax\Schedule3InvestmentMonthlyDAL.cs" />
-    <Compile Include="Tax\Schedule3InvestmentYearlyDAL.cs" />
-    <Compile Include="Tax\Schedule3TaxSlabDAL.cs" />
-    <Compile Include="Tax\Schedule3TaxSlabDetailDAL.cs" />
-    <Compile Include="Tax\ScheduleForm10BBMonthlyDAL.cs" />
-    <Compile Include="Tax\ScheduleForm10BBYearlyDAL.cs" />
-    <Compile Include="Tax\SchedulePolicyDAL.cs" />
-    <Compile Include="Tax\TaxDepositDAL.cs" />
-    <Compile Include="Tax\TaxSetupDAL.cs" />
-    <Compile Include="Tax\SalaryTaxDAL.cs" />
-    <Compile Include="Tax\TaxSlabDAL.cs" />
-    <Compile Include="Tax\TaxSlabDetailDAL.cs" />
-    <Compile Include="Tax\TaxStructureDAL.cs" />
     <Compile Include="Common\UserRoleDAL.cs" />
     <Compile Include="Enum\EnumLoanTypeDAL.cs" />
     <Compile Include="Enum\EnumResultDAL.cs" />
@@ -314,10 +253,8 @@
     <Compile Include="Enum\EnumTravelTypeDAL.cs" />
     <Compile Include="Enum\EnumYearDAL.cs" />
     <Compile Include="Common\BranchDAL.cs" />
-    <Compile Include="Attendance\AttLogsDAL.cs" />
     <Compile Include="HRM\EmployeeStructureGroupDAL.cs" />
     <Compile Include="HRM\EmployeeJobDAL.cs" />
-    <Compile Include="Leave\EmployeeLeaveDetailDAL.cs" />
     <Compile Include="HRM\EmployeeImmigrationDAL.cs" />
     <Compile Include="HRM\EmployeeDependentDAL.cs" />
     <Compile Include="HRM\EmployeeEducationDAL.cs" />
@@ -326,8 +263,6 @@
     <Compile Include="HRM\EmployeeInfoDAL.cs" />
     <Compile Include="HRM\EmployeeJobHistoryDAL.cs" />
     <Compile Include="HRM\EmployeeLanguageDAL.cs" />
-    <Compile Include="Leave\EmployeeLeaveStructureDAL.cs" />
-    <Compile Include="Leave\EmployeeLeaveStructureGroupDAL.cs" />
     <Compile Include="HRM\EmployeeLeftInformationDAL.cs" />
     <Compile Include="HRM\EmployeeNomineeDAL.cs" />
     <Compile Include="HRM\EmployeePermanentAddressBanglaDAL.cs" />
@@ -340,8 +275,6 @@
     <Compile Include="HRM\EmployeeTrainingDAL.cs" />
     <Compile Include="HRM\EmployeeTransferDAL.cs" />
     <Compile Include="HRM\EmployeeTravelDAL.cs" />
-    <Compile Include="Leave\LeaveOpeningBalanceDAL.cs" />
-    <Compile Include="Leave\LeaveStructureDAL.cs" />
     <Compile Include="Payroll\SalaryStructureDAL.cs" />
     <Compile Include="Enum\EnumSalaryTypeDAL.cs" />
     <Compile Include="Common\SectionDAL.cs" />

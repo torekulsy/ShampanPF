@@ -2057,7 +2057,6 @@ select
 ,emp.SectionId
 ,emp.DepartmentId
 ,emp.DesignationId
-,emp.GradeId
 ,emp.GrossSalary
 ,emp.BasicSalary
  from EmployeeLoanDetail eld
@@ -2114,8 +2113,6 @@ select
                     vm.TotalAmount = Convert.ToDecimal(dr["TotalAmount"]);
                     vm.NumberOfInstallment = Convert.ToInt32(dr["NumberOfInstallment"]);
                     vm.ApprovedDate = Ordinary.StringToDate(dr["ApprovedDate"].ToString());
-                    vm.RefundAmount = Convert.ToDecimal(dr["RefundAmount"]);
-                    vm.RefundDate = Ordinary.StringToDate(dr["RefundDate"].ToString());
                     vm.StartDate = Ordinary.StringToDate(dr["StartDate"].ToString());
                     vm.EndDate = Ordinary.StringToDate(dr["EndDate"].ToString());
                     vm.ApplicationDate = Ordinary.StringToDate(dr["ApplicationDate"].ToString());
@@ -2145,7 +2142,6 @@ select
                     vm.SectionId = dr["SectionId"].ToString();
                     vm.DepartmentId = dr["DepartmentId"].ToString();
                     vm.DesignationId = dr["DesignationId"].ToString();
-                    vm.GradeId = dr["GradeId"].ToString();
                     vm.GrossSalary = Convert.ToDecimal(dr["GrossSalary"]);
                     vm.BasicSalary = Convert.ToDecimal(dr["BasicSalary"]);
                     VMs.Add(vm);
