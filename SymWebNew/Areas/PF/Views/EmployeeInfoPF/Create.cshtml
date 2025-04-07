@@ -39,7 +39,7 @@
         </div>
         <div class="eIp">
             <div class="row">
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Code)
                     </div>
@@ -47,7 +47,7 @@
                         @Html.TextBoxFor(model => model.Code, new { @placeholder = "Code", @class = "required form-control" })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Name)
                     </div>
@@ -55,7 +55,7 @@
                         @Html.TextBoxFor(model => model.Name, new { @placeholder = "Name", @class = "required form-control" })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Department)
                     </div>
@@ -63,7 +63,7 @@
                         @Html.SimpleDropDownFor(model => model.Department, "/Config/DropDown/Department", new { @placeholder = "Department", @class = "required form-control " })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Designation)
                     </div>
@@ -71,7 +71,7 @@
                         @Html.SimpleDropDownFor(model => model.Designation, "/Config/DropDown/Designation", new { @placeholder = "Designation", @class = "required form-control " })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Project)
                     </div>
@@ -79,7 +79,7 @@
                         @Html.SimpleDropDownFor(model => model.Project, "/Config/DropDown/Project", new { @placeholder = "Project", @class = "required form-control " })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Section)
                     </div>
@@ -89,7 +89,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.DateOfBirth)
                     </div>
@@ -99,7 +99,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.JoinDate)
                     </div>
@@ -108,7 +108,7 @@
                         @Html.ValidationMessageFor(model => model.JoinDate)
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.ResignDate)
                     </div>
@@ -117,7 +117,7 @@
                         @Html.ValidationMessageFor(model => model.ResignDate)
                     </div>
                 </div>  
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.BasicSalary)
                     </div>
@@ -125,7 +125,7 @@
                         @Html.TextBoxFor(model => model.BasicSalary, new { @class = "required NumberCheck", @required = "" })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.GrossSalary)
                     </div>
@@ -133,7 +133,7 @@
                         @Html.TextBoxFor(model => model.GrossSalary, new { @class = "required NumberCheck", @required = "" })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.IsActive)
                     </div>
@@ -143,7 +143,7 @@
                 </div>                           
             </div>
             <div class="row"> 
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.ContactNo)
                     </div>
@@ -151,7 +151,7 @@
                         @Html.TextBoxFor(model => model.ContactNo, new { @placeholder = "Contact No", @class = "required form-control" })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Email)
                     </div>
@@ -159,7 +159,7 @@
                         @Html.TextBoxFor(model => model.Email, new { @placeholder = "Email", @class = "required form-control" })
                     </div>
                 </div>        
-                <div class="col-sm-4">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Remarks)
                     </div>
@@ -174,7 +174,7 @@
             </div>
        <br />
             <div class="row">
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.NomineeName)
                     </div>
@@ -182,7 +182,7 @@
                         @Html.TextBoxFor(model => model.NomineeName, new { @placeholder = "Nominee Name", @class = "required form-control" })
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.NomineeDateofBirth)
                     </div>
@@ -191,7 +191,7 @@
                         @Html.ValidationMessageFor(model => model.DateOfBirth)
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.NomineeRelation)
                     </div>
@@ -199,7 +199,7 @@
                         @Html.TextBoxFor(model => model.NomineeRelation, new { @placeholder = " Relation", @class = "required form-control" })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.NomineeAddress)
                     </div>
@@ -209,7 +209,7 @@
                 </div>
 
          
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.NomineeCountry)
                     </div>
@@ -218,7 +218,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.NomineeDivision)
                     </div>
@@ -230,7 +230,7 @@
             </div>
             
             <div class="row">
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.NomineeDistrict)
                     </div>
@@ -238,7 +238,7 @@
                         @Html.TextBoxFor(model => model.NomineeDistrict, new { @placeholder = "District ", @class = "form-control" })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.NomineeCity)
                     </div>
@@ -246,7 +246,7 @@
                         @Html.TextBoxFor(model => model.NomineeCity, new { @placeholder = "City ", @class = "form-control" })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.NomineePostalCode)
                     </div>
@@ -254,15 +254,15 @@
                         @Html.TextBoxFor(model => model.NomineePostalCode, new { @placeholder = "Postal Code ", @class = "form-control" })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.NomineePhone)
                     </div>
                     <div class="editor-field">
                         @Html.TextBoxFor(model => model.NomineePhone, new { @placeholder = "Phone ", @class = "required form-control" })
-                    </div>              
+                    </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.NomineeBirthCertificateNo)
                     </div>
@@ -270,7 +270,7 @@
                         @Html.TextBoxFor(model => model.NomineeBirthCertificateNo, new { @placeholder = "Birth Certificate No ", @class = "form-control" })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.NomineeMobile)
                     </div>
@@ -280,7 +280,7 @@
                 </div>
             </div>
             <div class="row">   
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.NomineeFax)
                     </div>
@@ -289,7 +289,7 @@
                     </div>
                 </div>
        
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.NomineeNID)
                     </div>
@@ -297,7 +297,7 @@
                         @Html.TextBoxFor(model => model.NomineeNID, new { @placeholder = "NID  ", @class = "form-control" })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.NomineeFileName)
                     </div>
@@ -305,7 +305,7 @@
                         @Html.TextBoxFor(model => model.NomineeFileName, new { @placeholder = "File Name  ", @class = "form-control" })
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.NomineeRemarks)
                     </div>
