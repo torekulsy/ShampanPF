@@ -26,10 +26,10 @@
             @if (Model.Operation != "add")
             {
                 <div class="row">
-                    <label class="col-sm-3">
+                    <label class="col-xs-6 col-sm-3" >
                         @Html.LabelFor(model => model.IsActive)
                     </label>
-                    <div class="col-sm-9">
+                    <div class="col-xs-2 col-sm-9">
                         @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.IsActive)
                     </div>
@@ -45,10 +45,10 @@
                 </div>
             </div>
             <div class="row">
-                <label class="col-sm-3">
+                <label class="col-xs-6 col-sm-3">
                     <button type="button" title="Save Data" onclick="pageSubmit('frmEnumInvestmentType');" class="sym-btn-save">&nbsp;Save</button>
                 </label>
-                <label class="col-sm-4">
+                <label class="col-xs-6 col-sm-4">
                     <button type="button" title="Cancel Data" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
                 </label>
             </div>
