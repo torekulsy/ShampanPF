@@ -41,7 +41,7 @@ BankAccountNo
         </div>
         <div class="InvestmentName">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Code)
                     </div>
@@ -51,7 +51,7 @@ BankAccountNo
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Name)
                     </div>
@@ -60,7 +60,7 @@ BankAccountNo
                         @Html.ValidationMessageFor(model => model.Name)
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.InvestmentTypeId)
                     </div>
@@ -72,7 +72,7 @@ BankAccountNo
                 <div class="row">
 
 
-                    <div class="col-md-2">
+                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                         <div class="editor-label">
                             @Html.LabelFor(model => model.InvestmentDate)
                         </div>
@@ -81,7 +81,7 @@ BankAccountNo
                             @Html.ValidationMessageFor(model => model.InvestmentDate)
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                         <div class="editor-label">
                             @Html.LabelFor(model => model.FromDate)
                         </div>
@@ -90,7 +90,7 @@ BankAccountNo
                             @Html.ValidationMessageFor(model => model.FromDate)
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                         <div class="editor-label">
                             @Html.LabelFor(model => model.ToDate)
                         </div>
@@ -99,7 +99,7 @@ BankAccountNo
                             @Html.ValidationMessageFor(model => model.ToDate)
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                         <div class="editor-label">
                             @Html.LabelFor(model => model.MaturityDate)
                         </div>
@@ -108,7 +108,7 @@ BankAccountNo
                             @Html.ValidationMessageFor(model => model.MaturityDate)
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                         <div class="editor-label">
                             @Html.LabelFor(model => model.AitRate)
                         </div>
@@ -120,7 +120,7 @@ BankAccountNo
                 </div>
             <div class="row">
                
-                <div class="col-md-4">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.BankBranchId)
                     </div>
@@ -129,7 +129,7 @@ BankAccountNo
                         @Html.ValidationMessageFor(model => model.BankBranchId)
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.BankNameId)
                     </div>
@@ -138,7 +138,7 @@ BankAccountNo
                         @Html.ValidationMessageFor(model => model.BankNameId)
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Remarks)
                     </div>
@@ -157,19 +157,16 @@ BankAccountNo
             <p>Interest Policy</p>
         </div>
         <div id="ProductDetail" class="row formDesign">
-            <div class="col-md-1">
-                &nbsp;
-            </div>
-
-            <div class="col-md-2">
-                <div class="editor-label">                  
+           
+            <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 col-sm-offset-1">
+                <div class="editor-label">
                     @Html.LabelFor(model => model.InvestmentNameDetails.FirstOrDefault().FromMonth)
                 </div>
-                <div >
+                <div>
                     @Html.TextBox("FromMonth", null, new { @placeholder = "From Month", @class = "  NumberCheck right drFromMonth  form-control" })
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
                 <div class="editor-label">
                     @Html.LabelFor(model => model.InvestmentNameDetails.FirstOrDefault().ToMonth)
                 </div>
@@ -178,7 +175,7 @@ BankAccountNo
                 </div>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
                 <div class="editor-label">
                     @Html.LabelFor(model => model.InvestmentNameDetails.FirstOrDefault().InterestRate)
                 </div>
@@ -186,7 +183,7 @@ BankAccountNo
                     @Html.TextBox("InterestRate", null, new { @placeholder = "Interest Rate", @class = " NumberCheck crInterestRate  form-control" })
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
                 <div class="editor-label">
                     @Html.LabelFor(model => model.InvestmentNameDetails.FirstOrDefault().Remarks)
                 </div>
@@ -197,19 +194,15 @@ BankAccountNo
 
 
 
-            <div style="margin-top: 7px;" class="col-md-1">
+            <div style="margin-top: 7px;" class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                 <div class="editor-label">
                     &nbsp;
                 </div>
                 <div class="editor-field">
-                    <div id="ItemExist"  title="Add Investment Name Detail" class="sym-btn-add-row AddRow" data-container="editorItemRows4">Add Row</div>
+                    <div id="ItemExist" title="Add Investment Name Detail" class="sym-btn-add-row AddRow" data-container="editorItemRows4">Add Row</div>
                 </div>
             </div>
-            <div class="col-md-2">
-                &nbsp
-            </div>
-
-
+            
         </div>
         <div class="formDesign" id="detail" >
             <hr />
@@ -217,25 +210,23 @@ BankAccountNo
                 @if (Model.InvestmentNameDetails != null)
                 {
                     <div class="row">
-                        <div class="col-md-1">
-                            &nbsp;
-                        </div>
-                        <div class="col-md-1">
+                        
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xs-offset-2 col-md-offset-1">
                             <div class="editor-label">
                                 <label>Accrued From</label>
                             </div>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                             <div class="editor-label">
                                 <label>To Month</label>
                             </div>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                             <div class="editor-label">
                                 <label>Interest Rate</label>
                             </div>
                         </div>
-                        <div class="col-md-4 ">
+                        <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
                             <div class="editor-label">
                                 <label>Remarks</label>
                             </div>
@@ -266,55 +257,53 @@ BankAccountNo
                 @if (Model.InvestmentAccrueds != null)
                 {
                     <div class="row">
-                        <div class="col-md-1">
-                            &nbsp;
-                        </div>
-                        <div class="col-md-1">
+                        
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xs-offset-2 col-md-offset-1 DAMinWidth">
                             <div class="editor-label">
                                 <label>Period</label>
                             </div>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 DAMinWidth">
                             <div class="editor-label">
                                 <label>Process Date</label>
                             </div>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 DAMinWidth">
                             <div class="editor-label">
                                 <label>Investment Value</label>
                             </div>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 DAMinWidth">
                             <div class="editor-label">
                                 <label>Accrued Month</label>
                             </div>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 DAMinWidth">
                             <div class="editor-label">
                                 <label>Accrued Rate</label>
                             </div>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 DAMinWidth">
                             <div class="editor-label">
                                 <label>Accrued Interest</label>
                             </div>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 DAMinWidth">
                             <div class="editor-label">
                                 <label>AIT Interest</label>
                             </div>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 DAMinWidth">
                             <div class="editor-label">
                                 <label>Net Interest</label>
                             </div>
                         </div>
-                        <div class="col-md-1 ">
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 DAMinWidth">
                             <div class="editor-label">
                                 <label>ReferenceNo</label>
                             </div>
                         </div>
-                        <div class="col-md-1 ">
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 DAMinWidth">
                             <div class="editor-label">
                                 <label>Post</label>
                             </div>
