@@ -1,0 +1,16 @@
+
+2025-09-25 16:17:05 +06:00
+ Source : LoginStart , Method : HomeController
+LoginStart
+
+2025-09-25 16:17:10 +06:00
+ Source : LogID , Method : UserInformationDAL
+Login As: admin
+2025-09-25 16:17:10 +06:00
+ Source : Password , Method : UserInformationDAL
+Login As: b1JXpoXo6qdggBV0qXQnBw==
+
+2025-09-25 16:17:10 +06:00
+ Source : ConnectionString , Method : UserInformationDAL
+Login As: data source=192.168.15.100\MSSQLSERVER2019,1419;Initial catalog=Dekko_PF_DB;user id=sa;Integrated Security=False;connect Timeout=600;MultipleActiveResultSets=True; pooling=no;
+
