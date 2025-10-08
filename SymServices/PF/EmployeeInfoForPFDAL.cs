@@ -231,7 +231,8 @@ namespace SymServices.PF
                                   ,[GrossSalary]
                                   ,[BasicSalary] 
                                   ,[Email]
-                                  ,[ContactNo]                                          
+                                  ,[ContactNo]    
+                                  ,BranchId                                      
                                 ) 
                                    VALUES (
                                    @Code
@@ -273,6 +274,7 @@ namespace SymServices.PF
                                   ,@BasicSalary     
                                   ,@Email
                                   ,@ContactNo     
+                                  ,@BranchId
                                 ) 
                                  ";
                         SqlCommand cmdInsert = new SqlCommand(sqlText, currConn, transaction);
@@ -314,6 +316,7 @@ namespace SymServices.PF
                         cmdInsert.Parameters.AddWithValue("@BasicSalary", vm.BasicSalary);
                         cmdInsert.Parameters.AddWithValue("@ContactNo", vm.ContactNo ?? "");
                         cmdInsert.Parameters.AddWithValue("@Email", vm.Email ?? "");
+                        cmdInsert.Parameters.AddWithValue("@BranchId", vm.BranchId ?? "");
                         cmdInsert.ExecuteNonQuery();
                     }
                 }

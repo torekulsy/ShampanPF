@@ -7792,11 +7792,11 @@ declare @NetProfitCOAId as varchar(100)
 declare @RetainedEarningCOAId as varchar(100)
 
 
-select @LastEnd=PeriodEnd,@LastYear=[Year] from HRMDB.dbo.FiscalYearDetail where id=@MonthTo
+select @LastEnd=PeriodEnd,@LastYear=[Year] from FiscalYearDetail where id=@MonthTo
 
-select @FirstStart=YearStart,@FirstYear=[Year]   from HRMDB.dbo.FiscalYear where [Year]=cast( @LastYear as int)-1
+select @FirstStart=YearStart,@FirstYear=[Year]   from FiscalYear where [Year]=cast( @LastYear as int)-1
 SELECT  @FirstEnd=CONVERT(VARCHAR(8),DATEADD(MONTH, -12, CONVERT(DATE, @LastEnd, 112)), 112)  
-select @LastStart=YearStart  from HRMDB.dbo.FiscalYear where [Year]= @LastYear  
+select @LastStart=YearStart  from FiscalYear where [Year]= @LastYear  
 
 select @LastRetainedEarning=RetainedEarning from NetProfitYearEnds where Year=@LastYear
 select @FirstRetainedEarning=RetainedEarning from NetProfitYearEnds where Year=@FirstYear
