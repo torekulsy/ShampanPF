@@ -1895,7 +1895,7 @@ SELECT
  emp.Code EmpCode
 ,emp.EmpName
 ,emp.JoinDate
-,ISNULL(emp.Grade+'-'+emp.StepName,'NA') Grade
+,ISNULL(emp.Grade,'NA') Grade
 ,(case when emp.Designation is null and emp.Designation='=NA=' then 'NA' else emp.Designation end) Designation
 ,(case when emp.Department is null and emp.Department='=NA=' then 'NA' else emp.Department end) Department 
 ,(case when emp.Section is null and emp.Section='=NA=' then 'NA' else emp.Section end) Section
@@ -1905,7 +1905,7 @@ SELECT
 ,ISNULL(EmployeeProfit,0) EmployeeProfit
 ,ISNULL(EmployerProfit,0) EmployerProfit
 ,OpeningDate
-,Remarks
+
   FROM EmployeePFOpeinig pfo
 
 ";

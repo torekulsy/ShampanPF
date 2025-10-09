@@ -477,7 +477,11 @@ WHERE  1=1
                     cmdInsert.Parameters.AddWithValue("@IsActive", true);
                     cmdInsert.Parameters.AddWithValue("@IsArchive", false);
                     cmdInsert.Parameters.AddWithValue("@CreatedBy", vm.CreatedBy);
+<<<<<<< HEAD
                     cmdInsert.Parameters.AddWithValue("@CreatedAt", Ordinary.DateToString(vm.CreatedAt));
+=======
+                    cmdInsert.Parameters.AddWithValue("@CreatedAt",Ordinary.DateToString(vm.CreatedAt));
+>>>>>>> 85cc27a47346c89762f1507764bdf30d6c00ffb0
                     cmdInsert.Parameters.AddWithValue("@CreatedFrom", vm.CreatedFrom);
                     cmdInsert.Parameters.AddWithValue("@Post", false);
                     cmdInsert.Parameters.AddWithValue("@TransType", vm.TransType ?? "PF");

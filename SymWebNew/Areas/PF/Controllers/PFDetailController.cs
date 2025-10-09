@@ -1108,8 +1108,9 @@ namespace SymWebUI.Areas.PF.Controllers
             };
 
             result = _repo.InsertAutoJournal(JournalType, TransactionForm, TransactionCode, BranchId, vm);
+            Session["result"] = result[0] + "~" + result[1];
 
-            return RedirectToAction("IndexFiscalPeriod");
+            return View("~/Areas/PF/Views/PFDetail/IndexFiscalPeriod.cshtml");
         }
 
     }

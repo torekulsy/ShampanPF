@@ -2238,7 +2238,7 @@ Where 1=1 and IsArchive=0 And IsActive=1
                 while (dr.Read())
                 {
                     gmployeeInfoVM = new EmployeeInfoVM();
-                    gmployeeInfoVM.Id = dr["Id"].ToString();
+                    gmployeeInfoVM.Id = dr["EmployeeId"].ToString();
                     gmployeeInfoVM.EmployeeId = dr["EmployeeId"].ToString();
                     gmployeeInfoVM.BranchId = Convert.ToInt32(dr["BranchId"]);
                     gmployeeInfoVM.Code = dr["Code"].ToString();
