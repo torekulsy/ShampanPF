@@ -1417,7 +1417,7 @@ where InvestmentTypeId=3
   from Investments iv 
   Left Join InvestmentNames ivn on ivn.Id=iv.InvestmentNameId
   Left Join  [FiscalYearDetail] fy on fy.Id=ivn.FiscalYearDetailId
-  where iv.InvestmentTypeId=2 and fy.Year=@Year
+  where iv.InvestmentTypeId=1 and fy.Year=@Year
 
 ";
                 #endregion

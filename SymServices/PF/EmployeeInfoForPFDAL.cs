@@ -160,7 +160,7 @@ namespace SymServices.PF
                         cmdInsert.Parameters.AddWithValue("@Remarks", vm.Remarks ?? "");
                         cmdInsert.Parameters.AddWithValue("@ResignReason", vm.ResignReason ?? "");
                         cmdInsert.Parameters.AddWithValue("@ResignDate", vm.ResignDate ?? "");
-                        if (vm.ResignReason != null || vm.ResignReason !="")
+                        if (vm.ResignReason != null)
                         {
                             cmdInsert.Parameters.AddWithValue("@IsActive", false);
                         }
@@ -417,7 +417,7 @@ namespace SymServices.PF
                 #region sql statement
                 sqlText = @"SELECT ve.EmployeeId, ve.Code, ve.EmpName, ve.DateOfBirth, ve.JoinDate, ve.ResignDate LeftDate, ve.Branch, ve.Grade, ISNULL(ve.GrossSalary, 0) AS GrossSalary, ISNULL(ve.BasicSalary, 0) AS BasicSalary, ve.PhotoName, 
                          ve.IsActive, ve.IsArchive, ve.LastUpdateAt, ve.LastUpdateBy, ve.LastUpdateFrom, ve.Other1, ve.Remarks, ve.Department, ve.Designation, ve.Section, ve.Project
-                         FROM ViewEmployeeInformation AS ve where 1=1 and ResignReason is null";
+                         FROM ViewEmployeeInformation AS ve where 1=1 and IsActive=1";
 
                 string cField = "";
                 if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
@@ -534,7 +534,7 @@ namespace SymServices.PF
                 #region sql statement
                 sqlText = @"SELECT ve.EmployeeId, ve.Code, ve.EmpName, ve.DateOfBirth, ve.JoinDate, ve.ResignDate LeftDate, ve.Branch, ve.Grade, ISNULL(ve.GrossSalary, 0) AS GrossSalary, ISNULL(ve.BasicSalary, 0) AS BasicSalary, ve.PhotoName, 
                          ve.IsActive, ve.IsArchive, ve.LastUpdateAt, ve.LastUpdateBy, ve.LastUpdateFrom, ve.Other1, ve.Remarks, ve.Department, ve.Designation, ve.Section, ve.Project
-                         FROM ViewEmployeeInformation AS ve where 1=1 and ResignReason is not null";
+                         FROM ViewEmployeeInformation AS ve where 1=1 and IsActive=0";
 
                 string cField = "";
                 if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
@@ -908,7 +908,8 @@ namespace SymServices.PF
                     sqlText = "  ";
                     sqlText += @"Update EmployeeInfo  set                        
                           ResignReason =null,
-                          ResignDate =null
+                          ResignDate =null,
+                          IsActive =1
                           ";
                     sqlText += " where Id=@Id ";
 

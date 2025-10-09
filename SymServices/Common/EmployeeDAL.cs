@@ -210,8 +210,7 @@ WHERE IsArchive=0 and IsActive=1
 
                 #region sql statement
 
-                sqlText = @"SELECT
-Id, Code,(MiddleName+' '+ ISNULL(LastName,'')) Name
+                sqlText = @"SELECT *
    FROM EmployeeInfo
 WHERE IsArchive=0 
 ";
