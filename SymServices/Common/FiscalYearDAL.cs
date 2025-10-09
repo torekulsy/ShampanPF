@@ -3283,8 +3283,8 @@ WHERE  1=1
                 #region sql statement
                 #region SqlText
                                 sqlText = @"
-                select * from  FiscalYearDetail
-                where  PeriodStart>='" + date + "' and PeriodStart<='" + date + "' ";
+                select TOP 1 * from  FiscalYearDetail
+                where  PeriodEnd>='" + date + "' ";
                 
                 #endregion SqlText
                 #region SqlExecution

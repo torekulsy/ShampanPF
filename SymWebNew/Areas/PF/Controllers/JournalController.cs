@@ -189,7 +189,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
                 if (vm.Operation.ToLower() == "add")
                 {
-                    vm.CreatedAt = DateTime.Now.ToString("yyyyMMddHHmmss");
+                    vm.CreatedAt = DateTime.Now.ToString("yyyyMMddhhmm");
                     vm.CreatedBy = identity.Name;
                     vm.CreatedFrom = identity.WorkStationIP;
                     vm.TransType = AreaTypePFVM.TransType;
@@ -208,7 +208,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
                 if (vm.Operation.ToLower() == "update")
                 {
-                    vm.LastUpdateAt = DateTime.Now.ToString("yyyyMMddHHmmss");
+                    vm.LastUpdateAt = DateTime.Now.ToString("yyyyMMddhhmm");
                     vm.LastUpdateBy = identity.Name;
                     vm.LastUpdateFrom = identity.WorkStationIP;
                     vm.TransType = AreaTypePFVM.TransType;

@@ -266,6 +266,7 @@ namespace SymWebUI.Areas.PF.Controllers
             vm.CreatedBy = identity.Name;
             vm.CreatedFrom = identity.WorkStationIP;
             vm.IsActive = true;
+            vm.BranchId = Session["BranchId"].ToString();
             try
             {
 

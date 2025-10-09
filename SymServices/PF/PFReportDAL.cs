@@ -7531,10 +7531,10 @@ create table #TempNetChangeNew(id int identity(1,1),TransType varchar(100),Opera
 select @RetainedEarningCOAId=id from COAs where IsRetainedEarning=1 and isnull(TransType,'PF') in(@TransType)
 select @NetProfitCOAId=id from COAs where IsNetProfit=1 and isnull(TransType,'PF') in(@TransType)
 
-select @LastEnd=PeriodEnd,@LastYear=[Year] from HRMDB.dbo.FiscalYearDetail where id=@MonthTo
-select @LastStart=YearStart   from HRMDB.dbo.FiscalYear where [Year]=@LastYear
-select @FirstEnd=PeriodStart,@FirstYear=[Year] from HRMDB.dbo.FiscalYearDetail where id=@MonthFrom
-select @FirstStart=YearStart   from HRMDB.dbo.FiscalYear where [Year]=@FirstYear
+select @LastEnd=PeriodEnd,@LastYear=[Year] from FiscalYearDetail where id=@MonthTo
+select @LastStart=YearStart   from FiscalYear where [Year]=@LastYear
+select @FirstEnd=PeriodStart,@FirstYear=[Year] from FiscalYearDetail where id=@MonthFrom
+select @FirstStart=YearStart   from FiscalYear where [Year]=@FirstYear
 
 if	(@FirstStart is NULL) begin set @FirstStart='19000101'; end
 if	(@LastStart is NULL) begin set @LastStart='19000101'; end

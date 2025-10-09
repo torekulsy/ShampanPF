@@ -412,7 +412,7 @@ WHERE  1=1
                 var idExecuteScalar = cmd2.ExecuteScalar();
                 int nextId = Convert.ToInt32(idExecuteScalar);
 
-                if (vm.Code == null)
+                if (vm.Code == null || vm.Code == "0")
                 {
                     if (vm.JournalType == 1)
                     {
@@ -477,7 +477,7 @@ WHERE  1=1
                     cmdInsert.Parameters.AddWithValue("@IsActive", true);
                     cmdInsert.Parameters.AddWithValue("@IsArchive", false);
                     cmdInsert.Parameters.AddWithValue("@CreatedBy", vm.CreatedBy);
-                    cmdInsert.Parameters.AddWithValue("@CreatedAt",Convert.ToDateTime(vm.CreatedAt));
+                    cmdInsert.Parameters.AddWithValue("@CreatedAt", Ordinary.DateToString(vm.CreatedAt));
                     cmdInsert.Parameters.AddWithValue("@CreatedFrom", vm.CreatedFrom);
                     cmdInsert.Parameters.AddWithValue("@Post", false);
                     cmdInsert.Parameters.AddWithValue("@TransType", vm.TransType ?? "PF");
