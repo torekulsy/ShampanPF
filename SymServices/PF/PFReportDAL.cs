@@ -3125,7 +3125,9 @@ WHERE  1=1
                         }
                         cField = conditionFields[i].ToString();
                         cField = Ordinary.StringReplacing(cField);
-                        sqlText += " AND " + conditionFields[i] + "=@" + cField;
+                        //sqlText += " AND " + conditionFields[i] + "=@" + cField;
+                        sqlText += " AND CAST(" + conditionFields[i] + " AS NVARCHAR(50)) = @" + cField;
+
                     }
                 }
                 #endregion SqlText
@@ -6319,7 +6321,7 @@ declare @GLJournalId as varchar(100);
 declare @RetainedEarningsCOAId as varchar(100)
 select @RetainedEarningsCOAId=id from COAs  where isnull(IsRetainedEarning,0)=1  and isnull(TransType,'PF') in(@TransType)
 
-select @ClosingDate=YearEnd from HRMDB.dbo.FiscalYear where Year=@CloseYear
+select @ClosingDate=YearEnd from FiscalYear where Year=@CloseYear
 select @RetainedEarningsCOAId RetainedEarningsCOAId,@ClosingDate ClosingDate
 
 select @GLJournalId=Id from GLJournals where TransactionDate =@ClosingDate and IsYearClosing=1  and isnull(TransType,'PF') in(@TransType)

@@ -226,7 +226,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 }
                 else
                 {
-                    EmployeeId = vm.Id;
+                    EmployeeId = vm.EmployeeId;
                 }
 
                 //svms = arerepo.SingleEmployeeEntry(EmployeeId, FiscalYearDetailId);
@@ -631,7 +631,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 ReportDocument doc = new ReportDocument();
                 DataTable dt = new DataTable();
 
-                string[] cFields = { "e.Code", "pfo.Id", "e.JoinDate>", "e.JoinDate<" };
+                string[] cFields = { "e.Code", "pfo.Id", "TRY_CONVERT(date, e.JoinDate, 106)>", "TRY_CONVERT(date, e.JoinDate, 106)<" };
                 string[] cValues = { vm.Code, vm.Id.ToString() == "0" ? "" : vm.Id.ToString(), Ordinary.DateToString(vm.DateFrom), Ordinary.DateToString(vm.DateTo) };
                 var Result = _eaRepo.SelectAllList(null, cFields, cValues);
 

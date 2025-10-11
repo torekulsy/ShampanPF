@@ -509,21 +509,21 @@ From EmployeePFPayment pfo
             try
             {
 
-                #region Current Fiscal Period Status
-                if (VcurrConn == null && Vtransaction == null)
-                {
-                    var fydVM = new FiscalYearDetailVM();
+                //#region Current Fiscal Period Status
+                //if (VcurrConn == null && Vtransaction == null)
+                //{
+                //    var fydVM = new FiscalYearDetailVM();
 
-                    fydVM = _fyDAL.SelectAll_FiscalYearDetail(Convert.ToInt32(vm.FiscalYearDetailId), null, null, null, null).FirstOrDefault();
+                //    fydVM = _fyDAL.SelectAll_FiscalYearDetail(Convert.ToInt32(vm.FiscalYearDetailId), null, null, null, null).FirstOrDefault();
 
-                    if (fydVM.PeriodLock)
-                    {
-                        retResults[1] = "This Fiscal Period: " + fydVM.PeriodName + " is Locked! Locked Data cannot be processed!";
-                        throw new ArgumentNullException("", retResults[1]);
-                    }
-                }
+                //    if (fydVM.PeriodLock)
+                //    {
+                //        retResults[1] = "This Fiscal Period: " + fydVM.PeriodName + " is Locked! Locked Data cannot be processed!";
+                //        throw new ArgumentNullException("", retResults[1]);
+                //    }
+                //}
 
-                #endregion
+                //#endregion
 
 
                 #region open connection and transaction

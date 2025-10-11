@@ -316,7 +316,7 @@ From EmployeeForfeiture pfo
 
 ";
                 sqlText += " left outer join ViewEmployeeInformation e on pfo.EmployeeId=e.Id";
-                sqlText += " Where 1=1 and  pfo.IsArchive=0 and  pfo.IsActive=1";
+                sqlText += " Where 1=1 and  pfo.IsArchive=0 and  pfo.IsActive=1  AND e.Code=@Code AND pfo.Id=@Id AND TRY_CONVERT(date, e.JoinDate, 106)>=@DateFrom AND TRY_CONVERT(date, e.JoinDate, 106)<=@DateTo";
 
                 #endregion
 
@@ -325,43 +325,17 @@ From EmployeeForfeiture pfo
                 {
                     sqlText += @" and pfo.EmployeeId=@EmployeeId ";
                 }
-
-
-                string cField = "";
-                if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
-                {
-                    for (int i = 0; i < conditionFields.Length; i++)
-                    {
-                        if (string.IsNullOrWhiteSpace(conditionFields[i]) || string.IsNullOrWhiteSpace(conditionValues[i]))
-                        {
-                            continue;
-                        }
-                        cField = conditionFields[i].ToString();
-                        cField = Ordinary.StringReplacing(cField);
-                        sqlText += " AND " + conditionFields[i] + "=@" + cField;
-                    }
-                }
-
+              
                 sqlText += @" ORDER BY pfo.EmployeeId";
 
                 #endregion SqlText
                 #region SqlExecution
 
                 SqlCommand objComm = new SqlCommand(sqlText, currConn, transaction);
-                if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
-                {
-                    for (int j = 0; j < conditionFields.Length; j++)
-                    {
-                        if (string.IsNullOrWhiteSpace(conditionFields[j]) || string.IsNullOrWhiteSpace(conditionValues[j]))
-                        {
-                            continue;
-                        }
-                        cField = conditionFields[j].ToString();
-                        cField = Ordinary.StringReplacing(cField);
-                        objComm.Parameters.AddWithValue("@" + cField, conditionValues[j]);
-                    }
-                }
-
+                objComm.Parameters.AddWithValue("@Code", conditionValues[0]);
+                objComm.Parameters.AddWithValue("@Id", conditionValues[1]);
+                objComm.Parameters.AddWithValue("@DateFrom", conditionValues[2]);
+                objComm.Parameters.AddWithValue("@DateTo", conditionValues[3]);
                 if (!string.IsNullOrEmpty(empid))
                 {
                     objComm.Parameters.AddWithValue("@EmployeeId", empid);

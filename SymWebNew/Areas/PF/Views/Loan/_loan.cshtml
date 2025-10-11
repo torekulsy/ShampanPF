@@ -48,7 +48,7 @@
             @if (!Model.IsPaid)
             {
 @*<a title="Click on for Edit" style="text-decoration:none;"   href="Payroll/Loan/PaidEdit?Id=@Model.Id&emploanId=@Model.EmployeeLoanId" class="lnkEdit sym-btn-save">Paid</a>*@
-                <a  title="Paid" class="lnkEdit sym-btn-update sym-min" href="/Payroll/loan/PaidEdit?Id=@Model.Id&emploanId=@Model.EmployeeLoanId"  >UnPaid</a>
+                <a  title="Paid" class="lnkEdit sym-btn-update sym-min" href="/PF/loan/PaidEdit?Id=@Model.Id&emploanId=@Model.EmployeeLoanId"  >UnPaid</a>
 @*<label>Paid</label>*@
             }
             else
