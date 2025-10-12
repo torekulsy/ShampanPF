@@ -162,8 +162,15 @@
                      <div class="col-md-2">
                          <div class="editor-field">
                              <div>
-                                 @Html.SimpleDropDownFor(model => model.MonthTo, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsCom required form-control selectDropdown" })
-                                 @*@Html.SimpleDropDownFor(model => model.MonthTo, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsTo required form-control selectDropdown" })*@
+                                 @Html.SimpleDropDownFor(model => model.MonthFrom, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsCom required form-control selectDropdown" })                              
+                             </div>
+                         </div>
+                     </div>
+
+                     <div class="col-md-2">
+                         <div class="editor-field">
+                             <div>
+                                 @Html.SimpleDropDownFor(model => model.MonthTo, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsCom required form-control selectDropdown" })                               
                              </div>
                          </div>
                      </div>

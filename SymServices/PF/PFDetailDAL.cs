@@ -2813,7 +2813,7 @@ order by SectionOrderNo ";
             #endregion
         }
 
-        public string[] AutoJournalSave(string JournalType, string TransactionForm, string TransactionCode, string BranchId, SqlConnection currConn, SqlTransaction transaction, ShampanIdentityVM auditvm)
+        public string[] AutoJournalSave(string TransactionMonth, string TransactionForm, string TransactionCode, string BranchId, SqlConnection currConn, SqlTransaction transaction, ShampanIdentityVM auditvm)
         {
             if (currConn == null)
             {
@@ -2831,6 +2831,15 @@ order by SectionOrderNo ";
             string EmployeeCOAID = "";
             string EmployerCOAID = "";
             string BankCOAID = "";
+
+            string startdata = @"Select PeriodStart from FiscalYearDetail where PeriodName=@PeriodName ";
+            SqlCommand cmdd = new SqlCommand(startdata, currConn, transaction);
+            cmdd.Parameters.AddWithValue("@PeriodName", TransactionMonth);
+            SqlDataAdapter adapterd = new SqlDataAdapter(cmdd);
+            DataTable dtd = new DataTable();
+            adapterd.Fill(dtd);
+
+           
 
             string Journal = @"Select JournalFor, JournalName,Nature,GroupName,COAID from AutoJournalSetup ";
             SqlCommand cmdj = new SqlCommand(Journal, currConn, transaction);
@@ -2865,12 +2874,11 @@ order by SectionOrderNo ";
                     Id = 1,
                     CreatedAt = DateTime.Now.ToString(),
                     CreatedBy = "admin",
-                    CreatedFrom = "",
-                    TransactionDate = DateTime.Now.ToString(),
+                    CreatedFrom = "",                   
                     TransactionType = 31,
                     JournalType = 1,
                     TransType = "PF",
-                    TransactionValue = Convert.ToDecimal(dtpf.Rows[0]["EmployeePFValue"].ToString()) + Convert.ToDecimal(dtpf.Rows[0]["EmployeerPFValue"].ToString()),
+                 
 
                     GLJournalDetails = new List<GLJournalDetailVM>
                     {
@@ -2894,13 +2902,14 @@ order by SectionOrderNo ";
                         {
                             COAId =Convert.ToInt32(BankCOAID),
                             DrAmount = Convert.ToDecimal(dtpf.Rows[0]["EmployeePFValue"].ToString()) + Convert.ToDecimal(dtpf.Rows[0]["EmployeerPFValue"].ToString()),
-                            IsDr = false,
+                            IsDr = true,
                             IsYearClosing = false,
                             Post = false
                         }
                     }
                 };
                 vmj.Code = TransactionCode;
+                vmj.TransactionDate = dtd.Rows[0][0].ToString();
                 vmj.BranchId = BranchId;
                 GLJournalDAL glJournalDal = new GLJournalDAL();
                 retResults = glJournalDal.Insert(vmj);

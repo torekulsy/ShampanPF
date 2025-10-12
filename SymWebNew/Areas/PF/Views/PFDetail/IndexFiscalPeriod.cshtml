@@ -74,7 +74,7 @@
                                     //+ '&nbsp; <a title="Click on for Report Summary" target="_blank"  href=\"/@ViewBag.TransType/PFDetail/PFReportSummaryDetail?fydid=' + oObj.aData[0] + '&rType=Summary' + '\" class="sym-btn-report-row"></a>'
                                     //+ '&nbsp; <a title="Click on for Report Detail" target="_blank"  href=\"/@ViewBag.TransType/PFDetail/PFReportSummaryDetail?fydid=' + oObj.aData[0] + '&rType=Detail' + '\" class="sym-btn-report-row"></a>'
                                     //+ '&nbsp; <a title="Click on for Journal" target="_blank"  href="/@ViewBag.TransType/Journal/Create?JournalType=1' + '&TransactionForm=PFContribution' + '&TransactionId=' + oObj.aData[0] + '\" class="sym-btn-bank-row"></a>'
-                                    + '&nbsp; <a title="Click on for Journal" target="_blank"  href="/@ViewBag.TransType/PFDetail/InsertAutoJournal?JournalType=1' + '&TransactionForm=Contribution' + '&TransactionCode=' + oObj.aData[1] + '\" class="sym-btn-bank-row"></a>'
+                                    + '&nbsp; <a title="Click on for Journal" href="/@ViewBag.TransType/PFDetail/InsertAutoJournal?TransactionMonth=' + oObj.aData[3] + '' + '&TransactionForm=Contribution' + '&TransactionCode=' + oObj.aData[1] + '\" class="sym-btn-bank-row"></a>'
                                     ;
                                 }
                             }
