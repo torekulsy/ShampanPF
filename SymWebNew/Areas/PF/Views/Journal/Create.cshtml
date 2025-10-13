@@ -360,6 +360,7 @@
     }).addClass("AddRowInited");
 
     function AddRow(container) {
+        debugger;
         var ItemExist = 0;
         var url = '/@ViewBag.TransType/Journal/BlankItem';
         var oParam = { "COAId": "", "DrAmount": "", "CrAmount": "", "AccountName": "", };
@@ -409,8 +410,7 @@
         if (ItemExist == "1") {
             ShowResult("Fail", "This Item Already Added!");
             return;
-        }
-
+        }      
         $.ajax({
             url: url,
             //type: 'POST',
@@ -422,7 +422,8 @@
             }
         });
         $('#detail').show();
-        $(".accName").select2("val", "Select");
+        $(".COAId").val(""); 
+        $(".COAId").trigger('change');
         $(".drAmount").val("");
         $(".crAmount").val("");
     }
