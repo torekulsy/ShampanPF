@@ -7589,6 +7589,7 @@ group by TransType, CoaId
 insert into #TempNetChangeNew(TransType,OperationType,COAId,TransactionAmount)
 select distinct TransType,'NetChange', CoaId ,isnull(Sum(TransactionAmount),0)TransactionAmount from View_GLJournalDetailNew 
 where 1=1
+and transactionDate >=@FirstEnd
 and transactionDate <=@LastEnd
 and isnull(IsRetainedEarning,0)=0
 and isnull(IsYearClosing,0)=0 
@@ -7599,7 +7600,7 @@ group by TransType, CoaId
 insert into #TempNetChangeNew(TransType,OperationType,COAId,TransactionAmount)
 select distinct TransType,'NetChange', CoaId ,isnull(Sum(TransactionAmount),0)TransactionAmount from View_GLJournalDetailNew 
 where 1=1
-and transactionDate >=@LastStart 
+and transactionDate >=@FirstEnd 
 and transactionDate <=@LastEnd
 and isnull(IsRetainedEarning,0)=0
 and isnull(IsYearClosing,0)=0 
