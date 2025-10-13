@@ -2912,12 +2912,7 @@ order by SectionOrderNo ";
                 vmj.TransactionDate = dtd.Rows[0][0].ToString();
                 vmj.BranchId = BranchId;
                 GLJournalDAL glJournalDal = new GLJournalDAL();
-                retResults = glJournalDal.Insert(vmj);
-
-                #region SuccessResult
-                retResults[0] = "Success";
-                retResults[1] = "Data Save Successfully.";
-                #endregion SuccessResult
+                retResults = glJournalDal.Insert(vmj);             
             }
 
             #region Results

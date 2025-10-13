@@ -155,6 +155,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 , c.TransactionDate 
                 , c.TransactionTypeName
                 , c.TransactionValue.ToString()
+                ,c.Post?"Posted":"Not Posted"
                          };
             return Json(new
             {

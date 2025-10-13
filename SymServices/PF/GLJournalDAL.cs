@@ -405,6 +405,16 @@ WHERE  1=1
 
                 vm.Id = _cDal.NextId("GLJournals", currConn, transaction);
 
+               
+                string glcode = "SELECT * FROM GLJournals WHERE Code = @Code";
+                SqlCommand cmd = new SqlCommand(glcode, currConn);
+                 cmd.Parameters.AddWithValue("@Code", vm.Code);
+                 cmd.Transaction = transaction;
+                 SqlDataReader reader = cmd.ExecuteReader();
+                 DataTable dt = new DataTable();
+                 dt.Load(reader);  
+
+
                 sqlText = "select isnull(count(id),0)+1 FROM  GLJournals where TransactionType=@TransactionType";
                 SqlCommand cmd2 = new SqlCommand(sqlText, currConn);
                 cmd2.Transaction = transaction;
@@ -528,8 +538,18 @@ WHERE  1=1
                 }
                 #endregion Commit
                 #region SuccessResult
-                retResults[0] = "Success";
-                retResults[1] = "Data Save Successfully.";
+
+                if(dt.Rows.Count>0)
+                {
+                    retResults[0] = "Fail";
+                    retResults[1] = "Journal Already Created!!";
+                }
+                else
+                {
+                    retResults[0] = "Success";
+                    retResults[1] = "Journal Created Successfully.";
+                }              
+
                 retResults[2] = transResult.ToString();
                 #endregion SuccessResult
             }
