@@ -2357,15 +2357,15 @@ order by SectionOrderNo ";
                 #region sql statement
                 sqlText = @"
                  Select ve.Code EmpCode, ve.EmpName, JoinDate, 0 GradeSL,0 
-                 Grade,Designation,Department,Section,Project,ve.BasicSalary, ISNULL((ve.BasicSalary*.1),0) Amount,0 FYDId 
+                 Grade,Designation,Department,ve.UnitName,ve.BasicSalary, ISNULL((ve.BasicSalary*.1),0) Amount,0 FYDId 
                  from ViewEmployeeInformation ve Left Outer Join PFDetails pd on pd.EmployeeId=ve.EmployeeId and FiscalYearDetailId=@FiscalYearDetailId  where 1=1 AND ve.IsActive=1 AND ve.IsArchive=0 ";
 
                 //if (ProjectId != "0_0" && ProjectId != "0" && ProjectId != "" && ProjectId != "null" && ProjectId != null)
                 //    sqlText += @" and ve.ProjectId='" + ProjectId + "'";
                 if (DepartmentId != "0_0" && DepartmentId != "0" && DepartmentId != "" && DepartmentId != "null" && DepartmentId != null)
                     sqlText += @" and ve.DepartmentId='" + DepartmentId + "'";
-                if (SectionId != "0_0" && SectionId != "0" && SectionId != "" && SectionId != "null" && SectionId != null)
-                    sqlText += @" and ve.SectionId='" + SectionId + "'";
+                //if (SectionId != "0_0" && SectionId != "0" && SectionId != "" && SectionId != "null" && SectionId != null)
+                //    sqlText += @" and ve.SectionId='" + SectionId + "'";
                 if (DesignationId != "0_0" && DesignationId != "0" && DesignationId != "" && DesignationId != "null" && DesignationId != null)
                     sqlText += @" and ve.DesignationId='" + DesignationId + "'";
                 if (CodeF != "0_0" && CodeF != "0" && CodeF != "" && CodeF != "null" && CodeF != null)

@@ -226,7 +226,6 @@ Where vei.IsArchive=0 AND vei.IsActive=1
         {
             #region Variables
             SqlConnection currConn = null;
-            string sqlText = "";
             DataTable dt = new DataTable();
             #endregion
 
@@ -239,51 +238,102 @@ Where vei.IsArchive=0 AND vei.IsActive=1
                     currConn.Open();
                 }
                 #endregion open connection and transaction
-                #region sql statement
-                #region sqlText
-                sqlText = @"
-                         SELECT
-                        '1001' Code, 
-                        'Enter Name' Name, 
-                        'Development' Department,
-                        'Sr. Software Developer' Designation,
-                        'Head Office' Project,
-                        'Development' Section,
-                        0 BasicSalary,
-                        0 GrossSalary,
-                        '01-Jan-1999' DateOfBirth,
-                        '01-Jan-1999' JoinDate,
-                        'True' IsActive,
-                        '01710-0000000' ContactNo,
-                        'example@gmail.com' Email,
-                        'Remarks' Remarks 
-                        ";
 
-                #endregion
-                #region More Conditions
+                #region SQL query
+                string sqlText = @"
+            SELECT
+                Code, 
+                Name, 
+                Department,
+                Designation,
+                BasicSalary,
+                GrossSalary,
+                DateOfBirth,
+                JoinDate,
+                IsActive,
+                ContactNo,
+                Email,
+                Remarks,
+                NomineeName,
+                NomineeDateofBirth,
+                NomineeRelation,
+                NomineeAddress,
+                NomineeDistrict,
+                NomineeDivision,
+                NomineeCountry,
+                NomineeCity,
+                NomineePostalCode,
+                NomineePhone,
+                NomineeMobile,
+                NomineeBirthCertificateNo,
+                NomineeFax,
+                NomineeFileName,
+                NomineeRemarks,
+                NomineeNID
+            FROM EmployeeInfo";
 
+                #endregion SQL query
 
-                #endregion
+                // Create SqlCommand and SqlDataAdapter for the query
+                SqlCommand cmdd = new SqlCommand(sqlText, currConn);
+                SqlDataAdapter adapterd = new SqlDataAdapter(cmdd);
 
+                // Fill the DataTable with data from the database
+                adapterd.Fill(dt);
 
-                SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
+                #region Additional sample data handling
+                // If the DataTable is empty, you can add sample data for demo purposes
+                if (dt.Rows.Count == 0)
+                {
+                    sqlText = @"
+                SELECT
+                    '1001' Code, 
+                    'Enter Name' Name, 
+                    'Development' Department,
+                    'Sr. Software Developer' Designation,
+                    0 BasicSalary,
+                    0 GrossSalary,
+                    '01-Jan-1999' DateOfBirth,
+                    '01-Jan-1999' JoinDate,
+                    'True' IsActive,
+                    '01710-0000000' ContactNo,
+                    'example@gmail.com' Email,
+                    'Remarks' Remarks,
+                    'Nominee Name' NomineeName,
+                    'Nominee Date of Birth' NomineeDateofBirth,
+                    'Nominee Relation' NomineeRelation,
+                    'Nominee Address' NomineeAddress,
+                    'Nominee District' NomineeDistrict,
+                    'Nominee Division' NomineeDivision,
+                    'Nominee Country' NomineeCountry,
+                    'Nominee City' NomineeCity,
+                    'Nominee Postal Code' NomineePostalCode,
+                    'Nominee Phone' NomineePhone,
+                    'Nominee Mobile' NomineeMobile,
+                    'Nominee Birth Certificate No' NomineeBirthCertificateNo,
+                    'Nominee Fax' NomineeFax,
+                    'Nominee File Name' NomineeFileName,
+                    'Nominee Remarks' NomineeRemarks,
+                    'Nominee NID' NomineeNID";
 
-
-                da.Fill(dt);
-
-
-                #endregion
+                    // Execute the second query if no data is found
+                    SqlCommand cmddSample = new SqlCommand(sqlText, currConn);
+                    SqlDataAdapter adapterSample = new SqlDataAdapter(cmddSample);
+                    adapterSample.Fill(dt);
+                }
+                #endregion Additional sample data handling
             }
             #region catch
             catch (SqlException sqlex)
             {
-                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
+                throw new ArgumentNullException("", "SQL:" + FieldDelimeter + sqlex.Message);
             }
             catch (Exception ex)
             {
-                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+                throw new ArgumentNullException("", "SQL:" + FieldDelimeter + ex.Message);
             }
             #endregion
+
             #region finally
             finally
             {
@@ -296,8 +346,10 @@ Where vei.IsArchive=0 AND vei.IsActive=1
                 }
             }
             #endregion
+
             return dt;
         }
+
 
         public DataTable SelectPersonalDetail(ExportImportVM VM)
         {
