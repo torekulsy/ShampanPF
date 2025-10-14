@@ -241,36 +241,39 @@ Where vei.IsArchive=0 AND vei.IsActive=1
 
                 #region SQL query
                 string sqlText = @"
-            SELECT
-                Code, 
-                Name, 
-                Department,
-                Designation,
-                BasicSalary,
-                GrossSalary,
-                DateOfBirth,
-                JoinDate,
-                IsActive,
-                ContactNo,
-                Email,
-                Remarks,
-                NomineeName,
-                NomineeDateofBirth,
-                NomineeRelation,
-                NomineeAddress,
-                NomineeDistrict,
-                NomineeDivision,
-                NomineeCountry,
-                NomineeCity,
-                NomineePostalCode,
-                NomineePhone,
-                NomineeMobile,
-                NomineeBirthCertificateNo,
-                NomineeFax,
-                NomineeFileName,
-                NomineeRemarks,
-                NomineeNID
-            FROM EmployeeInfo";
+             SELECT
+                        a.Code, 
+                        a.Name, 
+                         b.Name AS Department,
+                         c.Name AS Designation,
+                         a.BasicSalary,
+                         a.GrossSalary,
+                        a.DateOfBirth,
+                         a.JoinDate,
+                         a.IsActive,
+                         a.ContactNo,
+                         a.Email,
+                         a.Remarks
+
+                        , a.NomineeName
+                        , a.NomineeDateofBirth
+                        , a.NomineeRelation
+                        , a.NomineeAddress
+                        , a.NomineeDistrict
+                        ,a.NomineeDivision
+                        , a.NomineeCountry
+                        , a.NomineeCity
+                        , a.NomineePostalCode
+                        , a.NomineePhone
+                        , a.NomineeMobile
+                        , a.NomineeBirthCertificateNo
+                        , a.NomineeFax
+                        , a.NomineeFileName
+                        , a.NomineeRemarks
+                        , a.NomineeNID
+                        from EmployeeInfo a 
+						left join Department b on a.Department = b.Id
+						left join Designation c on a.Designation = c.Id";
 
                 #endregion SQL query
 

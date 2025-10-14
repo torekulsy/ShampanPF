@@ -148,8 +148,8 @@ namespace SymServices.PF
                         cmdInsert.Parameters.AddWithValue("@Project", vm.Project);
                         cmdInsert.Parameters.AddWithValue("@Section", vm.Section);
                         cmdInsert.Parameters.AddWithValue("@DateOfBirth", vm.DateOfBirth);
-                        cmdInsert.Parameters.AddWithValue("@JoinDate", vm.JoinDate);                      
-                     
+                        cmdInsert.Parameters.AddWithValue("@JoinDate", vm.JoinDate);
+
                         cmdInsert.Parameters.AddWithValue("@IsArchive", vm.IsArchive);
                         cmdInsert.Parameters.AddWithValue("@CreatedBy", vm.CreatedBy);
                         cmdInsert.Parameters.AddWithValue("@CreatedAt", vm.CreatedAt);
@@ -167,7 +167,7 @@ namespace SymServices.PF
                         else
                         {
                             cmdInsert.Parameters.AddWithValue("@IsActive", vm.IsActive);
-                        }                       
+                        }
                         cmdInsert.Parameters.AddWithValue("@NomineeName", vm.NomineeName ?? "");
                         cmdInsert.Parameters.AddWithValue("@NomineeRelation", vm.NomineeRelation ?? "");
                         cmdInsert.Parameters.AddWithValue("@NomineeAddress", vm.NomineeAddress ?? "");
@@ -452,7 +452,7 @@ namespace SymServices.PF
                         objComm.Parameters.AddWithValue("@" + cField, conditionValues[j]);
                     }
                 }
-                            
+
                 objComm.CommandType = CommandType.Text;
                 SqlDataReader dr;
                 dr = objComm.ExecuteReader();
@@ -914,7 +914,7 @@ namespace SymServices.PF
                     sqlText += " where Id=@Id ";
 
                     SqlCommand cmdInsert = new SqlCommand(sqlText, currConn, transaction);
-                    cmdInsert.Parameters.AddWithValue("@Id", Id);                
+                    cmdInsert.Parameters.AddWithValue("@Id", Id);
                     cmdInsert.ExecuteNonQuery();
                 }
                 #endregion User Create
@@ -971,7 +971,7 @@ namespace SymServices.PF
             return retResults;
             #endregion
         }
-        
+
         public string[] InsertExportData(EmployeeInfoForPFVM paramVM, SqlConnection VcurrConn, SqlTransaction Vtransaction)
         {
             #region Initializ
@@ -1051,15 +1051,15 @@ namespace SymServices.PF
                     DataTable returnDt = new DataTable();
                     string Department = dr["Department"].ToString().Trim();
                     string Designation = dr["Designation"].ToString().Trim();
-                    string Project = dr["Project"].ToString().Trim();
-                    string Section = dr["Section"].ToString().Trim();
+                    //string Project = dr["Project"].ToString().Trim();
+                    //string Section = dr["Section"].ToString().Trim();
 
 
                     #region Finding DepartmentId Using Department
                     returnDt = _cDal.SelectByCondition("Department", "Name", Department, currConn, transaction);
                     if (returnDt != null && returnDt.Rows.Count > 0)
                     {
-                        vEmployeeInfoVM.Department= returnDt.Rows[0]["Id"].ToString();
+                        vEmployeeInfoVM.Department = returnDt.Rows[0]["Id"].ToString();
                     }
                     else
                     {
@@ -1079,33 +1079,33 @@ namespace SymServices.PF
                         throw new ArgumentNullException(retResults[1], "");
                     }
                     #endregion Finding DesignationId Using Designation
-                    #region Finding ProjectId Using Project
-                    returnDt = _cDal.SelectByCondition("Project", "Name", Project, currConn, transaction);
-                    if (returnDt != null && returnDt.Rows.Count > 0)
-                    {
-                        vEmployeeInfoVM.Project = returnDt.Rows[0]["Id"].ToString();
-                    }
-                    else
-                    {
-                        retResults[1] = "Project Not Found for " + Project;
-                        throw new ArgumentNullException(retResults[1], "");
-                    }
-                    #endregion Finding ProjectId Using Project
-                    #region Finding SectionId Using Section
-                    returnDt = _cDal.SelectByCondition("Section", "Name", Section, currConn, transaction);
-                    if (returnDt != null && returnDt.Rows.Count > 0)
-                    {
-                        vEmployeeInfoVM.Section = returnDt.Rows[0]["Id"].ToString();
-                    }
-                    else
-                    {
-                        retResults[1] = "Section Not Found for " + Section;
-                        throw new ArgumentNullException(retResults[1], "");
-                    }
-                    #endregion Finding SectionId Using Section
+                    //#region Finding ProjectId Using Project
+                    //returnDt = _cDal.SelectByCondition("Project", "Name", Project, currConn, transaction);
+                    //if (returnDt != null && returnDt.Rows.Count > 0)
+                    //{
+                    //    vEmployeeInfoVM.Project = returnDt.Rows[0]["Id"].ToString();
+                    //}
+                    //else
+                    //{
+                    //    retResults[1] = "Project Not Found for " + Project;
+                    //    throw new ArgumentNullException(retResults[1], "");
+                    //}
+                    //#endregion Finding ProjectId Using Project
+                    //#region Finding SectionId Using Section
+                    //returnDt = _cDal.SelectByCondition("Section", "Name", Section, currConn, transaction);
+                    //if (returnDt != null && returnDt.Rows.Count > 0)
+                    //{
+                    //    vEmployeeInfoVM.Section = returnDt.Rows[0]["Id"].ToString();
+                    //}
+                    //else
+                    //{
+                    //    retResults[1] = "Section Not Found for " + Section;
+                    //    throw new ArgumentNullException(retResults[1], "");
+                    //}
+                    //#endregion Finding SectionId Using Section
 
                     vEmployeeInfoVM.Code = dr["Code"].ToString();
-                    vEmployeeInfoVM.Name = dr["Name"].ToString();                 
+                    vEmployeeInfoVM.Name = dr["Name"].ToString();
                     vEmployeeInfoVM.BasicSalary = Convert.ToDecimal(dr["BasicSalary"].ToString());
                     vEmployeeInfoVM.GrossSalary = Convert.ToDecimal(dr["GrossSalary"].ToString());
                     vEmployeeInfoVM.Remarks = dr["Remarks"].ToString();
@@ -1115,7 +1115,7 @@ namespace SymServices.PF
                     vEmployeeInfoVM.ContactNo = dr["ContactNo"].ToString();
                     vEmployeeInfoVM.Email = dr["Email"].ToString();
                     vEmployeeInfoVM.BranchId = paramVM.BranchId;
-                   
+
                     retResults = Insert(vEmployeeInfoVM, currConn, transaction);
                 }
                 #endregion
@@ -1274,8 +1274,8 @@ namespace SymServices.PF
 
             return retResults;
         }
-        
-        public string[] Insert(EmployeeInfoForPFVM vEmployeeInfoVM, SqlConnection VcurrConn, SqlTransaction Vtransaction)
+
+        public string[] Insert(EmployeeInfoForPFVM vm, SqlConnection VcurrConn, SqlTransaction Vtransaction)
         {
 
             #region Initializ
@@ -1327,11 +1327,112 @@ namespace SymServices.PF
                 #endregion open connection and transaction
 
                 #region Save
-               
-                #region SqlText
 
-                sqlText = "  ";
-                sqlText += @" INSERT INTO EmployeeInfo
+                #region SqlText
+                string startdata = @"Select * from EmployeeInfo where Code=@Code ";
+                SqlCommand cmdd = new SqlCommand(startdata, currConn, transaction);
+                cmdd.Parameters.AddWithValue("@Code", vm.Code);
+                SqlDataAdapter adapterd = new SqlDataAdapter(cmdd);
+                DataTable dt = new DataTable();
+                adapterd.Fill(dt);
+
+                if (dt.Rows.Count > 0)
+                {
+                    sqlText += @" Update EmployeeInfo set
+                                     Code=@Code
+                                     ,Name=@Name
+                                     ,Department=@Department
+                                     ,Designation =@Designation
+                                     ,Project=@Project
+                                     ,Section=@Section
+                                     ,DateOfBirth=@DateOfBirth   
+                                     ,JoinDate=@JoinDate                                                       
+                                     ,IsActive=@IsActive 
+                                     ,IsArchive=@IsArchive 
+                                     ,CreatedBy=@CreatedBy 
+                                     ,CreatedAt=@CreatedAt 
+                                     ,CreatedFrom=@CreatedFrom 
+                                     ,LastUpdateBy=@LastUpdateBy 
+                                     ,LastUpdateFrom=@LastUpdateFrom 
+                                     ,PhotoName=@PhotoName  
+                                     ,Remarks=@Remarks 
+                                     ,ResignReason=@ResignReason        
+                                     ,ResignDate=@ResignDate                                 
+                                     ,NomineeName=@NomineeName
+                                     ,NomineeRelation=@NomineeRelation
+                                     ,NomineeAddress=@NomineeAddress
+                                     ,NomineeDistrict=@NomineeDistrict
+                                     ,NomineeDivision=@NomineeDivision
+                                     ,NomineeCountry=@NomineeCountry
+                                     ,NomineeCity=@NomineeCity
+                                     ,NomineePostalCode=@NomineePostalCode
+                                     ,NomineePhone=@NomineePhone
+                                     ,NomineeMobile=@NomineeMobile
+                                     ,NomineeBirthCertificateNo=@NomineeBirthCertificateNo
+                                     ,NomineeFax=@NomineeFax
+                                     ,NomineeFileName=@NomineeFileName
+                                     ,NomineeRemarks=@NomineeRemarks
+                                     ,NomineeNID=@NomineeNID
+                                     ,GrossSalary=@GrossSalary
+                                     ,BasicSalary=@BasicSalary 
+                                     ,Email=@Email
+                                     ,ContactNo=@ContactNo
+                                     where Id=@Id   
+                                 ";
+                    SqlCommand cmdInsert = new SqlCommand(sqlText, currConn, transaction);
+                    cmdInsert.Parameters.AddWithValue("@Id", vm.Id);
+                    cmdInsert.Parameters.AddWithValue("@Code", vm.Code);
+                    cmdInsert.Parameters.AddWithValue("@Name", vm.Name);
+                    cmdInsert.Parameters.AddWithValue("@Department", vm.Department);
+                    cmdInsert.Parameters.AddWithValue("@Designation", vm.Designation);
+                    cmdInsert.Parameters.AddWithValue("@Project", vm.Project);
+                    cmdInsert.Parameters.AddWithValue("@Section", vm.Section);
+                    cmdInsert.Parameters.AddWithValue("@DateOfBirth", vm.DateOfBirth);
+                    cmdInsert.Parameters.AddWithValue("@JoinDate", vm.JoinDate);
+
+                    cmdInsert.Parameters.AddWithValue("@IsArchive", vm.IsArchive);
+                    cmdInsert.Parameters.AddWithValue("@CreatedBy", vm.CreatedBy);
+                    cmdInsert.Parameters.AddWithValue("@CreatedAt", vm.CreatedAt);
+                    cmdInsert.Parameters.AddWithValue("@CreatedFrom", vm.CreatedFrom ?? "");
+                    cmdInsert.Parameters.AddWithValue("@LastUpdateBy", vm.LastUpdateBy ?? "");
+                    cmdInsert.Parameters.AddWithValue("@LastUpdateFrom", vm.LastUpdateFrom ?? "");
+                    cmdInsert.Parameters.AddWithValue("@PhotoName", vm.PhotoName ?? "");
+                    cmdInsert.Parameters.AddWithValue("@Remarks", vm.Remarks ?? "");
+                    cmdInsert.Parameters.AddWithValue("@ResignReason", vm.ResignReason ?? "");
+                    cmdInsert.Parameters.AddWithValue("@ResignDate", vm.ResignDate ?? "");
+                    if (vm.ResignReason != null)
+                    {
+                        cmdInsert.Parameters.AddWithValue("@IsActive", false);
+                    }
+                    else
+                    {
+                        cmdInsert.Parameters.AddWithValue("@IsActive", vm.IsActive);
+                    }
+                    cmdInsert.Parameters.AddWithValue("@NomineeName", vm.NomineeName ?? "");
+                    cmdInsert.Parameters.AddWithValue("@NomineeRelation", vm.NomineeRelation ?? "");
+                    cmdInsert.Parameters.AddWithValue("@NomineeAddress", vm.NomineeAddress ?? "");
+                    cmdInsert.Parameters.AddWithValue("@NomineeDistrict", vm.NomineeDistrict ?? "");
+                    cmdInsert.Parameters.AddWithValue("@NomineeDivision", vm.NomineeDivision ?? "");
+                    cmdInsert.Parameters.AddWithValue("@NomineeCountry", vm.NomineeCountry ?? "");
+                    cmdInsert.Parameters.AddWithValue("@NomineeCity", vm.NomineeCity ?? "");
+                    cmdInsert.Parameters.AddWithValue("@NomineePostalCode", vm.NomineePostalCode ?? "");
+                    cmdInsert.Parameters.AddWithValue("@NomineePhone", vm.NomineePhone ?? "");
+                    cmdInsert.Parameters.AddWithValue("@NomineeMobile", vm.NomineeMobile ?? "");
+                    cmdInsert.Parameters.AddWithValue("@NomineeBirthCertificateNo", vm.NomineeBirthCertificateNo ?? "");
+                    cmdInsert.Parameters.AddWithValue("@NomineeFax", vm.NomineeFax ?? "");
+                    cmdInsert.Parameters.AddWithValue("@NomineeFileName", vm.NomineeFileName ?? "");
+                    cmdInsert.Parameters.AddWithValue("@NomineeRemarks", vm.NomineeRemarks ?? "");
+                    cmdInsert.Parameters.AddWithValue("@NomineeNID", vm.NomineeNID ?? "");
+                    cmdInsert.Parameters.AddWithValue("@GrossSalary", vm.GrossSalary);
+                    cmdInsert.Parameters.AddWithValue("@BasicSalary", vm.BasicSalary);
+                    cmdInsert.Parameters.AddWithValue("@ContactNo", vm.ContactNo ?? "");
+                    cmdInsert.Parameters.AddWithValue("@Email", vm.Email ?? "");
+                    cmdInsert.ExecuteNonQuery();
+                }
+                else
+                {
+                    sqlText = "  ";
+                    sqlText += @" INSERT INTO EmployeeInfo
                                 (
                                  Code                                
                                 ,Name                                
@@ -1379,37 +1480,36 @@ namespace SymServices.PF
                                 ,@LastUpdateFrom
                                 ,@BranchId
                                  ) ";
+
+                    SqlCommand cmdInsert = new SqlCommand(sqlText, currConn, transaction);
+                    cmdInsert.Parameters.AddWithValue("@Code", vm.Code);
+                    cmdInsert.Parameters.AddWithValue("@Name", vm.Name);
+                    cmdInsert.Parameters.AddWithValue("@Department", vm.Department);
+                    cmdInsert.Parameters.AddWithValue("@Designation", vm.Designation);
+                    cmdInsert.Parameters.AddWithValue("@Project", vm.Project);
+                    cmdInsert.Parameters.AddWithValue("@Section", vm.Section);
+                    cmdInsert.Parameters.AddWithValue("@BasicSalary", vm.BasicSalary);
+                    cmdInsert.Parameters.AddWithValue("@GrossSalary", vm.GrossSalary);
+                    cmdInsert.Parameters.AddWithValue("@DateOfBirth", vm.DateOfBirth);
+                    cmdInsert.Parameters.AddWithValue("@JoinDate", vm.JoinDate);
+                    cmdInsert.Parameters.AddWithValue("@IsActive", true);
+                    cmdInsert.Parameters.AddWithValue("@ContactNo", vm.ContactNo);
+                    cmdInsert.Parameters.AddWithValue("@Email", vm.Email);
+                    cmdInsert.Parameters.AddWithValue("@Remarks", vm.Remarks);
+                    cmdInsert.Parameters.AddWithValue("@IsArchive", false);
+                    cmdInsert.Parameters.AddWithValue("@CreatedBy", "");
+                    cmdInsert.Parameters.AddWithValue("@CreatedAt", "");
+                    cmdInsert.Parameters.AddWithValue("@CreatedFrom", "");
+                    cmdInsert.Parameters.AddWithValue("@LastUpdateBy", "");
+                    cmdInsert.Parameters.AddWithValue("@LastUpdateAt", "");
+                    cmdInsert.Parameters.AddWithValue("@LastUpdateFrom", "");
+                    cmdInsert.Parameters.AddWithValue("@BranchId", vm.BranchId);
+
+                    cmdInsert.ExecuteNonQuery();
+                }
                 #endregion
 
                 #region SqlExecution
-
-
-                SqlCommand cmdInsert = new SqlCommand(sqlText, currConn, transaction);
-                cmdInsert.Parameters.AddWithValue("@Code", vEmployeeInfoVM.Code);
-                cmdInsert.Parameters.AddWithValue("@Name", vEmployeeInfoVM.Name);
-                cmdInsert.Parameters.AddWithValue("@Department", vEmployeeInfoVM.Department);
-                cmdInsert.Parameters.AddWithValue("@Designation", vEmployeeInfoVM.Designation);
-                cmdInsert.Parameters.AddWithValue("@Project", vEmployeeInfoVM.Project);
-                cmdInsert.Parameters.AddWithValue("@Section", vEmployeeInfoVM.Section);
-                cmdInsert.Parameters.AddWithValue("@BasicSalary", vEmployeeInfoVM.BasicSalary);
-                cmdInsert.Parameters.AddWithValue("@GrossSalary", vEmployeeInfoVM.GrossSalary);
-                cmdInsert.Parameters.AddWithValue("@DateOfBirth", vEmployeeInfoVM.DateOfBirth);
-                cmdInsert.Parameters.AddWithValue("@JoinDate", vEmployeeInfoVM.JoinDate);
-                cmdInsert.Parameters.AddWithValue("@IsActive", true);
-                cmdInsert.Parameters.AddWithValue("@ContactNo", vEmployeeInfoVM.ContactNo);
-                cmdInsert.Parameters.AddWithValue("@Email", vEmployeeInfoVM.Email);
-                cmdInsert.Parameters.AddWithValue("@Remarks", vEmployeeInfoVM.Remarks);
-                cmdInsert.Parameters.AddWithValue("@IsArchive", false);
-                cmdInsert.Parameters.AddWithValue("@CreatedBy", "");
-                cmdInsert.Parameters.AddWithValue("@CreatedAt", "");
-                cmdInsert.Parameters.AddWithValue("@CreatedFrom", "");
-                cmdInsert.Parameters.AddWithValue("@LastUpdateBy", "");
-                cmdInsert.Parameters.AddWithValue("@LastUpdateAt", "");
-                cmdInsert.Parameters.AddWithValue("@LastUpdateFrom", "");
-                cmdInsert.Parameters.AddWithValue("@BranchId", vEmployeeInfoVM.BranchId);
-
-                cmdInsert.ExecuteNonQuery();
-
 
                 #endregion
 
