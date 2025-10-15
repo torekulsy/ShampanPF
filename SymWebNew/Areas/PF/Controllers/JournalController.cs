@@ -203,7 +203,7 @@ namespace SymWebUI.Areas.PF.Controllers
                         return RedirectToAction("Edit", new { id = vm.Id });
                     }
 
-                    return PartialView("~/Areas/PF/Views/Journal/Create.cshtml", vm);
+                    return RedirectToAction("Create", new { JournalType = vm.JournalType });
 
                 }
 

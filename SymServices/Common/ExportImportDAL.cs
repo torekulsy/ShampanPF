@@ -273,12 +273,14 @@ Where vei.IsArchive=0 AND vei.IsActive=1
                         , a.NomineeNID
                         from EmployeeInfo a 
 						left join Department b on a.Department = b.Id
-						left join Designation c on a.Designation = c.Id";
+						left join Designation c on a.Designation = c.Id
+                        where a.BranchId = @BranchId and a.IsActive =1 ";
 
                 #endregion SQL query
 
                 // Create SqlCommand and SqlDataAdapter for the query
                 SqlCommand cmdd = new SqlCommand(sqlText, currConn);
+                cmdd.Parameters.AddWithValue("@BranchId", VM.BranchId ?? "");
                 SqlDataAdapter adapterd = new SqlDataAdapter(cmdd);
 
                 // Fill the DataTable with data from the database

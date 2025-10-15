@@ -12,5 +12,6 @@ namespace SymViewModel.Common
       public List<string> IDs { get; set; }
       public string Type { get; set; }
       public HttpPostedFileBase file { get; set; }
+      public string BranchId { get; set; }
     }
 }

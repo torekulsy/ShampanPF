@@ -198,8 +198,6 @@ namespace SymServices.PF
                                   ,[Name]
                                   ,[Department]
                                   ,[Designation]
-                                  ,[Project]
-                                  ,[Section]
                                   ,[DateOfBirth]
                                   ,[JoinDate]
                                   ,[ResignDate]
@@ -239,8 +237,6 @@ namespace SymServices.PF
                                   ,@Name
                                   ,@Department
                                   ,@Designation
-                                  ,@Project
-                                  ,@Section
                                   ,@DateOfBirth  
                                   ,@JoinDate
                                   ,@ResignDate
@@ -282,8 +278,6 @@ namespace SymServices.PF
                         cmdInsert.Parameters.AddWithValue("@Name", vm.Name);
                         cmdInsert.Parameters.AddWithValue("@Department", vm.Department ?? "1_18");
                         cmdInsert.Parameters.AddWithValue("@Designation", vm.Designation);
-                        cmdInsert.Parameters.AddWithValue("@Project", vm.Project);
-                        cmdInsert.Parameters.AddWithValue("@Section", vm.Section);
                         cmdInsert.Parameters.AddWithValue("@DateOfBirth", vm.DateOfBirth);
                         cmdInsert.Parameters.AddWithValue("@JoinDate", vm.JoinDate);
                         cmdInsert.Parameters.AddWithValue("@ResignDate", vm.ResignDate ?? "1990101");
@@ -1114,6 +1108,24 @@ namespace SymServices.PF
                     vEmployeeInfoVM.IsActive = Convert.ToBoolean(dr["IsActive"].ToString());
                     vEmployeeInfoVM.ContactNo = dr["ContactNo"].ToString();
                     vEmployeeInfoVM.Email = dr["Email"].ToString();
+
+                    vEmployeeInfoVM.NomineeName = dr["NomineeName"].ToString();
+                    vEmployeeInfoVM.NomineeDateofBirth = dr["NomineeDateofBirth"].ToString();
+                    vEmployeeInfoVM.NomineeRelation = dr["NomineeRelation"].ToString();
+                    vEmployeeInfoVM.NomineeAddress = dr["NomineeAddress"].ToString();
+                    vEmployeeInfoVM.NomineeDistrict = dr["NomineeDistrict"].ToString();
+                    vEmployeeInfoVM.NomineeDivision = dr["NomineeDivision"].ToString();
+                    vEmployeeInfoVM.NomineeCountry = dr["NomineeCountry"].ToString();
+                    vEmployeeInfoVM.NomineeCity = dr["NomineeCity"].ToString();
+                    vEmployeeInfoVM.NomineePostalCode = dr["NomineePostalCode"].ToString();
+                    vEmployeeInfoVM.NomineePhone = dr["NomineePhone"].ToString();
+                    vEmployeeInfoVM.NomineeMobile = dr["NomineeMobile"].ToString();
+                    vEmployeeInfoVM.NomineeBirthCertificateNo = dr["NomineeBirthCertificateNo"].ToString();
+                    vEmployeeInfoVM.NomineeFax = dr["NomineeFax"].ToString();
+                    vEmployeeInfoVM.NomineeFileName = dr["NomineeFileName"].ToString();
+                    vEmployeeInfoVM.NomineeRemarks = dr["NomineeRemarks"].ToString();
+                    vEmployeeInfoVM.NomineeNID = dr["NomineeNID"].ToString();
+
                     vEmployeeInfoVM.BranchId = paramVM.BranchId;
 
                     retResults = Insert(vEmployeeInfoVM, currConn, transaction);
