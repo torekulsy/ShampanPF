@@ -25,7 +25,8 @@
                     </div>
 
                     <div class="editor-field">
-                        <div>@Html.TextBox("fYear", @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>
+                        @*<div>@Html.TextBox("fYear", @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>*@
+                        @Html.SimpleDropDown("FiscalYear", "/Config/DropDown/DropDownYear", new { @class = " fiscalyearCom required form-control selectDropdown" })
                     </div>
                 </div>
                 <div class="col-md-6">

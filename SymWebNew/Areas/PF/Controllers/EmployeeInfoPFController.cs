@@ -371,7 +371,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
             try
             {
-
+                VM.BranchId = Session["BranchId"].ToString();
                 ExportImportRepo _repo = new ExportImportRepo();
 
                 dt = _repo.SelectEmployeeInfo(VM);

@@ -369,6 +369,7 @@ WHERE  1=1
             retResults[5] = "InsertAccount"; //Method Name
             SqlConnection currConn = null;
             SqlTransaction transaction = null;
+            DataTable dt = new DataTable();
             int transResult = 0;
             #endregion
             #region Try
@@ -405,16 +406,16 @@ WHERE  1=1
 
                 vm.Id = _cDal.NextId("GLJournals", currConn, transaction);
 
-               
-                string glcode = "SELECT * FROM GLJournals WHERE Code = @Code";
-                SqlCommand cmd = new SqlCommand(glcode, currConn);
-                 cmd.Parameters.AddWithValue("@Code", vm.Code);
-                 cmd.Transaction = transaction;
-                 SqlDataReader reader = cmd.ExecuteReader();
-                 DataTable dt = new DataTable();
-                 dt.Load(reader);  
-
-
+                if (vm.Code != null)
+                {
+                    string glcode = "SELECT * FROM GLJournals WHERE Code = @Code";
+                    SqlCommand cmd = new SqlCommand(glcode, currConn);
+                    cmd.Parameters.AddWithValue("@Code", vm.Code);
+                    cmd.Transaction = transaction;
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    dt.Load(reader);
+                }
+                
                 sqlText = "select isnull(count(id),0)+1 FROM  GLJournals where TransactionType=@TransactionType";
                 SqlCommand cmd2 = new SqlCommand(sqlText, currConn);
                 cmd2.Transaction = transaction;
@@ -424,6 +425,7 @@ WHERE  1=1
 
                 if (vm.Code == null || vm.Code == "0")
                 {
+                  
                     if (vm.JournalType == 1)
                     {
                         string NewCode = new CommonDAL().CodeGenerationPF(vm.TransType, "JournalVoucher", vm.TransactionDate, currConn, transaction);
