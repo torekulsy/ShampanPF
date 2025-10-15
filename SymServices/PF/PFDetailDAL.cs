@@ -2832,7 +2832,7 @@ order by SectionOrderNo ";
             string EmployerCOAID = "";
             string BankCOAID = "";
 
-            string startdata = @"Select PeriodStart from FiscalYearDetail where PeriodName=@PeriodName ";
+            string startdata = @"Select PeriodEnd from FiscalYearDetail where PeriodName=@PeriodName ";
             SqlCommand cmdd = new SqlCommand(startdata, currConn, transaction);
             cmdd.Parameters.AddWithValue("@PeriodName", TransactionMonth);
             SqlDataAdapter adapterd = new SqlDataAdapter(cmdd);

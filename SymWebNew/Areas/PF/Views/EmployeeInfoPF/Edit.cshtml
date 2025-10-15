@@ -90,7 +90,7 @@
                         @Html.SimpleDropDownFor(model => model.Designation, "/Config/DropDown/Designation", new { @placeholder = "Designation", @class = "form-control " })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-2 hidden">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Project)
                     </div>
@@ -98,12 +98,28 @@
                         @Html.SimpleDropDownFor(model => model.Project, "/Config/DropDown/Project", new { @placeholder = "Project", @class = "form-control " })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-2 hidden">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Section)
                     </div>
                     <div class="editor-field">
                         @Html.SimpleDropDownFor(model => model.Section, "/Config/DropDown/Section", new { @placeholder = "Section", @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.ContactNo)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.ContactNo, new { @placeholder = "Contact No", @class = "required form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Email)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Email, new { @placeholder = "Email", @class = "required form-control" })
                     </div>
                 </div>
             </div>
@@ -153,23 +169,9 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.ContactNo)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.ContactNo, new { @placeholder = "Contact No", @class = "required form-control" })
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Email)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.Email, new { @placeholder = "Email", @class = "required form-control" })
-                    </div>
-                </div>
+         
                 <div class="col-sm-4">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Remarks)

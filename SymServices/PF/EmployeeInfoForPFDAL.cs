@@ -1354,16 +1354,11 @@ namespace SymServices.PF
                                      Code=@Code
                                      ,Name=@Name
                                      ,Department=@Department
-                                     ,Designation =@Designation
-                                     ,Project=@Project
-                                     ,Section=@Section
+                                     ,Designation =@Designation                                 
                                      ,DateOfBirth=@DateOfBirth   
                                      ,JoinDate=@JoinDate                                                       
                                      ,IsActive=@IsActive 
-                                     ,IsArchive=@IsArchive 
-                                     ,CreatedBy=@CreatedBy 
-                                     ,CreatedAt=@CreatedAt 
-                                     ,CreatedFrom=@CreatedFrom 
+                                     ,IsArchive=@IsArchive                                    
                                      ,LastUpdateBy=@LastUpdateBy 
                                      ,LastUpdateFrom=@LastUpdateFrom 
                                      ,PhotoName=@PhotoName  
@@ -1389,23 +1384,17 @@ namespace SymServices.PF
                                      ,BasicSalary=@BasicSalary 
                                      ,Email=@Email
                                      ,ContactNo=@ContactNo
-                                     where Id=@Id   
+                                     where Code=@Code   
                                  ";
                     SqlCommand cmdInsert = new SqlCommand(sqlText, currConn, transaction);
                     cmdInsert.Parameters.AddWithValue("@Id", vm.Id);
                     cmdInsert.Parameters.AddWithValue("@Code", vm.Code);
                     cmdInsert.Parameters.AddWithValue("@Name", vm.Name);
                     cmdInsert.Parameters.AddWithValue("@Department", vm.Department);
-                    cmdInsert.Parameters.AddWithValue("@Designation", vm.Designation);
-                    cmdInsert.Parameters.AddWithValue("@Project", vm.Project);
-                    cmdInsert.Parameters.AddWithValue("@Section", vm.Section);
+                    cmdInsert.Parameters.AddWithValue("@Designation", vm.Designation);                  
                     cmdInsert.Parameters.AddWithValue("@DateOfBirth", vm.DateOfBirth);
                     cmdInsert.Parameters.AddWithValue("@JoinDate", vm.JoinDate);
-
                     cmdInsert.Parameters.AddWithValue("@IsArchive", vm.IsArchive);
-                    cmdInsert.Parameters.AddWithValue("@CreatedBy", vm.CreatedBy);
-                    cmdInsert.Parameters.AddWithValue("@CreatedAt", vm.CreatedAt);
-                    cmdInsert.Parameters.AddWithValue("@CreatedFrom", vm.CreatedFrom ?? "");
                     cmdInsert.Parameters.AddWithValue("@LastUpdateBy", vm.LastUpdateBy ?? "");
                     cmdInsert.Parameters.AddWithValue("@LastUpdateFrom", vm.LastUpdateFrom ?? "");
                     cmdInsert.Parameters.AddWithValue("@PhotoName", vm.PhotoName ?? "");
