@@ -78,94 +78,52 @@ namespace SymWebUI.Areas.PF.Controllers
         /// <returns>View containing PF Journal</returns>
         public ActionResult _index(JQueryDataTableParamModel param, int JournalType =1)
         {
-            #region Column Search
-            //var idFilter = Convert.ToString(Request["sSearch_0"]);
-            //var codeFilter = Convert.ToString(Request["sSearch_1"]);
-            //var empNameFilter = Convert.ToString(Request["sSearch_2"]);
-            //var designationFilter = Convert.ToString(Request["sSearch_3"]);
-            //var departmentFilter = Convert.ToString(Request["sSearch_4"]);
-            //var sectionFilter = Convert.ToString(Request["sSearch_5"]);
-            //var projecttFilter = Convert.ToString(Request["sSearch_6"]);
-            //var joinDateFilter = Convert.ToString(Request["sSearch_7"]);
 
-                //<th>Code</th>
-                //<th>Transaction Date</th>
-                //<th>Total Amount</th>
-                //<th>Remarks</th>
-
-            DateTime fromDate = DateTime.MinValue;
-            DateTime toDate = DateTime.MaxValue;
-            //if (joinDateFilter.Contains('~'))
-            //{
-            //    //Split date range filters with ~
-            //    fromDate = joinDateFilter.Split('~')[0] == "" ? DateTime.MinValue : Ordinary.IsDate(joinDateFilter.Split('~')[0]) == true ? Convert.ToDateTime(joinDateFilter.Split('~')[0]) : DateTime.MinValue;
-            //    toDate = joinDateFilter.Split('~')[1] == "" ? DateTime.MaxValue : Ordinary.IsDate(joinDateFilter.Split('~')[1]) == true ? Convert.ToDateTime(joinDateFilter.Split('~')[1]) : DateTime.MinValue;
-            //}
-
-
-            var fromID = 0;
-            var toID = 0;
-            //if (idFilter.Contains('~'))
-            //{
-            //    //Split number range filters with ~
-            //    fromID = idFilter.Split('~')[0] == "" ? 0 : Convert.ToInt32(idFilter.Split('~')[0]);
-            //    toID = idFilter.Split('~')[1] == "" ? 0 : Convert.ToInt32(idFilter.Split('~')[1]);
-            //}
-
-            #endregion Column Search
 
             EmployeeInfoRepo _empRepo = new EmployeeInfoRepo();
-            List<GLJournalVM> getAllData = new List<GLJournalVM>();
+            //List<GLJournalVM> getAllData = new List<GLJournalVM>();
+            var getAllData = _glJournalRepo.SelectAll();
             IEnumerable<GLJournalVM> filteredData;
-            ShampanIdentity Identit = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
 
-            if (Convert.ToInt32( JournalType)>0)
+            if (!string.IsNullOrEmpty(param.sSearch))
             {
-                getAllData = _glJournalRepo.SelectAll(0, new[] { "JournalType", "gl.TransType", "gl.BranchId" }, new[] { JournalType.ToString(), AreaTypePFVM.TransType, Session["BranchId"].ToString() });
+                filteredData = getAllData.Where(c =>
+                    c.Code.ToLower().Contains(param.sSearch.ToLower()) ||
+                    c.TransactionDate.ToLower().Contains(param.sSearch.ToLower()) ||
+                    //c.TransactionTypeName.ToLower().Contains(param.sSearch.ToLower()) ||
+                    c.TransactionValue.ToString().ToLower().Contains(param.sSearch.ToLower()) ||
+                    (c.Post ? "Yes" : "No").ToLower().Contains(param.sSearch.ToLower())
+                );
+            }
+            else
+            {
+                filteredData = getAllData;
             }
 
-            filteredData = getAllData;
+            var displayedCompanies = filteredData
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
 
-            var isSortable_1 = Convert.ToBoolean(Request["bSortable_1"]);
-            var isSortable_2 = Convert.ToBoolean(Request["bSortable_2"]);
-            var isSortable_3 = Convert.ToBoolean(Request["bSortable_3"]);
-            var isSortable_4 = Convert.ToBoolean(Request["bSortable_4"]);
-            var isSortable_5 = Convert.ToBoolean(Request["bSortable_5"]);
-            var isSortable_6 = Convert.ToBoolean(Request["bSortable_6"]);
-            var isSortable_7 = Convert.ToBoolean(Request["bSortable_7"]);
-
-            var sortColumnIndex = Convert.ToInt32(Request["iSortCol_0"]);
-            Func<EmployeeInfoVM, string> orderingFunction = (c =>
-                sortColumnIndex == 1 && isSortable_1 ? c.Code :
-                sortColumnIndex == 2 && isSortable_2 ? c.EmpName :
-                sortColumnIndex == 3 && isSortable_3 ? c.Designation :
-                sortColumnIndex == 4 && isSortable_4 ? c.Department :
-               sortColumnIndex == 5 && isSortable_5 ? c.Section :
-                sortColumnIndex == 6 && isSortable_6 ? c.Project :
-                sortColumnIndex == 7 && isSortable_7 ? Ordinary.DateToString(c.JoinDate) :
-                                                           "");
-
-            var sortDirection = Request["sSortDir_0"]; // asc or desc
-         
-            var displayedCompanies = filteredData.Skip(param.iDisplayStart).Take(param.iDisplayLength);
             var result = from c in displayedCompanies
-                         select new[] { 
-                 Convert.ToString(c.Id)
-                , c.Code
-                , c.TransactionDate 
-                , c.TransactionTypeName
-                , c.TransactionValue.ToString()
-                ,c.Post?"Posted":"Not Posted"
-                         };
+                         select new[]
+                 {
+                     Convert.ToString(c.Id),
+                     c.Code,
+                     c.TransactionDate,
+                     //c.TransactionTypeName,
+                     c.TransactionValue.ToString(),
+                     c.Post ? "Yes" : "No"
+                 };
+
             return Json(new
             {
                 sEcho = param.sEcho,
                 iTotalRecords = getAllData.Count(),
                 iTotalDisplayRecords = filteredData.Count(),
                 aaData = result
-            },
-                        JsonRequestBehavior.AllowGet);
+            }, JsonRequestBehavior.AllowGet);
         }
+
 
         /// <summary>
         /// Created: 13 Apr 2025  
