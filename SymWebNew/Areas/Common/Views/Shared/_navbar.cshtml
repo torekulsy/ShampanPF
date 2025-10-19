@@ -4,7 +4,8 @@
     ShampanIdentity identity = null;
     try
     {
-        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;       
+        
     }
     catch (Exception)
     {
@@ -14,6 +15,7 @@
 }
 @{
     string CompanyName = System.Configuration.ConfigurationManager.AppSettings["CompanyName"];
+    string BranchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "No Branch Selected";
 }
 <div class="content white menuheight">
     <nav class="navbar navbar-default" role="navigation">
@@ -47,7 +49,7 @@
                  
                 <li class="User"><a href="/Common/User/">User </a></li>
                 <li class="dropdown Setup">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Setup <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Setup<b class="caret"></b></a>
                     <ul class="dropdown-menu multi-column columns-1">
                         <div class="row">
                             <div class="col-sm-12">
@@ -83,8 +85,11 @@
                         </div>
                     </ul>
                 </li>
-              
-            </ul>
+                <li class="dropdown Setup">
+                    <a style="color:green;">&nbsp;&nbsp;&nbsp;&nbsp; (@BranchName)</a>
+                    
+                    </li>
+</ul>
             <ul class="nav navbar-nav navbar-right" style="border-left: 5px solid #fff">
                 <li class="dropdown1">
                     <a href="#" class="dropdown-toggle sym-btn-back" title="Go Back" onclick="goBack()" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">&nbsp;Back</a>
