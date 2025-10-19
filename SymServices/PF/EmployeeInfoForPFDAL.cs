@@ -103,8 +103,6 @@ namespace SymServices.PF
                                      ,Name=@Name
                                      ,Department=@Department
                                      ,Designation =@Designation
-                                     ,Project=@Project
-                                     ,Section=@Section
                                      ,DateOfBirth=@DateOfBirth   
                                      ,JoinDate=@JoinDate                                                       
                                      ,IsActive=@IsActive 
@@ -145,8 +143,6 @@ namespace SymServices.PF
                         cmdInsert.Parameters.AddWithValue("@Name", vm.Name);
                         cmdInsert.Parameters.AddWithValue("@Department", vm.Department);
                         cmdInsert.Parameters.AddWithValue("@Designation", vm.Designation);
-                        cmdInsert.Parameters.AddWithValue("@Project", vm.Project);
-                        cmdInsert.Parameters.AddWithValue("@Section", vm.Section);
                         cmdInsert.Parameters.AddWithValue("@DateOfBirth", vm.DateOfBirth);
                         cmdInsert.Parameters.AddWithValue("@JoinDate", vm.JoinDate);
 
@@ -665,8 +661,8 @@ namespace SymServices.PF
                     EmployeeInfoForPFVM.Name = dr["Name"].ToString();
                     EmployeeInfoForPFVM.Department = dr["Department"].ToString();
                     EmployeeInfoForPFVM.Designation = dr["Designation"].ToString();
-                    EmployeeInfoForPFVM.Project = dr["Project"].ToString();
-                    EmployeeInfoForPFVM.Section = dr["Section"].ToString();
+                    //EmployeeInfoForPFVM.Project = dr["Project"].ToString();
+                    //EmployeeInfoForPFVM.Section = dr["Section"].ToString();
                     EmployeeInfoForPFVM.DateOfBirth = dr["DateOfBirth"].ToString();
                     EmployeeInfoForPFVM.JoinDate = dr["JoinDate"].ToString();
                     EmployeeInfoForPFVM.ResignDate = dr["ResignDate"].ToString();
@@ -692,6 +688,7 @@ namespace SymServices.PF
                     EmployeeInfoForPFVM.IsActive = Convert.ToBoolean(dr["IsActive"].ToString());
                     EmployeeInfoForPFVM.ContactNo = dr["ContactNo"].ToString();
                     EmployeeInfoForPFVM.Email = dr["Email"].ToString();
+                    EmployeeInfoForPFVM.PhotoName = dr["PhotoName"].ToString();
                 }
                 dr.Close();
 
@@ -1583,5 +1580,130 @@ namespace SymServices.PF
             return retResults;
             #endregion
         }
+
+
+        public string[] UpdatePhoto(int EmployeeId, string PhotoName, SqlConnection VcurrConn, SqlTransaction Vtransaction)
+        {
+            #region Variables
+            string[] retResults = new string[6];
+            retResults[0] = "Fail";//Success or Fail
+            retResults[1] = "Fail";// Success or Fail Message
+            retResults[2] = "0";
+            retResults[3] = "sqlText"; //  SQL Query
+            retResults[4] = "ex"; //catch ex
+            retResults[5] = "Employee EmployeeInfo Update"; //Method Name
+            int transResult = 0;
+            string sqlText = "";
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+            bool iSTransSuccess = false;
+            #endregion
+            try
+            {
+                #region open connection and transaction
+                #region New open connection and transaction
+                if (VcurrConn != null)
+                {
+                    currConn = VcurrConn;
+                }
+                if (Vtransaction != null)
+                {
+                    transaction = Vtransaction;
+                }
+                #endregion New open connection and transaction
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+                if (transaction == null) { transaction = currConn.BeginTransaction("UpdateToEmployeeInfo"); }
+                #endregion open connection and transaction
+                if (!string.IsNullOrWhiteSpace(PhotoName))
+                {
+                    #region Update Settings
+                    sqlText = "";
+                    sqlText = "update EmployeeInfo set";
+                    sqlText += " PhotoName=@PhotoName";
+                    sqlText += " where Id=@Id";
+                    SqlCommand cmdUpdate = new SqlCommand(sqlText, currConn);
+                    cmdUpdate.Parameters.AddWithValue("@PhotoName", PhotoName);
+                    cmdUpdate.Parameters.AddWithValue("@Id", EmployeeId);
+                    cmdUpdate.Transaction = transaction;
+                    var exeRes = cmdUpdate.ExecuteNonQuery();
+                    transResult = Convert.ToInt32(exeRes);
+                    retResults[2] = EmployeeId.ToString();// Return Id
+                    retResults[3] = sqlText; //  SQL Query
+                    #region Commit
+                    if (transResult <= 0)
+                    {
+                        // throw new ArgumentNullException("Education Update", EmployeeInfoVM.BranchId + " could not updated.");
+                    }
+                    #endregion Commit
+                    #endregion Update Settings
+                    iSTransSuccess = true;
+                }
+                else
+                {
+                    throw new ArgumentNullException("EmployeeInfo Update", "Could not found any item.");
+                }
+                if (iSTransSuccess == true)
+                {
+                    if (Vtransaction == null)
+                    {
+                        if (transaction != null)
+                        {
+                            transaction.Commit();
+                        }
+                    }
+                    retResults[0] = "Success";
+                    retResults[1] = "Data Update Successfully.";
+                }
+                else
+                {
+                    retResults[1] = "Unexpected error to update EmployeeInfo.";
+                    throw new ArgumentNullException("", "");
+                }
+            }
+            #region catch
+            catch (Exception ex)
+            {
+                retResults[0] = "Fail";//Success or Fail
+                retResults[4] = ex.Message; //catch ex
+                if (Vtransaction != null)
+                {
+                    try
+                    {
+                        if (Vtransaction == null) { transaction.Rollback(); }
+                    }
+                    catch (Exception)
+                    {
+                        retResults[1] = "Unexpected error to update EmployeeInfo.";
+                        return retResults;
+                        // throw new ArgumentNullException("Unexpected error to update EmployeeInfo.", "EmployeeInfo");
+                    }
+                }
+                return retResults;
+            }
+            finally
+            {
+                if (VcurrConn == null)
+                {
+                    if (currConn != null)
+                    {
+                        if (currConn.State == ConnectionState.Open)
+                        {
+                            currConn.Close();
+                        }
+                    }
+                }
+            }
+            #endregion
+            return retResults;
+        }
+      
+
     }
 }

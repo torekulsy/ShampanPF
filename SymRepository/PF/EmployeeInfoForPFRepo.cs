@@ -59,6 +59,8 @@ namespace SymRepository.PF
             }
         }
 
+
+
         public string[] DeleteEmployeeInfoForPF(int Id)
         {
             try
@@ -104,6 +106,18 @@ namespace SymRepository.PF
             try
             {
                 return new EmployeeInfoForPFDAL().ReActiveEmployeeInfoForPF(Id, null, null);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public string[] UpdatePhoto(int EmployeeId, string PhotoName)
+        {
+            try
+            {
+                return new EmployeeInfoForPFDAL().UpdatePhoto(EmployeeId, PhotoName, null, null);
             }
             catch (Exception ex)
             {

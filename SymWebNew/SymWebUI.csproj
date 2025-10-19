@@ -4763,6 +4763,7 @@
     <Folder Include="Files\DisabilityFile\" />
     <Folder Include="Files\Education\" />
     <Folder Include="Files\EmergencyContact\" />
+    <Folder Include="Files\EmployeeInfo\" />
     <Folder Include="Files\Export\" />
     <Folder Include="Files\ExtraCurriculam\" />
     <Folder Include="Files\Immigration\" />

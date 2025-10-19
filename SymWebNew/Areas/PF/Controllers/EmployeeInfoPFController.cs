@@ -258,30 +258,41 @@ namespace SymWebUI.Areas.PF.Controllers
         /// </summary>
         /// <param name="vm">The EmployeeInfoForPFVM object containing the form data</param>
         /// <returns>Redirects to Index on success, otherwise returns the same view with the provided model</returns>
-        public ActionResult CreateEdit(EmployeeInfoForPFVM vm)
-        {
+        
+        
+        
+        //Perves
+        //public ActionResult CreateEdit(EmployeeInfoForPFVM vm)
+        //{
 
-            string[] result = new string[6];
-            vm.CreatedAt = DateTime.Now.ToString("yyyyMMddHHmmss");
-            vm.CreatedBy = identity.Name;
-            vm.CreatedFrom = identity.WorkStationIP;
-            vm.IsActive = true;
-            vm.BranchId = Session["BranchId"].ToString();
-            try
-            {
+        //    string[] result = new string[6];
+        //    vm.CreatedAt = DateTime.Now.ToString("yyyyMMddHHmmss");
+        //    vm.CreatedBy = identity.Name;
+        //    vm.CreatedFrom = identity.WorkStationIP;
+        //    vm.IsActive = true;
+        //    vm.BranchId = Session["BranchId"].ToString();
+        //    try
+        //    {
 
-                result = new EmployeeInfoForPFRepo().InsertEmployeeInfoForPF(vm);
-                Session["result"] = result[0] + "~" + result[1];
-                return RedirectToAction("Index");
+        //        result = new EmployeeInfoForPFRepo().InsertEmployeeInfoForPF(vm);
+        //        Session["result"] = result[0] + "~" + result[1];
+        //        return RedirectToAction("Index");
 
-            }
-            catch (Exception)
-            {
-                Session["result"] = "Fail~Data Not Succeessfully!";
-                FileLogger.Log(result[0].ToString() + Environment.NewLine + result[2].ToString() + Environment.NewLine + result[5].ToString(), this.GetType().Name, result[4].ToString() + Environment.NewLine + result[3].ToString());
-                return View(vm);
-            }
-        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        Session["result"] = "Fail~Data Not Succeessfully!";
+        //        FileLogger.Log(result[0].ToString() + Environment.NewLine + result[2].ToString() + Environment.NewLine + result[5].ToString(), this.GetType().Name, result[4].ToString() + Environment.NewLine + result[3].ToString());
+        //        return View(vm);
+        //    }
+        //}
+        //Perves
+
+
+
+
+
+
         /// <summary>
         /// Created: 13 Apr 2025  
         /// Created By: Md Torekul Islam  
@@ -441,6 +452,71 @@ namespace SymWebUI.Areas.PF.Controllers
             return View("Index");
         }
 
+        
 
+        [HttpPost]
+        public ActionResult CreateEdit(EmployeeInfoForPFVM vm, HttpPostedFileBase file)
+        {
+            string[] result = new string[6];
+            vm.CreatedAt = DateTime.Now.ToString("yyyyMMddHHmmss");
+            vm.CreatedBy = identity.Name;
+            vm.CreatedFrom = identity.WorkStationIP;
+            vm.IsActive = true;
+            vm.BranchId = Session["BranchId"].ToString();
+
+            try
+            {
+                EmployeeInfoForPFRepo repo = new EmployeeInfoForPFRepo();
+
+                
+                result = repo.InsertEmployeeInfoForPF(vm);
+
+                if (result[0] == "Success")
+                {
+                    
+                    int employeeId = vm.Id > 0 ? vm.Id : Convert.ToInt32(result[2]);
+
+                    
+                    if (file != null && file.ContentLength > 0)
+                    {
+                      
+                        var employee = repo.SelectById(employeeId);
+                        string code = employee.Code ?? ("EMP_" + employeeId);
+                        string extension = Path.GetExtension(file.FileName);
+                        string photoName = code + extension;
+
+                        
+                        var photoResult = repo.UpdatePhoto(employeeId, photoName);
+                        if (photoResult[0] == "Success")
+                        {
+                           
+                            string dirPath = Server.MapPath("~/Files/EmployeeInfo");
+                            if (!Directory.Exists(dirPath))
+                                Directory.CreateDirectory(dirPath);
+
+                            
+                            string filePath = Path.Combine(dirPath, photoName);
+                            file.SaveAs(filePath);
+                        }
+                    }
+                }
+
+               
+                Session["result"] = result[0] + "~" + result[1];
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                Session["result"] = "Fail~Data Not Successfully Saved!";
+                FileLogger.Log(
+                    result[0] + Environment.NewLine +
+                    result[2] + Environment.NewLine +
+                    result[5],
+                    this.GetType().Name,
+                    ex.Message + Environment.NewLine + result[3]
+                );
+                return View(vm);
+            }
+        }
     }
 }

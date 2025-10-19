@@ -49,7 +49,7 @@
     ViewBag.Title = "Edit";
     ViewBag.Location = "Edit";
 }
-@using (Html.BeginForm("CreateEdit", "EmployeeInfoPF", FormMethod.Post, new { @Id = "frmEmployeeInfoForPFEdit" }))
+@using (Html.BeginForm("CreateEdit", "EmployeeInfoPF", FormMethod.Post, new { @Id = "frmEmployeeInfoForPFEdit", enctype = "multipart/form-data" }))
 {
     @Html.HiddenFor(model => model.Id)
     <div class="thinbox">
@@ -90,7 +90,7 @@
                         @Html.SimpleDropDownFor(model => model.Designation, "/Config/DropDown/Designation", new { @placeholder = "Designation", @class = "form-control " })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-2 hidden">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Project)
                     </div>
@@ -98,7 +98,7 @@
                         @Html.SimpleDropDownFor(model => model.Project, "/Config/DropDown/Project", new { @placeholder = "Project", @class = "form-control " })
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-2 hidden">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Section)
                     </div>
@@ -106,6 +106,25 @@
                         @Html.SimpleDropDownFor(model => model.Section, "/Config/DropDown/Section", new { @placeholder = "Section", @class = "form-control " })
                     </div>
                 </div>
+
+                <div class="col-md-1">
+                    <div class="row">
+                        <div class="image-section">
+                            <div class="image-preview">
+                                <img src="@Url.Content("~/Files/EmployeeInfo/" + Model.PhotoName)" id="EmployeeImage" alt="IMAGES" height="50" />
+                            </div>
+                            <div class="image-upload">
+                                <input type="file" accept=".jpg,.png,.gif,.jpeg" name="file" id="FileUpload" onchange="CheckImageSize(this);ShowpImagePreview(this);" />
+                            </div>
+                            <div class="action-buttons">
+                                @*<button type="submit" class="sym-btn-file-upload" id="btnSaveImage" title="Save Pic">Pic Save</button>
+                                <button type="button" title="Delete Pic" onclick="EmployeeImageDelete(this)" data-id="@Model.Id" class="sym-btn-remove">Delete</button>*@
+                                <input type="hidden" id="employeeId" name="employeeId" value="@Model.Id" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="row">
                 <div class="col-md-2">
@@ -361,5 +380,15 @@
         $(function () {
             valiDation("frmEmployeeInfoForPFEdit");
         });
+
+        function ShowpImagePreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#EmployeeImage').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
     </script>
 }
