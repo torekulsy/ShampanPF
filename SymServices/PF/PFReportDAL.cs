@@ -8917,5 +8917,142 @@ WHERE
         }
 
 
+        public DataTable PFAllEmployee(PFReportVM vm, string[] conditionFields = null, string[] conditionValues = null, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
+        {
+            #region Variables
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+            string sqlText = "";
+            DataTable dt = new DataTable();
+            #endregion
+
+
+            try
+            {
+                #region open connection and transaction
+                #region New open connection and transaction
+                if (VcurrConn != null)
+                {
+                    currConn = VcurrConn;
+                }
+                if (Vtransaction != null)
+                {
+                    transaction = Vtransaction;
+                }
+                #endregion New open connection and transaction
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+                if (transaction == null)
+                {
+                    transaction = currConn.BeginTransaction("");
+                }
+                #endregion open connection and transaction
+                
+
+                #region sql statement
+
+                #region SqlText
+
+                sqlText = @"select a.Code, a.Name, b.Name AS Department, C.Name AS Designation, a.JoinDate, ContactNo, PhotoName  from EmployeeInfo a
+left join Department b on a.Department = b.Id
+left join Designation c on a.Designation = c.Id
+where a.IsActive =1 
+";
+
+                string cField = "";
+                if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
+                {
+                    for (int i = 0; i < conditionFields.Length; i++)
+                    {
+                        if (string.IsNullOrWhiteSpace(conditionFields[i]) || string.IsNullOrWhiteSpace(conditionValues[i]))
+                        {
+                            continue;
+                        }
+                        cField = conditionFields[i].ToString();
+                        cField = Ordinary.StringReplacing(cField);
+                        sqlText += " AND " + conditionFields[i] + "=@" + cField;
+                    }
+                }
+                #endregion SqlText
+
+                #region SqlExecution
+                if (vm.EmployeeId != null)
+                {
+                    sqlText += @"  And a.Code=@EmployeeId";
+                }
+                if (vm.BranchId != null)
+                {
+                    sqlText += @" And  a.BranchId=@BranchId";
+                }      
+                SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
+                da.SelectCommand.Transaction = transaction;
+                da.SelectCommand.Parameters.AddWithValue("@DateFrom", Ordinary.DateToString(vm.DateFrom == null ? "1900/Jan/31" : vm.DateFrom));
+                da.SelectCommand.Parameters.AddWithValue("@DatTo", Ordinary.DateToString(vm.DateTo == null ? "2029/Dec/31" : vm.DateTo));
+                if (vm.EmployeeId != null)
+                {
+                    da.SelectCommand.Parameters.AddWithValue("@EmployeeId", vm.EmployeeId);
+
+                }
+                if (vm.BranchId != null)
+                {                   
+                    da.SelectCommand.Parameters.AddWithValue("@BranchId", vm.BranchId);
+                }      
+                if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
+                {
+                    for (int j = 0; j < conditionFields.Length; j++)
+                    {
+                        if (string.IsNullOrWhiteSpace(conditionFields[j]) || string.IsNullOrWhiteSpace(conditionValues[j]))
+                        {
+                            continue;
+                        }
+                        cField = conditionFields[j].ToString();
+                        cField = Ordinary.StringReplacing(cField);
+                        da.SelectCommand.Parameters.AddWithValue("@" + cField, conditionValues[j]);
+                    }
+                }
+
+                da.Fill(dt);
+
+                dt = Ordinary.DtColumnStringToDate(dt, "JoinDate");
+
+
+                #endregion SqlExecution
+
+                if (Vtransaction == null && transaction != null)
+                {
+                    transaction.Commit();
+                }
+                #endregion
+            }
+
+            #region catch
+
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+
+            #endregion
+
+            #region finally
+
+            finally
+            {
+                if (VcurrConn == null && currConn != null && currConn.State == ConnectionState.Open)
+                {
+                    currConn.Close();
+                }
+            }
+            #endregion
+
+            return dt;
+        }
+
     }
 }

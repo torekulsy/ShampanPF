@@ -2245,5 +2245,75 @@ namespace SymWebUI.Areas.PF.Controllers
                  throw;
              }
          }
+
+         [HttpGet]
+         public ActionResult AllEmployeeReportVeiw()
+         {
+             try
+             {
+
+                 PFReportVM vm = new PFReportVM();
+                 vm.TransType = AreaTypePFVM.TransType;
+                 return PartialView("~/Areas/PF/Views/PFReport/AllEmployeeReportVeiw.cshtml", vm);
+
+             }
+             catch (Exception)
+             {
+                 throw;
+             }
+         }
+
+
+         [HttpPost]
+         public ActionResult AllEmployee(PFReportVM vm)
+         {
+             try
+             {
+                 vm.BranchId = Session["BranchId"].ToString();
+                 string rptLocation = "";
+
+                 PFReportRepo _repo = new PFReportRepo();
+
+                 string[] conditionFields = { };
+                 string[] conditionValues = { };
+                 DateTime startdate = Convert.ToDateTime(vm.DateFrom);
+                 DateTime enddate = Convert.ToDateTime(vm.DateTo);
+                 string ReportHead = "Member’s Fund Position (" + startdate.ToString("yyyy") + "-" + enddate.ToString("yy") + ")";
+                 DataTable dt = _repo.PFAllEmployee(vm, conditionFields, conditionValues);
+                 
+                     ReportDocument doc = new ReportDocument();
+                     dt.TableName = "dtEmployeeLedger";
+                     rptLocation = AppDomain.CurrentDomain.BaseDirectory + @"Files\ReportFiles\PF\\RptPFIndividualLedger.rpt";
+
+                     CompanyRepo _CompanyRepo = new CompanyRepo();
+                     CompanyVM cvm = _CompanyRepo.SelectAll().FirstOrDefault();
+
+                     doc.Load(rptLocation);
+                     doc.SetDataSource(dt);
+                     string companyLogo = AppDomain.CurrentDomain.BaseDirectory + "Images\\COMPANYLOGO.png";
+                     FormulaFieldDefinitions ffds = doc.DataDefinition.FormulaFields;
+                     doc.DataDefinition.FormulaFields["CompanyName"].Text = "'" + cvm.Name + "'";
+                     doc.DataDefinition.FormulaFields["Address"].Text = "'" + cvm.Address + "'";
+                     doc.DataDefinition.FormulaFields["ReportHead"].Text = "'" + ReportHead + "'";
+                     doc.DataDefinition.FormulaFields["ReportHeaderA4"].Text = "'" + companyLogo + "'";
+                     doc.DataDefinition.FormulaFields["TransType"].Text = "'" + AreaTypePFVM.TransType + "'";
+
+                     if (vm.DateFrom != null && vm.DateTo != null)
+                     {
+                         doc.DataDefinition.FormulaFields["DateFrom"].Text = "'" + vm.DateFrom + "'";
+                         doc.DataDefinition.FormulaFields["DateTo"].Text = "'" + vm.DateTo + "'";
+
+                     }
+                     var rpt = RenderReportAsPDF(doc);
+                     doc.Close();
+                     return rpt;
+             }
+
+             catch (Exception)
+             {
+                 throw;
+             }
+         }
+
     }
 }
