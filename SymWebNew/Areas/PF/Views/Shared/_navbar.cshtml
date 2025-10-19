@@ -14,6 +14,7 @@
 }
 @{
     string CompanyName = System.Configuration.ConfigurationManager.AppSettings["CompanyName"];
+    string BranchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "No Branch Selected";
 }
 <div class="content white menuheight">
     <nav class="navbar navbar-default" role="navigation">
@@ -244,19 +245,18 @@
                                         <li class="dropdown"><a href="/PF/PFReport/PFInvestmentReportView" class="btn btn-info">Investment</a></li>
                                         <li class="dropdown"><a href="/PF/PFReport/EmployeePFSettlementReport" class="btn btn-info">Final Settlement</a></li>
                                         <li class="dropdown"><a href="/PF/PFReport/ProfitDistributionNewReportVeiw" class="btn btn-info linkReport" style="text-decoration:none;"> Profit Distribution</a></li>
-
-                                        @if (CompanyName == "BOLLORE")
-                                        {
-                                            <li class="dropdown"><a href="/PF/PFReport/PFSunDataTemplate" class="btn btn-info">PF (Sun Data)</a></li>
-                                            <li class="dropdown"><a href="/PF/PFReport/PFProfitSunDataTemplate" class="btn btn-info">PF Profit (Sun Data)</a></li>
-                                        }
+                                       
 
 
                                     </ul>
                                 </div>
                             </div>
                         </ul>
-                    </li>                  
+                    </li>  
+                     <li class="dropdown Setup">
+                        <a style="color:green;">&nbsp;&nbsp;&nbsp;&nbsp; (@BranchName)</a>
+
+                    </li>                
                 }
 
             </ul>

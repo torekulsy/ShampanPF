@@ -106,6 +106,7 @@
                         @Html.SimpleDropDownFor(model => model.Section, "/Config/DropDown/Section", new { @placeholder = "Section", @class = "form-control " })
                     </div>
                 </div>
+<<<<<<< HEAD
 
                 <div class="col-md-1">
                     <div class="row">
@@ -125,6 +126,24 @@
                     </div>
                 </div>
 
+=======
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.ContactNo)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.ContactNo, new { @placeholder = "Contact No", @class = "required form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Email)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Email, new { @placeholder = "Email", @class = "required form-control" })
+                    </div>
+                </div>
+>>>>>>> 269067e347ac5b78fcce9eb396d59e882b9a10c1
             </div>
             <div class="row">
                 <div class="col-md-2">
@@ -172,23 +191,9 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.ContactNo)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.ContactNo, new { @placeholder = "Contact No", @class = "required form-control" })
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Email)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.Email, new { @placeholder = "Email", @class = "required form-control" })
-                    </div>
-                </div>
+         
                 <div class="col-sm-4">
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Remarks)
