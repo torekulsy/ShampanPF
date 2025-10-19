@@ -58,152 +58,157 @@
         </div>
         <div class="eIp">
             <div class="row">
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Code)
+
+                <div class="col-md-11">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Code)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.Code, new { @placeholder = "Code", @class = "required form-control" })
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Name)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.Name, new { @placeholder = "Name", @class = "required form-control" })
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Department)
+                            </div>
+                            <div class="editor-field">
+                                @Html.SimpleDropDownFor(model => model.Department, "/Config/DropDown/Department", new { @placeholder = "Department", @class = "required form-control " })
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Designation)
+                            </div>
+                            <div class="editor-field">
+                                @Html.SimpleDropDownFor(model => model.Designation, "/Config/DropDown/Designation", new { @placeholder = "Designation", @class = "form-control " })
+                            </div>
+                        </div>
+                        <div class="col-sm-2 hidden">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Project)
+                            </div>
+                            <div class="editor-field">
+                                @Html.SimpleDropDownFor(model => model.Project, "/Config/DropDown/Project", new { @placeholder = "Project", @class = "form-control " })
+                            </div>
+                        </div>
+                        <div class="col-sm-2 hidden">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Section)
+                            </div>
+                            <div class="editor-field">
+                                @Html.SimpleDropDownFor(model => model.Section, "/Config/DropDown/Section", new { @placeholder = "Section", @class = "form-control " })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.ContactNo)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.ContactNo, new { @placeholder = "Contact No", @class = "required form-control" })
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Email)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.Email, new { @placeholder = "Email", @class = "required form-control" })
+                            </div>
+                        </div>
                     </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.Code, new { @placeholder = "Code", @class = "required form-control" })
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.DateOfBirth)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.DateOfBirth, new { @placeholder = "From Date", @class = " customDatePicker  required  form-control" })
+                                @Html.ValidationMessageFor(model => model.DateOfBirth)
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.JoinDate)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.JoinDate, new { @placeholder = "From Date", @class = " customDatePicker  required  form-control" })
+                                @Html.ValidationMessageFor(model => model.JoinDate)
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.BasicSalary)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.BasicSalary, new { @class = "required NumberCheck", @required = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.GrossSalary)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.GrossSalary, new { @class = "required NumberCheck", @required = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.IsActive)
+                            </div>
+                            <div class="editor-field">
+                                @Html.CheckBoxFor(model => model.IsActive, new { @placeholder = "IsActive", @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-sm-6">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Remarks)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @class = "form-control" })
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Name)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.Name, new { @placeholder = "Name", @class = "required form-control" })
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Department)
-                    </div>
-                    <div class="editor-field">
-                        @Html.SimpleDropDownFor(model => model.Department, "/Config/DropDown/Department", new { @placeholder = "Department", @class = "required form-control " })
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Designation)
-                    </div>
-                    <div class="editor-field">
-                        @Html.SimpleDropDownFor(model => model.Designation, "/Config/DropDown/Designation", new { @placeholder = "Designation", @class = "form-control " })
-                    </div>
-                </div>
-                <div class="col-sm-2 hidden">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Project)
-                    </div>
-                    <div class="editor-field">
-                        @Html.SimpleDropDownFor(model => model.Project, "/Config/DropDown/Project", new { @placeholder = "Project", @class = "form-control " })
-                    </div>
-                </div>
-                <div class="col-sm-2 hidden">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Section)
-                    </div>
-                    <div class="editor-field">
-                        @Html.SimpleDropDownFor(model => model.Section, "/Config/DropDown/Section", new { @placeholder = "Section", @class = "form-control " })
-                    </div>
-                </div>
-<<<<<<< HEAD
 
                 <div class="col-md-1">
-                    <div class="row">
-                        <div class="image-section">
-                            <div class="image-preview">
-                                <img src="@Url.Content("~/Files/EmployeeInfo/" + Model.PhotoName)" id="EmployeeImage" alt="IMAGES" height="50" />
-                            </div>
-                            <div class="image-upload">
-                                <input type="file" accept=".jpg,.png,.gif,.jpeg" name="file" id="FileUpload" onchange="CheckImageSize(this);ShowpImagePreview(this);" />
-                            </div>
-                            <div class="action-buttons">
-                                @*<button type="submit" class="sym-btn-file-upload" id="btnSaveImage" title="Save Pic">Pic Save</button>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="image-section">
+                                <div class="image-preview">
+                                    <img src="@Url.Content("~/Files/EmployeeInfo/" + Model.PhotoName)" id="EmployeeImage" alt="IMAGES" height="50" />
+                                </div>
+                                <div class="image-upload">
+                                    <input type="file" accept=".jpg,.png,.gif,.jpeg" name="file" id="FileUpload" onchange="CheckImageSize(this);ShowpImagePreview(this);" />
+                                </div>
+                                <div class="action-buttons">
+                                    @*<button type="submit" class="sym-btn-file-upload" id="btnSaveImage" title="Save Pic">Pic Save</button>
                                 <button type="button" title="Delete Pic" onclick="EmployeeImageDelete(this)" data-id="@Model.Id" class="sym-btn-remove">Delete</button>*@
-                                <input type="hidden" id="employeeId" name="employeeId" value="@Model.Id" />
+                                    <input type="hidden" id="employeeId" name="employeeId" value="@Model.Id" />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-=======
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.ContactNo)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.ContactNo, new { @placeholder = "Contact No", @class = "required form-control" })
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Email)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.Email, new { @placeholder = "Email", @class = "required form-control" })
-                    </div>
-                </div>
->>>>>>> 269067e347ac5b78fcce9eb396d59e882b9a10c1
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.DateOfBirth)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.DateOfBirth, new { @placeholder = "From Date", @class = " customDatePicker  required  form-control" })
-                        @Html.ValidationMessageFor(model => model.DateOfBirth)
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.JoinDate)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.JoinDate, new { @placeholder = "From Date", @class = " customDatePicker  required  form-control" })
-                        @Html.ValidationMessageFor(model => model.JoinDate)
-                    </div>
-                </div>
-
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.BasicSalary)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.BasicSalary, new { @class = "required NumberCheck", @required = "" })
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.GrossSalary)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.GrossSalary, new { @class = "required NumberCheck", @required = "" })
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.IsActive)
-                    </div>
-                    <div class="editor-field">
-                        @Html.CheckBoxFor(model => model.IsActive, new { @placeholder = "IsActive", @class = "form-control" })
-                    </div>
-                </div>
             </div>
 
-            <div class="row">
-         
-                <div class="col-sm-4">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Remarks)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @class = "form-control" })
-                    </div>
-                </div>
-
-            </div>
             <div class="th_thinbox">
                 <p>Nominee Details</p>
             </div>
