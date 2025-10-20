@@ -8959,7 +8959,7 @@ WHERE
 
                 #region SqlText
 
-                sqlText = @"select a.Code, a.Name, b.Name AS Department, C.Name AS Designation, a.JoinDate, ContactNo, PhotoName  from EmployeeInfo a
+                sqlText = @"select b.Name AS Department, c.Name AS Designation,a.* from EmployeeInfo a
 left join Department b on a.Department = b.Id
 left join Designation c on a.Designation = c.Id
 where a.IsActive =1 
@@ -8991,9 +8991,7 @@ where a.IsActive =1
                     sqlText += @" And  a.BranchId=@BranchId";
                 }      
                 SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
-                da.SelectCommand.Transaction = transaction;
-                da.SelectCommand.Parameters.AddWithValue("@DateFrom", Ordinary.DateToString(vm.DateFrom == null ? "1900/Jan/31" : vm.DateFrom));
-                da.SelectCommand.Parameters.AddWithValue("@DatTo", Ordinary.DateToString(vm.DateTo == null ? "2029/Dec/31" : vm.DateTo));
+                da.SelectCommand.Transaction = transaction;             
                 if (vm.EmployeeId != null)
                 {
                     da.SelectCommand.Parameters.AddWithValue("@EmployeeId", vm.EmployeeId);

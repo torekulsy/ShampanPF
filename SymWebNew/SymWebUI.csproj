@@ -391,6 +391,12 @@
       <DependentUpon>rptEETransactionDetail.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Files\ReportFiles\PF\rptEmployeeImageInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptEmployeeImageInfo.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Files\ReportFiles\PF\rptEmployeeLoanClosed.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -482,6 +488,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>rptIncomeStatement.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Files\ReportFiles\PF\rptIndividualEmployeeImageInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptIndividualEmployeeImageInfo.rpt</DependentUpon>
     </Compile>
     <Compile Include="Files\ReportFiles\PF\rptInvestmentDetails.cs">
       <AutoGen>True</AutoGen>
@@ -4863,6 +4874,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptEETransactionDetail.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Files\ReportFiles\PF\rptEmployeeImageInfo.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptEmployeeImageInfo.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Files\ReportFiles\PF\rptEmployeeLoanClosed.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptEmployeeLoanClosed1.cs</LastGenOutput>
@@ -4922,6 +4937,10 @@
     <EmbeddedResource Include="Files\ReportFiles\PF\rptIncomeStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptIncomeStatement.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Files\ReportFiles\PF\rptIndividualEmployeeImageInfo.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptIndividualEmployeeImageInfo.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Files\ReportFiles\PF\rptInvestmentDetails.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
