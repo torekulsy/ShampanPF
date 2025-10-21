@@ -2245,5 +2245,74 @@ namespace SymWebUI.Areas.PF.Controllers
                  throw;
              }
          }
+
+         [HttpGet]
+         public ActionResult AllEmployeeReportVeiw()
+         {
+             try
+             {
+
+                 PFReportVM vm = new PFReportVM();
+                 vm.TransType = AreaTypePFVM.TransType;
+                 return PartialView("~/Areas/PF/Views/PFReport/AllEmployeeReportVeiw.cshtml", vm);
+
+             }
+             catch (Exception)
+             {
+                 throw;
+             }
+         }
+
+
+         [HttpPost]
+         public ActionResult AllEmployee(PFReportVM vm)
+         {
+             try
+             {
+                 vm.BranchId = Session["BranchId"].ToString();
+                 string rptLocation = "";
+
+                 PFReportRepo _repo = new PFReportRepo();
+
+                 string[] conditionFields = { };
+                 string[] conditionValues = { };
+           
+                 string ReportHead = "Employee Image";
+                 DataTable dt = _repo.PFAllEmployee(vm, conditionFields, conditionValues);
+                 
+                ReportDocument doc = new ReportDocument();
+
+                if (vm.EmployeeId == null)
+                {
+                    rptLocation = AppDomain.CurrentDomain.BaseDirectory + @"Files\ReportFiles\PF\\rptEmployeeImageInfo.rpt";
+                }
+                else
+                {
+                    rptLocation = AppDomain.CurrentDomain.BaseDirectory + @"Files\ReportFiles\PF\\rptIndividualEmployeeImageInfo.rpt";
+                }
+             
+              
+
+                CompanyRepo _CompanyRepo = new CompanyRepo();
+                CompanyVM cvm = _CompanyRepo.SelectAll().FirstOrDefault();
+
+                doc.Load(rptLocation);
+                doc.SetDataSource(dt);
+                string companyLogo = AppDomain.CurrentDomain.BaseDirectory + "Images\\COMPANYLOGO.png";
+                FormulaFieldDefinitions ffds = doc.DataDefinition.FormulaFields;                    
+                doc.DataDefinition.FormulaFields["ReportHead"].Text = "'" + ReportHead + "'";
+                doc.DataDefinition.FormulaFields["CompanyLogo"].Text = "'" + companyLogo + "'";
+              
+                var rpt = RenderReportAsPDF(doc);
+                doc.Close();
+                return rpt;
+             }
+
+             catch (Exception)
+             {
+                 throw;
+             }
+         }
+
     }
 }

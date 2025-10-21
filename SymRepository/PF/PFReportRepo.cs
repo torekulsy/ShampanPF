@@ -512,6 +512,19 @@ namespace SymRepository.PF
               }
           }
 
+
+          public DataTable PFAllEmployee(PFReportVM vm, string[] conditionFields = null, string[] conditionValues = null, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
+          {
+              try
+              {
+                  return new PFReportDAL().PFAllEmployee(vm, conditionFields, conditionValues);
+              }
+              catch (Exception ex)
+              {
+                  throw ex;
+              }
+          }
+
         
         #endregion        
         

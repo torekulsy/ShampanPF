@@ -27,7 +27,7 @@ namespace SymServices.PF
         /// <param name="VcurrConn">Optional. An existing SqlConnection to be used for the query; if null, a new connection is opened.</param>
         /// <param name="Vtransaction">Optional. An existing SqlTransaction to be used; if null, a new transaction is started for this operation.</param>
         /// <returns>A list of GLJournalVM objects that match the specified filters and are not archived.</returns>
-        public List<GLJournalVM> SelectAll(int Id = 0, string[] conditionFields = null, string[] conditionValues = null
+        public List<GLJournalVM> SelectById(int Id = 0, string[] conditionFields = null, string[] conditionValues = null
                   , SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
         {
             #region Variables
@@ -96,37 +96,9 @@ WHERE  1=1 AND IsArchive = 0
                 {
                     sqlText += @" and gl.Id=@Id";
                 }
-
-                string cField = "";
-                if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
-                {
-                    for (int i = 0; i < conditionFields.Length; i++)
-                    {
-                        if (string.IsNullOrWhiteSpace(conditionFields[i]) || string.IsNullOrWhiteSpace(conditionValues[i]))
-                        {
-                            continue;
-                        }
-                        cField = conditionFields[i].ToString();
-                        cField = Ordinary.StringReplacing(cField);
-                        sqlText += " AND " + conditionFields[i] + "=@" + cField;
-                    }
-                }
-                sqlText += " order by TransactionDate desc";
-                SqlCommand objComm = new SqlCommand(sqlText, currConn, transaction);
-                if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
-                {
-                    for (int j = 0; j < conditionFields.Length; j++)
-                    {
-                        if (string.IsNullOrWhiteSpace(conditionFields[j]) || string.IsNullOrWhiteSpace(conditionValues[j]))
-                        {
-                            continue;
-                        }
-                        cField = conditionFields[j].ToString();
-                        cField = Ordinary.StringReplacing(cField);
-                        objComm.Parameters.AddWithValue("@" + cField, conditionValues[j]);
-                    }
-                }
-
+                sqlText += " order by TransactionDate desc";               
+               
+                SqlCommand objComm = new SqlCommand(sqlText, currConn, transaction);               
                 if (Id > 0)
                 {
                     objComm.Parameters.AddWithValue("@Id", Id);
@@ -1411,6 +1383,141 @@ where 1=1
             }
             #endregion
             return dt;
+        }
+
+
+        public List<GLJournalVM> SelectAll(int JournalType, string[] conditionFields = null, string[] conditionValues = null
+                 , SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
+        {
+            #region Variables
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+            string sqlText = "";
+            List<GLJournalVM> VMs = new List<GLJournalVM>();
+            GLJournalVM vm;
+            #endregion
+            try
+            {
+                #region open connection and transaction
+                #region New open connection and transaction
+                if (VcurrConn != null)
+                {
+                    currConn = VcurrConn;
+                }
+                if (Vtransaction != null)
+                {
+                    transaction = Vtransaction;
+                }
+                #endregion New open connection and transaction
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+                if (transaction == null)
+                {
+                    transaction = currConn.BeginTransaction("");
+                }
+                #endregion open connection and transaction
+                #region sql statement
+                sqlText = @"
+SELECT
+gl.Id
+,gl.Code
+,gl.TransactionDate
+,jtt.Name TransactionTypeName
+,gl.TransactionType
+
+,isnull(gl.TransactionValue,0)TransactionValue
+,gl.JournalType
+,jt.Name JournalTypeName
+
+,gl.Remarks
+,gl.IsActive
+,gl.IsArchive
+,gl.CreatedBy
+,gl.CreatedAt
+,gl.CreatedFrom
+,gl.LastUpdateBy
+,gl.LastUpdateAt
+,gl.LastUpdateFrom
+,gl.Post
+from GLJournals gl left outer join EnumJournalType jt on gl.JournalType = jt.Id
+ left outer join EnumJournalTransactionType jtt on gl.TransactionType= jtt.Id
+
+WHERE  1=1 AND IsArchive = 0
+";
+
+                if (JournalType > 0)
+                {
+                    sqlText += @" and gl.JournalType=@Id";
+                }
+                sqlText += " order by TransactionDate desc";
+
+                SqlCommand objComm = new SqlCommand(sqlText, currConn, transaction);
+                if (JournalType > 0)
+                {
+                    objComm.Parameters.AddWithValue("@Id", JournalType);
+                }
+                SqlDataReader dr;
+                dr = objComm.ExecuteReader();
+                while (dr.Read())
+                {
+                    vm = new GLJournalVM();
+                    vm.Id = Convert.ToInt32(dr["Id"]);
+                    vm.Post = Convert.ToBoolean(dr["Post"]);
+                    vm.Code = dr["Code"].ToString();
+                    vm.TransactionDate = Ordinary.StringToDate(dr["TransactionDate"].ToString());
+
+                    vm.Remarks = dr["Remarks"].ToString();
+
+                    vm.TransactionTypeName = dr["TransactionTypeName"].ToString();
+                    vm.TransactionType = Convert.ToInt32(dr["TransactionType"]);
+                    vm.TransactionValue = Convert.ToDecimal(dr["TransactionValue"]);
+
+                    vm.JournalType = Convert.ToInt32(dr["JournalType"]);
+                    vm.JournalTypeName = dr["JournalTypeName"].ToString();
+                    vm.IsActive = Convert.ToBoolean(dr["IsActive"]);
+                    vm.IsArchive = Convert.ToBoolean(dr["IsArchive"]);
+                    vm.CreatedAt = Ordinary.StringToDate(dr["CreatedAt"].ToString());
+                    vm.CreatedBy = dr["CreatedBy"].ToString();
+                    vm.CreatedFrom = dr["CreatedFrom"].ToString();
+                    vm.LastUpdateAt = Ordinary.StringToDate(dr["LastUpdateAt"].ToString());
+                    vm.LastUpdateBy = dr["LastUpdateBy"].ToString();
+                    vm.LastUpdateFrom = dr["LastUpdateFrom"].ToString();
+
+                    VMs.Add(vm);
+                }
+                dr.Close();
+                if (Vtransaction == null && transaction != null)
+                {
+                    transaction.Commit();
+                }
+                #endregion
+            }
+            #region catch
+            catch (SqlException sqlex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+            #endregion
+            #region finally
+            finally
+            {
+                if (VcurrConn == null && currConn != null && currConn.State == ConnectionState.Open)
+                {
+                    currConn.Close();
+                }
+            }
+            #endregion
+            return VMs;
         }
         #endregion
     }
