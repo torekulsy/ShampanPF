@@ -82,7 +82,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
             EmployeeInfoRepo _empRepo = new EmployeeInfoRepo();
             //List<GLJournalVM> getAllData = new List<GLJournalVM>();
-            var getAllData = _glJournalRepo.SelectAll();
+            var getAllData = _glJournalRepo.SelectAll(JournalType);
             IEnumerable<GLJournalVM> filteredData;
 
             if (!string.IsNullOrEmpty(param.sSearch))
@@ -206,7 +206,7 @@ namespace SymWebUI.Areas.PF.Controllers
             ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
             try
             {
-                GLJournalVM vm = _glJournalRepo.SelectAll(Convert.ToInt32(id)).FirstOrDefault();
+                GLJournalVM vm = _glJournalRepo.SelectById(Convert.ToInt32(id)).FirstOrDefault();
 
                 if (vm == null)
                     throw new Exception("null");
