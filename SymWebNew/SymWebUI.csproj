@@ -524,6 +524,12 @@
       <DependentUpon>rptInvestmentStatement.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Files\ReportFiles\PF\rptLedgerMultiple.cs">
+      <DependentUpon>rptLedgerMultiple.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Files\ReportFiles\PF\rptLedger.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -4961,6 +4967,10 @@
     <EmbeddedResource Include="Files\ReportFiles\PF\rptInvestmentStatement.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptInvestmentStatement.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Files\ReportFiles\PF\rptLedgerMultiple.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptLedgerMultiple.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Files\ReportFiles\PF\rptLedger.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
