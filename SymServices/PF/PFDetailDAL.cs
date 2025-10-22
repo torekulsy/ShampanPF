@@ -2911,6 +2911,7 @@ order by SectionOrderNo ";
                 vmj.Code = TransactionCode;
                 vmj.TransactionDate = dtd.Rows[0][0].ToString();
                 vmj.BranchId = BranchId;
+                vmj.Remarks = "Contribution Employee & Employer";
                 GLJournalDAL glJournalDal = new GLJournalDAL();
                 retResults = glJournalDal.Insert(vmj);             
             }
