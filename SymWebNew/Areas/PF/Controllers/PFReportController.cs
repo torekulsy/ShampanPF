@@ -2182,7 +2182,7 @@ namespace SymWebUI.Areas.PF.Controllers
                      ReportHead = "LedgerReport";
                  }
                  dt.TableName = "dtLedger";
-                 if(vm.Id==null)
+                 if (vm.Id == null || vm.Id == 0)
                  {
                      rptLocation = AppDomain.CurrentDomain.BaseDirectory + @"Files\ReportFiles\PF\\rptLedgerMultiple.rpt";
                  }
