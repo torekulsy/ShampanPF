@@ -343,7 +343,7 @@ namespace SymWebUI.Areas.PF.Controllers
             Session["permission"] = _repoSUR.SymRoleSession(identity.UserId, "10010", "edit").ToString();
             string[] a = ids.Split('~');
 
-            GLJournalVM vm =  _glJournalRepo.SelectAll(Convert.ToInt32(a[0])).FirstOrDefault();
+            GLJournalVM vm = _glJournalRepo.SelectById(Convert.ToInt32(a[0])).FirstOrDefault();
             if (vm.Post)
             {
                 return Json("Already Posted", JsonRequestBehavior.AllowGet);
