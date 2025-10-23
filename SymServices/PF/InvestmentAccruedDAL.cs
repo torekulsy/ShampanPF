@@ -389,6 +389,9 @@ WHERE  1=1
 
                     SettingDAL _settingDal = new SettingDAL();
                     string AccruedByDay = _settingDal.settingValue("PF", "AccruedByDay").Trim();
+                   
+                    int DayofYear =Convert.ToInt32(_settingDal.settingValue("PF", "YearDay").Trim());
+
                     if (AccruedByDay == "N")
                     {
                         decimal GrossInterest = 0;
@@ -430,7 +433,7 @@ WHERE  1=1
                     {
                         if (vm.InvestmentTypeId == 2)
                         {
-                            vm.InvestmentAccrued.AccruedInterest = (((vm.InvestmentAccrued.InvestmentValue * vm.InvestmentAccrued.InterestRate / 100) / 365) * dateDiff) - BeforeInterest;
+                            vm.InvestmentAccrued.AccruedInterest = (((vm.InvestmentAccrued.InvestmentValue * vm.InvestmentAccrued.InterestRate / 100) / DayofYear) * dateDiff) - BeforeInterest;
 
                             vm.InvestmentAccrued.AitInterest = (vm.InvestmentAccrued.AccruedInterest / 100) * AitRate;
                             vm.InvestmentAccrued.NetInterest = vm.InvestmentAccrued.AccruedInterest - vm.InvestmentAccrued.AitInterest;
@@ -440,7 +443,7 @@ WHERE  1=1
                         else
                         {
 
-                            vm.InvestmentAccrued.AccruedInterest = (((vm.InvestmentAccrued.InvestmentValue * vm.InvestmentAccrued.InterestRate / 100) / 365) * dateDiff) - BeforeInterest;
+                            vm.InvestmentAccrued.AccruedInterest = (((vm.InvestmentAccrued.InvestmentValue * vm.InvestmentAccrued.InterestRate / 100) / DayofYear) * dateDiff) - BeforeInterest;
 
                             vm.InvestmentAccrued.AitInterest = (vm.InvestmentAccrued.AccruedInterest / 100) * AitRate;
                             vm.InvestmentAccrued.NetInterest = vm.InvestmentAccrued.AccruedInterest - vm.InvestmentAccrued.AitInterest;

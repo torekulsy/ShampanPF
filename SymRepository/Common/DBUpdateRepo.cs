@@ -13,21 +13,7 @@ namespace SymRepository.Common
         DBUpdateDAL _dal = new DBUpdateDAL();
 
         #region DB Update
-        public void DatabaseTableChanges()
-        {
-            try
-            {
-                new DBUpdateDAL().DatabaseTableChanges();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
-
-
+       
         public string[] DBTableAdd(string TableName, string FieldName, string DataType)
         {
             try
@@ -137,21 +123,7 @@ namespace SymRepository.Common
             }
 
         }
-
-        public string[] HRPayroll_DBUpdate()
-        {
-            try
-            {
-                return new DBUpdateDAL().HRPayroll_DBUpdate();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
-
+              
 
         #endregion
     }
