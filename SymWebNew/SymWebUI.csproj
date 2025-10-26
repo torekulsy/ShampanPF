@@ -493,6 +493,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rptIndividualEmployeeImageInfo.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Files\ReportFiles\PF\rptInvestmentDetails.cs">
       <AutoGen>True</AutoGen>
