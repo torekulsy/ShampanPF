@@ -9052,5 +9052,54 @@ where a.IsActive =1
             return dt;
         }
 
+        public DataTable ProfitDistributionSummery()
+        {
+            string[] retResults = new string[6];
+            DataTable dt = new DataTable();
+            SqlTransaction transaction = null;
+            try
+            {
+                #region Variables
+                SqlConnection currConn = null;
+                string sqlText = "";
+                #endregion
+                #region open connection and transaction
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
+                if (transaction == null) { transaction = currConn.BeginTransaction("ExportExcelFile"); }
+                #endregion open connection and transaction
+                #region DataRead From DB
+                #region sql statement
+                sqlText = @"
+SELECT
+ve.Code
+,ve.EmpName
+,pd.DistributionDate
+,pd.TotalProfit
+FROM ProfitDistributionNew pd
+LEFT OUTER JOIN [dbo].FiscalYearDetail fydFrom ON pd.FiscalYearDetailId=fydFrom.Id
+LEFT OUTER JOIN [dbo].ViewEmployeeInformation ve ON ve.EmployeeId=pd.EmployeeId
+WHERE  1=1 AND pd.IsArchive = 0
+ ";
+
+                SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
+                da.SelectCommand.Transaction = transaction;
+                da.Fill(dt);
+                #endregion
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                retResults[0] = "Fail";
+                retResults[1] = ex.Message;
+                throw ex;
+            }
+            return dt;
+        }
+
     }
 }
