@@ -219,7 +219,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 }
                 else
                 {
-                    EmployeeId = vm.Id;
+                    EmployeeId = vm.EmployeeId;
                 }
 
                 //svms = arerepo.SingleEmployeeEntry(EmployeeId, FiscalYearDetailId);
@@ -252,6 +252,10 @@ namespace SymWebUI.Areas.PF.Controllers
             {
                 //ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
                 vm = empVM.empPFPaymentVM;
+                if (string.IsNullOrEmpty(vm.EmployeeId) && !string.IsNullOrEmpty(empVM.Id))
+                {
+                    vm.EmployeeId = empVM.Id;
+                }
                 vm.CreatedAt = DateTime.Now.ToString("yyyyMMddHHmmss");
                 vm.CreatedBy = identity.Name;
                 vm.CreatedFrom = identity.WorkStationIP;
@@ -261,6 +265,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 string sMonth = newDate.ToString("MMM");
                 string sYear = newDate.ToString("yy");
                 string PriodName = sMonth + "-" + sYear;
+                
 
                 var fydVM = new FiscalYearRepo().SelectAll_FiscalYearDetail(0, new[] { "PeriodName" }, new[] { PriodName })
                     .FirstOrDefault();

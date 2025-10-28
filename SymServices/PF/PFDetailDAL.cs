@@ -1870,7 +1870,7 @@ WHERE  1=1
 
                     FROM PFDetails pfd
                     WHERE  1=1
-                    AND pfd.Post = 0
+                    AND pfd.Post = 1
                     --------AND pfd.IsDistribute = 0
                     AND pfd.FiscalYearDetailId <= @FiscalYearDetailIdTo
                     AND pfd.EmployeeId=@EmployeeId
