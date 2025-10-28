@@ -1,4 +1,5 @@
 ﻿using SymServices.PF;
+using SymViewModel.Common;
 using SymViewModel.PF;
 using System;
 using System.Collections.Generic;
@@ -70,6 +71,18 @@ namespace SymRepository.PF
             try
             {
                 return new InvestmentNameDAL().Delete(vm, ids);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public string[] InsertAutoJournal(string JournalType, string TransactionForm, string InterestAmount,string AccruedId, string BranchId, ShampanIdentityVM vm)
+        {
+            try
+            {
+                return new InvestmentNameDAL().AutoJournalSave(JournalType, TransactionForm, InterestAmount,AccruedId, BranchId, null, null, vm);
             }
             catch (Exception ex)
             {

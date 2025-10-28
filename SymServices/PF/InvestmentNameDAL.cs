@@ -1,5 +1,6 @@
 ﻿using SymOrdinary;
 using SymServices.Common;
+using SymViewModel.Common;
 using SymViewModel.PF;
 using System;
 using System.Collections.Generic;
@@ -1059,6 +1060,99 @@ INSERT INTO InvestmentNameDetails (
             #region Results
             return retResults;
             #endregion
+        }
+
+
+
+        public string[] AutoJournalSave(string JournalType, string JournalFor, string InterestAmount,string AccruedId, string BranchId, SqlConnection currConn, SqlTransaction transaction, ShampanIdentityVM auditvm)
+        {
+            if (currConn == null)
+            {
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
+            }
+
+            string[] retResults = new string[6];
+            retResults[0] = "Fail";//Success or Fail
+            retResults[1] = "Fail";// Success or Fail Message
+
+            string InvestmentCOAID = "";
+            string IntReciveCOAID = "";
+            string IntIncomeCOAID = "";
+
+            string Journal = @"SELECT
+                                JournalName,COAID
+                                FROM AutoJournalSetup
+                                WHERE  1=1 AND JournalFor = @JournalFor and IsActive=1";
+            SqlCommand cmdj = new SqlCommand(Journal, currConn, transaction);
+            cmdj.Parameters.AddWithValue("JournalFor", JournalFor);
+            SqlDataAdapter adapterj = new SqlDataAdapter(cmdj);
+            DataTable dtj = new DataTable();
+            adapterj.Fill(dtj);
+            if (dtj.Rows.Count > 0)
+            {               
+                IntReciveCOAID = dtj.Rows[0]["COAID"].ToString();
+                IntIncomeCOAID = dtj.Rows[1]["COAID"].ToString();
+            }
+
+            SettingDAL _settingDal = new SettingDAL();
+            string IsAutoJournal = _settingDal.settingValue("PF", "IsAutoJournal").Trim();
+
+            if (IsAutoJournal == "Y")
+            {              
+
+                GLJournalVM vmj = new GLJournalVM
+                {
+                    Id = 1,
+                    CreatedAt = DateTime.Now.ToString(),
+                    CreatedBy = "admin",
+                    CreatedFrom = "",
+                    TransactionDate = DateTime.Now.ToString(),
+                    TransactionType = 31,
+                    JournalType = 1,
+                    TransType = "PF",
+                    TransactionValue = Convert.ToDecimal(InterestAmount),
+
+                    GLJournalDetails = new List<GLJournalDetailVM>
+                    {
+                        new GLJournalDetailVM
+                        {                                  
+                            COAId =Convert.ToInt32(IntReciveCOAID),
+                            DrAmount = Convert.ToDecimal(InterestAmount),
+                            IsDr = true,
+                            IsYearClosing = false,
+                            Post = false
+                        },
+                        new GLJournalDetailVM
+                        {                                  
+                            COAId =Convert.ToInt32(IntIncomeCOAID),
+                            CrAmount = Convert.ToDecimal(InterestAmount),
+                            IsDr = false,
+                            IsYearClosing = false,
+                            Post = false
+                        },
+                      
+                    }
+                };
+                vmj.Code = AccruedId;
+                vmj.BranchId = BranchId;
+                vmj.Remarks = "Interest from Investment";
+                GLJournalDAL glJournalDal = new GLJournalDAL();
+                retResults = glJournalDal.Insert(vmj);
+
+                #region SuccessResult
+                retResults[0] = "Success";
+                retResults[1] = "Data Save Successfully.";
+                #endregion SuccessResult
+            }
+
+            #region Results
+            return retResults;
+            #endregion
+
         }
         #endregion
     }

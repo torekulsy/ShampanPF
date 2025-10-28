@@ -249,6 +249,35 @@ namespace SymWebUI.Areas.PF.Controllers
             return PartialView("~/Areas/PF/Views/InvestmentName/AccruedProcessView.cshtml", vm);
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public ActionResult JournalEntry(string InterestAmount, string InvestmentNameId)
+        {
+            string[] result = new string[6];
+
+            Session["permission"] = _repoSUR.SymRoleSession(identity.UserId, "10003", "edit").ToString();
+
+            string BranchId = Session["BranchId"].ToString();
+
+            ShampanIdentityVM vm = new ShampanIdentityVM
+            {
+                LastUpdateAt = DateTime.Now.ToString("yyyyMMddHHmmss"),
+                LastUpdateBy = identity.Name,
+                LastUpdateFrom = identity.WorkStationIP,
+                CreatedAt = DateTime.Now.ToString("yyyyMMddHHmmss"),
+                CreatedBy = identity.Name,
+                CreatedFrom = identity.WorkStationIP,
+                BranchId = BranchId
+               
+            };
+
+            result = _repo.InsertAutoJournal("1", "6", InterestAmount, InvestmentNameId, BranchId, vm);
+
+            Session["result"] = result[0] + "~" + result[1];
+
+            return View("~/Areas/PF/Views/InvestmentName/Index.cshtml");
+        }
+
         [HttpGet]
         public ActionResult LoanSattlementReportVeiw()
         {
