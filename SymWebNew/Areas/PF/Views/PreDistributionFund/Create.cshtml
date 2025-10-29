@@ -53,7 +53,7 @@
                         @Html.LabelFor(model => model.TransactionDate)
                     </div>
                     <div class="editor-field">
-                        @Html.TextBoxFor(model => model.TransactionDate, new { @placeholder = "Transaction Date", @class = "customDatePicker required form-control", @id = "TransactionDate" })
+                        @Html.TextBoxFor(model => model.TransactionDate, new { @placeholder = "Transaction Date", @class = "customDatePicker required form-control" })
                         @Html.ValidationMessageFor(model => model.TransactionDate)
                     </div>
                 </div>
@@ -118,14 +118,13 @@
             data: { date: selectedDate },
             success: function (response) {
                 if (response.success) {
-                    console.log("Profit Value:", response.totalValue);
                     $("#TotalValue").val(response.totalValue); 
                 } else {
                     alert("Error: " + response.error);
                 }
             },
-            error: function (xhr, status, error) {
-                console.error("Error fetching profit value:", error);
+            error: function (error) {
+                alert("Error: " + response.error);
             }
         });
     }

@@ -56,6 +56,7 @@ namespace SymViewModel.PF
         public string HRMDB { get; set; }
 
         public object BranchId { get; set; }
+       
     }
 
     public class PFReport1VM

@@ -644,15 +644,6 @@ namespace SymWebUI.Areas.PF.Controllers
                 return Json(new { error = ex.Message });
             }
         }
-
-        private decimal CalculateProfitValue(DateTime date)
-        {
-
-            if (date.Month == DateTime.Now.Month)
-                return 5000.75m;
-            else
-                return 3200.50m;
-        }
     }
 
 }

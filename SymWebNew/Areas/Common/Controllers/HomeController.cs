@@ -36,7 +36,8 @@ namespace SymWebUI.Areas.Common.Controllers
             vm.BranchVM = branch;
             vmPf = _Repo.GetPfInfoDashboard();
             vm.PfInfoDashboardVMS = vmPf;
-                  
+            Session["BranchName"] = vm.BranchVM.Name;
+                              
             return View("Index", vm);
         }
 

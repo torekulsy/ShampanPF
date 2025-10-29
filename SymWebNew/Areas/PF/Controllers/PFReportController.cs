@@ -1932,6 +1932,7 @@ namespace SymWebUI.Areas.PF.Controllers
                  DataTable dt1 = new DataTable();
                  DataSet ds = new DataSet();
                  vm.TransType = AreaTypePFVM.TransType;
+               
                  ds = _repo.IFRSReports(vm);
                  dt = ds.Tables[0];
               
@@ -2023,9 +2024,9 @@ namespace SymWebUI.Areas.PF.Controllers
                  _vCommonFormMethod.FormulaField(doc, crFormulaF, "YearTo", vm.YearTo);
                  _vCommonFormMethod.FormulaField(doc, crFormulaF, "Address", cvm.Address);
                  _vCommonFormMethod.FormulaField(doc, crFormulaF, "CompanyName", cvm.Name);
+                 _vCommonFormMethod.FormulaField(doc, crFormulaF, "BranchName", Session["BranchName"].ToString());
 
-
-
+                 
                  var rpt = RenderReportAsPDF(doc);
                  doc.Close();
                  return rpt;
@@ -2204,6 +2205,7 @@ namespace SymWebUI.Areas.PF.Controllers
                  doc.DataDefinition.FormulaFields["DateTo"].Text = "'" + vm.DateTo + "'";
                  doc.DataDefinition.FormulaFields["Address"].Text = "'" + cvm.Address + "'";
                  doc.DataDefinition.FormulaFields["CompanyName"].Text = "'" + cvm.Name + "'";
+                 doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + Session["BranchName"].ToString() + "'";
 
                  //doc.DataDefinition.FormulaFields["frmGroupBy"].Text = "'" + groupBy + "'";
                  var rpt = RenderReportAsPDF(doc);
@@ -2309,6 +2311,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 FormulaFieldDefinitions ffds = doc.DataDefinition.FormulaFields;                    
                 doc.DataDefinition.FormulaFields["ReportHead"].Text = "'" + ReportHead + "'";
                 doc.DataDefinition.FormulaFields["CompanyLogo"].Text = "'" + companyLogo + "'";
+                doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + Session["BranchName"].ToString() + "'";
               
                 var rpt = RenderReportAsPDF(doc);
                 doc.Close();
