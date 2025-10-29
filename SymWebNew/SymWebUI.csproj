@@ -355,6 +355,27 @@
       <DependentUpon>rptAccountStatement.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Files\ReportFiles\PF\rptAllLoanReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Files\ReportFiles\PF\rptAllLoanReport1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptAllLoanReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Files\ReportFiles\PF\rptAllLoanStatement.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptAllLoanStatement.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Files\ReportFiles\PF\rptAllLoanSummary.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptAllLoanSummary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Files\ReportFiles\PF\rptBalanceSheet.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -547,6 +568,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rptLoanEGCB.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Files\ReportFiles\PF\rptLoanEGCB_Individual.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptLoanEGCB_Individual.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Files\ReportFiles\PF\rptLoanMonthlyPayment.cs">
@@ -4857,6 +4884,18 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptAccountStatement.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Files\ReportFiles\PF\rptAllLoanReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptAllLoanReport1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Files\ReportFiles\PF\rptAllLoanStatement.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptAllLoanStatement.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Files\ReportFiles\PF\rptAllLoanSummary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptAllLoanSummary.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Files\ReportFiles\PF\rptBalanceSheet.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptBalanceSheet.cs</LastGenOutput>
@@ -4984,6 +5023,10 @@
     <EmbeddedResource Include="Files\ReportFiles\PF\rptLoanEGCB.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptLoanEGCB.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Files\ReportFiles\PF\rptLoanEGCB_Individual.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptLoanEGCB_Individual.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Files\ReportFiles\PF\rptLoanMonthlyPayment.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

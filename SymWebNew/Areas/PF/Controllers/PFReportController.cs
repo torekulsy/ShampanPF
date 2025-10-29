@@ -1033,6 +1033,7 @@ namespace SymWebUI.Areas.PF.Controllers
                     doc.DataDefinition.FormulaFields["TransType"].Text = "'" + AreaTypePFVM.TransType + "'";
                     doc.DataDefinition.FormulaFields["Address"].Text = "'" + cvm.Address + "'";
                     doc.DataDefinition.FormulaFields["CompanyName"].Text = "'" + cvm.Name + "'";
+                    doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + Session["BranchName"].ToString() + "'";
                     var rpt = RenderReportAsPDF(doc);
                     doc.Close();
                     return rpt;
@@ -1128,6 +1129,7 @@ namespace SymWebUI.Areas.PF.Controllers
                     doc.DataDefinition.FormulaFields["ReportHead"].Text = "'" + ReportHead + "'";
                     doc.DataDefinition.FormulaFields["ReportHeaderA4"].Text = "'" + companyLogo + "'";
                     doc.DataDefinition.FormulaFields["TransType"].Text = "'" + AreaTypePFVM.TransType + "'";
+                    doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + Session["BranchName"].ToString() + "'";
 
                     if (vm.DateFrom != null && vm.DateTo != null)
                     {

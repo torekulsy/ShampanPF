@@ -1492,7 +1492,8 @@ namespace SymWebUI.Areas.PF.Controllers
                     doc.DataDefinition.FormulaFields["ReportHead"].Text = "'" + ReportHead + "'";
                     doc.DataDefinition.FormulaFields["ReportHeaderA4"].Text = "'" + companyLogo + "'";
                     doc.DataDefinition.FormulaFields["Address"].Text = "'" + cvm.Address + "'";
-                    doc.DataDefinition.FormulaFields["CompanyName"].Text = "'" + cvm.Name + "'";                   
+                    doc.DataDefinition.FormulaFields["CompanyName"].Text = "'" + cvm.Name + "'";
+                    //doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + Session["BranchName"].ToString() + "'";
                     
                 }
                 if (Rtype == "Individual")
@@ -1528,6 +1529,7 @@ namespace SymWebUI.Areas.PF.Controllers
                     doc.DataDefinition.FormulaFields["ReportHeaderA4"].Text = "'" + companyLogo + "'";
                     doc.DataDefinition.FormulaFields["Address"].Text = "'" + cvm.Address + "'";
                     doc.DataDefinition.FormulaFields["CompanyName"].Text = "'" + cvm.Name + "'";
+                    //doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + Session["BranchName"].ToString() + "'";
                                      
                 }
                 if (Rtype == "Statement")
@@ -1564,7 +1566,8 @@ namespace SymWebUI.Areas.PF.Controllers
                     doc.DataDefinition.FormulaFields["codeFParam"].Text = "'" + codeFParam + "'";
                     doc.DataDefinition.FormulaFields["codeTParam"].Text = "'" + codeTParam + "'";
                     doc.DataDefinition.FormulaFields["CompanyName"].Text = "'" + cvm.Name + "'";
-                    doc.DataDefinition.FormulaFields["Address"].Text = "'" + cvm.Address + "'";                 
+                    doc.DataDefinition.FormulaFields["Address"].Text = "'" + cvm.Address + "'";
+                    doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + Session["BranchName"].ToString() + "'";
                     //doc = new rptLoanStatement();
                     //doc.SetDataSource(ds);                 
                            

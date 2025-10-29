@@ -3005,8 +3005,6 @@ WHERE
     AND ELD.PaymentScheduleDate >= @StartDate 
     AND ELD.PaymentScheduleDate <= @EndDate
     and I.BranchId= @BranchId
-ORDER BY 
-    I.Id, RowNum
  ";              
                 #endregion SqlText
 
