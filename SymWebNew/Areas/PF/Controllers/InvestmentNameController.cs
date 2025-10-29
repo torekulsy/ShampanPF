@@ -251,7 +251,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public ActionResult JournalEntry(string InterestAmount, string InvestmentNameId)
+        public ActionResult JournalEntry(string InterestAmount, string InvestmentNameId, string TransactionDate)
         {
             string[] result = new string[6];
 
@@ -271,7 +271,7 @@ namespace SymWebUI.Areas.PF.Controllers
                
             };
 
-            result = _repo.InsertAutoJournal("1", "6", InterestAmount, InvestmentNameId, BranchId, vm);
+            result = _repo.InsertAutoJournal("1", "6", InterestAmount, InvestmentNameId,TransactionDate, BranchId, vm);
 
             Session["result"] = result[0] + "~" + result[1];
 

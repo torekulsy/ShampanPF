@@ -1064,7 +1064,7 @@ INSERT INTO InvestmentNameDetails (
 
 
 
-        public string[] AutoJournalSave(string JournalType, string JournalFor, string InterestAmount,string AccruedId, string BranchId, SqlConnection currConn, SqlTransaction transaction, ShampanIdentityVM auditvm)
+        public string[] AutoJournalSave(string JournalType, string JournalFor, string InterestAmount, string AccruedId, string TransactionDate, string BranchId, SqlConnection currConn, SqlTransaction transaction, ShampanIdentityVM auditvm)
         {
             if (currConn == null)
             {
@@ -1139,6 +1139,7 @@ INSERT INTO InvestmentNameDetails (
                 };
                 vmj.Code = AccruedId;
                 vmj.BranchId = BranchId;
+                vmj.TransactionDate = TransactionDate;
                 vmj.Remarks = "Interest from Investment";
                 GLJournalDAL glJournalDal = new GLJournalDAL();
                 retResults = glJournalDal.Insert(vmj);
