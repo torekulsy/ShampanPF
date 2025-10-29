@@ -65,7 +65,7 @@ namespace SymServices.PF
                     transaction = currConn.BeginTransaction("");
                 }
                 #endregion open connection and transaction
-                
+
 
                 #region sql statement
                 #region SqlText
@@ -291,74 +291,118 @@ FROM ProfitDistributionNew pd
                 FiscalYearDetailVM fvm = new FiscalYearDetailVM();
                 FiscalYearDAL fdal = new FiscalYearDAL();
                 fvm = fdal.SelectAll_FiscalYearDetailByDate(Date);
-                
+
                 SettingDAL _settingDal = new SettingDAL();
                 string IsWeightedAverageMonth = _settingDal.settingValue("PF", "IsWeightedAverageMonth").Trim();
                 if (IsWeightedAverageMonth == "N")
                 {
 
                     sqlText = @"
-                    with cat as (
-                    select EmployeeId
-                    , sum(EmployeeContribution)EmployeeContribution
-                    , sum(EmployerContribution)EmployerContribution
-                    , sum(EmployeeProfit)EmployeeProfit
-                    , sum(EmployerProfit)EmployerProfit 
-                    , (sum(EmployeeContribution)+sum(EmployerContribution)+sum(EmployeeProfit)+sum(EmployerProfit)) TotalValue
-                    from (
-                    
-                    select EmployeeId, EmployeeContribution, EmployerContribution, EmployeeProfit,EmployerProfit
-                    from EmployeePFOpeinig
-                    
-                    union all 
-                    
-                    select EmployeeId, EmployeeContribution, EmployerContribution, EmployeeProfit,EmployerProfit
-                    from EmployeeBreakMonthPF
-                    
-                    union all 
-                    
-                    select  EmployeeId, EmployeePFValue EmployeeContribution, EmployeerPFValue,0 EmployeeProfit, 0 EmployerProfit
-                    from PFDetails
-                    
-                    union all 
-                    
-                    select  EmployeeId, 0 EmployeeContribution, 0 EmployerContribution,EmployeeProfitDistribution EmployeeProfit,EmployeerProfitDistribution EmployerProfit
-                    from ProfitDistributionNew
-                    )
-                    EmployeeProfits
-                    group by EmployeeId
-                    ) select c.*,ej.IsNoProfit from cat c
-                    Left Outer Join [EmployeeJob] ej on ej.EmployeeId=c.EmployeeId
-                    
-                    
-                    select  sum(EmployeeContribution)EmployeeContribution
-                    , sum(EmployerContribution)EmployerContribution
-                    , sum(EmployeeProfit)EmployeeProfit
-                    , sum(EmployerProfit)EmployerProfit 
-                    , (sum(EmployeeContribution)+sum(EmployerContribution)+sum(EmployeeProfit)+sum(EmployerProfit)) TotalValue
-                    from (
-                    
-                    select EmployeeId, EmployeeContribution, EmployerContribution, EmployeeProfit,EmployerProfit
-                    from EmployeePFOpeinig
-                    
-                    union all 
-                    
-                    select EmployeeId, EmployeeContribution, EmployerContribution, EmployeeProfit,EmployerProfit
-                    from EmployeeBreakMonthPF
-                    
-                    union all 
-                    
-                    select  EmployeeId, EmployeePFValue EmployeeContribution, EmployeerPFValue,0 EmployeeProfit, 0EmployerProfit
-                    from PFDetails
-                    
-                    union all 
-                    
-                    select  EmployeeId, 0 EmployeeContribution, 0 EmployerContribution,EmployeeProfitDistribution EmployeeProfit,EmployeerProfitDistribution EmployerProfit
-                    from ProfitDistributionNew
-                    )
-                    EmployeeProfits
-                    
-                    ";
+
+  SELECT 
+    EmployeeId,
+    ISNULL([1], 0) AS [11],
+    ISNULL([2], 0) AS [10],
+    ISNULL([3], 0) AS [9],
+    ISNULL([4], 0) AS [8],
+    ISNULL([5], 0) AS [7],
+    ISNULL([6], 0) AS [6],
+    ISNULL([7], 0) AS [5],
+    ISNULL([8], 0) AS [4],
+    ISNULL([9], 0) AS [3],
+    ISNULL([10], 0) AS [2],
+    ISNULL([11], 0) AS [1],
+    ISNULL([12], 0) AS [0],
+	  (
+        ISNULL([1], 0) + ISNULL([2], 0) + ISNULL([3], 0) + ISNULL([4], 0) + ISNULL([5], 0) +
+        ISNULL([6], 0) + ISNULL([7], 0) + ISNULL([8], 0) + ISNULL([9], 0) + ISNULL([10], 0) +
+        ISNULL([11], 0) + ISNULL([12], 0)
+    ) AS [TotalValue],
+	(
+	   (ISNULL([1], 0)*11 +ISNULL([2], 0)*10+ISNULL([3], 0)*9+ISNULL([4], 0)*8+ISNULL([5], 0)*7+ISNULL([6], 0)*6+ISNULL([7], 0)*5+ISNULL([8], 0)*4+ISNULL([9], 0)*3+ISNULL([10], 0)*2+ISNULL([11], 0)*1+ISNULL([12], 0)*0)/
+	   ( ISNULL([1], 0) + ISNULL([2], 0) + ISNULL([3], 0) + ISNULL([4], 0) + ISNULL([5], 0) +
+        ISNULL([6], 0) + ISNULL([7], 0) + ISNULL([8], 0) + ISNULL([9], 0) + ISNULL([10], 0) +
+        ISNULL([11], 0) + ISNULL([12], 0)
+		)
+	) AS Month
+FROM
+(
+    SELECT 
+        EmployeeId,
+        FiscalYearDetailId,
+        (EmployeePFValue + EmployeerPFValue) AS TotalPF
+    FROM PFDetails
+) AS SourceTable
+PIVOT
+(
+    SUM(TotalPF)
+    FOR FiscalYearDetailId IN ([1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12])
+) AS PivotTable
+ORDER BY EmployeeId;
+
+";
+                    //                    sqlText = @"
+                    //                    with cat as (
+                    //                    select EmployeeId
+                    //                    , sum(EmployeeContribution)EmployeeContribution
+                    //                    , sum(EmployerContribution)EmployerContribution
+                    //                    , sum(EmployeeProfit)EmployeeProfit
+                    //                    , sum(EmployerProfit)EmployerProfit 
+                    //                    , (sum(EmployeeContribution)+sum(EmployerContribution)+sum(EmployeeProfit)+sum(EmployerProfit)) TotalValue
+                    //                    from (
+                    //                    
+                    //                    select EmployeeId, EmployeeContribution, EmployerContribution, EmployeeProfit,EmployerProfit
+                    //                    from EmployeePFOpeinig
+                    //                    
+                    //                    union all 
+                    //                    
+                    //                    select EmployeeId, EmployeeContribution, EmployerContribution, EmployeeProfit,EmployerProfit
+                    //                    from EmployeeBreakMonthPF
+                    //                    
+                    //                    union all 
+                    //                    
+                    //                    select  EmployeeId, EmployeePFValue EmployeeContribution, EmployeerPFValue,0 EmployeeProfit, 0 EmployerProfit
+                    //                    from PFDetails
+                    //                    
+                    //                    union all 
+                    //                    
+                    //                    select  EmployeeId, 0 EmployeeContribution, 0 EmployerContribution,EmployeeProfitDistribution EmployeeProfit,EmployeerProfitDistribution EmployerProfit
+                    //                    from ProfitDistributionNew
+                    //                    )
+                    //                    EmployeeProfits
+                    //                    group by EmployeeId
+                    //                    ) select c.*,ej.IsNoProfit from cat c
+                    //                    Left Outer Join [EmployeeJob] ej on ej.EmployeeId=c.EmployeeId
+                    //                    
+                    //                    
+                    //                    select  sum(EmployeeContribution)EmployeeContribution
+                    //                    , sum(EmployerContribution)EmployerContribution
+                    //                    , sum(EmployeeProfit)EmployeeProfit
+                    //                    , sum(EmployerProfit)EmployerProfit 
+                    //                    , (sum(EmployeeContribution)+sum(EmployerContribution)+sum(EmployeeProfit)+sum(EmployerProfit)) TotalValue
+                    //                    from (
+                    //                    
+                    //                    select EmployeeId, EmployeeContribution, EmployerContribution, EmployeeProfit,EmployerProfit
+                    //                    from EmployeePFOpeinig
+                    //                    
+                    //                    union all 
+                    //                    
+                    //                    select EmployeeId, EmployeeContribution, EmployerContribution, EmployeeProfit,EmployerProfit
+                    //                    from EmployeeBreakMonthPF
+                    //                    
+                    //                    union all 
+                    //                    
+                    //                    select  EmployeeId, EmployeePFValue EmployeeContribution, EmployeerPFValue,0 EmployeeProfit, 0EmployerProfit
+                    //                    from PFDetails
+                    //                    
+                    //                    union all 
+                    //                    
+                    //                    select  EmployeeId, 0 EmployeeContribution, 0 EmployerContribution,EmployeeProfitDistribution EmployeeProfit,EmployeerProfitDistribution EmployerProfit
+                    //                    from ProfitDistributionNew
+                    //                    )
+                    //                    EmployeeProfits
+                    //                    
+                    //                    ";
                 }
                 else
                 {
@@ -604,52 +648,99 @@ FROM ProfitDistributionNew pd
                 _settingDal = new SettingDAL();
                 string IsProfitCalculation = _settingDal.settingValue("PF", "IsProfitCalculation").Trim();
 
-
-                foreach (DataRow dataRow in dtEmployeeDetails.Tables[0].Rows)
+                if (IsWeightedAverageMonth == "N")
                 {
 
-                    decimal EmployeeProfit = Convert.ToDecimal(dataRow["EmployeeProfit"].ToString());
-                    decimal EmployerProfit = Convert.ToDecimal(dataRow["EmployerProfit"].ToString());
+                    decimal totalValueSum = 0;
+                    if (dtEmployeeDetails.Tables.Count > 0 && dtEmployeeDetails.Tables[0].Rows.Count > 0)
+                    {
+                        foreach (DataRow row in dtEmployeeDetails.Tables[0].Rows)
+                        {
+                            if (row["TotalValue"] != DBNull.Value)
+                            {
+                                totalValueSum += Convert.ToDecimal(row["TotalValue"]) * 2 * Convert.ToDecimal(row["Month"]);
+                            }
+                        }
+                    }
 
-                    decimal totalProfit = Convert.ToDecimal(dataRow["TotalValue"]) * Convert.ToDecimal(preDistributionFund.TotalValue) /
-                                                     Convert.ToDecimal(dtEmployeeDetails.Tables[1].Rows[0]["TotalValue"]);
-                    EmployeeProfit = totalProfit / 2;
-                    EmployerProfit = totalProfit / 2;
-
-                    decimal multiplicationFactor = Convert.ToDecimal(preDistributionFund.TotalValue) /
-                                        Convert.ToDecimal(dtEmployeeDetails.Tables[1].Rows[0]["TotalValue"]);
-
-                    if (IsProfitCalculation == "Y")
+                    foreach (DataRow dataRow in dtEmployeeDetails.Tables[0].Rows)
                     {
 
-                        if (dataRow["IsNoProfit"].ToString() == "True")
-                        {
-                            dtFinalDistributionNoProfit.Rows.Add(nextId, dataRow["EmployeeId"], vm.PreDistributionFundId, Ordinary.DateToString(vm.DistributionDate), "0",
-                            dataRow["EmployeeContribution"], dataRow["EmployerContribution"], dataRow["EmployeeProfit"],
-                            dataRow["EmployerProfit"],
-                            multiplicationFactor, EmployeeProfit, EmployerProfit, totalProfit, true, false, "-", true, false, "", "", "",
-                            "", "", "");
+                        decimal EmployeeProfit = 0;
+                        decimal EmployerProfit = 0;
 
-                            totalProfit = 0;
-                            EmployeeProfit = 0;
-                            EmployerProfit = 0;
+                        decimal totalProfit = (Convert.ToDecimal(preDistributionFund.TotalValue) / totalValueSum) * (Convert.ToDecimal(dataRow["TotalValue"]) * Convert.ToDecimal(dataRow["Month"]) * 2);
+                        EmployeeProfit = totalProfit / 2;
+                        EmployerProfit = totalProfit / 2;
 
-                        }
-                        else
+                        decimal multiplicationFactor = Convert.ToDecimal(preDistributionFund.TotalValue) /
+                                            Convert.ToDecimal(dtEmployeeDetails.Tables[0].Rows[0]["TotalValue"]);
+
+                        if (IsProfitCalculation == "Y")
                         {
                             dtFinalDistribution.Rows.Add(nextId, dataRow["EmployeeId"], vm.PreDistributionFundId, Ordinary.DateToString(vm.DistributionDate), "0",
-                        dataRow["EmployeeContribution"], dataRow["EmployerContribution"], EmployeeProfit, EmployerProfit,
+                        dataRow["TotalValue"], dataRow["TotalValue"], EmployeeProfit, EmployerProfit,
                         multiplicationFactor, EmployeeProfit, EmployerProfit, totalProfit, true, false, "-", true, false, "", "", "",
                         "", "", "");
                         }
+                        else
+                        {
+                            totalProfit = 0;
+                        }
+
+
+                        nextId++;
                     }
-                    else
+                }
+                else
+                {
+                    foreach (DataRow dataRow in dtEmployeeDetails.Tables[0].Rows)
                     {
-                        totalProfit = 0;
+
+                        decimal EmployeeProfit = Convert.ToDecimal(dataRow["EmployeeProfit"].ToString());
+                        decimal EmployerProfit = Convert.ToDecimal(dataRow["EmployerProfit"].ToString());
+
+                        decimal totalProfit = Convert.ToDecimal(dataRow["TotalValue"]) * Convert.ToDecimal(preDistributionFund.TotalValue) /
+                                                         Convert.ToDecimal(dtEmployeeDetails.Tables[1].Rows[0]["TotalValue"]);
+                        EmployeeProfit = totalProfit / 2;
+                        EmployerProfit = totalProfit / 2;
+
+                        decimal multiplicationFactor = Convert.ToDecimal(preDistributionFund.TotalValue) /
+                                            Convert.ToDecimal(dtEmployeeDetails.Tables[1].Rows[0]["TotalValue"]);
+
+                        if (IsProfitCalculation == "Y")
+                        {
+
+                            if (dataRow["IsNoProfit"].ToString() == "True")
+                            {
+                                dtFinalDistributionNoProfit.Rows.Add(nextId, dataRow["EmployeeId"], vm.PreDistributionFundId, Ordinary.DateToString(vm.DistributionDate), "0",
+                                dataRow["EmployeeContribution"], dataRow["EmployerContribution"], dataRow["EmployeeProfit"],
+                                dataRow["EmployerProfit"],
+                                multiplicationFactor, EmployeeProfit, EmployerProfit, totalProfit, true, false, "-", true, false, "", "", "",
+                                "", "", "");
+
+                                totalProfit = 0;
+                                EmployeeProfit = 0;
+                                EmployerProfit = 0;
+
+                            }
+                            else
+                            {
+                                dtFinalDistribution.Rows.Add(nextId, dataRow["EmployeeId"], vm.PreDistributionFundId, Ordinary.DateToString(vm.DistributionDate), "0",
+                            dataRow["EmployeeContribution"], dataRow["EmployerContribution"], EmployeeProfit, EmployerProfit,
+                            multiplicationFactor, EmployeeProfit, EmployerProfit, totalProfit, true, false, "-", true, false, "", "", "",
+                            "", "", "");
+                            }
+                        }
+                        else
+                        {
+                            totalProfit = 0;
+                        }
+
+
+                        nextId++;
                     }
 
-
-                    nextId++;
                 }
 
                 // update fiscal year detail Id
