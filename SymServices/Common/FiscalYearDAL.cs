@@ -3284,13 +3284,13 @@ WHERE  1=1
                 #region SqlText
                                 sqlText = @"
                 select TOP 1 * from  FiscalYearDetail
-                where  PeriodEnd>='" + date + "' ";
+                where  PeriodEnd>=@date";
                 
                 #endregion SqlText
                 #region SqlExecution
 
                 SqlCommand objComm = new SqlCommand(sqlText, currConn, transaction);
-                objComm.Parameters.AddWithValue("@date", date);
+                objComm.Parameters.AddWithValue("@date",Ordinary.DateToString(date));
  
                 SqlDataReader dr;
                 dr = objComm.ExecuteReader();

@@ -53,7 +53,7 @@
                         @Html.LabelFor(model => model.TransactionDate)
                     </div>
                     <div class="editor-field">
-                        @Html.TextBoxFor(model => model.TransactionDate, new { @placeholder = "Transaction Date", @class = " customDatePicker required  form-control" })
+                        @Html.TextBoxFor(model => model.TransactionDate, new { @placeholder = "Transaction Date", @class = "customDatePicker required form-control", @id = "TransactionDate" })
                         @Html.ValidationMessageFor(model => model.TransactionDate)
                     </div>
                 </div>
@@ -101,6 +101,35 @@
     </div>
 }
 <script>
+
+    $(document).ready(function () {
+        $(".customDatePicker").datepicker({
+            dateFormat: "dd-M-yy",
+            onSelect: function (dateText) {
+                GetProfitValue(dateText);
+            }
+        });
+    });
+
+    function GetProfitValue(selectedDate) {
+        $.ajax({
+            url: '/PF/PreDistributionFund/GetProfitValue', 
+            type: 'GET',
+            data: { date: selectedDate },
+            success: function (response) {
+                if (response.success) {
+                    console.log("Profit Value:", response.totalValue);
+                    $("#TotalValue").val(response.totalValue); 
+                } else {
+                    alert("Error: " + response.error);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching profit value:", error);
+            }
+        });
+    }
+
     $(function () {
         valiDation("frmPreDistributionFund");
         ////SetFundingValue();

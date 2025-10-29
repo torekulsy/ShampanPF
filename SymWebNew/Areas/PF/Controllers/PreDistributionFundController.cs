@@ -612,5 +612,48 @@ namespace SymWebUI.Areas.PF.Controllers
             return File(stream, "application/PDF");
         }
 
+
+        [HttpGet]
+        public ActionResult GetProfitValue(string date)
+        {
+            try
+            {
+                PFReportVM vm = new PFReportVM();
+                FiscalYearDetailVM fvm = new FiscalYearDetailVM();
+                DateTime parsedDate = DateTime.Parse(date);
+                PFReportRepo _repo = new PFReportRepo();              
+                DataTable dt = new DataTable();              
+                DataSet ds = new DataSet();
+
+                FiscalYearRepo fyRepo = new FiscalYearRepo();
+               fvm = fyRepo.FiscalYearDetailByDate(date);
+               vm.MonthTo = fvm.Id;
+               vm.ReportType = "IS";
+               vm.TransType = "PF";
+
+                ds = _repo.IFRSReports(vm);
+                dt = ds.Tables[1];
+
+                PreDistributionFundVM pdvm = new PreDistributionFundVM();
+                pdvm.TotalValue = Math.Abs(Convert.ToDecimal(dt.Rows[0]["LastNetProfit"])).ToString();
+
+                return Json(new { success = true, totalValue = pdvm.TotalValue }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = ex.Message });
+            }
+        }
+
+        private decimal CalculateProfitValue(DateTime date)
+        {
+
+            if (date.Month == DateTime.Now.Month)
+                return 5000.75m;
+            else
+                return 3200.50m;
+        }
     }
+
 }
+
