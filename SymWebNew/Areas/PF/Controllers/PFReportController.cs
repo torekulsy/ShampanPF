@@ -1969,9 +1969,11 @@ namespace SymWebUI.Areas.PF.Controllers
                          string json = JsonConvert.SerializeObject(dt1);
                          vm.PFReport1VMs = JsonConvert.DeserializeObject<List<PFReport1VM>>(json);
                          vm.PFReport1VM = vm.PFReport1VMs.FirstOrDefault();
-                         vm.DateFrom = Ordinary.StringToDate(dt1.Rows[0]["FirstEnd"].ToString());
-                         vm.YearFrom = dt1.Rows[0]["FirstYear"].ToString();
-
+                         if (vm.YearFrom == "1900" || vm.YearFrom == null)
+                         {
+                             vm.YearFrom = (Convert.ToInt32(dt1.Rows[0]["LastYear"]) - 1).ToString();
+                         }
+                         vm.DateFrom = Ordinary.StringToDate(dt1.Rows[0]["FirstEnd"].ToString()); 
                          vm.DateTo = Ordinary.StringToDate(dt1.Rows[0]["LastEnd"].ToString());
                          vm.YearTo = dt1.Rows[0]["LastYear"].ToString();
 
