@@ -1,5 +1,6 @@
 ﻿<div class="headrow">
     @*<button type="button" title="Profit Distribution Process" data-url="/@ViewBag.TransType/ProfitDistributionNew/Process" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;Distribution Process</button>*@
+    <button type="button" data-url="/@ViewBag.TransType/ProfitDistributionNew/DownloadExcel" onclick="GoTo(this)" id="" title="Click to Download the Report" class="sym-btn-Excel-Export">&nbsp;Download</button>
     <label class="pull-right">Profit Distribution New </label>
 </div>
 <div class="thinbox">
@@ -36,6 +37,7 @@ IsDistribute
     <br />
 </div>
 <div class="headrow">
+    <button type="button" data-url="/@ViewBag.TransType/ProfitDistributionNew/DownloadExcel" onclick="GoTo(this)" id="" title="Click to Download the Report" class="sym-btn-Excel-Export">&nbsp;Download</button>
 </div>
 <script language="javascript" type="text/javascript">
     $(document).ready(function () {

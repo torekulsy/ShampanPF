@@ -525,6 +525,18 @@ namespace SymRepository.PF
               }
           }
 
+
+          public DataTable ProfitDistributionSummery()
+          {
+              try
+              {
+                  return new PFReportDAL().ProfitDistributionSummery();
+              }
+              catch (Exception ex)
+              {
+                  throw ex;
+              }
+          }
         
         #endregion        
         
