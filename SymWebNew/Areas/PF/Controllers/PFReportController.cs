@@ -156,14 +156,15 @@ namespace SymWebUI.Areas.PF.Controllers
 
                 PFReportVM vm = new PFReportVM();
                 PFReport rpt = new PFReport();
+                string BranchName = Session["BranchName"].ToString();
 
                 if(Type=="FDR")
                 {
-                    vm = rpt.PFInvestmentRepor(ToDate);
+                    vm = rpt.PFInvestmentRepor(ToDate, BranchName);
                 }
                 else
                 {
-                    vm = rpt.PFInvestmentReporSyn(ToDate);
+                    vm = rpt.PFInvestmentReporSyn(ToDate, BranchName);
                 }
 
                 return File(vm.MemStream, "application/PDF");
@@ -213,8 +214,9 @@ namespace SymWebUI.Areas.PF.Controllers
 
                 PFReportVM vm = new PFReportVM();
                 PFReport rpt = new PFReport();
+                string BranchName = Session["BranchName"].ToString();
 
-                vm = rpt.EmployeePFSettlementReport(EmployeeId, ToDate, FromDate);
+                vm = rpt.EmployeePFSettlementReport(EmployeeId, ToDate, FromDate, BranchName);
 
                 return File(vm.MemStream, "application/PDF");
             }
@@ -2230,8 +2232,8 @@ namespace SymWebUI.Areas.PF.Controllers
                  PFReportVM vm = new PFReportVM();
                  PFReport rpt = new PFReport();
                  string BranchId = Session["BranchId"].ToString();
-
-                 vm = rpt.EmployeeLoanSettelment(rType, ToDate, FromDate, BranchId);
+                 string BranchName = Session["BranchName"].ToString();
+                 vm = rpt.EmployeeLoanSettelment(rType, ToDate, FromDate, BranchId, BranchName);
 
                  return File(vm.MemStream, "application/PDF");
              }
@@ -2248,8 +2250,8 @@ namespace SymWebUI.Areas.PF.Controllers
 
                  PFReportVM vm = new PFReportVM();
                  PFReport rpt = new PFReport();
-
-                 vm = rpt.EmployeeLoanClosed(rType, ToDate, FromDate);
+                 string BranchName = Session["BranchName"].ToString();
+                 vm = rpt.EmployeeLoanClosed(rType, ToDate, FromDate, BranchName);
 
                  return File(vm.MemStream, "application/PDF");
              }

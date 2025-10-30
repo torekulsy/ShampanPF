@@ -430,6 +430,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 doc.DataDefinition.FormulaFields["TransType"].Text = "'" + AreaTypePFVM.TransType + "'";
                 doc.DataDefinition.FormulaFields["Address"].Text = "'" + cvm.Address + "'";
                 doc.DataDefinition.FormulaFields["CompanyName"].Text = "'" + cvm.Name + "'";
+                doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + Session["BranchName"].ToString() + "'";
                 //doc.DataDefinition.FormulaFields["frmGroupBy"].Text = "'" + groupBy + "'";
                 var rpt = RenderReportAsPDF(doc);
                 doc.Close();

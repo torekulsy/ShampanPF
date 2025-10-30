@@ -329,6 +329,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 doc.DataDefinition.FormulaFields["ReportHeaderA4"].Text = "'" + companyLogo + "'";
                 doc.DataDefinition.FormulaFields["ReportHead"].Text = "'" + ReportHead + "'";
                 doc.DataDefinition.FormulaFields["TransType"].Text = "'" + AreaTypePFVM.TransType + "'";
+                doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + Session["BranchName"].ToString() + "'";
                 //doc.DataDefinition.FormulaFields["frmGroupBy"].Text = "'" + groupBy + "'";
                 var rpt = RenderReportAsPDF(doc);
                 doc.Close();
@@ -373,8 +374,9 @@ namespace SymWebUI.Areas.PF.Controllers
                 ReportDocument doc = new ReportDocument();
                 DataTable dt = new DataTable();
 
-                string[] cFields = { "robi.Code", "robi.Id", "robi.ROBIDate>", "robi.ROBIDate<" };
-                string[] cValues = { vm.Code, vm.Id.ToString() == "0" ? "" : vm.Id.ToString(), Ordinary.DateToString(vm.DateFrom), Ordinary.DateToString(vm.DateTo) };
+                //string[] cFields = { "robi.Code", "robi.Id", "robi.ROBIDate>", "robi.ROBIDate<" };
+                string[] cFields = {  "robi.Id" };
+                string[] cValues = {  vm.Id.ToString() == "0" ? "" : vm.Id.ToString() };
 
 
 
@@ -402,6 +404,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 doc.DataDefinition.FormulaFields["ReportHeaderA4"].Text = "'" + companyLogo + "'";
                 doc.DataDefinition.FormulaFields["ReportHead"].Text = "'" + ReportHead + "'";
                 doc.DataDefinition.FormulaFields["TransType"].Text = "'" + AreaTypePFVM.TransType + "'";
+                doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + Session["BranchName"].ToString() + "'";
                 //doc.DataDefinition.FormulaFields["frmGroupBy"].Text = "'" + groupBy + "'";
                 var rpt = RenderReportAsPDF(doc);
                 doc.Close();

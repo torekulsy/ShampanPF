@@ -1235,7 +1235,8 @@ namespace SymWebUI.Areas.PF.Controllers
                 doc.DataDefinition.FormulaFields["secParam"].Text = "'" + secParam + "'";
                 doc.DataDefinition.FormulaFields["desigParam"].Text = "'" + desigParam + "'";
                 doc.DataDefinition.FormulaFields["codeFParam"].Text = "'" + codeFParam + "'";
-                doc.DataDefinition.FormulaFields["codeTParam"].Text = "'" + codeTParam + "'";            
+                doc.DataDefinition.FormulaFields["codeTParam"].Text = "'" + codeTParam + "'";
+                doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + Session["BranchName"].ToString() + "'";
                 //doc = new rptLoanStatement();
                 //doc.SetDataSource(ds);
                 var rpt = RenderReportAsPDF(doc);

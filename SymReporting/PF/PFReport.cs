@@ -779,7 +779,7 @@ namespace SymReporting.PF
 
             return vm;
         }
-        public PFReportVM EmployeePFSettlementReport(string EmployeeId, string ToDate, string FromDate)
+        public PFReportVM EmployeePFSettlementReport(string EmployeeId, string ToDate, string FromDate, string BranchName)
         {
             PFReportVM vm = new PFReportVM();
             #region try
@@ -836,6 +836,7 @@ namespace SymReporting.PF
                 doc.DataDefinition.FormulaFields["Address"].Text = "'" + cvm.Address + "'";
                 doc.DataDefinition.FormulaFields["CompanyName"].Text = "'" + cvm.Name + "'";
                 doc.DataDefinition.FormulaFields["Payment"].Text = "'" + Payment + "'";
+                doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + BranchName + "'";
                 #endregion
 
                 #region MemoryStream
@@ -870,7 +871,7 @@ namespace SymReporting.PF
 
             return vm;
         }
-        public PFReportVM PFInvestmentRepor(string Year)
+        public PFReportVM PFInvestmentRepor(string Year, string BranchName)
         {
             PFReportVM vm = new PFReportVM();
             #region try
@@ -918,6 +919,7 @@ namespace SymReporting.PF
                 doc.DataDefinition.FormulaFields["ReportHead"].Text = "'" + ReportHead + "'";
                 doc.DataDefinition.FormulaFields["Address"].Text = "'" + cvm.Address + "'";
                 doc.DataDefinition.FormulaFields["CompanyName"].Text = "'" + cvm.Name + "'";
+                doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + BranchName + "'";
                 #endregion
 
                 #region MemoryStream
@@ -952,7 +954,7 @@ namespace SymReporting.PF
 
             return vm;
         }
-        public PFReportVM PFInvestmentReporSyn(string Year)
+        public PFReportVM PFInvestmentReporSyn(string Year, string BranchName)
         {
             PFReportVM vm = new PFReportVM();
             #region try
@@ -1000,6 +1002,7 @@ namespace SymReporting.PF
                 doc.DataDefinition.FormulaFields["ReportHead"].Text = "'" + ReportHead + "'";
                 doc.DataDefinition.FormulaFields["Address"].Text = "'" + cvm.Address + "'";
                 doc.DataDefinition.FormulaFields["CompanyName"].Text = "'" + cvm.Name + "'";
+                doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + BranchName + "'";
                 #endregion
 
                 #region MemoryStream
@@ -1035,7 +1038,7 @@ namespace SymReporting.PF
             return vm;
         }
 
-        public PFReportVM EmployeeLoanSettelment(string rType, string ToDate, string FromDate, string BranchId)
+        public PFReportVM EmployeeLoanSettelment(string rType, string ToDate, string FromDate, string BranchId, string BranchName)
         {
             PFReportVM vm = new PFReportVM();
             #region try
@@ -1090,6 +1093,8 @@ namespace SymReporting.PF
                 doc.DataDefinition.FormulaFields["ReportHead"].Text = "'" + ReportHead + "'";
                 doc.DataDefinition.FormulaFields["Address"].Text = "'" + cvm.Address + "'";
                 doc.DataDefinition.FormulaFields["CompanyName"].Text = "'" + cvm.Name + "'";
+                doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + BranchName + "'";
+
                 #endregion
 
                 #region MemoryStream
@@ -1125,7 +1130,7 @@ namespace SymReporting.PF
             return vm;
         }
 
-        public PFReportVM EmployeeLoanClosed(string rType, string ToDate, string FromDate)
+        public PFReportVM EmployeeLoanClosed(string rType, string ToDate, string FromDate, string BranchName)
         {
             PFReportVM vm = new PFReportVM();
             #region try
@@ -1173,6 +1178,7 @@ namespace SymReporting.PF
                 doc.DataDefinition.FormulaFields["ReportHead"].Text = "'" + ReportHead + "'";
                 doc.DataDefinition.FormulaFields["Address"].Text = "'" + cvm.Address + "'";
                 doc.DataDefinition.FormulaFields["CompanyName"].Text = "'" + cvm.Name + "'";
+                doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + BranchName + "'";
                 #endregion
 
                 #region MemoryStream

@@ -431,6 +431,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 string companyLogo = AppDomain.CurrentDomain.BaseDirectory + "Images\\COMPANYLOGO.png";
                 doc.DataDefinition.FormulaFields["ReportHeaderA4"].Text = "'" + companyLogo + "'";
                 doc.DataDefinition.FormulaFields["ReportHead"].Text = "'" + ReportHead + "'";
+                doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + Session["BranchName"].ToString() + "'";
                 var rpt = RenderReportAsPDF(doc);
                 doc.Close();
                 return rpt;

@@ -14,3 +14,13 @@ Login As: b1JXpoXo6qdggBV0qXQnBw==
  Source : ConnectionString , Method : UserInformationDAL
 Login As: data source=192.168.15.100\MSSQLSERVER2019,1419;Initial catalog=Dekko_PF_DB;user id=sa;Integrated Security=False;connect Timeout=600;MultipleActiveResultSets=True; pooling=no;
 
+
+2025-10-30 17:56:48 +06:00
+ Source : LoanReport , Method : LoanController
+Object reference not set to an instance of an object.
+   at SymWebUI.Areas.PF.Controllers.LoanController.AllLoanReport(EmployeeLoanVM vm) in d:\PF_Single\ShampanPF\SymWebNew\Areas\PF\Controllers\LoanController.cs:line 1766
+
+2025-10-30 18:05:28 +06:00
+ Source : LoanReport , Method : LoanController
+Object reference not set to an instance of an object.
+   at SymWebUI.Areas.PF.Controllers.LoanController.AllLoanReport(EmployeeLoanVM vm) in d:\PF_Single\ShampanPF\SymWebNew\Areas\PF\Controllers\LoanController.cs:line 1766

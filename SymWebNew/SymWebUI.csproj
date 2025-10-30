@@ -425,6 +425,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rptEmployeeLoanClosed.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Files\ReportFiles\PF\rptEmployeeLoanSettelment.cs">
       <AutoGen>True</AutoGen>
@@ -594,6 +595,12 @@
       <DependentUpon>rptLoanSattlement.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Files\ReportFiles\PF\rptLoanStatement.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptLoanStatement.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Files\ReportFiles\PF\rptPFBankDeposit.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -712,6 +719,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rptSalaryPFDetail.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Files\ReportFiles\PF\rptScheduleofLoanMember.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptScheduleofLoanMember.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Files\ReportFiles\PF\rptTIB_GLTransaction.cs">
@@ -5040,6 +5053,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptLoanSattlement.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Files\ReportFiles\PF\rptLoanStatement.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptLoanStatement.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Files\ReportFiles\PF\rptPFBankDeposit.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptPFBankDeposit.cs</LastGenOutput>
@@ -5119,6 +5136,10 @@
     <EmbeddedResource Include="Files\ReportFiles\PF\rptSalaryPFDetail.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptSalaryPFDetail.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Files\ReportFiles\PF\rptScheduleofLoanMember.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptScheduleofLoanMember.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Files\ReportFiles\PF\rptTIB_GLTransaction.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
