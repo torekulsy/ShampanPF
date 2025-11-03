@@ -708,12 +708,13 @@ namespace SymWebUI.Areas.PF.Controllers
                 CompanyVM comInfo = cRepo.SelectById(1);
                 string Line1 = comInfo.Name;// "BRAC EPL STOCK BROKERAGE LIMITED";
                 string Line2 = comInfo.Address;// "SYMPHONY, PLOT NO. S.E (F)- 9 (3RD FLOOR), ROAD- 142, GULSHAN-1, DHAKA-1212 ";
-                string Line3 = "";
+                //string Line3 = "";
+                string branchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "N/A";
 
                 int LeftColumn = 5;
                 int CenterColumn = 5;
 
-                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Bank Charge Statement", Line1, Line2, Line3 };
+                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Bank Charge Statement", Line1, Line2, "Branch: " + branchName };
 
                 ExcelSheetFormat(dt, workSheet, ReportHeaders);
                 #region Excel Download
@@ -874,12 +875,13 @@ namespace SymWebUI.Areas.PF.Controllers
                 CompanyVM comInfo = cRepo.SelectById(1);
                 string Line1 = comInfo.Name;// "BRAC EPL STOCK BROKERAGE LIMITED";
                 string Line2 = comInfo.Address;// "SYMPHONY, PLOT NO. S.E (F)- 9 (3RD FLOOR), ROAD- 142, GULSHAN-1, DHAKA-1212 ";
-                string Line3 = "";
+                //string Line3 = "";
+                string branchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "N/A";
 
                 int LeftColumn = 5;
                 int CenterColumn = 5;
 
-                string[] ReportHeaders = new string[] { "Employee Forfeiture Statement", Line1, Line2, Line3 };
+                string[] ReportHeaders = new string[] { "Employee Forfeiture Statement", Line1, Line2, "Branch: " + branchName };
 
                 ExcelSheetFormat(dt, workSheet, ReportHeaders);
                 #region Excel Download
@@ -928,12 +930,13 @@ namespace SymWebUI.Areas.PF.Controllers
                 CompanyVM comInfo = cRepo.SelectById(1);
                 string Line1 = comInfo.Name;// "BRAC EPL STOCK BROKERAGE LIMITED";
                 string Line2 = comInfo.Address;// "SYMPHONY, PLOT NO. S.E (F)- 9 (3RD FLOOR), ROAD- 142, GULSHAN-1, DHAKA-1212 ";
-                string Line3 = "";
+                //string Line3 = "";
+                string branchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "N/A";
 
                 int LeftColumn = 5;
                 int CenterColumn = 5;
 
-                string[] ReportHeaders = new string[] { "Employee PF Opening Statement", Line1, Line2, Line3 };
+                string[] ReportHeaders = new string[] { "Employee PF Opening Statement", Line1, Line2, "Branch: " + branchName };
 
                 ExcelSheetFormat(dt, workSheet, ReportHeaders);
                 #region Excel Download
@@ -989,15 +992,16 @@ namespace SymWebUI.Areas.PF.Controllers
                 CompanyVM comInfo = cRepo.SelectById(1);
                 string Line1 = comInfo.Name;// "BRAC EPL STOCK BROKERAGE LIMITED";
                 string Line2 = comInfo.Address;// "SYMPHONY, PLOT NO. S.E (F)- 9 (3RD FLOOR), ROAD- 142, GULSHAN-1, DHAKA-1212 ";
-                string Line3 = "";
+                //string Line3 = "";
+                string branchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "N/A";
 
                 int LeftColumn = 5;
                 int CenterColumn = 5;
 
 
-                
 
-                string[] ReportHeaders = new string[] { "Employee Statement", Line1, Line2, Line3 };
+
+                string[] ReportHeaders = new string[] { "Employee Statement", Line1, Line2, "Branch: " + branchName };
 
                 ExcelSheetFormat(dt, workSheet, ReportHeaders);
                 #region Excel Download
@@ -1085,11 +1089,12 @@ namespace SymWebUI.Areas.PF.Controllers
                     CompanyVM comInfo = cRepo.SelectById(1);
                     string Line1 = comInfo.Name;
                     string Line2 = comInfo.Address;
-                    string Line3 = "";
+                    //string Line3 = "";
+                    string branchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "N/A";
 
-                   
 
-                    string[] ReportHeaders = new string[] { "Employee Statement", Line1, Line2, Line3 };
+
+                    string[] ReportHeaders = new string[] { "Employee Statement", Line1, Line2, "Branch: " + branchName };
 
                     ExcelSheetFormat(dt, workSheet, ReportHeaders);
                     #region Excel Download
@@ -1228,12 +1233,13 @@ namespace SymWebUI.Areas.PF.Controllers
                 CompanyVM comInfo = cRepo.SelectById(1);
                 string Line1 = comInfo.Name;// "BRAC EPL STOCK BROKERAGE LIMITED";
                 string Line2 = comInfo.Address;// "SYMPHONY, PLOT NO. S.E (F)- 9 (3RD FLOOR), ROAD- 142, GULSHAN-1, DHAKA-1212 ";
-                string Line3 = "";
+                //string Line3 = "";
+                string branchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "N/A";
 
                 int LeftColumn = 5;
                 int CenterColumn = 5;
 
-                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Loan Monthly Payment Statement", Line1, Line2, Line3 };
+                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Loan Monthly Payment Statement", Line1, Line2, "Branch: " + branchName };
 
                 ExcelSheetFormat(dt, workSheet, ReportHeaders);
                 #region Excel Download
@@ -1281,12 +1287,13 @@ namespace SymWebUI.Areas.PF.Controllers
                 CompanyVM comInfo = cRepo.SelectById(1);
                 string Line1 = comInfo.Name;// "BRAC EPL STOCK BROKERAGE LIMITED";
                 string Line2 = comInfo.Address;// "SYMPHONY, PLOT NO. S.E (F)- 9 (3RD FLOOR), ROAD- 142, GULSHAN-1, DHAKA-1212 ";
-                string Line3 = "";
+                //string Line3 = "";
+                string branchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "N/A";
 
                 int LeftColumn = 5;
                 int CenterColumn = 5;
 
-                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Loan Repayment To Bank Statement", Line1, Line2, Line3 };
+                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Loan Repayment To Bank Statement", Line1, Line2, "Branch: " + branchName };
 
                 ExcelSheetFormat(dt, workSheet, ReportHeaders);
                 #region Excel Download
@@ -1335,12 +1342,13 @@ namespace SymWebUI.Areas.PF.Controllers
                 CompanyVM comInfo = cRepo.SelectById(1);
                 string Line1 = comInfo.Name;// "BRAC EPL STOCK BROKERAGE LIMITED";
                 string Line2 = comInfo.Address;// "SYMPHONY, PLOT NO. S.E (F)- 9 (3RD FLOOR), ROAD- 142, GULSHAN-1, DHAKA-1212 ";
-                string Line3 = "";
+                //string Line3 = "";
+                string branchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "N/A";
 
                 int LeftColumn = 5;
                 int CenterColumn = 5;
 
-                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Loan Sattlement Statement", Line1, Line2, Line3 };
+                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Loan Sattlement Statement", Line1, Line2, "Branch: " + branchName };
 
                 ExcelSheetFormat(dt, workSheet, ReportHeaders);
                 #region Excel Download
@@ -1390,12 +1398,13 @@ namespace SymWebUI.Areas.PF.Controllers
                 CompanyVM comInfo = cRepo.SelectById(1);
                 string Line1 = comInfo.Name;// "BRAC EPL STOCK BROKERAGE LIMITED";
                 string Line2 = comInfo.Address;// "SYMPHONY, PLOT NO. S.E (F)- 9 (3RD FLOOR), ROAD- 142, GULSHAN-1, DHAKA-1212 ";
-                string Line3 = "";
+                //string Line3 = "";
+                string branchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "N/A";
 
                 int LeftColumn = 5;
                 int CenterColumn = 5;
 
-                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Bank Deposits Statement", Line1, Line2, Line3 };
+                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Bank Deposits Statement", Line1, Line2, "Branch: " + branchName };
 
                 ExcelSheetFormat(dt, workSheet, ReportHeaders);
                 #region Excel Download
@@ -1444,12 +1453,13 @@ namespace SymWebUI.Areas.PF.Controllers
                 CompanyVM comInfo = cRepo.SelectById(1);
                 string Line1 = comInfo.Name;// "BRAC EPL STOCK BROKERAGE LIMITED";
                 string Line2 = comInfo.Address;// "SYMPHONY, PLOT NO. S.E (F)- 9 (3RD FLOOR), ROAD- 142, GULSHAN-1, DHAKA-1212 ";
-                string Line3 = "";
+                //string Line3 = "";
+                string branchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "N/A";
 
                 int LeftColumn = 5;
                 int CenterColumn = 5;
 
-                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Contribution Statement", Line1, Line2, Line3 };
+                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Contribution Statement", Line1, Line2, "Branch: " + branchName };
 
                 ExcelSheetFormat(dt, workSheet, ReportHeaders);
                 #region Excel Download
@@ -1498,12 +1508,13 @@ namespace SymWebUI.Areas.PF.Controllers
                 CompanyVM comInfo = cRepo.SelectById(1);
                 string Line1 = comInfo.Name;// "BRAC EPL STOCK BROKERAGE LIMITED";
                 string Line2 = comInfo.Address;// "SYMPHONY, PLOT NO. S.E (F)- 9 (3RD FLOOR), ROAD- 142, GULSHAN-1, DHAKA-1212 ";
-                string Line3 = "";
+                //string Line3 = "";
+                string branchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "N/A";
 
                 int LeftColumn = 5;
                 int CenterColumn = 5;
 
-                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Profit Distribution Statement", Line1, Line2, Line3 };
+                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Profit Distribution Statement", Line1, Line2, "Branch: " + branchName };
 
                 ExcelSheetFormat(dt, workSheet, ReportHeaders);
                 #region Excel Download
@@ -1552,12 +1563,13 @@ namespace SymWebUI.Areas.PF.Controllers
                 CompanyVM comInfo = cRepo.SelectById(1);
                 string Line1 = comInfo.Name;// "BRAC EPL STOCK BROKERAGE LIMITED";
                 string Line2 = comInfo.Address;// "SYMPHONY, PLOT NO. S.E (F)- 9 (3RD FLOOR), ROAD- 142, GULSHAN-1, DHAKA-1212 ";
-                string Line3 = "";
+                //string Line3 = "";
+                string branchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "N/A";
 
                 int LeftColumn = 5;
                 int CenterColumn = 5;
 
-                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Return On Bank Interests Statement", Line1, Line2, Line3 };
+                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Return On Bank Interests Statement", Line1, Line2, "Branch: " + branchName };
 
                 ExcelSheetFormat(dt, workSheet, ReportHeaders);
                 #region Excel Download
@@ -1606,12 +1618,13 @@ namespace SymWebUI.Areas.PF.Controllers
                 CompanyVM comInfo = cRepo.SelectById(1);
                 string Line1 = comInfo.Name;// "BRAC EPL STOCK BROKERAGE LIMITED";
                 string Line2 = comInfo.Address;// "SYMPHONY, PLOT NO. S.E (F)- 9 (3RD FLOOR), ROAD- 142, GULSHAN-1, DHAKA-1212 ";
-                string Line3 = "";
+                //string Line3 = "";
+                string branchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "N/A";
 
                 int LeftColumn = 5;
                 int CenterColumn = 5;
 
-                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Withdraws Statement", Line1, Line2, Line3 };
+                string[] ReportHeaders = new string[] { AreaTypePFVM.TransType + " Withdraws Statement", Line1, Line2, "Branch: " + branchName };
 
                 ExcelSheetFormat(dt, workSheet, ReportHeaders);
                 #region Excel Download
@@ -1674,12 +1687,13 @@ namespace SymWebUI.Areas.PF.Controllers
                 CompanyVM comInfo = cRepo.SelectById(1);
                 string Line1 = comInfo.Name;// "BRAC EPL STOCK BROKERAGE LIMITED";
                 string Line2 = comInfo.Address;// "SYMPHONY, PLOT NO. S.E (F)- 9 (3RD FLOOR), ROAD- 142, GULSHAN-1, DHAKA-1212 ";
-                string Line3 = "";
+                //string Line3 = "";
+                string branchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "N/A";
 
                 int LeftColumn = 5;
                 int CenterColumn = 5;
 
-                string[] ReportHeaders = new string[] { StatementName, Line1, Line2, Line3 };
+                string[] ReportHeaders = new string[] { StatementName, Line1, Line2, "Branch: " + branchName };
 
                 ExcelSheetFormat(dt, workSheet, ReportHeaders);
                 #region Excel Download

@@ -381,7 +381,6 @@ namespace SymWebUI.Areas.PF.Controllers
         /// <returns>Redirects to the InvestmentName view after file is served or if access is denied</returns>
         public ActionResult DownloadExcel()
         {
-
             string[] result = new string[6];
             DataTable dt = new DataTable();
             try
@@ -393,30 +392,46 @@ namespace SymWebUI.Areas.PF.Controllers
                 {
                     return Redirect("/Common/Home");
                 }
-             
+
+
                 dt = new PFReportRepo().InvestmentSummery();
+
                 ExcelPackage excel = new ExcelPackage();
                 string FileName = "InvestmentSummery";
                 var workSheet = excel.Workbook.Worksheets.Add("Investment Report");
+
+
                 CompanyRepo cRepo = new CompanyRepo();
                 CompanyVM comInfo = cRepo.SelectById(1);
-                string Line1 = comInfo.Name;
-                string Line2 = comInfo.Address;
-                string Line3 = "";
+                string line1 = comInfo.Name;
+                string line2 = comInfo.Address;
 
-                string[] ReportHeaders = new string[] { "Investment Summery", Line1, Line2, Line3 };
+
+                string branchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "N/A";
+
+
+                string[] ReportHeaders = new string[]
+                    {
+                        "Investment Summary Report",
+                        line1,
+                        line2,
+                        "Branch: " + branchName   
+                    };
+
 
                 ExcelSheetFormat(dt, workSheet, ReportHeaders);
+
 
                 using (var memoryStream = new MemoryStream())
                 {
                     Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                    Response.AddHeader("content-disposition", "attachment;  filename=" + FileName + ".xlsx");
+                    Response.AddHeader("content-disposition", "attachment; filename=" + FileName + ".xlsx");
                     excel.SaveAs(memoryStream);
                     memoryStream.WriteTo(Response.OutputStream);
                     Response.Flush();
                     Response.End();
                 }
+
                 result[0] = "Success";
                 result[1] = "Data Saved Successfully!";
                 Session["result"] = result[0] + "~" + result[1];
@@ -430,6 +445,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 return RedirectToAction("InvestmentName");
             }
         }
+
         private void ExcelSheetFormat(DataTable dt, ExcelWorksheet workSheet, string[] ReportHeaders)
         {
 

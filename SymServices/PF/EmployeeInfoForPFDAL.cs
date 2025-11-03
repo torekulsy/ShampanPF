@@ -135,6 +135,19 @@ namespace SymServices.PF
                                      ,BasicSalary=@BasicSalary 
                                      ,Email=@Email
                                      ,ContactNo=@ContactNo
+                                        ,OfficialContactNo = @OfficialContactNo,
+                                        EmployeeNID = @EmployeeNID,
+                                        EmployeeTIN = @EmployeeTIN,
+                                        FathersName = @FathersName,
+                                        MothersName = @MothersName,
+                                        SpouseName = @SpouseName,
+                                        EmployeeBankAccountNumber = @EmployeeBankAccountNumber,
+                                        PresentAddress = @PresentAddress,
+                                        ParmanentAdderss = @ParmanentAdderss,
+                                        NomineeBankAccountNumber = @NomineeBankAccountNumber,
+                                        NomineeShare = @NomineeShare,
+                                        EmployeeBankNameId = @EmployeeBankNameId,
+                                        NomineeBankNameId = @NomineeBankNameId
                                      where Id=@Id   
                                  ";
                         SqlCommand cmdInsert = new SqlCommand(sqlText, currConn, transaction);
@@ -183,92 +196,135 @@ namespace SymServices.PF
                         cmdInsert.Parameters.AddWithValue("@BasicSalary", vm.BasicSalary);
                         cmdInsert.Parameters.AddWithValue("@ContactNo", vm.ContactNo ?? "");
                         cmdInsert.Parameters.AddWithValue("@Email", vm.Email ?? "");
+
+                        cmdInsert.Parameters.AddWithValue("@OfficialContactNo", vm.OfficialContactNo ?? "");
+                        cmdInsert.Parameters.AddWithValue("@EmployeeNID", vm.EmployeeNID ?? "");
+                        cmdInsert.Parameters.AddWithValue("@EmployeeTIN", vm.EmployeeTIN ?? "");
+                        cmdInsert.Parameters.AddWithValue("@FathersName", vm.FathersName ?? "");
+                        cmdInsert.Parameters.AddWithValue("@MothersName", vm.MothersName ?? "");
+                        cmdInsert.Parameters.AddWithValue("@SpouseName", vm.SpouseName ?? "");
+                        cmdInsert.Parameters.AddWithValue("@EmployeeBankAccountNumber", vm.EmployeeBankAccountNumber ?? "");
+                        cmdInsert.Parameters.AddWithValue("@PresentAddress", vm.PresentAddress ?? "");
+                        cmdInsert.Parameters.AddWithValue("@ParmanentAdderss", vm.ParmanentAdderss ?? "");
+                        cmdInsert.Parameters.AddWithValue("@NomineeBankAccountNumber", vm.NomineeBankAccountNumber ?? "");
+                        cmdInsert.Parameters.AddWithValue("@NomineeShare", vm.NomineeShare ?? "");
+                        cmdInsert.Parameters.AddWithValue("@EmployeeBankNameId", vm.EmployeeBankNameId);
+                        cmdInsert.Parameters.AddWithValue("@NomineeBankNameId", vm.NomineeBankNameId);
+
                         cmdInsert.ExecuteNonQuery();
                     }
                     else
                     {
 
                         sqlText = "  ";
-                        sqlText += @" INSERT INTO EmployeeInfo(
-                                   [Code]
-                                  ,[Name]
-                                  ,[Department]
-                                  ,[Designation]
-                                  ,[DateOfBirth]
-                                  ,[JoinDate]
-                                  ,[ResignDate]
-                                  ,[Remarks]
-                                  ,[IsActive]
-                                  ,[IsArchive]
-                                  ,[CreatedBy]
-                                  ,[CreatedAt]
-                                  ,[CreatedFrom]                         
-                                  ,[LastUpdateAt]
-                                  ,[LastUpdateFrom]
-                                  ,[PhotoName] 
-                                  ,[NomineeDateofBirth]
-                                  ,[NomineeName]
-                                  ,[NomineeRelation]
-                                  ,[NomineeAddress]
-                                  ,[NomineeDistrict]
-                                  ,[NomineeDivision]
-                                  ,[NomineeCountry]
-                                  ,[NomineeCity]
-                                  ,[NomineePostalCode]
-                                  ,[NomineePhone]
-                                  ,[NomineeMobile]
-                                  ,[NomineeBirthCertificateNo]
-                                  ,[NomineeFax]
-                                  ,[NomineeFileName]
-                                  ,[NomineeRemarks]
-                                  ,[NomineeNID]
-                                  ,[GrossSalary]
-                                  ,[BasicSalary] 
-                                  ,[Email]
-                                  ,[ContactNo]    
-                                  ,BranchId                                      
-                                ) 
-                                   VALUES (
-                                   @Code
-                                  ,@Name
-                                  ,@Department
-                                  ,@Designation
-                                  ,@DateOfBirth  
-                                  ,@JoinDate
-                                  ,@ResignDate
-                                  ,@Remarks
-                                  ,@IsActive
-                                  ,@IsArchive
-                                  ,@CreatedBy 
-                                  ,@CreatedAt
-                                  ,@CreatedFrom                        
-                                  ,@LastUpdateAt
-                                  ,@LastUpdateFrom
-                                  ,@PhotoName 
-        
-                                  ,@NomineeDateofBirth
-                                  ,@NomineeName
-                                  ,@NomineeRelation
-                                  ,@NomineeAddress
-                                  ,@NomineeDistrict
-                                  ,@NomineeDivision
-                                  ,@NomineeCountry
-                                  ,@NomineeCity
-                                  ,@NomineePostalCode
-                                  ,@NomineePhone
-                                  ,@NomineeMobile
-                                  ,@NomineeBirthCertificateNo
-                                  ,@NomineeFax
-                                  ,@NomineeFileName
-                                  ,@NomineeRemarks
-                                  ,@NomineeNID
-                                  ,@GrossSalary
-                                  ,@BasicSalary     
-                                  ,@Email
-                                  ,@ContactNo     
-                                  ,@BranchId
-                                ) 
-                                 ";
+                        sqlText += @" INSERT INTO EmployeeInfo
+                                (
+                                      [Code]
+                                    , [Name]
+                                    , [Department]
+                                    , [Designation]
+                                    , [DateOfBirth]
+                                    , [JoinDate]
+                                    , [ResignDate]
+                                    , [Remarks]
+                                    , [IsActive]
+                                    , [IsArchive]
+                                    , [CreatedBy]
+                                    , [CreatedAt]
+                                    , [CreatedFrom]
+                                    , [LastUpdateAt]
+                                    , [LastUpdateFrom]
+                                    , [PhotoName]
+                                    , [NomineeDateofBirth]
+                                    , [NomineeName]
+                                    , [NomineeRelation]
+                                    , [NomineeAddress]
+                                    , [NomineeDistrict]
+                                    , [NomineeDivision]
+                                    , [NomineeCountry]
+                                    , [NomineeCity]
+                                    , [NomineePostalCode]
+                                    , [NomineePhone]
+                                    , [NomineeMobile]
+                                    , [NomineeBirthCertificateNo]
+                                    , [NomineeFax]
+                                    , [NomineeFileName]
+                                    , [NomineeRemarks]
+                                    , [NomineeNID]
+                                    , [GrossSalary]
+                                    , [BasicSalary]
+                                    , [Email]
+                                    , [ContactNo]
+                                    , [BranchId]
+
+                                    , [OfficialContactNo]
+                                    , [EmployeeNID]
+                                    , [EmployeeTIN]
+                                    , [FathersName]
+                                    , [MothersName]
+                                    , [SpouseName]
+                                    , [EmployeeBankAccountNumber]
+                                    , [PresentAddress]
+                                    , [ParmanentAdderss]
+                                    , [NomineeBankAccountNumber]
+                                    , [NomineeShare]
+                                    , [EmployeeBankNameId]
+                                    , [NomineeBankNameId]
+                                )
+                                VALUES
+                                (
+                                      @Code
+                                    , @Name
+                                    , @Department
+                                    , @Designation
+                                    , @DateOfBirth
+                                    , @JoinDate
+                                    , @ResignDate
+                                    , @Remarks
+                                    , @IsActive
+                                    , @IsArchive
+                                    , @CreatedBy
+                                    , @CreatedAt
+                                    , @CreatedFrom
+                                    , @LastUpdateAt
+                                    , @LastUpdateFrom
+                                    , @PhotoName
+                                    , @NomineeDateofBirth
+                                    , @NomineeName
+                                    , @NomineeRelation
+                                    , @NomineeAddress
+                                    , @NomineeDistrict
+                                    , @NomineeDivision
+                                    , @NomineeCountry
+                                    , @NomineeCity
+                                    , @NomineePostalCode
+                                    , @NomineePhone
+                                    , @NomineeMobile
+                                    , @NomineeBirthCertificateNo
+                                    , @NomineeFax
+                                    , @NomineeFileName
+                                    , @NomineeRemarks
+                                    , @NomineeNID
+                                    , @GrossSalary
+                                    , @BasicSalary
+                                    , @Email
+                                    , @ContactNo
+                                    , @BranchId
+
+                                    , @OfficialContactNo
+                                    , @EmployeeNID
+                                    , @EmployeeTIN
+                                    , @FathersName
+                                    , @MothersName
+                                    , @SpouseName
+                                    , @EmployeeBankAccountNumber
+                                    , @PresentAddress
+                                    , @ParmanentAdderss
+                                    , @NomineeBankAccountNumber
+                                    , @NomineeShare
+                                    , @EmployeeBankNameId
+                                    , @NomineeBankNameId
+                                )";
                         SqlCommand cmdInsert = new SqlCommand(sqlText, currConn, transaction);
                         cmdInsert.Parameters.AddWithValue("@Code", vm.Code);
                         cmdInsert.Parameters.AddWithValue("@Name", vm.Name);
@@ -307,6 +363,21 @@ namespace SymServices.PF
                         cmdInsert.Parameters.AddWithValue("@ContactNo", vm.ContactNo ?? "");
                         cmdInsert.Parameters.AddWithValue("@Email", vm.Email ?? "");
                         cmdInsert.Parameters.AddWithValue("@BranchId", vm.BranchId ?? "");
+
+                        cmdInsert.Parameters.AddWithValue("@OfficialContactNo", vm.OfficialContactNo ?? "");
+                        cmdInsert.Parameters.AddWithValue("@EmployeeNID", vm.EmployeeNID ?? "");
+                        cmdInsert.Parameters.AddWithValue("@EmployeeTIN", vm.EmployeeTIN ?? "");
+                        cmdInsert.Parameters.AddWithValue("@FathersName", vm.FathersName ?? "");
+                        cmdInsert.Parameters.AddWithValue("@MothersName", vm.MothersName ?? "");
+                        cmdInsert.Parameters.AddWithValue("@SpouseName", vm.SpouseName ?? "");
+                        cmdInsert.Parameters.AddWithValue("@EmployeeBankAccountNumber", vm.EmployeeBankAccountNumber ?? "");
+                        cmdInsert.Parameters.AddWithValue("@PresentAddress", vm.PresentAddress ?? "");
+                        cmdInsert.Parameters.AddWithValue("@ParmanentAdderss", vm.ParmanentAdderss ?? "");
+                        cmdInsert.Parameters.AddWithValue("@NomineeBankAccountNumber", vm.NomineeBankAccountNumber ?? "");
+                        cmdInsert.Parameters.AddWithValue("@NomineeShare", vm.NomineeShare ?? "");
+                        cmdInsert.Parameters.AddWithValue("@EmployeeBankNameId", vm.EmployeeBankNameId);
+                        cmdInsert.Parameters.AddWithValue("@NomineeBankNameId", vm.NomineeBankNameId);
+
                         cmdInsert.ExecuteNonQuery();
                     }
                 }
@@ -689,6 +760,20 @@ namespace SymServices.PF
                     EmployeeInfoForPFVM.ContactNo = dr["ContactNo"].ToString();
                     EmployeeInfoForPFVM.Email = dr["Email"].ToString();
                     EmployeeInfoForPFVM.PhotoName = dr["PhotoName"].ToString();
+
+                    EmployeeInfoForPFVM.OfficialContactNo = dr["OfficialContactNo"].ToString();
+                    EmployeeInfoForPFVM.EmployeeNID = dr["EmployeeNID"].ToString();
+                    EmployeeInfoForPFVM.EmployeeTIN = dr["EmployeeTIN"].ToString();
+                    EmployeeInfoForPFVM.FathersName = dr["FathersName"].ToString();
+                    EmployeeInfoForPFVM.MothersName = dr["MothersName"].ToString();
+                    EmployeeInfoForPFVM.SpouseName = dr["SpouseName"].ToString();
+                    EmployeeInfoForPFVM.EmployeeBankAccountNumber = dr["EmployeeBankAccountNumber"].ToString();
+                    EmployeeInfoForPFVM.PresentAddress = dr["PresentAddress"].ToString();
+                    EmployeeInfoForPFVM.ParmanentAdderss = dr["ParmanentAdderss"].ToString();
+                    EmployeeInfoForPFVM.NomineeBankAccountNumber = dr["NomineeBankAccountNumber"].ToString();
+                    EmployeeInfoForPFVM.NomineeShare = dr["NomineeShare"].ToString();
+                    EmployeeInfoForPFVM.EmployeeBankNameId = Convert.ToInt32(dr["EmployeeBankNameId"] == DBNull.Value ? 0 : dr["EmployeeBankNameId"]);
+                    EmployeeInfoForPFVM.NomineeBankNameId = Convert.ToInt32(dr["NomineeBankNameId"] == DBNull.Value ? 0 : dr["NomineeBankNameId"]);
                 }
                 dr.Close();
 
