@@ -1005,7 +1005,7 @@ FROM PreDistributionFunds pdf
             {
 
                 string id = @"SELECT
-                            TotalValue
+                            TotalValue,TransactionDate
                             FROM PreDistributionFunds
                             WHERE  1=1 AND Code = @Code";
                 SqlCommand cmdid = new SqlCommand(id, currConn, transaction);
@@ -1014,13 +1014,16 @@ FROM PreDistributionFunds pdf
                 DataTable dtpf = new DataTable();
                 adapterid.Fill(dtpf);
 
+               
+
                 GLJournalVM vmj = new GLJournalVM
                 {
                     Id = 1,
                     CreatedAt = DateTime.Now.ToString(),
                     CreatedBy = "admin",
                     CreatedFrom = "",
-                    TransactionDate = DateTime.Now.ToString(),
+                    //TransactionDate = DateTime.Now.ToString(),
+                    TransactionDate =dtpf.Rows[0]["TransactionDate"].ToString(),
                     TransactionType = 31,
                     JournalType = 1,
                     TransType = "PF",
