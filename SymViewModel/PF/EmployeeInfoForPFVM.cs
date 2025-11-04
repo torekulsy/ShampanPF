@@ -77,10 +77,37 @@ namespace SymViewModel.PF
         public string EmployeeId { get; set; }
         public string GradeId { get; set; }
         public string Email { get; set; }
-        [Display(Name ="Contact No")]
+        [Display(Name = "Personal Contact No")]
         public string ContactNo { get; set; }
-
         public string BranchId { get; set; }
 
+        [Display(Name = "Official Contact No")]
+        public string OfficialContactNo { get; set; }
+        [Display(Name = "NID")]
+        public string EmployeeNID { get; set; }
+         [Display(Name = "TIN")]
+        public string EmployeeTIN { get; set; }
+         [Display(Name = "Father Name")]
+        public string FathersName { get; set; }
+         [Display(Name = "Mother Name")]
+        public string MothersName { get; set; }
+         [Display(Name = "Spouse Name")]
+        public string SpouseName { get; set; }
+        
+         [Display(Name = "Bank Account Number")]
+        public string EmployeeBankAccountNumber { get; set; }
+         [Display(Name = "Present Address")]
+        public string PresentAddress { get; set; }
+         [Display(Name = "Parmanent Adderss")]
+        public string ParmanentAdderss { get; set; }
+
+         [Display(Name = "Bank Account Number")]
+        public string NomineeBankAccountNumber { get; set; }
+         [Display(Name = "Nominee Share(%)")]
+        public string NomineeShare { get; set; }
+         [Display(Name = "Bank Name")]
+         public int EmployeeBankNameId { get; set; }
+         [Display(Name = "Bank Name")]
+         public int NomineeBankNameId { get; set; }
     }
 }

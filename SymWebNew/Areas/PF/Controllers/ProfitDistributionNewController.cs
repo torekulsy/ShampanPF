@@ -31,7 +31,7 @@ namespace SymWebUI.Areas.PF.Controllers
         ProfitDistributionNewRepo _repo = new ProfitDistributionNewRepo();
 
         [Authorize(Roles = "Admin")]
-        public ActionResult Index()
+        public ActionResult Index(string PreDistributionFundId)
         {
             string permission = _repoSUR.SymRoleSession(identity.UserId, "10003", "index").ToString();
             Session["permission"] = permission;
@@ -39,6 +39,7 @@ namespace SymWebUI.Areas.PF.Controllers
             {
                 return Redirect("/PF/Home");
             }
+            Session["PreDistributionFundId"] = PreDistributionFundId;
             return View();
         }
 
@@ -51,7 +52,8 @@ namespace SymWebUI.Areas.PF.Controllers
             //06     //IsPaid
 
             #region Search and Filter Data
-            var getAllData = _repo.SelectAll();
+            int PreDistributionFundId = Convert.ToInt32(Session["PreDistributionFundId"].ToString());
+            var getAllData = _repo.SelectAll(PreDistributionFundId);
             IEnumerable<ProfitDistributionNewVM> filteredData;
             if (!string.IsNullOrEmpty(param.sSearch))
             {
@@ -140,7 +142,7 @@ namespace SymWebUI.Areas.PF.Controllers
             vm.PreDistributionFund = preDistributionFundRepo.SelectAll(PreDistributionFundId).FirstOrDefault();
 
             return View(vm);
-        }
+        }        
 
         
         public ActionResult ProcessDistribution(ProfitDistributionNewVM vm)
@@ -187,9 +189,10 @@ namespace SymWebUI.Areas.PF.Controllers
                 CompanyVM comInfo = cRepo.SelectById(1);
                 string Line1 = comInfo.Name;
                 string Line2 = comInfo.Address;
-                string Line3 = "";
+                //string Line3 = "";
+                string branchName = Session["BranchName"] != null ? Session["BranchName"].ToString() : "N/A";
 
-                string[] ReportHeaders = new string[] { "Profit Distribution Summery", Line1, Line2, Line3 };
+                string[] ReportHeaders = new string[] { "Profit Distribution Summery", Line1, Line2, "Branch: " + branchName };
 
                 ExcelSheetFormat(dt, workSheet, ReportHeaders);
 
