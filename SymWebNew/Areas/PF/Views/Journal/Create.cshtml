@@ -266,6 +266,193 @@
 
 }
 
+
+
+<script>
+    $('.AddRow:not(.AddRowInited)').on("click", function () {
+        var container = $(this).attr('data-container');
+        AddRow(container)
+        return false;
+    }).addClass("AddRowInited");
+
+    function AddRow(container) {
+        debugger;
+
+
+        var journalType = parseInt($("#JournalType").val());
+        if (journalType == 2) {
+            var selectedCOAId = $("select.COAId").val()
+                || $(".selectDropdown.COAId").val()
+                || $("input[type='hidden'][name$='COAId']").val()
+                || 0;
+            selectedCOAId = parseInt(selectedCOAId) || 0;
+
+            var drAmount = parseFloat($(".drAmount").val());
+
+            if (selectedCOAId === 21 && drAmount >= 0) {
+                ShowResult("Fail", "Add Row is not allowed.");
+                return;
+            }
+        }
+
+        if (journalType == 3) {
+            var selectedCOAId = $("select.COAId").val()
+                || $(".selectDropdown.COAId").val()
+                || $("input[type='hidden'][name$='COAId']").val()
+                || 0;
+            selectedCOAId = parseInt(selectedCOAId) || 0;
+
+            var crAmount = parseFloat($(".crAmount").val());
+
+            if (selectedCOAId === 21 && crAmount >= 0) {
+                ShowResult("Fail", "Add Row is not allowed.");
+                return;
+            }
+        }
+
+        var ItemExist = 0;
+        var url = '/@ViewBag.TransType/Journal/BlankItem';
+        var oParam = { "COAId": "", "DrAmount": "", "CrAmount": "", "AccountName": "", };
+
+        var accountId = $('.COAId  :selected').val();
+        var accName = $('.COAId  :selected').text();
+
+        var debitAmount = $(".drAmount").val();
+        var creditAmount = $(".crAmount").val();
+
+
+        if (accountId == "") {
+            ShowResult("Fail", "Please select the Item!");
+            return;
+        }
+
+        //if ((debitAmount != "") && (creditAmount != "")) {
+        //    ShowResult("Fail", "Please Enter Either Debit or Credit Amount, Not Both!");
+        //    return;
+        //}
+
+        if ((parseFloat(debitAmount) > 0) && (parseFloat(creditAmount) > 0)) {
+            ShowResult("Fail", "Please Enter Either Debit or Credit Amount, Not Both!");
+            return;
+        }
+
+
+
+        if (debitAmount == "" && creditAmount == "") {
+            ShowResult("Fail", "Please Enter Either Debit or Credit Amount!");
+            return;
+        }
+
+
+        oParam.COAId = accountId;
+        oParam.DrAmount = debitAmount;
+        oParam.CrAmount = creditAmount;
+        oParam.AccountName = accName;
+
+
+        $.each($("input.dAccountId"), function (i, item) {
+            var addedItem = $(item).val();
+            if (accountId == addedItem) {
+                ItemExist = 1;
+            }
+        });
+        if (ItemExist == "1") {
+            ShowResult("Fail", "This Item Already Added!");
+            return;
+        }
+        $.ajax({
+            url: url,
+            //type: 'POST',
+            cache: false,
+            data: oParam,
+            success: function (html) {
+                $("#" + container).append(html);
+                calculation();
+            }
+        });
+        $('#detail').show();
+        $(".COAId").val("");
+        $(".COAId").trigger('change');
+        $(".drAmount").val("");
+        $(".crAmount").val("");
+    }
+    function EditProduct(sender) {
+        var accountId = $(sender).parents().parents().find('.dAccountId').val();
+        $(".COAId").select2("val", accountId);
+        $(".drAmount").val($(sender).parents().parents().find('.dDrAmount').val());
+        $(".crAmount").val($(sender).parents().parents().find('.dCrAmount').val());
+        $(sender).parents("div.row:first").remove();
+        calculation();
+        ShowHide();
+        ShowBalance();
+    }
+
+    function RemoveProduct(sender) {
+        Ask("Are you sure to delete the item!", function () {
+            $(sender).parents("div.row:first").remove();
+            calculation();
+            ShowHide();
+        });
+    }
+
+    function ShowHide() {
+        var accName = $('.dAccName').val();
+        if (accName == null) {
+            $('#detail').hide();
+        }
+        else {
+            $('#detail').show();
+        }
+    }
+</script>
+<script>
+    calculation();
+    function calculation() {
+        var drTotal = 0;
+        var crTotal = 0;
+
+        $(".row.details").each(function () {
+            var amount = getnum($(this).find(".dDrAmount").val());
+            drTotal += amount;
+        });
+        $(".row.details").each(function () {
+            var amount = getnum($(this).find(".dCrAmount").val());
+            crTotal += amount;
+        });
+
+        //$(".drTotal").val(drTotal.toFixed(2));
+        //$(".crTotal").val(crTotal.toFixed(2));
+
+        $(".drTotal").val(drTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        $(".crTotal").val(crTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+
+    }
+
+    function getnum(e) {
+        if (isNaN(e) || typeof e === 'undefined ') {
+            return 0;
+        }
+        else {
+            return parseFloat(e);
+        }
+    }
+
+</script>
+
+<script>
+    function PostData(sender) {
+        var Id = $("#Id").val();
+        var Post = $("#Post").val();
+        if (Post.toLowerCase() == 'true') {
+            ShowResult("Fail", "Data Already Posted!");
+            return;
+        }
+        var url = '/@ViewBag.TransType/Journal/Post?ids=' + Id + '~';
+        var questionMSG = "Are you sure to Post Data!";
+        singlePostDlete(questionMSG, url);
+    }
+</script>
+
 <script>
     $(function () {
         cheque();
@@ -352,154 +539,4 @@
 
 </script>
 
-<script>
-    $('.AddRow:not(.AddRowInited)').on("click", function () {
-        var container = $(this).attr('data-container');
-        AddRow(container)
-        return false;
-    }).addClass("AddRowInited");
 
-    function AddRow(container) {
-        debugger;
-        var ItemExist = 0;
-        var url = '/@ViewBag.TransType/Journal/BlankItem';
-        var oParam = { "COAId": "", "DrAmount": "", "CrAmount": "", "AccountName": "", };
-
-        var accountId = $('.COAId  :selected').val();
-        var accName = $('.COAId  :selected').text();
-
-        var debitAmount = $(".drAmount").val();
-        var creditAmount = $(".crAmount").val();
-
-
-        if (accountId == "") {
-            ShowResult("Fail", "Please select the Item!");
-            return;
-        }
-
-        //if ((debitAmount != "") && (creditAmount != "")) {
-        //    ShowResult("Fail", "Please Enter Either Debit or Credit Amount, Not Both!");
-        //    return;
-        //}
-
-        if ((parseFloat(debitAmount) > 0) && (parseFloat(creditAmount) > 0)) {
-            ShowResult("Fail", "Please Enter Either Debit or Credit Amount, Not Both!");
-            return;
-        }
-
-
-
-        if (debitAmount == "" && creditAmount == "") {
-            ShowResult("Fail", "Please Enter Either Debit or Credit Amount!");
-            return;
-        }
-
-
-        oParam.COAId = accountId;
-        oParam.DrAmount = debitAmount;
-        oParam.CrAmount = creditAmount;
-        oParam.AccountName = accName;
-
-
-        $.each($("input.dAccountId"), function (i, item) {
-            var addedItem = $(item).val();
-            if (accountId == addedItem) {
-                ItemExist = 1;
-            }
-        });
-        if (ItemExist == "1") {
-            ShowResult("Fail", "This Item Already Added!");
-            return;
-        }      
-        $.ajax({
-            url: url,
-            //type: 'POST',
-            cache: false,
-            data: oParam,
-            success: function (html) {
-                $("#" + container).append(html);
-                calculation();
-            }
-        });
-        $('#detail').show();
-        $(".COAId").val(""); 
-        $(".COAId").trigger('change');
-        $(".drAmount").val("");
-        $(".crAmount").val("");
-    }
-    function EditProduct(sender) {
-        var accountId = $(sender).parents().parents().find('.dAccountId').val();
-        $(".COAId").select2("val", accountId);
-        $(".drAmount").val($(sender).parents().parents().find('.dDrAmount').val());
-        $(".crAmount").val($(sender).parents().parents().find('.dCrAmount').val());
-        $(sender).parents("div.row:first").remove();
-        calculation();
-        ShowHide();
-        ShowBalance();
-    }
-
-    function RemoveProduct(sender) {
-        Ask("Are you sure to delete the item!", function () {
-            $(sender).parents("div.row:first").remove();
-            calculation();
-            ShowHide();
-        });
-    }
-
-    function ShowHide() {
-        var accName = $('.dAccName').val();
-        if (accName == null) {
-            $('#detail').hide();
-        }
-        else {
-            $('#detail').show();
-        }
-    }
-</script>
-<script>
-    calculation();
-    function calculation() {
-        var drTotal = 0;
-        var crTotal = 0;
-
-        $(".row.details").each(function () {
-            var amount = getnum($(this).find(".dDrAmount").val());
-            drTotal += amount;
-        });
-        $(".row.details").each(function () {
-            var amount = getnum($(this).find(".dCrAmount").val());
-            crTotal += amount;
-        });
-
-        //$(".drTotal").val(drTotal.toFixed(2));
-        //$(".crTotal").val(crTotal.toFixed(2));
-
-        $(".drTotal").val(drTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-        $(".crTotal").val(crTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-
-    }
-
-    function getnum(e) {
-        if (isNaN(e) || typeof e === 'undefined ') {
-            return 0;
-        }
-        else {
-            return parseFloat(e);
-        }
-    }
-
-</script>
-
-<script>
-    function PostData(sender) {
-        var Id = $("#Id").val();
-        var Post = $("#Post").val();
-        if (Post.toLowerCase() == 'true') {
-            ShowResult("Fail", "Data Already Posted!");
-            return;
-        }
-        var url = '/@ViewBag.TransType/Journal/Post?ids=' + Id + '~';
-        var questionMSG = "Are you sure to Post Data!";
-        singlePostDlete(questionMSG, url);
-    }
-</script>
