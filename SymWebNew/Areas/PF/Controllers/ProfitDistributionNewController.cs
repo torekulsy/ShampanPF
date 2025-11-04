@@ -138,7 +138,7 @@ namespace SymWebUI.Areas.PF.Controllers
             ProfitDistributionNewVM vm = new ProfitDistributionNewVM();
             vm.Operation = "add";
             vm.PreDistributionFundId = PreDistributionFundId.ToString();
-
+          
             vm.PreDistributionFund = preDistributionFundRepo.SelectAll(PreDistributionFundId).FirstOrDefault();
 
             return View(vm);

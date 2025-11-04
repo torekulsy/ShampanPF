@@ -112,7 +112,7 @@ FROM ProfitDistributionNew pd
 
                 if (Id > 0)
                 {
-                    sqlText += @" and pd.Id=@Id";
+                    sqlText += @" and pd.PreDistributionFundId=@Id";
                 }
 
                 string cField = "";

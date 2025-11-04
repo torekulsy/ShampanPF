@@ -11,7 +11,7 @@
     <div class="headrow">
         <button type="button" name="btnName" value="Save" title="Save Data" onclick="pageSubmit('frmProfitDistribution')" class="sym-btn-save">&nbsp;Process</button>
         <label class="pull-right">Profit Distribution > Distribution Process</label>
-        <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/ProfitDistributionNew" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+        <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/ProfitDistributionNew?PreDistributionFundId=@Model.PreDistributionFundId" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
 
     </div>
     <div class="thinbox">
