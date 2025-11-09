@@ -790,7 +790,7 @@ Id
                     cmdInsert.Parameters.AddWithValue("@EmployerContributionForfeitValue", vm.EmployerContributionForfeitValue);
                     cmdInsert.Parameters.AddWithValue("@EmployerProfitForfeitValue ", vm.EmployerProfitForfeitValue);
                     cmdInsert.Parameters.AddWithValue("@TotalForfeitValue", vm.TotalForfeitValue);
-                    cmdInsert.Parameters.AddWithValue("@TotalPayableAmount", vm.TotalPayableAmount);
+                    cmdInsert.Parameters.AddWithValue("@TotalPayableAmount", vm.EmployeeTotalContribution + vm.EmployerTotalContribution + vm.EmployeeProfitValue + vm.EmployerProfitValue);
                     cmdInsert.Parameters.AddWithValue("@AlreadyPaidAmount", vm.AlreadyPaidAmount);
                     cmdInsert.Parameters.AddWithValue("@NetPayAmount", vm.NetPayAmount);
                     cmdInsert.Parameters.AddWithValue("@ProvidentFundAmount", vm.ProvidentFundAmount);
@@ -1913,7 +1913,8 @@ AND PFSettlements.EmployeeId=@EmployeeId
             {
 
                 string id = @"SELECT 
-       EmployeeProfitValue
+       SettlementDate
+       ,EmployeeProfitValue
       ,EmployerProfitValue
       ,EmployeeTotalContribution
       ,EmployerTotalContribution
@@ -1936,11 +1937,12 @@ AND PFSettlements.EmployeeId=@EmployeeId
                     CreatedAt = DateTime.Now.ToString(),
                     CreatedBy = "admin",
                     CreatedFrom = "",
-                    TransactionDate = DateTime.Now.ToString(),
+                    TransactionDate = dtpf.Rows[0]["SettlementDate"].ToString(),
                     TransactionType = 31,
                     JournalType = 1,
                     TransType = "PF",
                     TransactionValue = Convert.ToDecimal(dtpf.Rows[0]["Total"].ToString()),
+                   
 
                     GLJournalDetails = new List<GLJournalDetailVM>
                     {
