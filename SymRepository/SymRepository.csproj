@@ -75,6 +75,7 @@
     <Compile Include="PF\EmployeePFRepo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PF\EmployeeTransferRepo.cs" />
     <Compile Include="PF\InvestmentAccruedRepo.cs" />
     <Compile Include="PF\LoanSattlementRepo.cs" />
     <Compile Include="PF\LoanRepaymentToBankRepo.cs" />

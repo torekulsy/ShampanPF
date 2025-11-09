@@ -35,76 +35,7 @@ namespace SymWebUI.Areas.PF.Controllers
             return View();
         }
 
-        //public ActionResult _index(JQueryDataTableParamModel param)
-        //{
-
-        //    #region Search and Filter Data
-        //    var getAllData = _repo.SelectAll();
-        //    IEnumerable<AutoJournalSetupVM> filteredData;
-        //    if (!string.IsNullOrEmpty(param.sSearch))
-        //    {
-        //        //Optionally check whether the columns are searchable at all 
-        //        var isSearchable1 = Convert.ToBoolean(Request["bSearchable_1"]);
-        //        var isSearchable2 = Convert.ToBoolean(Request["bSearchable_2"]);
-        //        var isSearchable3 = Convert.ToBoolean(Request["bSearchable_3"]);
-        //        var isSearchable4 = Convert.ToBoolean(Request["bSearchable_4"]);
-        //        var isSearchable5 = Convert.ToBoolean(Request["bSearchable_5"]);              
-        //        filteredData = getAllData
-        //            .Where(c =>
-        //                  isSearchable1 && c.JournalFor.ToLower().Contains(param.sSearch.ToLower())
-        //               || isSearchable2 && c.JournalName.ToLower().Contains(param.sSearch.ToLower())
-        //               || isSearchable3 && c.Nature.ToLower().Contains(param.sSearch.ToLower())
-        //               || isSearchable4 && c.COAName.ToString().ToLower().Contains(param.sSearch.ToLower())
-        //               || isSearchable5 && c.IsActive.ToString().ToLower().Contains(param.sSearch.ToLower())
-                     
-        //            );
-        //    }
-        //    else
-        //    {
-        //        filteredData = getAllData;
-        //    }
-
-        //    #endregion Search and Filter Data
-        //    var isSortable_1 = Convert.ToBoolean(Request["bSortable_1"]);
-        //    var isSortable_2 = Convert.ToBoolean(Request["bSortable_2"]);
-        //    var isSortable_3 = Convert.ToBoolean(Request["bSortable_3"]);
-        //    var isSortable_4 = Convert.ToBoolean(Request["bSortable_4"]);
-        //    var isSortable_5 = Convert.ToBoolean(Request["bSortable_5"]);
-         
-        //    var sortColumnIndex = Convert.ToInt32(Request["iSortCol_0"]);
-        //    Func<AutoJournalSetupVM, string> orderingFunction = (c =>
-        //        sortColumnIndex == 1 && isSortable_1 ? c.JournalFor :
-        //        sortColumnIndex == 2 && isSortable_2 ? c.JournalName :
-        //        sortColumnIndex == 3 && isSortable_3 ? c.Nature :
-        //        sortColumnIndex == 4 && isSortable_4 ? c.COAName.ToString() :
-        //        sortColumnIndex == 5 && isSortable_5 ? c.IsActive.ToString() :
-              
-        //        "");
-        //    var sortDirection = Request["sSortDir_0"]; // asc or desc
-        //    if (sortDirection == "asc")
-        //        filteredData = filteredData.OrderBy(orderingFunction);
-        //    else
-        //        filteredData = filteredData.OrderByDescending(orderingFunction);
-        //    var displayedCompanies = filteredData.Skip(param.iDisplayStart).Take(param.iDisplayLength);
-        //    var result = from c in displayedCompanies
-        //                 select new[] { 
-        //        Convert.ToString(c.Id)
-        //        , c.JournalFor
-        //        , c.JournalName
-        //        , c.Nature
-        //        , c.COAName.ToString()  
-        //        , c.IsActive ? "Yes" : "No"
-     
-        //    };
-        //    return Json(new
-        //    {
-        //        sEcho = param.sEcho,
-        //        iTotalRecords = getAllData.Count(),
-        //        iTotalDisplayRecords = filteredData.Count(),
-        //        aaData = result
-        //    },
-        //                JsonRequestBehavior.AllowGet);
-        //}
+       
 
         public ActionResult _index(JQueryDataTableParamModel param)
         {

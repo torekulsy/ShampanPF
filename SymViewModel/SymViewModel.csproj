@@ -279,6 +279,7 @@
     <Compile Include="PF\EmployeeInfoForPFVM.cs" />
     <Compile Include="PF\EmployeePFForfeitureVM.cs" />
     <Compile Include="PF\EmployeePFPaymentVM.cs" />
+    <Compile Include="PF\EmployeeTransferVM.cs" />
     <Compile Include="PF\EnumJournalEntryTypeVM.cs" />
     <Compile Include="PF\GFHeaderVM.cs" />
     <Compile Include="PF\GLJournalDetailVM.cs" />
@@ -348,7 +349,6 @@
     <Compile Include="HRM\EmployeePromotionVM.cs" />
     <Compile Include="HRM\EmployeeReferenceVM.cs" />
     <Compile Include="HRM\EmployeeTrainingVM.cs" />
-    <Compile Include="HRM\EmployeeTransferVM.cs" />
     <Compile Include="HRM\EmployeeTravelVM.cs" />
     <Compile Include="Leave\LeaveStructureDetailVM.cs" />
     <Compile Include="Leave\LeaveStructureVM.cs" />

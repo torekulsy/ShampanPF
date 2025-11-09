@@ -207,6 +207,9 @@ namespace SymViewModel.HRM
 
         public EmployeePFPaymentVM empPFPaymentVM { get; set; }
         public IEnumerable<EmployeePFPaymentVM> empPFPaymentVMs { get; set; }
+
+        public EmployeeTransferVM empPFForTransferVM { get; set; }
+        public IEnumerable<EmployeeTransferVM> empPFForTransferVMs { get; set; }
         #endregion PF
         #region GF
 

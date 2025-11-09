@@ -1,0 +1,92 @@
+﻿@using UIHelper.MVC
+@{
+    ViewBag.Title = "Index";
+}
+<div class="headrow">
+    <button type="button" title="Add New Employee Transfer"
+            data-url="/@ViewBag.TransType/EmployeeTransfer/SingleEmployeeTransferEdit?TransferId=&Operation=add"
+            onclick="GoTo(this)"
+            class="sym-btn-add">
+        &nbsp;New
+    </button>
+    <label class="pull-right">Employee Transfer</label>
+</div>
+
+<div class="thinbox">
+    <div id="container">
+        <table id="myDataTable" class="display">
+            <thead>
+                <tr>
+                    <th class="center">Actions</th>
+                    <th class="center">Code</th>
+                    <th class="center">Name</th>
+                    <th class="center">Employee Contribution</th>
+                    <th class="center">Employer Contribution</th>
+                    <th class="center">Employee Profit</th>
+                    <th class="center">Employer Profit</th>
+                    <th class="center">Date</th>
+                    <th class="center">Post</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <br />
+</div>
+
+<div class="headrow">
+    <button type="button" title="Add New Employee Transfer"
+            data-url="/@ViewBag.TransType/EmployeeTransfer/SingleEmployeeTransferEdit?TransferId=&Operation=add"
+            onclick="GoTo(this)"
+            class="sym-btn-add">
+        &nbsp;New
+    </button>
+</div>
+
+<script>
+    $(function () {
+        SelectAllForDelete();
+
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/@ViewBag.TransType/EmployeeTransfer/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                {
+                    "sName": "Id",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "sWidth": "15%",
+                    "sClass": "center",
+                    "fnRender": function (oObj) {
+                        if (oObj.aData[8] == "Posted") {
+                            return '  &nbsp;  <a title="Click to Edit" style="text-decoration:none;" onclick="transferEdit(this);" class="sym-btn-edit-row" data-Id="' + oObj.aData[0] + '"></a>'
+                                + '&nbsp; <a title="Click to Post" style="text-decoration:none;" data-url="/@ViewBag.TransType/EmployeeTransfer/MultiplePost" onclick="postedData(this, myDataTable,\'' + oObj.aData[0] + '\');" class="sym-btn-post-row"></a>'
+                                + '&nbsp; <a title="Click for Report" style="text-decoration:none;" href=\"/@ViewBag.TransType/EmployeeTransfer/reportView/' + oObj.aData[0] + '\" class="linkReport sym-btn-report-row"></a>';
+                        }
+                        else {
+                            return '  &nbsp;  <a title="Click to Edit" style="text-decoration:none;" onclick="transferEdit(this);" class="sym-btn-edit-row" data-Id="' + oObj.aData[0] + '"></a>'
+                                + '&nbsp; <a title="Click to Post" style="text-decoration:none;" data-url="/@ViewBag.TransType/EmployeeTransfer/MultiplePost" onclick="postedData(this, myDataTable,\'' + oObj.aData[0] + '\');" class="sym-btn-post-row"></a>'
+                                + '&nbsp; <a title="Click for Report" style="text-decoration:none;" href=\"/@ViewBag.TransType/EmployeeTransfer/reportView/' + oObj.aData[0] + '\" class="linkReport sym-btn-report-row"></a>';
+                        }
+                    }
+                },
+                { "sName": "Code", "sWidth": "10%" },
+                { "sName": "Name", "sWidth": "14%" },
+                { "sName": "EmployeeContribution", "sWidth": "10%", "sType": "numeric" },
+                { "sName": "EmployerContribution", "sWidth": "10%", "sType": "numeric" },
+                { "sName": "EmployeeProfit", "sWidth": "10%", "sType": "numeric" },
+                { "sName": "EmployerProfit", "sWidth": "10%", "sType": "numeric" },
+                { "sName": "OpeningDate", "sClass": "center", "sWidth": "10%" },
+                { "sName": "Post", "sClass": "right", "sWidth": "8%" }
+            ]
+        });
+    });
+
+    function transferEdit(sender) {
+        window.location = "/@ViewBag.TransType/EmployeeTransfer/SingleEmployeeTransferEdit?TransferId=" + $(sender).attr('data-Id');
+    }
+</script>

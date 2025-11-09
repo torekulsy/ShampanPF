@@ -116,6 +116,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PF\EmployeePFPaymentDAL.cs" />
+    <Compile Include="PF\EmployeeTransferDAL.cs" />
     <Compile Include="PF\InvestmentAccruedDAL.cs" />
     <Compile Include="PF\LoanDAL.cs" />
     <Compile Include="PF\COAGroupDAL.cs" />
