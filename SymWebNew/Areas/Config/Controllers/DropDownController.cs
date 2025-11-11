@@ -160,6 +160,11 @@ namespace SymWebUI.Areas.Config.Controllers
             // Return the SelectList as JSON result with support for HTTP GET requests
             return Json(reportTypes, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult Branch()
+        {
+            return Json(new SelectList(new EmployeeInfoRepo().Branch(), "Id", "Name"), JsonRequestBehavior.AllowGet);
+        }
        
         public JsonResult DropDownPeriodByYear()
         {

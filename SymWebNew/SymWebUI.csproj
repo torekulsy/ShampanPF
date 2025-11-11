@@ -4477,8 +4477,9 @@
     <Content Include="Areas\PF\Views\AutoJournalSetup\Index.cshtml" />
     <Content Include="Areas\PF\Views\PFReport\AllEmployeeReportVeiw.cshtml" />
     <Content Include="Areas\PF\Views\EmployeeTransfer\_detailCreate.cshtml" />
-    <Content Include="Areas\PF\Views\EmployeeTransfer\SingleEmployeeTransferEdit.cshtml" />
+    <Content Include="Areas\PF\Views\EmployeeTransfer\ImportEmployeePFTransfer.cshtml" />
     <Content Include="Areas\PF\Views\EmployeeTransfer\Index.cshtml" />
+    <Content Include="Areas\PF\Views\EmployeeTransfer\SingleEmployeePFTransferEdit.cshtml" />
     <None Include="Properties\PublishProfiles\PFEGCB.pubxml" />
     <None Include="Properties\PublishProfiles\SymphonyHRM_New.pubxml" />
     <Content Include="Views\Home\ForgotPasswordView.cshtml" />

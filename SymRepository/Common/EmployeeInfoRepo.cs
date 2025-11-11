@@ -2,6 +2,7 @@
 using SymViewModel.Attendance;
 using SymViewModel.HRM;
 using SymViewModel.Leave;
+using SymViewModel.PF;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,6 +17,17 @@ namespace SymRepository.Common
     {
         #region Methods
 
+        public List<BranchVM> Branch()
+        {
+            try
+            {
+                return new EmployeeDAL().Branch();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public List<EmployeeInfoVM> DropDown()
         {

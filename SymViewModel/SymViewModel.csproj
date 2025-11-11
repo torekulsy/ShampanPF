@@ -274,6 +274,7 @@
     <Compile Include="Payroll\SalaryStructureMatrixVM.cs" />
     <Compile Include="Payroll\TAX108AVM.cs" />
     <Compile Include="PF\AutoJournalSetupVM.cs" />
+    <Compile Include="PF\BranchVM.cs" />
     <Compile Include="PF\COAGroupVM.cs" />
     <Compile Include="PF\EmployeeBreakMonthPFVM.cs" />
     <Compile Include="PF\EmployeeInfoForPFVM.cs" />

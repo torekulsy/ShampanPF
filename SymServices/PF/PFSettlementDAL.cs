@@ -83,7 +83,7 @@ SELECT DISTINCT
 ,ve.ResignDate
 ";
                 sqlText += " FROM [dbo].ViewEmployeeInformation ve";
-                sqlText += @" WHERE  1=1 AND ve.IsActive = 0  
+                sqlText += @" WHERE  1=1 AND ve.IsActive = 0 and ResignReason!='Resignation'
 ";
                 sqlText += @" 
 AND ve.EmployeeId NOT IN (
