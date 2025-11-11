@@ -27,7 +27,7 @@ namespace SymWebUI.Areas.PF.Controllers
             ViewBag.TransType = AreaTypePFVM.TransType;
         }
 
-        EmployeePFOpeinigRepo _eaRepo = new EmployeePFOpeinigRepo();
+        EmployeeTransferRepo _eaRepo = new EmployeeTransferRepo();
         SymUserRoleRepo _reposur = new SymUserRoleRepo();
         ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
         //
@@ -62,9 +62,9 @@ namespace SymWebUI.Areas.PF.Controllers
 
             #endregion
             //ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
-            EmployeePFOpeinigRepo arerepo = new EmployeePFOpeinigRepo();
-            var getAllData = arerepo.SelectAll();
-            IEnumerable<EmployeePFOpeinigVM> filteredData;
+
+            var getAllData = _eaRepo.SelectAll();
+            IEnumerable<EmployeeTransferVM> filteredData;
             //Check whether the companies should be filtered by keyword
             if (!string.IsNullOrEmpty(param.sSearch))
             {
@@ -117,7 +117,7 @@ namespace SymWebUI.Areas.PF.Controllers
             var isSortable_7 = Convert.ToBoolean(Request["bSortable_7"]);
             var isSortable_8 = Convert.ToBoolean(Request["bSortable_8"]);
             var sortColumnIndex = Convert.ToInt32(Request["iSortCol_0"]);
-            Func<EmployeePFOpeinigVM, string> orderingFunction = (c =>
+            Func<EmployeeTransferVM, string> orderingFunction = (c =>
                 sortColumnIndex == 1 && isSortable_1 ? c.Code :
                 sortColumnIndex == 2 && isSortable_2 ? c.EmpName :
                 sortColumnIndex == 3 && isSortable_3 ? c.EmployeeContribution.ToString() :
@@ -164,17 +164,17 @@ namespace SymWebUI.Areas.PF.Controllers
             {
                 return Redirect("/PF/Home");
             }
-            EmployeePFOpeinigVM empPFOpeinigvm = new EmployeePFOpeinigVM();
+            EmployeeTransferVM empPFForTransferVM = new EmployeeTransferVM();
             if (!string.IsNullOrWhiteSpace(PFOpeinigId))
-                empPFOpeinigvm = _eaRepo.SelectById(PFOpeinigId);
+                empPFForTransferVM = _eaRepo.SelectById(PFOpeinigId);
             EmployeeInfoVM vm = new EmployeeInfoVM();
             EmployeeInfoRepo repo = new EmployeeInfoRepo();
-            if (!string.IsNullOrWhiteSpace(PFOpeinigId) && !string.IsNullOrWhiteSpace(empPFOpeinigvm.Id))
+            if (!string.IsNullOrWhiteSpace(PFOpeinigId) && !string.IsNullOrWhiteSpace(empPFForTransferVM.Id))
             {
-                vm = repo.SelectById(empPFOpeinigvm.EmployeeId);
+                vm = repo.SelectById(empPFForTransferVM.EmployeeId);
             }
-            vm.empPFOpeinigVM = empPFOpeinigvm;
-            Session["PFOpeinigId"] = empPFOpeinigvm.Id;
+            vm.empPFForTransferVM = empPFForTransferVM;
+            Session["PFOpeinigId"] = empPFForTransferVM.Id;
             return View(vm);
         }
 
@@ -189,22 +189,22 @@ namespace SymWebUI.Areas.PF.Controllers
             string EmployeeId = "";
             EmployeeInfoRepo repo = new EmployeeInfoRepo();
             //EmployeeOtherEarningRepo arerepo = new EmployeeOtherEarningRepo();
-            EmployeePFOpeinigVM PFOpeinigVM = new EmployeePFOpeinigVM();
+            EmployeeTransferVM empPFForTransferVM = new EmployeeTransferVM();
             EmployeeInfoVM vm = new EmployeeInfoVM();
             if (!string.IsNullOrEmpty(Session["PFOpeinigId"] as string) && Session["PFOpeinigId"] as string != "0")
             {
                 string PFOpeinigId = Session["PFOpeinigId"] as string;
-                PFOpeinigVM = _eaRepo.SelectById(PFOpeinigId);//find emp code
-                vm = repo.SelectById(PFOpeinigVM.EmployeeId);
-                vm.empPFOpeinigVM = PFOpeinigVM;
+                empPFForTransferVM = _eaRepo.SelectById(PFOpeinigId);//find emp code
+                vm = repo.SelectById(empPFForTransferVM.EmployeeId);
+                vm.empPFForTransferVM = empPFForTransferVM;
                 Session["PFOpeinigId"] = "";
                 // find exist earning date
             }
             else if (id != "0" && !string.IsNullOrWhiteSpace(id))
             {
-                PFOpeinigVM = _eaRepo.SelectById(id);//find emp code
-                vm = repo.SelectById(PFOpeinigVM.EmployeeId);
-                vm.empPFOpeinigVM = PFOpeinigVM;
+                empPFForTransferVM = _eaRepo.SelectById(id);//find emp code
+                vm = repo.SelectById(empPFForTransferVM.EmployeeId);
+                vm.empPFForTransferVM = empPFForTransferVM;
                 // find exist earning date
             }
             else
@@ -213,7 +213,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
                 if (!string.IsNullOrWhiteSpace(vm.EmployeeId))
                 {
-                    PFOpeinigVM = _eaRepo.SelectById("", vm.EmployeeId);
+                    empPFForTransferVM = _eaRepo.SelectById("", vm.EmployeeId);
                 }
 
                 if (vm.EmpName == null)
@@ -226,8 +226,8 @@ namespace SymWebUI.Areas.PF.Controllers
                 }
 
                 //svms = arerepo.SingleEmployeeEntry(EmployeeId, FiscalYearDetailId);
-                vm.empPFOpeinigVM = PFOpeinigVM;
-                vm.empPFOpeinigVM.EmployeeId = EmployeeId;
+                vm.empPFForTransferVM = empPFForTransferVM;
+                vm.empPFForTransferVM.EmployeeId = EmployeeId;
             }
             return PartialView("_detailCreate", vm);
         }
@@ -235,25 +235,19 @@ namespace SymWebUI.Areas.PF.Controllers
         [HttpPost]
         public ActionResult Create(EmployeeInfoVM empVM)
         {
-            EmployeePFOpeinigVM vm = new EmployeePFOpeinigVM();
+            EmployeeTransferVM vm = new EmployeeTransferVM();
             string[] result = new string[6];
             try
             {
                 //ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
-                vm = empVM.empPFOpeinigVM;
+                vm = empVM.empPFForTransferVM;
                 vm.CreatedAt = DateTime.Now.ToString("yyyyMMddHHmmss");
                 vm.CreatedBy = identity.Name;
                 vm.CreatedFrom = identity.WorkStationIP;
 
                 result = _eaRepo.Insert(vm);
 
-                return Json(result[0] + "~" + result[1] + "~" + result[2], JsonRequestBehavior.AllowGet);
-
-                ////Session["result"] = result[0] + "~" + result[1];
-
-                ////return Redirect("/PF/EmployeePFOpeinig/SingleEmployeePFOpeinigEdit?PFOpeinigId=" + result[2].ToString());
-
-                //return RedirectToAction("SingleEmployeePFOpeinigEdit", result[2]);
+                return Json(result[0] + "~" + result[1] + "~" + result[2], JsonRequestBehavior.AllowGet);            
 
             }
             catch (Exception)
@@ -265,71 +259,25 @@ namespace SymWebUI.Areas.PF.Controllers
         [HttpPost]
         public ActionResult Update(EmployeeInfoVM empVM)
         {
-            EmployeePFOpeinigVM vm = new EmployeePFOpeinigVM();
+            EmployeeTransferVM vm = new EmployeeTransferVM();
             string[] result = new string[6];
             try
             {
                 //ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
-                vm = empVM.empPFOpeinigVM;
+                vm = empVM.empPFForTransferVM;
                 vm.LastUpdateAt = DateTime.Now.ToString("yyyyMMddHHmmss");
                 vm.LastUpdateBy = identity.Name;
                 vm.LastUpdateFrom = identity.WorkStationIP;
                 //vm.FiscalYearDetailId = empVM.FiscalYearDetailId;
 
                 result = _eaRepo.Update(vm);
-                ////if (result[0].ToLower() == "success" && btn.ToLower() != "save")
-                ////{
-                ////    result[1] = "Data Deleted Successfully";
-                ////}
+            
                 return Json(result[0] + "~" + result[1], JsonRequestBehavior.AllowGet);
             }
             catch (Exception)
             {
                 return Json(result[0] + "~" + result[1], JsonRequestBehavior.AllowGet);
             }
-        }
-
-        [HttpPost]
-        public ActionResult Post(EmployeeInfoVM empVM)
-        {
-            EmployeePFOpeinigVM vm = new EmployeePFOpeinigVM();
-            string[] result = new string[6];
-            try
-            {
-                vm = empVM.empPFOpeinigVM;
-                vm.LastUpdateAt = DateTime.Now.ToString("yyyyMMddHHmmss");
-                vm.LastUpdateBy = identity.Name;
-                vm.LastUpdateFrom = identity.WorkStationIP;
-
-                result = _eaRepo.Post(vm);
-
-                return Json(result[0] + "~" + result[1], JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception)
-            {
-                return Json(result[0] + "~" + result[1], JsonRequestBehavior.AllowGet);
-            }
-        }
-
-
-        public ActionResult MultiplePost(string ids)
-        {
-            var permission = _reposur.SymRoleSession(identity.UserId, "1_38", "delete").ToString();
-            Session["permission"] = permission;
-            if (permission == "False")
-            {
-                return Redirect("/Payroll/Home");
-            }
-            string[] result = new string[6];
-
-            EmployeePFOpeinigVM EarningVM = new EmployeePFOpeinigVM();
-
-            EarningVM.LastUpdateAt = DateTime.Now.ToString("yyyyMMddHHmmss");
-            EarningVM.LastUpdateBy = identity.Name;
-            EarningVM.LastUpdateFrom = identity.WorkStationIP;
-            string[] a = ids.Split('~');
-            result = _eaRepo.MultiplePost(EarningVM, a);
-            return Json(result[1], JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ImportEmployeePFOpeinig()
@@ -341,171 +289,6 @@ namespace SymWebUI.Areas.PF.Controllers
                 return Redirect("/PF/Home");
             }
             return View();
-        }
-
-        public ActionResult ImportExcel(HttpPostedFileBase file)
-        {
-            string[] result = new string[6];
-            try
-            {
-                var permission = _reposur.SymRoleSession(identity.UserId, "1_38", "add").ToString();
-                Session["permission"] = permission;
-                if (permission == "False")
-                {
-                    return Redirect("/PF/Home");
-                }
-                string fullPath = AppDomain.CurrentDomain.BaseDirectory + "Files\\Export\\" + file.FileName;
-                if (System.IO.File.Exists(fullPath))
-                {
-                    System.IO.File.Delete(fullPath);
-                }
-                if (file != null && file.ContentLength > 0)
-                {
-                    file.SaveAs(fullPath);
-                }
-                ShampanIdentityVM vm = new ShampanIdentityVM();
-                vm.LastUpdateAt = DateTime.Now.ToString("yyyyMMddHHmmss");
-                vm.LastUpdateBy = identity.Name;
-                vm.LastUpdateFrom = identity.WorkStationIP;
-                vm.CreatedAt = DateTime.Now.ToString("yyyyMMddHHmmss");
-                vm.CreatedBy = identity.Name;
-                vm.CreatedFrom = identity.WorkStationIP;
-                result = _eaRepo.ImportExcelFile(fullPath, file.FileName, vm);
-                Session["result"] = result[0] + "~" + result[1];
-                return RedirectToAction("ImportEmployeePFOpeinig");
-                //return RedirectToAction("OpeningBalance");
-            }
-            catch (Exception)
-            {
-                Session["result"] = result[0] + "~" + result[1];
-                FileLogger.Log(result[0].ToString() + Environment.NewLine + result[2].ToString() + Environment.NewLine + result[5].ToString(), this.GetType().Name, result[4].ToString() + Environment.NewLine + result[3].ToString());
-                return RedirectToAction("ImportEmployeePFOpeinig");
-            }
-        }
-
-        public ActionResult DownloadExcel_Employee(string ProjectId, string DepartmentId, string SectionId, string DesignationId, string CodeF, string CodeT
-            , string Orderby = null)
-        {
-            DataTable dt = new DataTable();
-            string[] result = new string[6];
-            try
-            {
-                EmployeePFOpeinigVM vm = new EmployeePFOpeinigVM();
-
-                var permission = _reposur.SymRoleSession(identity.UserId, "1_38", "add").ToString();
-                Session["permission"] = permission;
-                if (permission == "False")
-                {
-                    return Redirect("/PF/Home");
-                }
-                string FileName = "Download.xls";
-                string fullPath = AppDomain.CurrentDomain.BaseDirectory + "Files\\Export\\";
-                string contentType = MimeMapping.GetMimeMapping(fullPath);
-                //string fullPath = @"C:\";
-                if (System.IO.File.Exists(fullPath + FileName))
-                {
-                    System.IO.File.Delete(fullPath + FileName);
-                }
-
-                vm.DesignationId = DesignationId;
-                vm.DepartmentId = DepartmentId;
-                vm.SectionId = SectionId;
-                vm.ProjectId = ProjectId;
-                vm.Orderby = Orderby;
-                vm.Code = CodeF;
-                vm.CodeT = CodeT;
-                vm.BranchId = Session["BranchId"].ToString();
-
-                dt = _eaRepo.ExportExcelFileFormEmployee(vm, fullPath, FileName);
-                //exp(dt);
-                ExcelPackage excel = new ExcelPackage();
-                var workSheet = excel.Workbook.Worksheets.Add("Sheet1");
-                workSheet.Cells[1, 1].LoadFromDataTable(dt, true);
-
-                string filename = "EmployeePFOpening" + "-" + DateTime.Now.ToString("yyyyMMdd");
-                using (var memoryStream = new MemoryStream())
-                {
-                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                    Response.AddHeader("content-disposition", "attachment;  filename=" + filename + ".xlsx");
-                    excel.SaveAs(memoryStream);
-                    memoryStream.WriteTo(Response.OutputStream);
-                    Response.Flush();
-                    Response.End();
-                }
-                result[0] = "Successfull";
-                result[1] = "Successful~Data Download";
-                Session["result"] = result[0] + "~" + result[1];
-                return RedirectToAction("ImportEmployeePFOpeinig");
-            }
-            catch (Exception)
-            {
-                Session["result"] = result[0] + "~" + result[1];
-                FileLogger.Log(result[0].ToString() + Environment.NewLine + result[2].ToString() + Environment.NewLine + result[5].ToString(), this.GetType().Name, result[4].ToString() + Environment.NewLine + result[3].ToString());
-                return RedirectToAction("ImportEmployeePFOpeinig");
-            }
-        }
-
-
-        public ActionResult DownloadExcel_Opening(string ProjectId, string DepartmentId, string SectionId, string DesignationId, string CodeF, string CodeT
-          , string Orderby = null)
-        {
-            DataTable dt = new DataTable();
-            string[] result = new string[6];
-            try
-            {
-                EmployeePFOpeinigVM vm = new EmployeePFOpeinigVM();
-
-                var permission = _reposur.SymRoleSession(identity.UserId, "1_38", "add").ToString();
-                Session["permission"] = permission;
-                if (permission == "False")
-                {
-                    return Redirect("/PF/Home");
-                }
-                string FileName = "Download.xls";
-                string fullPath = AppDomain.CurrentDomain.BaseDirectory + "Files\\Export\\";
-                string contentType = MimeMapping.GetMimeMapping(fullPath);
-                //string fullPath = @"C:\";
-                if (System.IO.File.Exists(fullPath + FileName))
-                {
-                    System.IO.File.Delete(fullPath + FileName);
-                }
-
-                vm.DesignationId = DesignationId;
-                vm.DepartmentId = DepartmentId;
-                vm.SectionId = SectionId;
-                vm.ProjectId = ProjectId;
-                vm.Orderby = Orderby;
-                vm.Code = CodeF;
-                vm.CodeT = CodeT;
-                vm.BranchId = Session["BranchId"].ToString();
-
-                dt = _eaRepo.ExportExcelFileFormPFOpening(vm, fullPath, FileName);
-                //exp(dt);
-                ExcelPackage excel = new ExcelPackage();
-                var workSheet = excel.Workbook.Worksheets.Add("Sheet1");
-                workSheet.Cells[1, 1].LoadFromDataTable(dt, true);
-
-                string filename = "EmployeePFOpening" + "-" + DateTime.Now.ToString("yyyyMMdd");
-                using (var memoryStream = new MemoryStream())
-                {
-                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                    Response.AddHeader("content-disposition", "attachment;  filename=" + filename + ".xlsx");
-                    excel.SaveAs(memoryStream);
-                    memoryStream.WriteTo(Response.OutputStream);
-                    Response.Flush();
-                    Response.End();
-                }
-                result[0] = "Successfull";
-                result[1] = "Successful~Data Download";
-                Session["result"] = result[0] + "~" + result[1];
-                return RedirectToAction("ImportEmployeePFOpeinig");
-            }
-            catch (Exception)
-            {
-                Session["result"] = result[0] + "~" + result[1];
-                FileLogger.Log(result[0].ToString() + Environment.NewLine + result[2].ToString() + Environment.NewLine + result[5].ToString(), this.GetType().Name, result[4].ToString() + Environment.NewLine + result[3].ToString());
-                return RedirectToAction("ImportEmployeePFOpeinig");
-            }
         }
 
     }

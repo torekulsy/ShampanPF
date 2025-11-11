@@ -25,32 +25,7 @@
                     </div>
                 }
                 <div class="input-group   col-lg-6  col-md-6  col-sm-12 col-xs-12 text-color" style="">
-                    @*<div class="row">
-                        <div class="col-sm-6 col-md-6">
-                            <div class="col-md-4">
-                                <div class="editor-label">
-                                    <label>Year</label>
-                                </div>
-                                <div class="editor-field">
-                                    <div>@Html.TextBox("fYear", @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="editor-label">
-                                    <label>Fiscal Period</label>
-                                </div>
-                                <div class="editor-field">
-                                    <div>
-                                        @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByYearLockPayroll?year=" + @Session["SessionYear"].ToString(), new { @id = "FiscalYearDetailId", @placeholder = "Fiscal Period", @class = "fpDetailsCom required form-control pull-left" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-6">
-                            <label>Earning Type</label>
-                            @Html.SimpleDropDownFor(model => model.EmployeeOtherEarningVM.EarningTypeId, "/Config/DropDown/EarningTypeDropDown", new { @class = " eType required form-control" })
-                        </div>
-                    </div>*@
+                 
                 </div>
             </div>
         </div>
@@ -61,38 +36,31 @@
 </div>
 
 <script>
-        //setTimeout(function () { otHide(); },200);
-
+      
         $(function () {
 
             InitDropDowns();
             InitDropdownsCommon();
 
-
         });
         $(function () {
 
             $('#empId').autocomplete({ source: '@Url.Action("EmployeeCodeAll", "Autocomplete", new { area = "Config" })', minLength: 2 });
-        $.get('@Url.Action("DetailCreate", "EmployeeTransfer", new { id = Model.empPFOpeinigVM.Id })', function (data) {
+        $.get('@Url.Action("DetailCreate", "EmployeeTransfer", new { id = Model.empPFForTransferVM.Id })', function (data) {
             $('#detailsDiv').html(data);
-            //otHide();
+        
         });
     });
 
         $('.eType').change(function () {
             var btn = 'current';
-            //setTimeout(function () { otHide(); }, 200);
+          
             Searching(btn);
         });
 
         $('.eType').click(function () {
-            //setTimeout(function () { otHide(); }, 200);
+          
         });
-
-        //$('#FiscalYearDetailId').change(function () {
-        //    var btn = 'current';
-        //    Searching(btn);
-        //});
 
         $('#current').click(function () {
             var empId = $('#empId').val();
@@ -125,34 +93,20 @@
         function Searching(btn) {
             var empid = $('.selectDropdown  :selected').text();
           empid=  empid.split('~')[0];
-
-            //alert(empid);
-            //var eTypeName = $('.eType').val();
-            //var EarningTypeId = $('.eType').val();
-            //var FiscalYearDetailId = $('#FiscalYearDetailId').val();
-
-
-            //if (FiscalYearDetailId == "") {
-            //    ShowResult("Fail", "Please Select Fiscal Year!");
-            //    return;
-            //}
-
-            //if (EarningTypeId == "" || EarningTypeId == 0) {
-            //    ShowResult("Fail", "Please Select Earning Type!");
-            //    return;
-            //}
-
-          url = "/@ViewBag.TransType/EmployeeTransfer/DetailCreate?empcode=" + empid + '&btn=' + btn + '&id=' + '@Model.empPFOpeinigVM.Id';
+                    
+          url = "/@ViewBag.TransType/EmployeeTransfer/DetailCreate?empcode=" + empid + '&btn=' + btn + '&id=' + '@Model.empPFForTransferVM.Id';
             $.ajax({
                 url: url,
                 type: 'GET',
                 beforeSend: function () { $(".loading").show(); },
                 complete: function () { $(".loading").fadeOut(200).hide("slow") },
                 success: function (data) {
-                    $('#detailsDiv').html(data);
-                    ////otHide();
+                    $('#detailsDiv').html(data);                 
                 },
+
             });
+
+          
         }
     $(document).ready(function () {
         $('#afrmEmployeeEdit').on('click', 'input[type="text"], textarea.NumberCheck', function () {

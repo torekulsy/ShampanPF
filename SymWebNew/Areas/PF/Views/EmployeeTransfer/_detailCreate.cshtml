@@ -150,23 +150,14 @@
     }
 
     $('#SaveJSON').click(function () {
-
-        var PFOpeningValue = $('.cPFOpeningValue').val();
-        var OpeningDate = $('.cOpeningDate').val();
+        debugger;
 
         var Code = $('#Code').val();
         if (Code == "") {
             ShowResult("Fail", "Please Select Code!");
             return;
         }
-        if (PFOpeningValue == "" || PFOpeningValue == "0" || PFOpeningValue == "0.0" || PFOpeningValue == "0.00") {
-            ShowResult("Fail", "Please Enter PF Opening Value!");
-            return;
-        }
-        if (OpeningDate == "") {
-            ShowResult("Fail", "Please Select Opening Date!");
-            return;
-        }
+    
         var myData = $('#afrmEmployeeEdit').serialize();
         var url = "/@ViewBag.TransType/EmployeePFTransfer/Create";
         //submit(url, myData);

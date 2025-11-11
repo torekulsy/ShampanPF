@@ -5,6 +5,7 @@ using SymViewModel.Common;
 using SymViewModel.HRM;
 using SymViewModel.Leave;
 using SymViewModel.Payroll;
+using SymViewModel.PF;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -2248,6 +2249,12 @@ Where 1=1 and IsArchive=0 And IsActive=1
                     gmployeeInfoVM.BasicSalary = Convert.ToDecimal(dr["BasicSalary"].ToString());
                     gmployeeInfoVM.Project = dr["Project"].ToString();
                     gmployeeInfoVM.JoinDate = Ordinary.StringToDate(dr["JoinDate"].ToString());
+
+                    if (gmployeeInfoVM.empPFForTransferVM == null)
+                    {
+                        gmployeeInfoVM.empPFForTransferVM = new EmployeeTransferVM(); 
+                    }
+                    gmployeeInfoVM.empPFForTransferVM.FromBranch = gmployeeInfoVM.BranchId;
 
                 }
                 dr.Close();
