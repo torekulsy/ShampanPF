@@ -55,11 +55,11 @@ namespace SymWebUI.Areas.PF.Controllers
             #region Column Search
             var idFilter = Convert.ToString(Request["sSearch_0"]);
             var codeFilter = Convert.ToString(Request["sSearch_1"]);
-            var EmployeeNameFilter = Convert.ToString(Request["sSearch_2"]);
-            var OpeningValueFilter = Convert.ToString(Request["sSearch_3"]);
-            var OpeningDateFilter = Convert.ToString(Request["sSearch_4"]);
-            var PostFilter = Convert.ToString(Request["sSearch_5"]);
-
+            var EmpName = Convert.ToString(Request["sSearch_2"]);
+            var FromBranchFilter = Convert.ToString(Request["sSearch_3"]);
+            var ToBranchFilter = Convert.ToString(Request["sSearch_4"]);
+            var TransferDateFilter = Convert.ToString(Request["sSearch_5"]);
+        
             #endregion
             //ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
 
@@ -73,19 +73,13 @@ namespace SymWebUI.Areas.PF.Controllers
                 var isSearchable2 = Convert.ToBoolean(Request["bSearchable_2"]);
                 var isSearchable3 = Convert.ToBoolean(Request["bSearchable_3"]);
                 var isSearchable4 = Convert.ToBoolean(Request["bSearchable_4"]);
-                var isSearchable5 = Convert.ToBoolean(Request["bSearchable_5"]);
-                var isSearchable6 = Convert.ToBoolean(Request["bSearchable_6"]);
-                var isSearchable7 = Convert.ToBoolean(Request["bSearchable_7"]);
-                var isSearchable8 = Convert.ToBoolean(Request["bSearchable_8"]);
+                var isSearchable5 = Convert.ToBoolean(Request["bSearchable_5"]);             
                 filteredData = getAllData.Where(c =>
                        isSearchable1 && c.Code.ToLower().Contains(param.sSearch.ToLower())
                     || isSearchable2 && c.EmpName.ToString().ToLower().Contains(param.sSearch.ToLower())
-                    || isSearchable3 && c.EmployeeContribution.ToString().ToLower().Contains(param.sSearch.ToLower())
-                    || isSearchable4 && c.EmployerContribution.ToString().ToLower().Contains(param.sSearch.ToLower())
-                    || isSearchable5 && c.EmployeeProfit.ToString().ToLower().Contains(param.sSearch.ToLower())
-                    || isSearchable6 && c.EmployerProfit.ToString().ToLower().Contains(param.sSearch.ToLower())
-                    || isSearchable7 && c.OpeningDate.ToString().ToLower().Contains(param.sSearch.ToLower())
-                    || isSearchable8 && c.Post.ToString().ToLower().Contains(param.sSearch.ToLower())
+                    || isSearchable3 && c.FromBranch.ToString().ToLower().Contains(param.sSearch.ToLower())
+                    || isSearchable4 && c.ToBranch.ToString().ToLower().Contains(param.sSearch.ToLower())
+                    || isSearchable5 && c.TransferDate.ToString().ToLower().Contains(param.sSearch.ToLower())                  
                 );
             }
             else
@@ -93,39 +87,30 @@ namespace SymWebUI.Areas.PF.Controllers
                 filteredData = getAllData;
             }
             #region Column Filtering
-            if (codeFilter != "" || EmployeeNameFilter != "" || OpeningValueFilter != "" || OpeningDateFilter != "" || PostFilter != "")
+            if (codeFilter != "" || EmpName != "" || FromBranchFilter != "" || ToBranchFilter != "" || TransferDateFilter != "")
             {
                 filteredData = filteredData.Where(c =>
                     (codeFilter == "" || c.Code.ToLower().Contains(codeFilter.ToLower()))
-                    && (EmployeeNameFilter == "" || c.EmpName.ToLower().Contains(EmployeeNameFilter.ToLower()))
-                    && (OpeningValueFilter == "" || c.EmployeeContribution.ToString().Contains(OpeningValueFilter.ToLower()))
-                    && (OpeningValueFilter == "" || c.EmployerContribution.ToString().Contains(OpeningValueFilter.ToLower()))
-                    && (OpeningValueFilter == "" || c.EmployeeProfit.ToString().Contains(OpeningValueFilter.ToLower()))
-                    && (OpeningValueFilter == "" || c.EmployerProfit.ToString().Contains(OpeningValueFilter.ToLower()))
-                    && (OpeningDateFilter == "" || c.OpeningDate.ToLower().Contains(OpeningDateFilter.ToLower()))
-                    //&& (PostFilter == "" || c.Post.ToLower().Contains(PostFilter.ToLower()))
-
+                    && (EmpName == "" || c.EmpName.ToLower().Contains(EmpName.ToLower()))
+                    && (FromBranchFilter == "" || c.FromBranch.ToString().Contains(FromBranchFilter.ToLower()))
+                    && (ToBranchFilter == "" || c.ToBranch.ToString().Contains(ToBranchFilter.ToLower()))
+                    && (TransferDateFilter == "" || c.TransferDate.ToString().Contains(TransferDateFilter.ToLower()))                 
                     );
             }
             #endregion Column Filtering
+
             var isSortable_1 = Convert.ToBoolean(Request["bSortable_1"]);
             var isSortable_2 = Convert.ToBoolean(Request["bSortable_2"]);
             var isSortable_3 = Convert.ToBoolean(Request["bSortable_3"]);
             var isSortable_4 = Convert.ToBoolean(Request["bSortable_4"]);
             var isSortable_5 = Convert.ToBoolean(Request["bSortable_5"]);
-            var isSortable_6 = Convert.ToBoolean(Request["bSortable_6"]);
-            var isSortable_7 = Convert.ToBoolean(Request["bSortable_7"]);
-            var isSortable_8 = Convert.ToBoolean(Request["bSortable_8"]);
             var sortColumnIndex = Convert.ToInt32(Request["iSortCol_0"]);
             Func<EmployeeTransferVM, string> orderingFunction = (c =>
                 sortColumnIndex == 1 && isSortable_1 ? c.Code :
                 sortColumnIndex == 2 && isSortable_2 ? c.EmpName :
-                sortColumnIndex == 3 && isSortable_3 ? c.EmployeeContribution.ToString() :
-                sortColumnIndex == 4 && isSortable_4 ? c.EmployerContribution.ToString() :
-                sortColumnIndex == 5 && isSortable_5 ? c.EmployeeProfit.ToString() :
-                sortColumnIndex == 6 && isSortable_6 ? c.EmployerProfit.ToString() :
-                sortColumnIndex == 7 && isSortable_7 ? c.OpeningDate.ToString() :
-                sortColumnIndex == 8 && isSortable_8 ? c.Post.ToString() :
+                sortColumnIndex == 3 && isSortable_3 ? c.FromBranch.ToString() :
+                sortColumnIndex == 4 && isSortable_4 ? c.ToBranch.ToString() :
+                sortColumnIndex == 5 && isSortable_5 ? c.TransferDate.ToString() :
                 "");
             var sortDirection = Request["sSortDir_0"]; // asc or desc
             if (sortDirection == "asc")
@@ -139,13 +124,11 @@ namespace SymWebUI.Areas.PF.Controllers
                              Convert.ToString(c.Id)
                              ,c.Code
                              , c.EmpName
-                             , c.EmployeeContribution.ToString() 
-                             , c.EmployerContribution.ToString() 
-                             , c.EmployeeProfit.ToString() 
-                             , c.EmployerProfit.ToString() 
-                             , c.OpeningDate.ToString()
-                             , c.Post==true ? "Posted" : "Not Posted"
+                             , c.FromBranch.ToString() 
+                             , c.ToBranch.ToString() 
+                             , c.TransferDate.ToString()                          
                          };
+
             return Json(new
             {
                 sEcho = param.sEcho,
@@ -244,6 +227,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 vm.CreatedAt = DateTime.Now.ToString("yyyyMMddHHmmss");
                 vm.CreatedBy = identity.Name;
                 vm.CreatedFrom = identity.WorkStationIP;
+                vm.Code = empVM.Code;
 
                 result = _eaRepo.Insert(vm);
 

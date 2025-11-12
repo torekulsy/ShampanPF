@@ -2254,7 +2254,7 @@ Where 1=1 and IsArchive=0 And IsActive=1
                     {
                         gmployeeInfoVM.empPFForTransferVM = new EmployeeTransferVM(); 
                     }
-                    gmployeeInfoVM.empPFForTransferVM.FromBranch = gmployeeInfoVM.BranchId;
+                    gmployeeInfoVM.empPFForTransferVM.FromBranch = gmployeeInfoVM.BranchId.ToString();
 
                 }
                 dr.Close();

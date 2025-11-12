@@ -60,9 +60,9 @@ namespace SymViewModel.PF
 
         //mine
         [Display(Name = "From Branch")]
-        public int FromBranch { get; set; }
+        public string FromBranch { get; set; }
         [Display(Name = "To Branch")]
-        public int ToBranch { get; set; }
+        public string ToBranch { get; set; }
         [Display(Name = "Transfer Date")]
         public string TransferDate { get; set; }
         [Display(Name = "Transfer Reason")]

@@ -62,111 +62,36 @@ namespace SymServices.PF
                 #endregion
 
                 #region sql statement
-                #region sqlText
+             
                 sqlText = @"
-SELECT
- pfo.Id
-,pfo.EmployeeId
-,e.EmpName
-,e.Code
-,e.Designation
-,e.Department, e.JoinDate, e.Section, e.Project, e.GrossSalary, e.BasicSalary
-,isnull(pfo.EmployeeContribution,0)       EmployeeContribution
-,isnull(pfo.EmployerContribution,0)       EmployerContribution
-,isnull(pfo.EmployeeProfit      ,0)       EmployeeProfit
-,isnull(pfo.EmployerProfit      ,0)       EmployerProfit
-,pfo.OpeningDate
-,pfo.Post
-,pfo.Remarks
-,pfo.IsActive
-,pfo.IsArchive
-,pfo.CreatedBy
-,pfo.CreatedAt
-,pfo.CreatedFrom
-,pfo.LastUpdateBy
-,pfo.LastUpdateAt
-,pfo.LastUpdateFrom
-From EmployeeForfeiture pfo
-";
-                sqlText += " left outer join ViewEmployeeInformation e on pfo.EmployeeId=e.EmployeeId";
-                sqlText += " Where 1=1 and  pfo.IsArchive=0 and  pfo.IsActive=1";
-                #endregion
-
-                if (!string.IsNullOrEmpty(empid))
-                {
-                    sqlText += @" and pfo.EmployeeId=@EmployeeId ";
-                }
-
-                string cField = "";
-                if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
-                {
-                    for (int i = 0; i < conditionFields.Length; i++)
-                    {
-                        if (string.IsNullOrWhiteSpace(conditionFields[i]) || string.IsNullOrWhiteSpace(conditionValues[i]))
-                        {
-                            continue;
-                        }
-                        cField = conditionFields[i].ToString();
-                        cField = Ordinary.StringReplacing(cField);
-                        sqlText += " AND " + conditionFields[i] + "=@" + cField;
-                    }
-                }
-
-                sqlText += @" ORDER BY pfo.EmployeeId";
+               SELECT et.Id
+                       ,[EmployeeCode]
+	                   ,ve.EmpName
+                      ,b.Name [FromBranch]
+                      ,b2.Name [ToBranch]
+                      ,[TransferDate]    
+                  FROM EmployeeTransfer et 
+                  Left Join ViewEmployeeInformation ve on ve.Code=et.EmployeeCode
+                  Left Join Branch b on b.Id=et.FromBranch  
+                  Left Join Branch b2 on b2.Id=et.ToBranch
+                ";             
+             
                 #endregion
 
                 #region SqlExecution
-                SqlCommand objComm = new SqlCommand(sqlText, currConn, transaction);
-                if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
-                {
-                    for (int j = 0; j < conditionFields.Length; j++)
-                    {
-                        if (string.IsNullOrWhiteSpace(conditionFields[j]) || string.IsNullOrWhiteSpace(conditionValues[j]))
-                        {
-                            continue;
-                        }
-                        cField = conditionFields[j].ToString();
-                        cField = Ordinary.StringReplacing(cField);
-                        objComm.Parameters.AddWithValue("@" + cField, conditionValues[j]);
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(empid))
-                {
-                    objComm.Parameters.AddWithValue("@EmployeeId", empid);
-                }
-
+                SqlCommand objComm = new SqlCommand(sqlText, currConn, transaction);                
                 SqlDataReader dr;
                 dr = objComm.ExecuteReader();
                 while (dr.Read())
                 {
                     vm = new EmployeeTransferVM();
                     vm.Id = (dr["Id"]).ToString();
-                    vm.EmployeeId = dr["EmployeeId"].ToString();
-                    vm.EmployeeContribution = Convert.ToDecimal(dr["EmployeeContribution"]);
-                    vm.EmployerContribution = Convert.ToDecimal(dr["EmployerContribution"]);
-                    vm.EmployeeProfit = Convert.ToDecimal(dr["EmployeeProfit"]);
-                    vm.EmployerProfit = Convert.ToDecimal(dr["EmployerProfit"]);
-                    vm.OpeningDate = Ordinary.StringToDate(dr["OpeningDate"].ToString());
-                    vm.Post = Convert.ToBoolean(dr["Post"]);
-                    vm.IsActive = Convert.ToBoolean(dr["IsActive"]);
-                    vm.Remarks = dr["Remarks"].ToString();
-                    vm.CreatedAt = Ordinary.StringToDate(dr["CreatedAt"].ToString());
-                    vm.CreatedBy = dr["CreatedBy"].ToString();
-                    vm.CreatedFrom = dr["CreatedFrom"].ToString();
-                    vm.LastUpdateAt = Ordinary.StringToDate(dr["LastUpdateAt"].ToString());
-                    vm.LastUpdateBy = dr["LastUpdateBy"].ToString();
-                    vm.LastUpdateFrom = dr["LastUpdateFrom"].ToString();
+                    vm.Code = dr["EmployeeCode"].ToString();
                     vm.EmpName = dr["EmpName"].ToString();
-                    vm.Code = dr["Code"].ToString();
-                    vm.Designation = dr["Designation"].ToString();
-                    vm.Department = dr["Department"].ToString();
-                    vm.JoinDate = Ordinary.StringToDate(dr["JoinDate"].ToString());
-                    vm.Section = dr["Section"].ToString();
-                    vm.Project = dr["Project"].ToString();
-                    vm.GrossSalary = Convert.ToDecimal(dr["GrossSalary"]);
-                    vm.BasicSalary = Convert.ToDecimal(dr["BasicSalary"]);
-
+                    vm.FromBranch = dr["FromBranch"].ToString();
+                    vm.ToBranch = dr["ToBranch"].ToString();
+                    vm.TransferDate = Ordinary.StringToDate(dr["TransferDate"].ToString());
+                   
                     vms.Add(vm);
                 }
                 dr.Close();
@@ -354,6 +279,7 @@ From EmployeeForfeiture pfo
         {
             #region Variables
             SqlConnection currConn = null;
+            SqlTransaction transaction = null;
             string sqlText = "";
             EmployeeTransferVM vm = new EmployeeTransferVM();
             #endregion
@@ -366,91 +292,36 @@ From EmployeeForfeiture pfo
                 {
                     currConn.Open();
                 }
+                if (transaction == null)
+                {
+                    transaction = currConn.BeginTransaction("");
+                }
                 #endregion
 
                 #region sql statement
                 sqlText = @"
-SELECT
- pfo.Id
-,pfo.EmployeeId
-,e.EmpName
-,e.Code
-,e.Designation
-,e.Department, e.JoinDate, e.Section, e.Project, e.GrossSalary, e.BasicSalary
-,isnull(pfo.EmployeeContribution,0)EmployeeContribution
-,isnull(pfo.EmployerContribution,0)EmployerContribution
-,isnull(pfo.EmployeeProfit      ,0)EmployeeProfit
-,isnull(pfo.EmployerProfit      ,0)EmployerProfit
-,pfo.OpeningDate
-,pfo.Post
-,pfo.Remarks
-,pfo.IsActive
-,pfo.IsArchive
-,pfo.CreatedBy
-,pfo.CreatedAt
-,pfo.CreatedFrom
-,pfo.LastUpdateBy
-,pfo.LastUpdateAt
-,pfo.LastUpdateFrom
-From EmployeeForfeiture pfo
-";
-                sqlText += " left outer join ViewEmployeeInformation e on pfo.EmployeeId=e.Id";
-                sqlText += " Where 1=1 and pfo.IsArchive=0 and pfo.IsActive=1";
+                     SELECT 
+                    ve.Code
+                    ,ve.EmpName
+                    ,ve.BranchId [FromBranch]                    
+                    From ViewEmployeeInformation ve                 
+                    where ve.Code=@Id
+                ";
 
-                if (!string.IsNullOrEmpty(Id))
-                {
-                    sqlText += @" and pfo.Id=@Id ";
-                }
-                if (!string.IsNullOrWhiteSpace(empId))
-                {
-                    sqlText += @" and pfo.EmployeeId=@EmployeeId ";
-                }
+                #endregion
 
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = currConn;
-                cmd.CommandText = sqlText;
-                cmd.CommandType = CommandType.Text;
-
-                if (!string.IsNullOrEmpty(Id))
-                {
-                    cmd.Parameters.AddWithValue("@Id", Id);
-                }
-                if (!string.IsNullOrWhiteSpace(empId))
-                {
-                    cmd.Parameters.AddWithValue("@EmployeeId", empId);
-                }
-
+                #region SqlExecution
+                SqlCommand objComm = new SqlCommand(sqlText, currConn, transaction);
+                objComm.Parameters.AddWithValue("@Id", empId);
                 SqlDataReader dr;
-                dr = cmd.ExecuteReader();
-
+                dr = objComm.ExecuteReader();
                 while (dr.Read())
                 {
-                    vm = new EmployeeTransferVM();
-                    vm.Id = dr["Id"].ToString();
-                    vm.EmployeeId = dr["EmployeeId"].ToString();
-                    vm.EmployeeContribution = Convert.ToDecimal(dr["EmployeeContribution"]);
-                    vm.EmployerContribution = Convert.ToDecimal(dr["EmployerContribution"]);
-                    vm.EmployeeProfit = Convert.ToDecimal(dr["EmployeeProfit"]);
-                    vm.EmployerProfit = Convert.ToDecimal(dr["EmployerProfit"]);
-                    vm.OpeningDate = Ordinary.StringToDate(dr["OpeningDate"].ToString());
-                    vm.Remarks = dr["Remarks"].ToString();
-                    vm.Post = Convert.ToBoolean(dr["Post"]);
-                    vm.IsActive = Convert.ToBoolean(dr["IsActive"]);
-                    vm.CreatedAt = Ordinary.StringToDate(dr["CreatedAt"].ToString());
-                    vm.CreatedBy = dr["CreatedBy"].ToString();
-                    vm.CreatedFrom = dr["CreatedFrom"].ToString();
-                    vm.LastUpdateAt = Ordinary.StringToDate(dr["LastUpdateAt"].ToString());
-                    vm.LastUpdateBy = dr["LastUpdateBy"].ToString();
-                    vm.LastUpdateFrom = dr["LastUpdateFrom"].ToString();
-                    vm.EmpName = dr["EmpName"].ToString();
+                    vm = new EmployeeTransferVM();                  
                     vm.Code = dr["Code"].ToString();
-                    vm.Designation = dr["Designation"].ToString();
-                    vm.Department = dr["Department"].ToString();
-                    vm.JoinDate = Ordinary.StringToDate(dr["JoinDate"].ToString());
-                    vm.Section = dr["Section"].ToString();
-                    vm.Project = dr["Project"].ToString();
-                    vm.GrossSalary = Convert.ToDecimal(dr["GrossSalary"]);
-                    vm.BasicSalary = Convert.ToDecimal(dr["BasicSalary"]);
+                    vm.EmpName = dr["EmpName"].ToString();
+                    vm.FromBranch = dr["FromBranch"].ToString();
+               
                 }
                 dr.Close();
                 #endregion
@@ -682,7 +553,7 @@ EmployeeCode
 ,@CreatedFrom
 ) ";
 
-                    //sqlText += @" Update EmployeeInfo set BranchId=@ToBranch where Code=@EmployeeCode ";
+                    sqlText += @" Update EmployeeInfo set BranchId=@ToBranch where Code=@EmployeeCode ";
                     SqlCommand cmdInsert = new SqlCommand(sqlText, currConn);
 
                     cmdInsert.Parameters.AddWithValue("@EmployeeCode", vm.Code);
