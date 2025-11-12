@@ -171,7 +171,7 @@ namespace SymWebUI.Areas.PF.Controllers
             EmployeeInfoRepo repo = new EmployeeInfoRepo();
             if (!string.IsNullOrWhiteSpace(PFOpeinigId) && !string.IsNullOrWhiteSpace(empPFForTransferVM.Id))
             {
-                vm = repo.SelectById(empPFForTransferVM.EmployeeId);
+                vm = repo.SelectById(empPFForTransferVM.Code);
             }
             vm.empPFForTransferVM = empPFForTransferVM;
             Session["PFOpeinigId"] = empPFForTransferVM.Id;
@@ -195,7 +195,7 @@ namespace SymWebUI.Areas.PF.Controllers
             {
                 string PFOpeinigId = Session["PFOpeinigId"] as string;
                 empPFForTransferVM = _eaRepo.SelectById(PFOpeinigId);//find emp code
-                vm = repo.SelectById(empPFForTransferVM.EmployeeId);
+                vm = repo.SelectById(empPFForTransferVM.Code);
                 vm.empPFForTransferVM = empPFForTransferVM;
                 Session["PFOpeinigId"] = "";
                 // find exist earning date
@@ -203,7 +203,7 @@ namespace SymWebUI.Areas.PF.Controllers
             else if (id != "0" && !string.IsNullOrWhiteSpace(id))
             {
                 empPFForTransferVM = _eaRepo.SelectById(id);//find emp code
-                vm = repo.SelectById(empPFForTransferVM.EmployeeId);
+                vm = repo.SelectById(empPFForTransferVM.Code);
                 vm.empPFForTransferVM = empPFForTransferVM;
                 // find exist earning date
             }
@@ -211,9 +211,9 @@ namespace SymWebUI.Areas.PF.Controllers
             {
                 vm = repo.SelectEmpForSearch(empcode, btn);
 
-                if (!string.IsNullOrWhiteSpace(vm.EmployeeId))
+                if (!string.IsNullOrWhiteSpace(vm.Code))
                 {
-                    empPFForTransferVM = _eaRepo.SelectById("", vm.EmployeeId);
+                    empPFForTransferVM = _eaRepo.SelectById("", vm.Code);
                 }
 
                 if (vm.EmpName == null)
@@ -222,7 +222,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 }
                 else
                 {
-                    EmployeeId = vm.Id;
+                    EmployeeId = vm.Code;
                 }
 
                 //svms = arerepo.SingleEmployeeEntry(EmployeeId, FiscalYearDetailId);

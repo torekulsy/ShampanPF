@@ -654,76 +654,42 @@ From EmployeeForfeiture pfo
                 }
                 #endregion
 
-                #region Exist
-                sqlText = "  ";
-                sqlText += " SELECT count(Id) FROM EmployeeForfeiture ";
-                sqlText += @" WHERE EmployeeId=@EmployeeId and OpeningDate=@OpeningDate ";
-
-                SqlCommand cmdExist = new SqlCommand(sqlText, currConn);
-                cmdExist.Transaction = transaction;
-                cmdExist.Parameters.AddWithValue("@EmployeeId", vm.EmployeeId);
-                cmdExist.Parameters.AddWithValue("@OpeningDate", Ordinary.DateToString(vm.OpeningDate));
-
-                var exeRes = cmdExist.ExecuteScalar();
-                int objfoundId = Convert.ToInt32(exeRes);
-
-                if (objfoundId > 0)
-                {
-                    throw new ArgumentNullException("Same Date Transaction already exists", "");
-                }
-                #endregion
-
                 #region Save
-                vm.Id = cdal.NextId("EmployeeForfeiture", currConn, transaction).ToString();
+                vm.Id = cdal.NextId("EmployeeTransfer", currConn, transaction).ToString();
 
                 if (vm != null)
                 {
                     sqlText = "  ";
-                    sqlText += @" INSERT INTO EmployeeForfeiture
+                    sqlText += @" INSERT INTO EmployeeTransfer
 (
- Id
-,EmployeeId
-,EmployeeContribution
-,EmployerContribution
-,EmployeeProfit
-,EmployerProfit
-,OpeningDate
-,Post
+
+EmployeeCode
+,FromBranch
+,ToBranch
+,TransferDate
 ,Remarks
-,IsActive
-,IsArchive
 ,CreatedBy
 ,CreatedAt
 ,CreatedFrom
 ) VALUES (
- @Id
-,@EmployeeId
-,@EmployeeContribution
-,@EmployerContribution
-,@EmployeeProfit
-,@EmployerProfit
-,@OpeningDate
-,@Post
+@EmployeeCode
+,@FromBranch
+,@ToBranch
+,@TransferDate
 ,@Remarks
-,@IsActive
-,@IsArchive
 ,@CreatedBy
 ,@CreatedAt
 ,@CreatedFrom
 ) ";
+
+                    //sqlText += @" Update EmployeeInfo set BranchId=@ToBranch where Code=@EmployeeCode ";
                     SqlCommand cmdInsert = new SqlCommand(sqlText, currConn);
 
-                    cmdInsert.Parameters.AddWithValue("@Id", vm.Id);
-                    cmdInsert.Parameters.AddWithValue("@EmployeeId", vm.EmployeeId);
-                    cmdInsert.Parameters.AddWithValue("@EmployeeContribution", vm.EmployeeContribution);
-                    cmdInsert.Parameters.AddWithValue("@EmployerContribution", vm.EmployerContribution);
-                    cmdInsert.Parameters.AddWithValue("@EmployeeProfit", vm.EmployeeProfit);
-                    cmdInsert.Parameters.AddWithValue("@EmployerProfit", vm.EmployerProfit);
-                    cmdInsert.Parameters.AddWithValue("@OpeningDate", Ordinary.DateToString(vm.OpeningDate));
-                    cmdInsert.Parameters.AddWithValue("@Post", false);
+                    cmdInsert.Parameters.AddWithValue("@EmployeeCode", vm.Code);
+                    cmdInsert.Parameters.AddWithValue("@FromBranch", vm.FromBranch);
+                    cmdInsert.Parameters.AddWithValue("@ToBranch", vm.ToBranch);
+                    cmdInsert.Parameters.AddWithValue("@TransferDate", Ordinary.DateToString(vm.TransferDate));
                     cmdInsert.Parameters.AddWithValue("@Remarks", vm.Remarks ?? Convert.DBNull);
-                    cmdInsert.Parameters.AddWithValue("@IsActive", true);
-                    cmdInsert.Parameters.AddWithValue("@IsArchive", false);
                     cmdInsert.Parameters.AddWithValue("@CreatedBy", vm.CreatedBy);
                     cmdInsert.Parameters.AddWithValue("@CreatedAt", vm.CreatedAt);
                     cmdInsert.Parameters.AddWithValue("@CreatedFrom", vm.CreatedFrom);

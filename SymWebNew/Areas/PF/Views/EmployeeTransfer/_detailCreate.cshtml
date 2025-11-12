@@ -15,6 +15,7 @@
                 </div>
                 <div class="row">
                     @Html.HiddenFor(model => model.empPFForTransferVM.Id)
+                    @Html.HiddenFor(model => model.Code)
                     @Html.HiddenFor(model => model.Id, new { @class = "cPFOpeinigId" })
                     @Html.HiddenFor(model => model.empPFForTransferVM.EmployeeId)
                     @Html.HiddenFor(model => model.empPFForTransferVM.Post, new { @class = "cPost" })
@@ -71,7 +72,7 @@
                     <div class="col-md-3">
                         <div class="editor-label">@Html.LabelFor(model => model.empPFForTransferVM.FromBranch)</div>
                         <div class="editor-field">
-                            @Html.SimpleDropDownFor(model => model.empPFForTransferVM.FromBranch, "/Config/DropDown/Branch", new { @placeholder = "From Branch", @class = " form-control ", @disabled = "disabled" })
+                            @Html.SimpleDropDownFor(model => model.empPFForTransferVM.FromBranch, "/Config/DropDown/Branch", new { @placeholder = "From Branch", @class = " form-control " })
 
                         </div>
                     </div>
@@ -123,7 +124,7 @@
     $(function () {
 
         InitDropDowns();
-        checkvalue();
+        //checkvalue();
         if ('@Model.Code' == null || '@Model.Code' == "") {
             $('#empId').val("");
         }
@@ -159,7 +160,7 @@
         }
     
         var myData = $('#afrmEmployeeEdit').serialize();
-        var url = "/@ViewBag.TransType/EmployeePFTransfer/Create";
+        var url = "/@ViewBag.TransType/EmployeeTransfer/Create";
         //submit(url, myData);
         //location.reload();
 
