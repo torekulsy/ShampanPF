@@ -72,7 +72,7 @@
                     <div class="col-md-3">
                         <div class="editor-label">@Html.LabelFor(model => model.empPFForTransferVM.FromBranch)</div>
                         <div class="editor-field">
-                            @Html.SimpleDropDownFor(model => model.empPFForTransferVM.FromBranch, "/Config/DropDown/Branch", new { @placeholder = "From Branch", @class = " form-control " })
+                            @Html.SimpleDropDownFor(model => model.empPFForTransferVM.FromBranch, "/Config/DropDown/Branch", new { @placeholder = "From Branch", @class = " form-control ", @disabled = "disabled" })
 
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                     <br />
                     <div class="headrow">
                         <button type="button" title="Save Data" id="SaveJSON" class="Save sym-btn-save">&nbsp;Save</button>
-                        <button type="button" title="Update Data" id="UpdateJSON" class="Save sym-btn-update">Update</button>
+                        @*<button type="button" title="Update Data" id="UpdateJSON" class="Save sym-btn-update">Update</button>*@
                         @*<button type="button" title="Post Data" id="PostJSON" class="Save sym-btn-post">&nbsp;Post</button>*@
                     </div>
                 </div>
