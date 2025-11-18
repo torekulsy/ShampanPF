@@ -68,13 +68,16 @@
         var FiscalYear = $("#FiscalYear").val();
         var FiscalPeriodDetailId = $("#FiscalPeriodDetailId").val();
         var TotalProfit = $("#TotalProfit").val();
-        //var chkAll = $("#chkAll").prop("checked") ? true : false;
         if (FiscalPeriodDetailId == "") {
             ShowResult("Fail", "Please Select the Fiscal Period");
             return;
         }
         if (TotalProfit == "") {
             ShowResult("Fail", "Please Enter Valid Total Profit");
+            return;
+        }
+        if (FiscalYear == "") {
+            ShowResult("Fail", "Please Select the Fiscal Year");
             return;
         }
         var url = "/@ViewBag.TransType/WPPF/PFProcess"
@@ -85,41 +88,4 @@
 
         submit(url);
     });
-
-    @*$('.saveJSON').click(function () {
-
-        var model = {
-            FiscalYearDetailId: $("#FiscalPeriodDetailId").val(),
-            TotalPF: $("#TotalProfit").val(),
-            ProjectId: $("#ProjectId").val() || "0",
-            Year: $("#FiscalYear").val(),   // or whatever field represents 'Year'
-            Remarks: $("#Remarks").val() || ""
-        };
-
-        if (!model.FiscalYearDetailId) {
-            ShowResult("Fail", "Please Select the Fiscal Period");
-            return;
-        }
-        if (!model.TotalPF || model.TotalPF <= 0) {
-            ShowResult("Fail", "Please Enter Valid Total Profit");
-            return;
-        }
-
-        $.ajax({
-            url: "/@ViewBag.TransType/WPPF/PFProcess",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(model),
-            success: function (res) {
-                ShowResult("Success", res);
-            },
-            error: function (err) {
-                ShowResult("Fail", "Server Error");
-            }
-        });
-
-    });*@
-
-
-
 </script>
