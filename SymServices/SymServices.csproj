@@ -128,6 +128,7 @@
     <Compile Include="PF\EmployeePFOpeinigDAL.cs" />
     <Compile Include="PF\BankChargeDAL.cs" />
     <Compile Include="PF\InvestmentRenewDAL.cs" />
+    <Compile Include="PF\WPPFDAL.cs" />
     <Compile Include="PF\PFReportDAL.cs" />
     <Compile Include="PF\PFStructureDAL.cs">
       <SubType>Code</SubType>

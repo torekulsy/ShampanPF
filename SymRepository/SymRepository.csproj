@@ -90,6 +90,7 @@
     <Compile Include="PF\GLJournalRepo.cs" />
     <Compile Include="PF\BankChargeRepo.cs" />
     <Compile Include="PF\InvestmentRenewRepo.cs" />
+    <Compile Include="PF\WPPFRepo.cs" />
     <Compile Include="PF\PFStructureRepo.cs" />
     <Compile Include="PF\ProfitDistributionNewRepo.cs" />
     <Compile Include="PF\PFSettlementDetailRepo.cs" />

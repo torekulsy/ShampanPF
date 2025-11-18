@@ -306,6 +306,7 @@
     <Compile Include="Areas\PF\Controllers\LoanSattlementController.cs" />
     <Compile Include="Areas\PF\Controllers\LoanRepaymentToBankController.cs" />
     <Compile Include="Areas\PF\Controllers\LoanMonthlyPaymentController.cs" />
+    <Compile Include="Areas\PF\Controllers\WPPFController.cs" />
     <Compile Include="Areas\PF\Controllers\PFEmployeeSettlementController.cs" />
     <Compile Include="Areas\PF\Controllers\ProcessControllController.cs" />
     <Compile Include="Areas\PF\Controllers\ProfitDistributionNewController.cs" />
@@ -4480,6 +4481,8 @@
     <Content Include="Areas\PF\Views\EmployeeTransfer\ImportEmployeePFTransfer.cshtml" />
     <Content Include="Areas\PF\Views\EmployeeTransfer\Index.cshtml" />
     <Content Include="Areas\PF\Views\EmployeeTransfer\SingleEmployeePFTransferEdit.cshtml" />
+    <Content Include="Areas\PF\Views\WPPF\PFProcess.cshtml" />
+    <Content Include="Areas\PF\Views\WPPF\IndexFiscalPeriod.cshtml" />
     <None Include="Properties\PublishProfiles\PFEGCB.pubxml" />
     <None Include="Properties\PublishProfiles\SymphonyHRM_New.pubxml" />
     <Content Include="Views\Home\ForgotPasswordView.cshtml" />
