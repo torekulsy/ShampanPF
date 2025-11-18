@@ -1899,11 +1899,11 @@ AND PFSettlements.EmployeeId=@EmployeeId
             adapterj.Fill(dtj);
             if (dtj.Rows.Count > 0)
             {
-                BankCOAID = dtj.Rows[0]["COAID"].ToString();
-                EmployeeCOAID = dtj.Rows[1]["COAID"].ToString();
-                EmployerCOAID = dtj.Rows[2]["COAID"].ToString();
-                EmployeeProfitCOAID = dtj.Rows[3]["COAID"].ToString();
-                EmployerProfitCOAID = dtj.Rows[4]["COAID"].ToString();
+                EmployerCOAID = dtj.Rows[0]["COAID"].ToString();
+                EmployeeCOAID = dtj.Rows[1]["COAID"].ToString();              
+                EmployeeProfitCOAID = dtj.Rows[2]["COAID"].ToString();
+                EmployerProfitCOAID = dtj.Rows[3]["COAID"].ToString();
+                BankCOAID = dtj.Rows[4]["COAID"].ToString();
             }
 
             SettingDAL _settingDal = new SettingDAL();
@@ -1950,7 +1950,7 @@ AND PFSettlements.EmployeeId=@EmployeeId
                         {
                             COAId =Convert.ToInt32(BankCOAID),
                             CrAmount = Convert.ToDecimal(dtpf.Rows[0]["Total"].ToString()),
-                            IsDr = true,
+                            IsDr = false,
                             IsYearClosing = false,
                             Post = false
                         }
@@ -1959,7 +1959,7 @@ AND PFSettlements.EmployeeId=@EmployeeId
                         {                                  
                             COAId =Convert.ToInt32(EmployeeCOAID),
                             DrAmount = Convert.ToDecimal(dtpf.Rows[0]["EmployeeTotalContribution"].ToString()),
-                            IsDr = false,
+                            IsDr = true,
                             IsYearClosing = false,
                             Post = false
                         },
@@ -1967,7 +1967,7 @@ AND PFSettlements.EmployeeId=@EmployeeId
                         {                                  
                             COAId =Convert.ToInt32(EmployerCOAID),
                             DrAmount = Convert.ToDecimal(dtpf.Rows[0]["EmployerTotalContribution"].ToString()),
-                            IsDr = false,
+                            IsDr = true,
                             IsYearClosing = false,
                             Post = false
                         },
@@ -1976,7 +1976,7 @@ AND PFSettlements.EmployeeId=@EmployeeId
                         {
                             COAId =Convert.ToInt32(EmployeeProfitCOAID),
                             DrAmount = Convert.ToDecimal(dtpf.Rows[0]["EmployeeProfitValue"].ToString()),
-                            IsDr = false,
+                            IsDr = true,
                             IsYearClosing = false,
                             Post = false
                         }
@@ -1985,7 +1985,7 @@ AND PFSettlements.EmployeeId=@EmployeeId
                         {
                             COAId =Convert.ToInt32(EmployerProfitCOAID),
                             DrAmount = Convert.ToDecimal(dtpf.Rows[0]["EmployerProfitValue"].ToString()),
-                            IsDr = false,
+                            IsDr = true,
                             IsYearClosing = false,
                             Post = false
                         }
