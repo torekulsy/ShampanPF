@@ -2,15 +2,12 @@
 @using UIHelper.MVC
 
 <div class="headrow">
-    <button type="button" title="Add New PF Process" data-url="/@ViewBag.TransType/WPPF/PFProcess" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>
-    <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/WPPF/Index_WPPF" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;WPPF</button>
-    <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/WPPF/Index_WWF" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;WWF</button>
-    <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/WPPF/Index_WWF" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;BWWF</button>
-    <label class="pull-right">Profit Value</label>
+    <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/WPPF/IndexFiscalPeriod" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+    <label class="pull-right">WPPF</label>
 </div>
 <div class="thinbox">
     <div class="th_thinbox">
-        <p class="thinHead">Profit Value</p>
+        <p class="thinHead">WPPF</p>
     </div>
     <p>
     </p>
@@ -22,7 +19,7 @@
                 <th class="center">Code</th>
                 <th class="center">Project</th>
                 <th class="center">Fiscal Period</th>
-                <th class="center">Total Profit</th>
+                <th class="center">Profit</th>
                 <th class="center">Post Status</th>
 
             </tr>
@@ -32,7 +29,7 @@
     <br />
 </div>
 <div class="headrow">
-    <button type="button" title="Add New PF Process" data-url="/@ViewBag.TransType/WPPF/PFProcess" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>
+    <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/WPPF/IndexFiscalPeriod" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
 </div>
 
 
@@ -51,7 +48,7 @@
         $.datepicker.setDefaults($.datepicker.regional['']);
         var oTable = $('#myDataTable').dataTable({
             "bServerSide": true,
-            "sAjaxSource": "/@ViewBag.TransType/WPPF/_indexFiscalPeriod?EmployeeId=@ViewBag.EmployeeId&fydid=@ViewBag.fydid",
+            "sAjaxSource": "/@ViewBag.TransType/WPPF/_index_WPPF?EmployeeId=@ViewBag.EmployeeId&fydid=@ViewBag.fydid",
             "bProcessing": true,
             "aLengthMenu": tablelength(),
             "bJqueryUI": true,
@@ -65,9 +62,9 @@
                                 "sClass": "center",
                                 "fnRender": function (oObj) {
                                     return ''
-                                        @*+ '<a title="Click on for Details" style="text-decoration:none;" href="/@ViewBag.TransType/WPPF/ProfitDistribution" class="sym-btn-detail-row"></a>'*@
+                                        + '<a title="Click on for Details" style="text-decoration:none;" href="/@ViewBag.TransType/WPPF/ProfitDistribution" class="sym-btn-detail-row"></a>'
 
-                                        + '<a title="Click on for Post" data-url="/@ViewBag.TransType/WPPF/Post"  onclick=btnPostNew(this);  data-Id="' + oObj.aData[0] + "~" + oObj.aData[7] + '\" class="sym-btn-post-row"></a>'
+                                        @*+ '<a title="Click on for Post" data-url="/@ViewBag.TransType/WPPF/Post"  onclick=btnPostNew(this);  data-Id="' + oObj.aData[0] + "~" + oObj.aData[7] + '\" class="sym-btn-post-row"></a>'*@
                                     ;
                                 }
                             }

@@ -285,6 +285,161 @@ FROM WPPFHeader pfd
             return VMs;
         }
 
+        public List<PFHeaderVM> SelectWPPF(string[] conditionFields = null, string[] conditionValues = null, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
+        {
+            #region Variables
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+            string sqlText = "";
+            List<PFHeaderVM> VMs = new List<PFHeaderVM>();
+            PFHeaderVM vm;
+            #endregion
+            try
+            {
+                #region open connection and transaction
+                #region New open connection and transaction
+                if (VcurrConn != null)
+                {
+                    currConn = VcurrConn;
+                }
+                if (Vtransaction != null)
+                {
+                    transaction = Vtransaction;
+                }
+                #endregion New open connection and transaction
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+                if (transaction == null)
+                {
+                    transaction = currConn.BeginTransaction("");
+                }
+                #endregion open connection and transaction
+                string hrmDB = _dbsqlConnection.GetConnection().Database;
+                #region sql statement
+                #region SqlText
+                sqlText = @"
+SELECT 
+    pfd.Id,
+    pfd.Code,
+    pfd.FiscalYearDetailId,
+    p.Name AS ProjectName,
+    p.Id AS ProjectId,
+    fyd.PeriodName,
+    fyd.PeriodStart,
+    pfd.Post,
+    SUM(ISNULL(c.EmployeeProfit,0)) AS TotalPF
+FROM WPPFHeader pfd
+LEFT OUTER JOIN [dbo].[Project] p 
+    ON pfd.ProjectId = p.Id
+LEFT OUTER JOIN [dbo].[FiscalYearDetail] fyd 
+    ON pfd.FiscalYearDetailId = fyd.Id
+LEFT OUTER JOIN [dbo].[WPPFProfitDistribution] c 
+    ON pfd.Id = c.WPPFHeaderId
+WHERE 1 = 1
+  AND pfd.IsArchive = 0
+";
+
+                // Condition fields
+                string cField = "";
+                if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
+                {
+                    for (int i = 0; i < conditionFields.Length; i++)
+                    {
+                        if (string.IsNullOrWhiteSpace(conditionFields[i]) || string.IsNullOrWhiteSpace(conditionValues[i]))
+                        {
+                            continue;
+                        }
+
+                        cField = Ordinary.StringReplacing(conditionFields[i]);
+                        sqlText += " AND " + conditionFields[i] + "=@" + cField;
+                    }
+                }
+
+                // Final GROUP BY (Must come last)
+                sqlText += @"
+GROUP BY 
+    pfd.Id,
+    pfd.Code,
+    pfd.FiscalYearDetailId,
+    p.Name,
+    p.Id,
+    fyd.PeriodName,
+    fyd.PeriodStart,
+    pfd.Post
+";
+
+                //  sqlText += "  GROUP BY p.Name,p.Id, pfd.FiscalYearDetailId, fyd.PeriodName, fyd.PeriodStart, fyd.PeriodEnd, pfd.Post ";
+                
+
+                #endregion SqlText
+                #region SqlExecution
+
+                SqlCommand objComm = new SqlCommand(sqlText, currConn, transaction);
+                if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
+                {
+                    for (int j = 0; j < conditionFields.Length; j++)
+                    {
+                        if (string.IsNullOrWhiteSpace(conditionFields[j]) || string.IsNullOrWhiteSpace(conditionValues[j]))
+                        {
+                            continue;
+                        }
+                        cField = conditionFields[j].ToString();
+                        cField = Ordinary.StringReplacing(cField);
+                        objComm.Parameters.AddWithValue("@" + cField, conditionValues[j]);
+                    }
+                }
+
+                SqlDataReader dr;
+                dr = objComm.ExecuteReader();
+                while (dr.Read())
+                {
+                    vm = new PFHeaderVM();
+                    vm.Id = Convert.ToInt32(dr["Id"]);
+                    vm.FiscalYearDetailId = Convert.ToInt32(dr["FiscalYearDetailId"]);
+                    vm.Code = dr["Code"].ToString();
+                    vm.ProjectName = dr["ProjectName"].ToString();
+                    vm.ProjectId = dr["ProjectId"].ToString();
+                    vm.FiscalPeriod = dr["PeriodName"].ToString();
+                    vm.PeriodStart = dr["PeriodStart"].ToString();
+                    vm.TotalPF =Math.Round(Convert.ToDecimal(dr["TotalPF"]));
+                    vm.Post = Convert.ToBoolean(dr["Post"]);
+
+                    VMs.Add(vm);
+                }
+                dr.Close();
+                #endregion SqlExecution
+
+                if (Vtransaction == null && transaction != null)
+                {
+                    transaction.Commit();
+                }
+                #endregion
+            }
+            #region catch
+
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+            #endregion
+            #region finally
+            finally
+            {
+                if (VcurrConn == null && currConn != null && currConn.State == ConnectionState.Open)
+                {
+                    currConn.Close();
+                }
+            }
+            #endregion
+            return VMs;
+        }
+
         public List<PFHeaderVM> SelectWWF(string[] conditionFields = null, string[] conditionValues = null, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
         {
             #region Variables
