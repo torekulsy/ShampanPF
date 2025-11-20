@@ -134,6 +134,8 @@ namespace SymViewModel.PF
         [Display(Name = "Fiscal Period")]
         public string FiscalPeriod { get; set; }
 
+        public string DistributionDate { get; set; }
+
         public string Code { get; set; }
 
 

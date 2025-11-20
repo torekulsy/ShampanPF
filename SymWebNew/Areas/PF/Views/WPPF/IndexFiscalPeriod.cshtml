@@ -3,9 +3,9 @@
 
 <div class="headrow">
     <button type="button" title="Add New PF Process" data-url="/@ViewBag.TransType/WPPF/PFProcess" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>
-    <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/WPPF/Index_WPPF" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;WPPF</button>
+    @*<button type="button" title="Go To Index" data-url="/@ViewBag.TransType/WPPF/Index_WPPF" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;WPPF</button>
     <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/WPPF/Index_WWF" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;WWF</button>
-    <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/WPPF/Index_WWF" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;BWWF</button>
+    <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/WPPF/Index_WWF" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;BWWF</button>*@
     <label class="pull-right">Profit Value</label>
 </div>
 <div class="thinbox">
@@ -23,7 +23,10 @@
                 <th class="center">Project</th>
                 <th class="center">Fiscal Period</th>
                 <th class="center">Total Profit</th>
-                <th class="center">Post Status</th>
+                <th class="center">WPPF Value</th>
+                <th class="center">WWF Value</th>
+                <th class="center">BWWF Value</th>
+                <th class="center">Post</th>
 
             </tr>
         </thead>
@@ -65,7 +68,11 @@
                                 "sClass": "center",
                                 "fnRender": function (oObj) {
                                     return ''
-                                        @*+ '<a title="Click on for Details" style="text-decoration:none;" href="/@ViewBag.TransType/WPPF/ProfitDistribution" class="sym-btn-detail-row"></a>'*@
+
+                                        @*+ '<a title="Click on for Details" style="text-decoration:none;"    href=\"/@ViewBag.TransType/ProfitDistribution?code=' + oObj.aData[0] + '\"  class="sym-btn-detail-row"></a>'*@
+                                         @*+ '<a title="Click on for Details" style="text-decoration:none;" href="/@ViewBag.TransType/WPPF/ProfitDistribution" data-Id="' + oObj.aData[0] +'\" class="sym-btn-detail-row"></a>'*@
+                                        + '<a title="Click on for Details" style="text-decoration:none;" href="/' + '@ViewBag.TransType' + '/WPPF/ProfitDistribution?code=' + oObj.aData[1] + '" class="sym-btn-detail-row"></a>'
+
 
                                         + '<a title="Click on for Post" data-url="/@ViewBag.TransType/WPPF/Post"  onclick=btnPostNew(this);  data-Id="' + oObj.aData[0] + "~" + oObj.aData[7] + '\" class="sym-btn-post-row"></a>'
                                     ;
@@ -75,6 +82,9 @@
                             , { "sName": "ProjectName", "sWidth": "20%" }
                             , { "sName": "FiscalPeriod", "sWidth": "10%" }
                             , { "sName": "Profit", "sWidth": "10%" }
+                            , { "sName": "EmployeePFValue", "sWidth": "10%" }
+                            , { "sName": "EmployeerPFValue", "sWidth": "10%" }
+                            , { "sName": "TotalEmployeeValue", "sWidth": "10%" }
                             , { "sName": "Post", "sWidth": "12%" }
             ]
         });

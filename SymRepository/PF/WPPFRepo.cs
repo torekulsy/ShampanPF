@@ -40,30 +40,6 @@ namespace SymRepository.PF
             }
         }
 
-        public List<PFHeaderVM> SelectWWF(string[] conditionFields = null, string[] conditionValues = null)
-        {
-            try
-            {
-                return new WPPFDAL().SelectWWF(conditionFields, conditionValues);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public List<PFHeaderVM> SelectWPPF(string[] conditionFields = null, string[] conditionValues = null)
-        {
-            try
-            {
-                return new WPPFDAL().SelectWPPF(conditionFields, conditionValues);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         public string[] PFProcess(decimal? TotalProfit, string FiscalYearDetailId, int? FiscalYear, ShampanIdentityVM auditvm)
         {
             try
@@ -87,6 +63,30 @@ namespace SymRepository.PF
                 throw ex;
             }
         }
+
+        //public List<PFHeaderVM> SelectWWF(string[] conditionFields = null, string[] conditionValues = null)
+        //{
+        //    try
+        //    {
+        //        return new WPPFDAL().SelectWWF(conditionFields, conditionValues);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+
+        //public List<PFHeaderVM> SelectWPPF(string[] conditionFields = null, string[] conditionValues = null)
+        //{
+        //    try
+        //    {
+        //        return new WPPFDAL().SelectWPPF(conditionFields, conditionValues);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
         
     }
 }
