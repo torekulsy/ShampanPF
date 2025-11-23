@@ -290,246 +290,7 @@ FROM WPPFHeader pfd
             return VMs;
         }
 
-//        public string[] PFProcess(decimal? TotalProfit, string FiscalYearDetailId, int? FiscalYear, ShampanIdentityVM auditvm, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
-//        {
-//            string[] ret = new string[6] { "Fail", "Fail", "0", "", "", "PFProcess" };
-
-//            SqlConnection currConn = null;
-//            SqlTransaction transaction = null;
-
-//            try
-//            {
-//                // Open connection
-//                currConn = VcurrConn ?? _dbsqlConnection.GetConnection();
-//                if (currConn.State != ConnectionState.Open)
-//                    currConn.Open();
-
-//                transaction = Vtransaction ?? currConn.BeginTransaction();
-
-//                decimal distValue = TotalProfit.Value * 0.05m;
-//                decimal disWPPF = distValue * 0.8m;
-//                decimal disWFF = distValue * 0.1m;
-//                decimal disWWF = distValue * 0.1m;
-
-
-//                string distributionDate;
-//                string fySql = @"
-//    SELECT PeriodEnd 
-//    FROM FiscalYearDetail 
-//    WHERE Id = @FiscalYearDetailId";
-
-//                using (SqlCommand fyCmd = new SqlCommand(fySql, currConn, transaction))
-//                {
-//                    fyCmd.Parameters.AddWithValue("@FiscalYearDetailId", FiscalYearDetailId);
-
-//                    object obj = fyCmd.ExecuteScalar();
-
-//                    if (obj == null || obj == DBNull.Value)
-//                    {
-//                        distributionDate = DateTime.Now.ToString();
-//                    }
-//                    else
-//                    {
-//                        distributionDate = obj.ToString();
-//                    }
-//                }
-
-//                string NewCode = new CommonDAL().CodeGenerationPF("PF", "WPPF", DateTime.Now.ToString(), currConn, transaction);
-
-//                int id;
-//                string idSql = @"
-//                              Select Id FROM WPPFHeader WHERE FiscalYearDetailId=@FiscalYearDetailId AND Post = 1";
-//                using (SqlCommand idCmd = new SqlCommand(idSql, currConn, transaction))
-//                {
-//                    idCmd.Parameters.AddWithValue("@FiscalYearDetailId", FiscalYearDetailId);
-//                    object obj = idCmd.ExecuteScalar();
-//                    id = Convert.ToInt32(obj);
-//                }
-
-//                string insertSql = "";
-
-//                if (id != 0)
-//                {
-//                    ret[0] = "Fail";
-//                    ret[2] = "WPPF already Posted";
-//                    return ret;
-//                }
-//                else
-//                {
-//                     idSql = @"
-//                              Select Id FROM WPPFHeader WHERE FiscalYearDetailId=@FiscalYearDetailId AND Post = 0";
-//                    using (SqlCommand idCmd = new SqlCommand(idSql, currConn, transaction))
-//                    {
-//                        idCmd.Parameters.AddWithValue("@FiscalYearDetailId", FiscalYearDetailId);
-//                        object obj = idCmd.ExecuteScalar();
-//                        id = Convert.ToInt32(obj);
-//                    }
-
-//                    insertSql += @" Delete from WPPFHeader where Id=@Id";                  
-//                    insertSql += @" Delete from WPPFProfitDistribution where WPPFHeaderId=@Id";
-//                    using (SqlCommand idCmd = new SqlCommand(insertSql, currConn, transaction))
-//                    {
-//                        idCmd.Parameters.AddWithValue("@Id", id);
-//                        idCmd.ExecuteNonQuery();
-//                    }
-//                }
-
-
-//                insertSql += @"
-//
-//INSERT INTO WPPFHeader
-//(
-//      Code
-//    , FiscalYearDetailId
-//    , Year
-//    , ProjectId
-//    , TotalProfitValue
-//    , Post
-//    , Remarks
-//    , IsActive
-//    , IsArchive
-//    , CreatedBy
-//    , CreatedAt
-//    , CreatedFrom
-//    ,WPPFValue
-//    ,WWFValue
-//    ,BWWF
-//
-//)
-//VALUES
-//(
-//      @Code
-//    , @FiscalYearDetailId
-//    , @Year
-//    , @ProjectId
-//    , @TotalProfitValue
-//    , 0                         
-//    , @Remarks
-//    , 1                       
-//    , 0                        
-//    , @CreatedBy
-//    , @CreatedAt                
-//    , @CreatedFrom
-//    , @WPPFValue
-//    , @WWFValue
-//    , @BWWF
-//
-//);
-//
-//SELECT SCOPE_IDENTITY();
-//";
-
-
-//                SqlCommand cmd = new SqlCommand(insertSql, currConn, transaction);
-//                cmd.Parameters.AddWithValue("@Code", NewCode);
-//                cmd.Parameters.AddWithValue("@FiscalYearDetailId", FiscalYearDetailId);
-//                cmd.Parameters.AddWithValue("@TotalProfitValue", TotalProfit);
-//                cmd.Parameters.AddWithValue("@Year", FiscalYear);  
-//                cmd.Parameters.AddWithValue("@ProjectId", "1_1");                  
-//                cmd.Parameters.AddWithValue("@Remarks", "");
-//                cmd.Parameters.AddWithValue("@CreatedBy", auditvm.CreatedBy);
-//                cmd.Parameters.AddWithValue("@CreatedAt ", auditvm.CreatedAt);
-//                cmd.Parameters.AddWithValue("@CreatedFrom", auditvm.CreatedFrom);
-//                cmd.Parameters.AddWithValue("@WPPFValue", disWPPF);
-//                cmd.Parameters.AddWithValue("@WWFValue", disWFF);
-//                cmd.Parameters.AddWithValue("@BWWF", disWWF);
-               
-//                decimal newId = Convert.ToDecimal(cmd.ExecuteScalar());
-
-//                string empSql = @"
-//                                SELECT 
-//                                      E.Id
-//                                    , E.Code
-//                                    , E.IsActive
-//                                FROM EmployeeInfo E
-//                                WHERE E.IsActive = 1
-//                                ORDER BY E.Id";
-
-               
-
-//                SqlCommand empCmd = new SqlCommand(empSql, currConn, transaction);
-
-//                SqlDataAdapter daEmp = new SqlDataAdapter(empCmd);
-//                DataTable dt = new DataTable();
-//                daEmp.Fill(dt);
-
-//                decimal disPerson = dt.Rows.Count;    
-//                decimal disEmpValue = disWPPF / disPerson;       
-
-//                foreach (DataRow dr in dt.Rows)
-//                {
-//                    int empId = Convert.ToInt32(dr["Id"]);
-
-//                    string insertDetailSql = @"
-//    INSERT INTO WPPFProfitDistribution
-//    (
-//          WPPFHeaderId
-//        , EmployeeId
-//        , DistributionDate
-//        , EmployeeProfit
-//        , Post
-//        , IsPaid
-//        , Remarks
-//        , IsActive
-//        , IsArchive
-//        , CreatedBy
-//        , CreatedAt
-//        , CreatedFrom
-//    )
-//    VALUES
-//    (
-//          @WPPFHeaderId
-//        , @EmployeeId
-//        , @DistributionDate              
-//        , @EmployeeProfit
-//        , 0                       
-//        , 0                     
-//        , ''
-//        , 1                      
-//        , 0                       
-//        , @CreatedBy
-//        , GETDATE()               
-//        , @CreatedFrom
-//    );";
-
-//                    SqlCommand detailCmd = new SqlCommand(insertDetailSql, currConn, transaction);
-
-//                    detailCmd.Parameters.AddWithValue("@WPPFHeaderId", newId);   
-//                    detailCmd.Parameters.AddWithValue("@EmployeeId", empId);
-//                    detailCmd.Parameters.AddWithValue("@DistributionDate", distributionDate);
-//                    detailCmd.Parameters.AddWithValue("@EmployeeProfit", disEmpValue);
-
-//                    detailCmd.Parameters.AddWithValue("@CreatedBy", auditvm.CreatedBy);
-//                    detailCmd.Parameters.AddWithValue("@CreatedFrom", auditvm.CreatedFrom);
-
-//                    detailCmd.ExecuteNonQuery();
-//                }
-
-//                if (Vtransaction == null)
-//                    transaction.Commit();
-
-//                ret[0] = "Success";
-//                ret[1] = "WPPF successfully processed";
-//                ret[2] = newId.ToString();
-
-//                return ret;
-//            }
-//            catch (Exception ex)
-//            {
-//                if (Vtransaction == null && transaction != null)
-//                    transaction.Rollback();
-
-//                ret[1] = ex.Message;
-//                return ret;
-//            }
-//            finally
-//            {
-//                if (VcurrConn == null && currConn != null)
-//                    currConn.Close();
-//            }
-//        }
-
-        public string[] PFProcess(decimal? TotalProfit, string FiscalYearDetailId, int? FiscalYear, ShampanIdentityVM auditvm, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
+        public string[] Insert(decimal? TotalProfit, string FiscalYearDetailId, int? FiscalYear, ShampanIdentityVM auditvm, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
         {
             string[] ret = new string[6] { "Fail", "Fail", "0", "", "", "PFProcess" };
 
@@ -721,7 +482,6 @@ FROM WPPFHeader pfd
             }
         }
 
-
         public string[] PostHeader(PFHeaderVM vm, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
         {
             #region Variables
@@ -825,298 +585,106 @@ FROM WPPFHeader pfd
             return retResults;
         }
 
-        //        public List<PFHeaderVM> SelectWPPF(string[] conditionFields = null, string[] conditionValues = null, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
-        //        {
-        //            #region Variables
-        //            SqlConnection currConn = null;
-        //            SqlTransaction transaction = null;
-        //            string sqlText = "";
-        //            List<PFHeaderVM> VMs = new List<PFHeaderVM>();
-        //            PFHeaderVM vm;
-        //            #endregion
-        //            try
-        //            {
-        //                #region open connection and transaction
-        //                #region New open connection and transaction
-        //                if (VcurrConn != null)
-        //                {
-        //                    currConn = VcurrConn;
-        //                }
-        //                if (Vtransaction != null)
-        //                {
-        //                    transaction = Vtransaction;
-        //                }
-        //                #endregion New open connection and transaction
-        //                if (currConn == null)
-        //                {
-        //                    currConn = _dbsqlConnection.GetConnection();
-        //                    if (currConn.State != ConnectionState.Open)
-        //                    {
-        //                        currConn.Open();
-        //                    }
-        //                }
-        //                if (transaction == null)
-        //                {
-        //                    transaction = currConn.BeginTransaction("");
-        //                }
-        //                #endregion open connection and transaction
-        //                string hrmDB = _dbsqlConnection.GetConnection().Database;
-        //                #region sql statement
-        //                #region SqlText
-        //                sqlText = @"
-        //SELECT 
-        //    pfd.Id,
-        //    pfd.Code,
-        //    pfd.FiscalYearDetailId,
-        //    p.Name AS ProjectName,
-        //    p.Id AS ProjectId,
-        //    fyd.PeriodName,
-        //    fyd.PeriodStart,
-        //    pfd.Post,
-        //    SUM(ISNULL(c.EmployeeProfit,0)) AS TotalPF
-        //FROM WPPFHeader pfd
-        //LEFT OUTER JOIN [dbo].[Project] p 
-        //    ON pfd.ProjectId = p.Id
-        //LEFT OUTER JOIN [dbo].[FiscalYearDetail] fyd 
-        //    ON pfd.FiscalYearDetailId = fyd.Id
-        //LEFT OUTER JOIN [dbo].[WPPFProfitDistribution] c 
-        //    ON pfd.Id = c.WPPFHeaderId
-        //WHERE 1 = 1
-        //  AND pfd.IsArchive = 0
-        //";
+        public List<PFHeaderVM> SelectAll()
+        {
+            #region Variables
+            SqlConnection currConn = null;
+            string sqlText = "";
+            List<PFHeaderVM> VMs = new List<PFHeaderVM>();
+            PFHeaderVM vm;
+            #endregion
 
-        //                // Condition fields
-        //                string cField = "";
-        //                if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
-        //                {
-        //                    for (int i = 0; i < conditionFields.Length; i++)
-        //                    {
-        //                        if (string.IsNullOrWhiteSpace(conditionFields[i]) || string.IsNullOrWhiteSpace(conditionValues[i]))
-        //                        {
-        //                            continue;
-        //                        }
+            try
+            {
+                #region open connection and transaction
 
-        //                        cField = Ordinary.StringReplacing(conditionFields[i]);
-        //                        sqlText += " AND " + conditionFields[i] + "=@" + cField;
-        //                    }
-        //                }
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
 
-        //                // Final GROUP BY (Must come last)
-        //                sqlText += @"
-        //GROUP BY 
-        //    pfd.Id,
-        //    pfd.Code,
-        //    pfd.FiscalYearDetailId,
-        //    p.Name,
-        //    p.Id,
-        //    fyd.PeriodName,
-        //    fyd.PeriodStart,
-        //    pfd.Post
-        //";
+                #endregion open connection and transaction
 
-        //                //  sqlText += "  GROUP BY p.Name,p.Id, pfd.FiscalYearDetailId, fyd.PeriodName, fyd.PeriodStart, fyd.PeriodEnd, pfd.Post ";
+                #region sql statement
 
+                sqlText = @"
+SELECT 
+    pfd.Id
+    ,pfd.Code
+    ,pfd.FiscalYearDetailId
+    ,p.Name AS ProjectName
+    ,p.Id AS ProjectId
+    ,fyd.PeriodName
+    ,fyd.PeriodStart
+    ,pfd.Post 
+    ,pfd.TotalProfitValue AS TotalPF
+    ,pfd.WPPFValue
+    ,pfd.WWFValue
+    ,pfd.BWWF
+FROM WPPFHeader pfd
+";
 
-        //                #endregion SqlText
-        //                #region SqlExecution
+                sqlText += " LEFT OUTER JOIN [dbo].[Project] p ON pfd.ProjectId = p.Id";
+                sqlText += " LEFT OUTER JOIN [dbo].[FiscalYearDetail] fyd ON pfd.FiscalYearDetailId = fyd.Id";
+                sqlText += " WHERE 1 = 1 AND pfd.IsArchive = 0";
+                sqlText += " ORDER BY fyd.PeriodStart DESC";
 
-        //                SqlCommand objComm = new SqlCommand(sqlText, currConn, transaction);
-        //                if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
-        //                {
-        //                    for (int j = 0; j < conditionFields.Length; j++)
-        //                    {
-        //                        if (string.IsNullOrWhiteSpace(conditionFields[j]) || string.IsNullOrWhiteSpace(conditionValues[j]))
-        //                        {
-        //                            continue;
-        //                        }
-        //                        cField = conditionFields[j].ToString();
-        //                        cField = Ordinary.StringReplacing(cField);
-        //                        objComm.Parameters.AddWithValue("@" + cField, conditionValues[j]);
-        //                    }
-        //                }
+                SqlCommand _objComm = new SqlCommand();
+                _objComm.Connection = currConn;
+                _objComm.CommandText = sqlText;
+                _objComm.CommandType = CommandType.Text;
 
-        //                SqlDataReader dr;
-        //                dr = objComm.ExecuteReader();
-        //                while (dr.Read())
-        //                {
-        //                    vm = new PFHeaderVM();
-        //                    vm.Id = Convert.ToInt32(dr["Id"]);
-        //                    vm.FiscalYearDetailId = Convert.ToInt32(dr["FiscalYearDetailId"]);
-        //                    vm.Code = dr["Code"].ToString();
-        //                    vm.ProjectName = dr["ProjectName"].ToString();
-        //                    vm.ProjectId = dr["ProjectId"].ToString();
-        //                    vm.FiscalPeriod = dr["PeriodName"].ToString();
-        //                    vm.PeriodStart = dr["PeriodStart"].ToString();
-        //                    vm.TotalPF =Math.Round(Convert.ToDecimal(dr["TotalPF"]));
-        //                    vm.Post = Convert.ToBoolean(dr["Post"]);
+                SqlDataReader dr;
+                dr = _objComm.ExecuteReader();
 
-        //                    VMs.Add(vm);
-        //                }
-        //                dr.Close();
-        //                #endregion SqlExecution
+                while (dr.Read())
+                {
+                    vm = new PFHeaderVM();
 
-        //                if (Vtransaction == null && transaction != null)
-        //                {
-        //                    transaction.Commit();
-        //                }
-        //                #endregion
-        //            }
-        //            #region catch
+                    vm.Id = Convert.ToInt32(dr["Id"]);
+                    vm.Code = dr["Code"].ToString();
+                    vm.FiscalYearDetailId = Convert.ToInt32(dr["FiscalYearDetailId"]);
+                    vm.ProjectName = dr["ProjectName"].ToString();
+                    vm.ProjectId = dr["ProjectId"].ToString();
+                    vm.FiscalPeriod = dr["PeriodName"].ToString();
+                    vm.PeriodStart = Ordinary.StringToDate(dr["PeriodStart"].ToString());
+                    vm.Post = Convert.ToBoolean(dr["Post"]);
+                    vm.TotalPF = Convert.ToDecimal(dr["TotalPF"]);
+                    vm.EmployeePFValue = Convert.ToDecimal(dr["WPPFValue"]);
+                    vm.EmployeerPFValue = Convert.ToDecimal(dr["WWFValue"]);
+                    vm.TotalEmployeeValue = Convert.ToDecimal(dr["BWWF"]);
 
-        //            catch (Exception ex)
-        //            {
-        //                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
-        //            }
-        //            #endregion
-        //            #region finally
-        //            finally
-        //            {
-        //                if (VcurrConn == null && currConn != null && currConn.State == ConnectionState.Open)
-        //                {
-        //                    currConn.Close();
-        //                }
-        //            }
-        //            #endregion
-        //            return VMs;
-        //        }
+                    VMs.Add(vm);
+                }
 
-        //        public List<PFHeaderVM> SelectWWF(string[] conditionFields = null, string[] conditionValues = null, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
-        //        {
-        //            #region Variables
-        //            SqlConnection currConn = null;
-        //            SqlTransaction transaction = null;
-        //            string sqlText = "";
-        //            List<PFHeaderVM> VMs = new List<PFHeaderVM>();
-        //            PFHeaderVM vm;
-        //            #endregion
-        //            try
-        //            {
-        //                #region open connection and transaction
-        //                #region New open connection and transaction
-        //                if (VcurrConn != null)
-        //                {
-        //                    currConn = VcurrConn;
-        //                }
-        //                if (Vtransaction != null)
-        //                {
-        //                    transaction = Vtransaction;
-        //                }
-        //                #endregion New open connection and transaction
-        //                if (currConn == null)
-        //                {
-        //                    currConn = _dbsqlConnection.GetConnection();
-        //                    if (currConn.State != ConnectionState.Open)
-        //                    {
-        //                        currConn.Open();
-        //                    }
-        //                }
-        //                if (transaction == null)
-        //                {
-        //                    transaction = currConn.BeginTransaction("");
-        //                }
-        //                #endregion open connection and transaction
-        //                string hrmDB = _dbsqlConnection.GetConnection().Database;
-        //                #region sql statement
-        //                #region SqlText
-        //                sqlText = @"
-        //SELECT 
-        //pfd.Id
-        //,c.Code
-        //,pfd.FiscalYearDetailId
-        //,p.Name ProjectName
-        //,p.Id ProjectId
-        //,fyd.PeriodName
-        //,fyd.PeriodStart
-        //,pfd.Post 
-        //,pfd.TotalValue TotalPF
-        //FROM WWFHeader pfd
-        //";
+                #endregion
+            }
+            #region catch
+            catch (SqlException sqlex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+            #endregion
+            #region finally
+            finally
+            {
+                if (currConn != null)
+                {
+                    if (currConn.State == ConnectionState.Open)
+                    {
+                        currConn.Close();
+                    }
+                }
+            }
+            #endregion
 
-        //                sqlText += "  LEFT OUTER JOIN [dbo].Project p ON pfd.ProjectId=p.Id";
-        //                sqlText += "  LEFT OUTER JOIN [dbo].[FiscalYearDetail] fyd ON pfd.FiscalYearDetailId=fyd.Id";
-        //                sqlText += "  LEFT OUTER JOIN [dbo].[WPPFHeader] c ON pfd.WPPFHeaderId=c.Id";
-        //                sqlText += @" WHERE  1=1  AND pfd.IsArchive = 0
-        //";
-        //                string cField = "";
-        //                if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
-        //                {
-        //                    for (int i = 0; i < conditionFields.Length; i++)
-        //                    {
-        //                        if (string.IsNullOrWhiteSpace(conditionFields[i]) || string.IsNullOrWhiteSpace(conditionValues[i]))
-        //                        {
-        //                            continue;
-        //                        }
-        //                        cField = conditionFields[i].ToString();
-        //                        cField = Ordinary.StringReplacing(cField);
-        //                        sqlText += " AND " + conditionFields[i] + "=@" + cField;
-        //                    }
-        //                }
-        //                //  sqlText += "  GROUP BY p.Name,p.Id, pfd.FiscalYearDetailId, fyd.PeriodName, fyd.PeriodStart, fyd.PeriodEnd, pfd.Post ";
-        //                sqlText += " ORDER BY fyd.PeriodStart DESC";
-
-        //                #endregion SqlText
-        //                #region SqlExecution
-
-        //                SqlCommand objComm = new SqlCommand(sqlText, currConn, transaction);
-        //                if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
-        //                {
-        //                    for (int j = 0; j < conditionFields.Length; j++)
-        //                    {
-        //                        if (string.IsNullOrWhiteSpace(conditionFields[j]) || string.IsNullOrWhiteSpace(conditionValues[j]))
-        //                        {
-        //                            continue;
-        //                        }
-        //                        cField = conditionFields[j].ToString();
-        //                        cField = Ordinary.StringReplacing(cField);
-        //                        objComm.Parameters.AddWithValue("@" + cField, conditionValues[j]);
-        //                    }
-        //                }
-
-        //                SqlDataReader dr;
-        //                dr = objComm.ExecuteReader();
-        //                while (dr.Read())
-        //                {
-        //                    vm = new PFHeaderVM();
-        //                    vm.Id = Convert.ToInt32(dr["Id"]);
-        //                    vm.FiscalYearDetailId = Convert.ToInt32(dr["FiscalYearDetailId"]);
-        //                    vm.Code = dr["Code"].ToString();
-        //                    vm.ProjectName = dr["ProjectName"].ToString();
-        //                    vm.ProjectId = dr["ProjectId"].ToString();
-        //                    vm.FiscalPeriod = dr["PeriodName"].ToString();
-        //                    vm.PeriodStart = dr["PeriodStart"].ToString();
-        //                    vm.TotalPF = Convert.ToDecimal(dr["TotalPF"]);
-        //                    vm.Post = Convert.ToBoolean(dr["Post"]);
-
-        //                    VMs.Add(vm);
-        //                }
-        //                dr.Close();
-        //                #endregion SqlExecution
-
-        //                if (Vtransaction == null && transaction != null)
-        //                {
-        //                    transaction.Commit();
-        //                }
-        //                #endregion
-        //            }
-        //            #region catch
-
-        //            catch (Exception ex)
-        //            {
-        //                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
-        //            }
-        //            #endregion
-        //            #region finally
-        //            finally
-        //            {
-        //                if (VcurrConn == null && currConn != null && currConn.State == ConnectionState.Open)
-        //                {
-        //                    currConn.Close();
-        //                }
-        //            }
-        //            #endregion
-        //            return VMs;
-        //        }
-
+            return VMs;
+        }
         #endregion Methods
     }
 }

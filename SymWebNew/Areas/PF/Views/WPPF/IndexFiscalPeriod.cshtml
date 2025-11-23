@@ -2,10 +2,9 @@
 @using UIHelper.MVC
 
 <div class="headrow">
-    <button type="button" title="Add New PF Process" data-url="/@ViewBag.TransType/WPPF/PFProcess" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>
-    @*<button type="button" title="Go To Index" data-url="/@ViewBag.TransType/WPPF/Index_WPPF" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;WPPF</button>
-    <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/WPPF/Index_WWF" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;WWF</button>
-    <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/WPPF/Index_WWF" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;BWWF</button>*@
+    <button type="button" title="Add New WPPF" data-url="/@ViewBag.TransType/WPPF/Create" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>
+    <button type="button" data-url="/PF/WPPF/AllWPPFReport" title="Click to see the Report" id="" class=" sendRpt sym-btn-report">&nbsp;Report</button>
+    <button type="button" data-url="/PF/WPPF/DownloadAllWPPFReport" id="" title="Click to Download the Report" class=" sendRpt sym-btn-Excel-Export">&nbsp;Download</button>
     <label class="pull-right">Profit Value</label>
 </div>
 <div class="thinbox">
@@ -35,7 +34,9 @@
     <br />
 </div>
 <div class="headrow">
-    <button type="button" title="Add New PF Process" data-url="/@ViewBag.TransType/WPPF/PFProcess" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>
+    <button type="button" title="Add New WPPF" data-url="/@ViewBag.TransType/WPPF/Create" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>
+    <button type="button" data-url="/PF/WPPF/AllWPPFReport" title="Click to see the Report" id="" class=" sendRpt sym-btn-report">&nbsp;Report</button>
+    <button type="button" data-url="/PF/WPPF/DownloadAllWPPFReport" id="" title="Click to Download the Report" class=" sendRpt sym-btn-Excel-Export">&nbsp;Download</button>
 </div>
 
 
@@ -120,6 +121,14 @@
         });
 
     }
+
+
+    $('.sendRpt').click(function () {
+        debugger;
+
+        var url = $(this).attr("data-url");
+        window.open(url, '_blank');
+    });
 
 
 </script>
