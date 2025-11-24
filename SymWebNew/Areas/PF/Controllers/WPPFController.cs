@@ -19,6 +19,9 @@ using Newtonsoft.Json;
 using SymWebUI.Areas.PF.Models;
 using SymRepository.Payroll;
 using System.Web;
+using SymRepository.Enum;
+using SymViewModel.Enum;
+using System.Configuration;
 
 namespace SymWebUI.Areas.PF.Controllers
 {
@@ -125,7 +128,7 @@ namespace SymWebUI.Areas.PF.Controllers
              JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult PFProcess(string fydid, decimal? TotalProfit, int? FiscalYear)
+        public ActionResult Create(string fydid, decimal? TotalProfit, int? FiscalYear)
         {
             if (string.IsNullOrEmpty(fydid))
                 return View();
@@ -141,7 +144,7 @@ namespace SymWebUI.Areas.PF.Controllers
             };
 
             WPPFRepo repo = new WPPFRepo();
-            string[] result = repo.PFProcess(TotalProfit, fydid, FiscalYear, vm);
+            string[] result = repo.Insert(TotalProfit, fydid, FiscalYear, vm);
 
             string mgs = result[0] + "~" + result[1];
             Session["result"] = mgs;
@@ -281,183 +284,510 @@ namespace SymWebUI.Areas.PF.Controllers
             }
         }
 
-        //public ActionResult Index_WPPF(string EmployeeId = "", string fydid = "")
-        //{
-        //    ViewBag.EmployeeId = EmployeeId;
-        //    ViewBag.fydid = fydid;
+        private FileStreamResult RenderReportAsPDF(ReportDocument rptDoc)
+        {
+            Stream stream = rptDoc.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+            return File(stream, "application/PDF");
+        }
 
-        //    return View();
-        //}
+        public ActionResult AllWPPFReport(PFHeaderVM vm)
+        {
+            string[] result = new string[6];
+            try
+            {
+                #region Try
 
-        //public ActionResult _index_WPPF(JQueryDataTableParamModel param, string EmployeeId = "", string fydid = "")
-        //{
-        //    WPPFRepo _repo = new WPPFRepo();
-        //    List<PFHeaderVM> getAllData = new List<PFHeaderVM>();
-        //    IEnumerable<PFHeaderVM> filteredData;
-        //    ShampanIdentity Identit = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+                #region Objects and Variables
 
-        //    string[] conditionFields = { "pfd.EmployeeId", "pfd.FiscalYearDetailId" };
-        //    string[] conditionValues = { EmployeeId, fydid };
+                string CompanyName = new AppSettingsReader().GetValue("CompanyName", typeof(string)).ToString();
 
-        //    getAllData = _repo.SelectWPPF(conditionFields, conditionValues);
+                var permission = _repoSUR.SymRoleSession(identity.UserId, "1_55", "report").ToString();
+                Session["permission"] = permission;
+                if (permission == "False")
+                {
+                    return Redirect("/Payroll/Home");
+                }
 
-        //    if (!string.IsNullOrEmpty(param.sSearch))
-        //    {
-        //        // Optionally check whether the columns are searchable at all 
-        //        var isSearchable1 = Convert.ToBoolean(Request["bSearchable_1"]);
-        //        var isSearchable2 = Convert.ToBoolean(Request["bSearchable_2"]);
-        //        var isSearchable3 = Convert.ToBoolean(Request["bSearchable_3"]);
-        //        var isSearchable4 = Convert.ToBoolean(Request["bSearchable_4"]);
-        //        var isSearchable5 = Convert.ToBoolean(Request["bSearchable_5"]);
+                ReportDocument doc = new ReportDocument();
+                DataSet ds = new DataSet();
+                DataTable dt = new DataTable();
 
+                // RepoCall → load all WPPF headers without filtering
+                WPPFRepo _repo = new WPPFRepo();
+                var getAllData = _repo.SelectAll();
 
-        //        filteredData = getAllData
-        //            .Where(c =>
-        //                  isSearchable1 && c.Code.ToLower().Contains(param.sSearch.ToLower())
-        //               || isSearchable2 && c.ProjectName.ToLower().Contains(param.sSearch.ToLower())
-        //               || isSearchable3 && c.FiscalPeriod.ToLower().Contains(param.sSearch.ToLower())
-        //               || isSearchable4 && c.TotalPF.ToString().ToLower().Contains(param.sSearch.ToLower())
-        //               || isSearchable5 && c.Post.ToString().ToLower().Contains(param.sSearch.ToLower())
+                dt = Ordinary.ListToDataTable(getAllData.ToList());
 
-        //            );
-        //    }
-        //    else
-        //    {
-        //        filteredData = getAllData;
-        //    }
-
-        //    var isSortable_1 = Convert.ToBoolean(Request["bSortable_1"]);
-        //    var isSortable_2 = Convert.ToBoolean(Request["bSortable_2"]);
-        //    var isSortable_3 = Convert.ToBoolean(Request["bSortable_3"]);
-        //    var isSortable_4 = Convert.ToBoolean(Request["bSortable_4"]);
-        //    var isSortable_5 = Convert.ToBoolean(Request["bSortable_5"]);
+                #endregion
 
 
-        //    var sortColumnIndex = Convert.ToInt32(Request["iSortCol_0"]);
-        //    Func<PFHeaderVM, string> orderingFunction = (c =>
-        //        sortColumnIndex == 1 && isSortable_1 ? c.Code :
-        //        sortColumnIndex == 2 && isSortable_2 ? c.ProjectName :
-        //        sortColumnIndex == 3 && isSortable_3 ? c.PeriodStart :
-        //        sortColumnIndex == 4 && isSortable_4 ? c.TotalPF.ToString() :
-        //        sortColumnIndex == 5 && isSortable_5 ? c.Post.ToString() :
+                #region Report Call
 
-        //        "");
+                EnumReportRepo _reportRepo = new EnumReportRepo();
+             
+                CompanyRepo _CompanyRepo = new CompanyRepo();
+                CompanyVM cvm = _CompanyRepo.SelectAll().FirstOrDefault();
 
-        //    var sortDirection = Request["sSortDir_0"]; // asc or desc
-        //    if (sortDirection == "asc")
-        //        filteredData = filteredData.OrderBy(orderingFunction);
-        //    else
-        //        filteredData = filteredData.OrderByDescending(orderingFunction);
+                string rptLocation = "";
 
-        //    var displayedCompanies = filteredData.Skip(param.iDisplayStart).Take(param.iDisplayLength);
-        //    var result = from c in displayedCompanies
-        //                 select new[] { 
-        //              c.Id.ToString()
-        //            , c.Code
-        //            , c.ProjectName
-        //            , c.FiscalPeriod
-        //            , c.TotalPF.ToString()
-        //            , c.Post ? "Yes" : "No"
-        //         };
-        //    return Json(new
-        //    {
-        //        sEcho = param.sEcho,
-        //        iTotalRecords = getAllData.Count(),
-        //        iTotalDisplayRecords = filteredData.Count(),
-        //        aaData = result
-        //    },
-        //     JsonRequestBehavior.AllowGet);
-        //}
+                rptLocation = AppDomain.CurrentDomain.BaseDirectory +
+                              @"Files\ReportFiles\PF\rptWPPFReport.rpt";
 
-        //public ActionResult Index_WWF(string EmployeeId = "", string fydid = "")
-        //{
-        //    ViewBag.EmployeeId = EmployeeId;
-        //    ViewBag.fydid = fydid;
+                doc.Load(rptLocation);
 
-        //    return View();
-        //}
+                string companyLogo = AppDomain.CurrentDomain.BaseDirectory + "Images\\COMPANYLOGO.png";
+                doc.DataDefinition.FormulaFields["ReportHeaderA4"].Text = "'" + companyLogo + "'";
+           
+                #endregion
 
-        //public ActionResult _index_WWF(JQueryDataTableParamModel param, string EmployeeId = "", string fydid = "", bool isWWF = false)
-        //{
-        //    WPPFRepo _repo = new WPPFRepo();
-        //    List<PFHeaderVM> getAllData = new List<PFHeaderVM>();
-        //    IEnumerable<PFHeaderVM> filteredData;
-        //    ShampanIdentity Identit = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+                dt.TableName = "dtWPPFReport";
 
-        //    string[] conditionFields = { "pfd.EmployeeId", "pfd.FiscalYearDetailId" };
-        //    string[] conditionValues = { EmployeeId, fydid };
+                doc.SetDataSource(dt);
 
-        //    getAllData = _repo.SelectWWF(conditionFields, conditionValues);
+                var rpt = RenderReportAsPDF(doc);
+                doc.Close();
+                return rpt;
 
-        //    if (!string.IsNullOrEmpty(param.sSearch))
-        //    {
-        //        // Optionally check whether the columns are searchable at all 
-        //        var isSearchable1 = Convert.ToBoolean(Request["bSearchable_1"]);
-        //        var isSearchable2 = Convert.ToBoolean(Request["bSearchable_2"]);
-        //        var isSearchable3 = Convert.ToBoolean(Request["bSearchable_3"]);
-        //        var isSearchable4 = Convert.ToBoolean(Request["bSearchable_4"]);
-        //        var isSearchable5 = Convert.ToBoolean(Request["bSearchable_5"]);
+                #endregion Try
+            }
+            catch (Exception ex)
+            {
+                result[0] = "Fail";
+                result[1] = "Process Fail";
+                Session["result"] = result[0] + "~" + result[1];
 
+                FileLogger.Log("WPPFReport", this.GetType().Name,
+                               ex.Message + Environment.NewLine + ex.StackTrace);
 
-        //        filteredData = getAllData
-        //            .Where(c =>
-        //                  isSearchable1 && c.Code.ToLower().Contains(param.sSearch.ToLower())
-        //               || isSearchable2 && c.ProjectName.ToLower().Contains(param.sSearch.ToLower())
-        //               || isSearchable3 && c.FiscalPeriod.ToLower().Contains(param.sSearch.ToLower())
-        //               || isSearchable4 && c.TotalPF.ToString().ToLower().Contains(param.sSearch.ToLower())
-        //               || isSearchable5 && c.Post.ToString().ToLower().Contains(param.sSearch.ToLower())
+                return View();
+            }
+        }
 
-        //            );
-        //    }
-        //    else
-        //    {
-        //        filteredData = getAllData;
-        //    }
+        private void ExcelSheetFormat(DataTable dt, ExcelWorksheet workSheet, string[] ReportHeaders)
+        {
+            int TableHeadRow = 0;
+            TableHeadRow = ReportHeaders.Length + 2;
 
-        //    var isSortable_1 = Convert.ToBoolean(Request["bSortable_1"]);
-        //    var isSortable_2 = Convert.ToBoolean(Request["bSortable_2"]);
-        //    var isSortable_3 = Convert.ToBoolean(Request["bSortable_3"]);
-        //    var isSortable_4 = Convert.ToBoolean(Request["bSortable_4"]);
-        //    var isSortable_5 = Convert.ToBoolean(Request["bSortable_5"]);
+            int RowCount = 0;
+            RowCount = dt.Rows.Count;
+
+            int ColumnCount = 0;
+            ColumnCount = dt.Columns.Count;
+
+            int GrandTotalRow = 0;
+            GrandTotalRow = TableHeadRow + RowCount + 1;
+
+            int InWordsRow = 0;
+            InWordsRow = GrandTotalRow + 1;
+
+            int SignatureSpaceRow = 0;
+            SignatureSpaceRow = InWordsRow + 1;
+
+            int SignatureRow = 0;
+            SignatureRow = InWordsRow + 4;
+            workSheet.Cells[TableHeadRow, 1].LoadFromDataTable(dt, true);
+
+            #region Format
+
+            var format = new OfficeOpenXml.ExcelTextFormat();
+            format.Delimiter = '~';
+            format.TextQualifier = '"';
+            format.DataTypes = new[] { eDataTypes.String };
 
 
-        //    var sortColumnIndex = Convert.ToInt32(Request["iSortCol_0"]);
-        //    Func<PFHeaderVM, string> orderingFunction = (c =>
-        //        sortColumnIndex == 1 && isSortable_1 ? c.Code :
-        //        sortColumnIndex == 2 && isSortable_2 ? c.ProjectName :
-        //        sortColumnIndex == 3 && isSortable_3 ? c.PeriodStart :
-        //        sortColumnIndex == 4 && isSortable_4 ? c.TotalPF.ToString() :
-        //        sortColumnIndex == 5 && isSortable_5 ? c.Post.ToString() :
+            for (int i = 0; i < ReportHeaders.Length; i++)
+            {
+                workSheet.Cells[i + 1, 1, (i + 1), ColumnCount].Merge = true;
+                workSheet.Cells[i + 1, 1, (i + 1), ColumnCount].Style.HorizontalAlignment =
+                    ExcelHorizontalAlignment.Left;
+                workSheet.Cells[i + 1, 1, (i + 1), ColumnCount].Style.Font.Size = 16 - i;
+                workSheet.Cells[i + 1, 1].LoadFromText(ReportHeaders[i], format);
+            }
 
-        //        "");
+            int colNumber = 0;
 
-        //    var sortDirection = Request["sSortDir_0"]; // asc or desc
-        //    if (sortDirection == "asc")
-        //        filteredData = filteredData.OrderBy(orderingFunction);
-        //    else
-        //        filteredData = filteredData.OrderByDescending(orderingFunction);
+            foreach (DataColumn col in dt.Columns)
+            {
+                colNumber++;
+                if (col.DataType == typeof(DateTime))
+                {
+                    workSheet.Column(colNumber).Style.Numberformat.Format = "dd-MMM-yyyy hh:mm:ss AM/PM";
+                }
+                else if (col.DataType == typeof(Decimal))
+                {
+                    workSheet.Column(colNumber).Style.Numberformat.Format = "#,##0.00_);[Red](#,##0.00)";
 
-        //    var displayedCompanies = filteredData.Skip(param.iDisplayStart).Take(param.iDisplayLength);
-        //    var result = from c in displayedCompanies
-        //                 select new[] { 
-        //             //c.Id.ToString()
-        //              c.Code
-        //            , c.ProjectName
-        //            , c.FiscalPeriod
-        //            , c.TotalPF.ToString()
-        //            , c.Post ? "Yes" : "No"
-        //         };
-        //    return Json(new
-        //    {
-        //        sEcho = param.sEcho,
-        //        iTotalRecords = getAllData.Count(),
-        //        iTotalDisplayRecords = filteredData.Count(),
-        //        aaData = result
-        //    },
-        //     JsonRequestBehavior.AllowGet);
-        //}
+                    #region Grand Total
 
-        
-        
+                    workSheet.Cells[GrandTotalRow, colNumber].Formula = "=Sum(" +
+                                                                        workSheet.Cells[TableHeadRow + 1, colNumber]
+                                                                            .Address + ":" +
+                                                                        workSheet.Cells[(TableHeadRow + RowCount),
+                                                                            colNumber].Address + ")";
+
+                    #endregion
+                }
+            }
+
+            workSheet.Cells[TableHeadRow, 1, TableHeadRow, ColumnCount].Style.Font.Bold = true;
+            workSheet.Cells[GrandTotalRow, 1, GrandTotalRow, ColumnCount].Style.Font.Bold = true;
+
+            workSheet.Cells[
+                    "A" + (TableHeadRow) + ":" + Ordinary.Alphabet[(ColumnCount - 1)] + (TableHeadRow + RowCount + 2)]
+                .Style
+                .Border.Top.Style = ExcelBorderStyle.Thin;
+            workSheet.Cells[
+                    "A" + (TableHeadRow) + ":" + Ordinary.Alphabet[(ColumnCount)] + (TableHeadRow + RowCount + 1)].Style
+                .Border.Left.Style = ExcelBorderStyle.Thin;
+            workSheet.Cells[GrandTotalRow, 1].LoadFromText("Grand Total");
+
+            #endregion
+        }   
+
+        public ActionResult DownloadAllWPPFReport()
+        {
+            string[] result = new string[6];
+            DataSet ds = new DataSet();
+            DataTable dt = new DataTable();
+
+            try
+            {
+                #region Objects and Variables
+
+                ReportDocument doc = new ReportDocument();
+
+                string CompanyName = new AppSettingsReader().GetValue("CompanyName", typeof(string)).ToString();
+
+                var permission = _repoSUR.SymRoleSession(identity.UserId, "1_55", "report").ToString();
+                Session["permission"] = permission;
+                if (permission == "False")
+                {
+                    return Redirect("/Payroll/Home");
+                }
+
+                string FileName = "WPPFReport.xls";
+                string fullPath = AppDomain.CurrentDomain.BaseDirectory + "Files\\Export\\";
+
+                if (System.IO.File.Exists(fullPath + FileName))
+                {
+                    System.IO.File.Delete(fullPath + FileName);
+                }
+
+                #endregion
+
+
+                #region Pull Data
+
+                WPPFRepo _repo = new WPPFRepo();
+                var getAllData = _repo.SelectAll();
+
+                dt = Ordinary.ListToDataTable(getAllData.ToList());
+
+                // Remove unwanted columns
+                var toRemove = new string[]
+                {
+                    "Id","FiscalYearDetailId","ProjectId","PeriodStart","Post","Remarks","IsActive","IsArchive","CreatedBy","CreatedAt","CreatedFrom","LastUpdateBy","LastUpdateAt",
+                    "LastUpdateFrom","Operation","DistributionDate","PeriodEnd","TransType","ProjectName","TotalEmployerValue"
+                };
+                foreach (string col in toRemove)
+                {
+                    if (dt.Columns.Contains(col))
+                        dt.Columns.Remove(col);
+                }
+
+                // Rename columns for Excel
+                dt.Columns["Code"].ColumnName = "Code";
+                dt.Columns["FiscalPeriod"].ColumnName = "Period Name";
+                dt.Columns["TotalPF"].ColumnName = "Total Profit";
+                dt.Columns["EmployeePFValue"].ColumnName = "WPPF Value";
+                dt.Columns["EmployeerPFValue"].ColumnName = "WWF Value";
+                dt.Columns["TotalEmployeeValue"].ColumnName = "BWWF Value";
+
+                #endregion
+
+
+                #region Validations
+
+                if (dt.Rows.Count == 0)
+                {
+                    result[0] = "Fail";
+                    result[1] = "No Data Found";
+                    Session["result"] = result[0] + "~" + result[1];
+
+                    return View();
+                }
+
+                #endregion
+
+
+                #region Report Info
+
+                string filename = "WPPF_ExcelReport";
+
+                CompanyRepo cRepo = new CompanyRepo();
+                CompanyVM comInfo = cRepo.SelectById(1);
+
+                string Line1 = comInfo.Name;
+                string Line2 = comInfo.Address;
+                string Line3 = "";
+
+                string[] ReportHeaders = new string[] { Line1, Line2, Line3 };
+
+                #endregion
+
+
+                #region Prepare Excel
+
+                ExcelPackage excel = new ExcelPackage();
+                var workSheet = excel.Workbook.Worksheets.Add("Sheet1");
+
+                ExcelSheetFormat(dt, workSheet, ReportHeaders);
+
+                #endregion
+
+
+                #region Excel Download
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.AddHeader("content-disposition", "attachment;  filename=" + filename + ".xlsx");
+                    excel.SaveAs(memoryStream);
+                    memoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+
+                #endregion
+
+
+                #region Redirect
+
+                result[0] = "Success";
+                result[1] = "Successful~Excel Downloaded";
+
+                Session["result"] = result[0] + "~" + result[1];
+                return Redirect("/PF/WPPF/IndexFiscalPeriod");
+
+                #endregion
+            }
+            catch (Exception e)
+            {
+                Session["result"] = "Fail~Process Fail";
+
+                FileLogger.Log("DownloadAllWPPFReport", this.GetType().Name, e.Message + Environment.NewLine + e.StackTrace);
+
+                return Redirect("/PF/WPPF/IndexFiscalPeriod");
+            }
+        }
+
+        public ActionResult AllWPPFProfitDistributionReport(string code = "")
+        {
+            string[] result = new string[6];
+            try
+            {
+                #region Try
+
+                #region Objects and Variables
+
+                string CompanyName = new AppSettingsReader().GetValue("CompanyName", typeof(string)).ToString();
+
+                var permission = _repoSUR.SymRoleSession(identity.UserId, "1_55", "report").ToString();
+                Session["permission"] = permission;
+                if (permission == "False")
+                {
+                    return Redirect("/Payroll/Home");
+                }
+
+                ReportDocument doc = new ReportDocument();
+                DataTable dt = new DataTable();
+
+                
+                WPPFRepo _repo = new WPPFRepo();
+
+                string[] conditionFields = { "b.Code" };
+                string[] conditionValues = { code };
+
+                var getAllData = _repo.SelectProfitDistribution(conditionFields, conditionValues);
+
+                dt = Ordinary.ListToDataTable(getAllData.ToList());
+
+                #endregion
+
+
+                #region Report Call
+
+                CompanyRepo _CompanyRepo = new CompanyRepo();
+                CompanyVM cvm = _CompanyRepo.SelectAll().FirstOrDefault();
+
+                string rptLocation = AppDomain.CurrentDomain.BaseDirectory +
+                                     @"Files\ReportFiles\PF\rptWPPFProfitDistribution.rpt";
+
+                doc.Load(rptLocation);
+
+                string companyLogo = AppDomain.CurrentDomain.BaseDirectory + "Images\\COMPANYLOGO.png";
+                doc.DataDefinition.FormulaFields["ReportHeaderA4"].Text = "'" + companyLogo + "'";
+
+                #endregion
+
+                dt.TableName = "dtWPPFProfitDistribution";
+
+                doc.SetDataSource(dt);
+
+                var rpt = RenderReportAsPDF(doc);
+                doc.Close();
+                return rpt;
+
+                #endregion Try
+            }
+            catch (Exception ex)
+            {
+                result[0] = "Fail";
+                result[1] = "Process Fail";
+                Session["result"] = result[0] + "~" + result[1];
+
+                FileLogger.Log("WPPFProfitDistributionReport", this.GetType().Name,
+                               ex.Message + Environment.NewLine + ex.StackTrace);
+
+                return View();
+            }
+        }
+
+
+        public ActionResult DownloadAllWPPFProfitDistributionReport(string code = "")
+        {
+            string[] result = new string[6];
+            DataTable dt = new DataTable();
+
+            try
+            {
+                #region Objects and Variables
+
+                string CompanyName = new AppSettingsReader().GetValue("CompanyName", typeof(string)).ToString();
+
+                var permission = _repoSUR.SymRoleSession(identity.UserId, "1_55", "report").ToString();
+                Session["permission"] = permission;
+                if (permission == "False")
+                {
+                    return Redirect("/Payroll/Home");
+                }
+
+                string FileName = "WPPFDistributionReport.xls";
+                string fullPath = AppDomain.CurrentDomain.BaseDirectory + "Files\\Export\\";
+
+                if (System.IO.File.Exists(fullPath + FileName))
+                {
+                    System.IO.File.Delete(fullPath + FileName);
+                }
+
+                #endregion
+
+
+                #region Pull Data
+
+                WPPFRepo _repo = new WPPFRepo();
+
+                // If 'code' is provided, filter by it, otherwise fetch all data
+                string[] conditionFields = { "b.Code" };
+                string[] conditionValues = { code };
+
+                var getAllData = _repo.SelectProfitDistribution(conditionFields, conditionValues);
+                dt = Ordinary.ListToDataTable(getAllData.ToList());
+
+
+                // Remove unwanted columns
+                var toRemove = new string[]
+                        {
+                            "Id","WPPFHeaderId","EmployeeId","IsArchive","CreatedBy","CreatedAt","CreatedFrom",
+                            "LastUpdateBy","LastUpdateAt","LastUpdateFrom","FiscalYearDetailId","FiscalPeriod","EmployeePFValue","EmployeerPFValue","TotalEmployeeValue","Post","Remarks","IsActive",
+                            "TotalEmployerValue","Operation","ProjectId","PeriodStart","PeriodEnd","TransType"
+                        };
+
+                foreach (string col in toRemove)
+                {
+                    if (dt.Columns.Contains(col))
+                        dt.Columns.Remove(col);
+                }
+
+                // Rename columns for Excel
+                dt.Columns["Code"].ColumnName = "WPPF Code";
+                dt.Columns["ProjectName"].ColumnName = "Employee Name";
+                dt.Columns["DistributionDate"].ColumnName = "Distribution Date";
+                dt.Columns["TotalPF"].ColumnName = "Employee Profit";
+
+                #endregion
+
+
+                #region Validations
+
+                if (dt.Rows.Count == 0)
+                {
+                    result[0] = "Fail";
+                    result[1] = "No Data Found";
+                    Session["result"] = result[0] + "~" + result[1];
+                    return View();
+                }
+
+                #endregion
+
+
+                #region Excel Header Setup
+                string filename = "WPPF Profit Distribution_ExcelReport";
+                CompanyRepo cRepo = new CompanyRepo();
+                CompanyVM comInfo = cRepo.SelectById(1);
+
+                string Line1 = comInfo.Name;
+                string Line2 = comInfo.Address;
+                string Line3 = "";
+
+                string[] ReportHeaders = new string[] { Line1, Line2, Line3 };
+
+                #endregion
+
+
+                #region Prepare Excel
+
+                ExcelPackage excel = new ExcelPackage();
+                var workSheet = excel.Workbook.Worksheets.Add("Sheet1");
+
+                ExcelSheetFormat(dt, workSheet, ReportHeaders);
+
+                #endregion
+
+
+                #region Excel Download
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.AddHeader("content-disposition", "attachment;  filename=" + filename + ".xlsx");
+                    excel.SaveAs(memoryStream);
+                    memoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+
+                #endregion
+
+
+                #region Redirect
+
+                result[0] = "Success";
+                result[1] = "Successful~Excel Downloaded";
+                Session["result"] = result[0] + "~" + result[1];
+
+                return Redirect("/PF/WPPF/ProfitDistribution");
+
+                #endregion
+            }
+            catch (Exception e)
+            {
+                Session["result"] = "Fail~Process Fail";
+                FileLogger.Log("DownloadAllWPPFProfitDistributionReport", this.GetType().Name, e.Message);
+                return Redirect("/PF/WPPF/ProfitDistribution");
+            }
+        }
+
+
     }
 }

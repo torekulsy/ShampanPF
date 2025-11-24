@@ -40,11 +40,11 @@ namespace SymRepository.PF
             }
         }
 
-        public string[] PFProcess(decimal? TotalProfit, string FiscalYearDetailId, int? FiscalYear, ShampanIdentityVM auditvm)
+        public string[] Insert(decimal? TotalProfit, string FiscalYearDetailId, int? FiscalYear, ShampanIdentityVM auditvm)
         {
             try
             {
-                return new WPPFDAL().PFProcess(TotalProfit, FiscalYearDetailId, FiscalYear, auditvm);
+                return new WPPFDAL().Insert(TotalProfit, FiscalYearDetailId, FiscalYear, auditvm);
             }
             catch (Exception ex)
             {
@@ -64,29 +64,16 @@ namespace SymRepository.PF
             }
         }
 
-        //public List<PFHeaderVM> SelectWWF(string[] conditionFields = null, string[] conditionValues = null)
-        //{
-        //    try
-        //    {
-        //        return new WPPFDAL().SelectWWF(conditionFields, conditionValues);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-        //public List<PFHeaderVM> SelectWPPF(string[] conditionFields = null, string[] conditionValues = null)
-        //{
-        //    try
-        //    {
-        //        return new WPPFDAL().SelectWPPF(conditionFields, conditionValues);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-        
+        public List<PFHeaderVM> SelectAll()
+        {
+            try
+            {
+                return new WPPFDAL().SelectAll();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

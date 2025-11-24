@@ -4482,9 +4482,10 @@
     <Content Include="Areas\PF\Views\EmployeeTransfer\ImportEmployeePFTransfer.cshtml" />
     <Content Include="Areas\PF\Views\EmployeeTransfer\Index.cshtml" />
     <Content Include="Areas\PF\Views\EmployeeTransfer\SingleEmployeePFTransferEdit.cshtml" />
-    <Content Include="Areas\PF\Views\WPPF\PFProcess.cshtml" />
+    <Content Include="Areas\PF\Views\WPPF\Create.cshtml" />
     <Content Include="Areas\PF\Views\WPPF\IndexFiscalPeriod.cshtml" />
     <Content Include="Areas\PF\Views\WPPF\ProfitDistribution.cshtml" />
+<<<<<<< HEAD
     <Content Include="Areas\PF\Views\WPPF\Index_WWF.cshtml" />
     <Content Include="Areas\PF\Views\WPPF\Index_WPPF.cshtml" />
     <Content Include="Areas\WPPF\Views\Web.config" />
@@ -4493,6 +4494,8 @@
     <Content Include="Areas\WPPF\Views\Shared\_leftnav.cshtml" />
     <Content Include="Areas\WPPF\Views\Shared\_navbar.cshtml" />
     <Content Include="Areas\WPPF\Views\Shared\_rightNav.cshtml" />
+=======
+>>>>>>> 78776cdb815132f09049d4f32be27f1140d23222
     <None Include="Properties\PublishProfiles\PFEGCB.pubxml" />
     <None Include="Properties\PublishProfiles\SymphonyHRM_New.pubxml" />
     <Content Include="Views\Home\ForgotPasswordView.cshtml" />

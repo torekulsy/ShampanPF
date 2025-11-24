@@ -103,16 +103,19 @@ namespace SymViewModel.PF
 
         public int Id { get; set; }
         public int FiscalYearDetailId { get; set; }
-
+        public string Code { get; set; }
+        public string ProjectName { get; set; }
+        public string DistributionDate { get; set; }
+        [Display(Name = "Fiscal Period")]
+        public string FiscalPeriod { get; set; }
+        public decimal TotalPF { get; set; }
         [Display(Name = "Employee PF Value")]
         public decimal EmployeePFValue { get; set; }
         [Display(Name = "Employeer PF Value")]
         public decimal EmployeerPFValue { get; set; }
+        public decimal TotalEmployeeValue { get; set; }
         [Display(Name = "Basic Salary")]
-
         public bool Post { get; set; }
-
-
         [StringLength(450, ErrorMessage = "Remarks cannot be longer than 450 characters.")]
         public string Remarks { get; set; }
         [Display(Name = "Active")]
@@ -124,28 +127,11 @@ namespace SymViewModel.PF
         public string LastUpdateBy { get; set; }
         public string LastUpdateAt { get; set; }
         public string LastUpdateFrom { get; set; }
-        public decimal TotalEmployeeValue { get; set; }
+       
         public decimal TotalEmployerValue { get; set; }
-
-        public decimal TotalPF { get; set; }
-
         public string Operation { get; set; }
-
-        [Display(Name = "Fiscal Period")]
-        public string FiscalPeriod { get; set; }
-
-        public string DistributionDate { get; set; }
-
-        public string Code { get; set; }
-
-
-
-        public string ProjectName { get; set; }
-
         public string ProjectId { get; set; }
-
         public string PeriodStart { get; set; }
-
         public string PeriodEnd { get; set; }
         public string TransType { get; set; }
     }
