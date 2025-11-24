@@ -330,6 +330,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PFDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Areas\WPPF\Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -4486,6 +4487,12 @@
     <Content Include="Areas\PF\Views\WPPF\ProfitDistribution.cshtml" />
     <Content Include="Areas\PF\Views\WPPF\Index_WWF.cshtml" />
     <Content Include="Areas\PF\Views\WPPF\Index_WPPF.cshtml" />
+    <Content Include="Areas\WPPF\Views\Web.config" />
+    <Content Include="Areas\WPPF\Views\Home\Index.cshtml" />
+    <Content Include="Areas\WPPF\Views\Shared\_HomeLayout.cshtml" />
+    <Content Include="Areas\WPPF\Views\Shared\_leftnav.cshtml" />
+    <Content Include="Areas\WPPF\Views\Shared\_navbar.cshtml" />
+    <Content Include="Areas\WPPF\Views\Shared\_rightNav.cshtml" />
     <None Include="Properties\PublishProfiles\PFEGCB.pubxml" />
     <None Include="Properties\PublishProfiles\SymphonyHRM_New.pubxml" />
     <Content Include="Views\Home\ForgotPasswordView.cshtml" />
@@ -4824,6 +4831,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Common\Models\" />
     <Folder Include="Areas\Config\Models\" />
+    <Folder Include="Areas\WPPF\Models\" />
     <Folder Include="assets\css\image\Gallary\" />
     <Folder Include="Files\Asset\" />
     <Folder Include="Files\Attachment\Client\" />
