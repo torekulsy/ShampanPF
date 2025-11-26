@@ -134,5 +134,7 @@ namespace SymViewModel.WPPF
         public string PeriodStart { get; set; }
         public string PeriodEnd { get; set; }
         public string TransType { get; set; }
+
+        public decimal DistributedValue { get; set; }
     }
 }

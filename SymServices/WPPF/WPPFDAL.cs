@@ -75,6 +75,7 @@ pfd.Id
 ,fyd.PeriodStart
 ,pfd.Post 
 ,pfd.TotalProfitValue TotalPF
+,pfd.TotalProfitValue *.05 as DistributedValue
 ,pfd.WPPFValue
 ,pfd.WWFValue
 ,pfd.BWWF
@@ -135,6 +136,7 @@ FROM WPPFHeader pfd
                     vm.FiscalPeriod = dr["PeriodName"].ToString();
                     vm.PeriodStart = dr["PeriodStart"].ToString();
                     vm.TotalPF = Convert.ToDecimal(dr["TotalPF"]);
+                    vm.DistributedValue = Convert.ToDecimal(dr["DistributedValue"].ToString());
                     vm.Post = Convert.ToBoolean(dr["Post"]);
                     vm.EmployeePFValue = Convert.ToDecimal(dr["WPPFValue"]);
                     vm.EmployeerPFValue = Convert.ToDecimal(dr["WWFValue"]);
