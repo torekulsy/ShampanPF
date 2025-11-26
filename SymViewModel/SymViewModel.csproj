@@ -390,6 +390,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tax\TaxScheduleVM.cs" />
     <Compile Include="Tax\YearlyTAXVM.cs" />
+    <Compile Include="WPPF\GLJournalDetailVM.cs" />
+    <Compile Include="WPPF\GLJournalVM.cs" />
+    <Compile Include="WPPF\PFBankDepositVM.cs" />
+    <Compile Include="WPPF\PFDetailVM.cs" />
+    <Compile Include="WPPF\PFParameterVM.cs" />
+    <Compile Include="WPPF\PFReportVM.cs" />
+    <Compile Include="WPPF\PFSettlementDetailVM.cs" />
+    <Compile Include="WPPF\PFSettlementVM.cs" />
+    <Compile Include="WPPF\ReturnOnBankInterestVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />

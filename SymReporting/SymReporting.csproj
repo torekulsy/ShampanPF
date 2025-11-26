@@ -81,6 +81,8 @@
     <Compile Include="PF\PFExcel.cs" />
     <Compile Include="PF\PFReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WPPF\PFExcel.cs" />
+    <Compile Include="WPPF\PFReport.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

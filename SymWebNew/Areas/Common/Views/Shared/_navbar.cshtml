@@ -42,9 +42,13 @@
                         {
                             <li><a class="btn btn-info" href="/PF/Home/">PF</a></li>
                         }
-                        @if (identity.IsAdmin || identity.IsPF)
+                        @*@if (identity.IsAdmin || identity.IsPF)
                         {
                             <li><a class="btn btn-info" href="/WPPF/Home/">WPPF</a></li>
+                        }*@
+                        @if (identity.IsAdmin || identity.IsPF)
+                        {
+                            <li><a class="btn btn-info" href="/WPPF/WPPF/IndexFiscalPeriod">WPPF</a></li>
                         }
                      
                     </ul>

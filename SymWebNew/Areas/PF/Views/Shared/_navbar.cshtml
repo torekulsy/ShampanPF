@@ -50,6 +50,10 @@
                             {
                                 <li><a class="btn btn-info" href="/PF/Home/">PF</a></li>
                             }
+                            @if (identity.IsAdmin || identity.IsPF)
+                            {
+                                <li><a class="btn btn-info" href="/WPPF/WPPF/IndexFiscalPeriod">WPPF</a></li>
+                            }
                          
                         </ul>
                     </li>
@@ -153,7 +157,7 @@
                                         <li class="dropdown  "><a href="/PF/PFReport/YearClosingReportVeiw?JournalType=1" id="lnkEdit1" class="btn btn-info " style="text-decoration:none;"> Year Closing</a></li>
                                         <li class="dropdown "><a href="/PF/Loan/AllLoan" class="btn btn-info">Loan </a></li>
                                         <li class="dropdown  "><a href="/PF/ProcessControll" class="btn btn-info">Loan Collection</a></li>
-                                        <li class="dropdown  "><a href="/PF/WPPF/IndexFiscalPeriod" class="btn btn-info">WPPF</a></li>
+                                        @*<li class="dropdown  "><a href="/PF/WPPF/IndexFiscalPeriod" class="btn btn-info">WPPF</a></li>*@
 
                                     </ul>
                                 </div>

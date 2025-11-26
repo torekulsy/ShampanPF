@@ -124,6 +124,7 @@
     <Compile Include="TransferIssueDetailRepo.cs" />
     <Compile Include="TransferIssueRepo.cs" />
     <Compile Include="UserRoleRepo.cs" />
+    <Compile Include="WPPF\WPPFRepo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SymServices\SymServices.csproj">
