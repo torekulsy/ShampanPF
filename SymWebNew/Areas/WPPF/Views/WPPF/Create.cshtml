@@ -11,7 +11,7 @@
 </style>
 <div class="headrow">
     <button type="button" title="Save Data" id="" class="saveJSON sym-btn-save">&nbsp;Save</button>
-    <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/WPPF/IndexFiscalPeriod" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+    <button type="button" title="Go To Index" data-url="/WPPF/WPPF/IndexFiscalPeriod" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
 
     <label class="pull-right">Profit Value</label>
 </div>
@@ -80,7 +80,7 @@
             ShowResult("Fail", "Please Select the Fiscal Year");
             return;
         }
-        var url = "/@ViewBag.TransType/WPPF/Create"
+        var url = "/WPPF/WPPF/Create"
         + "?fydid=" + FiscalPeriodDetailId
         + "&TotalProfit=" + TotalProfit
         + "&FiscalYear=" + FiscalYear;

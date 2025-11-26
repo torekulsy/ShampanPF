@@ -40,7 +40,7 @@ namespace SymWebUI.Areas.WPPF.Controllers
         public ActionResult IndexFiscalPeriod(string EmployeeId = "", string fydid = "")
         {
             ViewBag.EmployeeId = EmployeeId;
-            ViewBag.fydid = fydid;
+            ViewBag.fydid = fydid;        
 
             return View();
         }
@@ -113,6 +113,7 @@ namespace SymWebUI.Areas.WPPF.Controllers
                     , c.ProjectName
                     , c.FiscalPeriod
                     , c.TotalPF.ToString()
+                    , c.DistributedValue.ToString()
                     , c.EmployeePFValue.ToString()
                     , c.EmployeerPFValue.ToString()
                     , c.TotalEmployeeValue.ToString()

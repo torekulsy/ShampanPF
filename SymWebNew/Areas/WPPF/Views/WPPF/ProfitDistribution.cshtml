@@ -2,17 +2,16 @@
 @using UIHelper.MVC
 
 <div class="headrow">
-    <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/WPPF/IndexFiscalPeriod" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+    <button type="button" title="Go To Index" data-url="/WPPF/WPPF/IndexFiscalPeriod" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
     @*<button type="button" data-url="/PF/WPPF/AllWPPFProfitDistributionReport" title="Click to see the Report" id="" class=" sendRpt sym-btn-report">&nbsp;Report</button>*@
     <button type="button"
             class="sendRpt sym-btn-report"
             data-code=""
-            data-url="/PF/WPPF/AllWPPFProfitDistributionReport"
-            >
+            data-url="/WPPF/WPPF/AllWPPFProfitDistributionReport">
         Report
     </button>
 
-    <button type="button" data-url="/PF/WPPF/DownloadAllWPPFProfitDistributionReport"  class=" sendRpt sym-btn-Excel-Export" data-code="">&nbsp;Download</button>
+    <button type="button" data-url="/WPPF/WPPF/DownloadAllWPPFProfitDistributionReport" class=" sendRpt sym-btn-Excel-Export" data-code="">&nbsp;Download</button>
     <label class="pull-right">WPPF Profit Distribution</label>
 </div>
 <div class="thinbox">
@@ -39,14 +38,14 @@
     <br />
 </div>
 <div class="headrow">
-    <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/WPPF/IndexFiscalPeriod" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+    <button type="button" title="Go To Index" data-url="/WPPF/WPPF/IndexFiscalPeriod" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
     <button type="button"
             class="sendRpt sym-btn-report"
             data-code=""
-            data-url="/PF/WPPF/AllWPPFProfitDistributionReport">
+            data-url="/WPPF/WPPF/AllWPPFProfitDistributionReport">
         Report
     </button>
-    <button type="button" data-url="/PF/WPPF/DownloadAllWPPFProfitDistributionReport"  class=" sendRpt sym-btn-Excel-Export" data-code="">&nbsp;Download</button>
+    <button type="button" data-url="/WPPF/WPPF/DownloadAllWPPFProfitDistributionReport" class=" sendRpt sym-btn-Excel-Export" data-code="">&nbsp;Download</button>
 </div>
 
 <script language="javascript" type="text/javascript">
@@ -56,22 +55,36 @@
         $.datepicker.setDefaults($.datepicker.regional['']);
         var oTable = $('#myDataTable').dataTable({
             "bServerSide": true,
-            "sAjaxSource": "/@ViewBag.TransType/WPPF/_indexProfitDistribution?code=@ViewBag.code",
+            "sAjaxSource": "/WPPF/WPPF/_indexProfitDistribution?code=@ViewBag.code",
             "bProcessing": true,
             "aLengthMenu": tablelength(),
             "bJqueryUI": true,
             "bAutoWidth": false,
             "aoColumns": [
-                            
+
                              { "sName": "Code", "sWidth": "10%" }
                             , { "sName": "ProjectName", "sWidth": "20%" }
                             , { "sName": "DistributionDate", "sWidth": "10%" }
-                            , { "sName": "TotalPF", "sWidth": "10%" }
+                            , {
+                                "sName": "TotalPF",
+                                "sWidth": "10%", "sClass": "right",
+                                "fnRender": function (oObj) {
+                                    return formatNumberWithCommas(oObj.aData[3]);
+                                }
+                            }                         
                             , { "sName": "Post", "sWidth": "12%" }
             ]
         });
 
     });
+    function formatNumberWithCommas(value) {
+        if (value == null || value === '') return '';
+        value = parseFloat(value).toFixed(2);
+        var parts = value.split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts[0] + '.' + parts[1];
+    }
+
     function getQueryStringCode() {
         const params = new URLSearchParams(window.location.search);
         return params.get("code");
@@ -79,18 +92,18 @@
 
     $(".sendRpt").on("click", function () {
         debugger;
-    
-            var code = getQueryStringCode(); // get code from URL
 
-            $(document).on("click", ".sendRpt", function () {
+        var code = getQueryStringCode(); // get code from URL
 
-                var baseUrl = $(this).data("url");
+        $(document).on("click", ".sendRpt", function () {
 
-                var finalUrl = baseUrl + "?code=" + encodeURIComponent(code);
+            var baseUrl = $(this).data("url");
 
-                window.location.href = finalUrl; // go to report
-            });
-       
+            var finalUrl = baseUrl + "?code=" + encodeURIComponent(code);
+
+            window.location.href = finalUrl; // go to report
+        });
+
     });
 
 </script>

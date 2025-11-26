@@ -306,7 +306,6 @@
     <Compile Include="Areas\PF\Controllers\LoanSattlementController.cs" />
     <Compile Include="Areas\PF\Controllers\LoanRepaymentToBankController.cs" />
     <Compile Include="Areas\PF\Controllers\LoanMonthlyPaymentController.cs" />
-    <Compile Include="Areas\PF\Controllers\WPPFController.cs" />
     <Compile Include="Areas\PF\Controllers\PFEmployeeSettlementController.cs" />
     <Compile Include="Areas\PF\Controllers\ProcessControllController.cs" />
     <Compile Include="Areas\PF\Controllers\ProfitDistributionNewController.cs" />
@@ -4485,11 +4484,6 @@
     <Content Include="Areas\PF\Views\EmployeeTransfer\ImportEmployeePFTransfer.cshtml" />
     <Content Include="Areas\PF\Views\EmployeeTransfer\Index.cshtml" />
     <Content Include="Areas\PF\Views\EmployeeTransfer\SingleEmployeePFTransferEdit.cshtml" />
-    <Content Include="Areas\PF\Views\WPPF\Create.cshtml" />
-    <Content Include="Areas\PF\Views\WPPF\IndexFiscalPeriod.cshtml" />
-    <Content Include="Areas\PF\Views\WPPF\ProfitDistribution.cshtml" />
-    <Content Include="Areas\PF\Views\WPPF\Index_WWF.cshtml" />
-    <Content Include="Areas\PF\Views\WPPF\Index_WPPF.cshtml" />
     <Content Include="Areas\WPPF\Views\Web.config" />
     <Content Include="Areas\WPPF\Views\Shared\_HomeLayout.cshtml" />
     <Content Include="Areas\WPPF\Views\Shared\_leftnav.cshtml" />
