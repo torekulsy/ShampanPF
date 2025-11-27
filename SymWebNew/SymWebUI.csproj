@@ -292,6 +292,7 @@
     <Compile Include="Areas\PF\Controllers\COACategoryController.cs" />
     <Compile Include="Areas\PF\Controllers\COAGroupController.cs" />
     <Compile Include="Areas\PF\Controllers\COAController.cs" />
+    <Compile Include="Areas\PF\Controllers\COASubCategoryController.cs" />
     <Compile Include="Areas\PF\Controllers\COASubGroupController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -4502,6 +4503,8 @@
     <Content Include="Areas\PF\Views\COASubGroup\Create.cshtml" />
     <Content Include="Areas\PF\Views\COACategory\Create.cshtml" />
     <Content Include="Areas\PF\Views\COACategory\Index.cshtml" />
+    <Content Include="Areas\PF\Views\COASubCategory\Index.cshtml" />
+    <Content Include="Areas\PF\Views\COASubCategory\Create.cshtml" />
     <None Include="Properties\PublishProfiles\PFEGCB.pubxml" />
     <None Include="Properties\PublishProfiles\SymphonyHRM_New.pubxml" />
     <Content Include="Views\Home\ForgotPasswordView.cshtml" />

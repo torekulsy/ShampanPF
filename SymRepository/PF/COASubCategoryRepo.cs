@@ -5,25 +5,13 @@ using System.Collections.Generic;
 
 namespace SymRepository.PF
 {
-    public class COACategoryRepo
+    public class COASubCategoryRepo
     {
-        public List<COAGroupVM> DropDown()
-        {
-            try
-            {
-                return new COACategoryDAL().DropDown();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         public List<COAGroupVM> SelectAll(int Id = 0, string[] conditionFields = null, string[] conditionValues = null)
         {
             try
             {
-                return new COACategoryDAL().SelectAll(Id, conditionFields, conditionValues);
+                return new COASubCategoryDAL().SelectAll(Id, conditionFields, conditionValues);
             }
             catch (Exception ex)
             {
@@ -35,7 +23,7 @@ namespace SymRepository.PF
         {
             try
             {
-                return new COACategoryDAL().Insert(vm);
+                return new COASubCategoryDAL().Insert(vm);
             }
             catch (Exception ex)
             {
@@ -47,7 +35,7 @@ namespace SymRepository.PF
         {
             try
             {
-                return new COACategoryDAL().Update(vm);
+                return new COASubCategoryDAL().Update(vm);
             }
             catch (Exception ex)
             {

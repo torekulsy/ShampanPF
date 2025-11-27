@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace SymServices.PF
 {
-    public class COACategoryDAL
+    public class COASubCategoryDAL
     {
         #region Global Variables
         private const string FieldDelimeter = DBConstant.FieldDelimeter;
@@ -17,76 +17,6 @@ namespace SymServices.PF
         #endregion
 
         #region Methods
-
-        public List<COAGroupVM> DropDown()
-        {
-            #region Variables
-            SqlConnection currConn = null;
-            string sqlText = "";
-            List<COAGroupVM> VMs = new List<COAGroupVM>();
-            COAGroupVM vm;
-            #endregion
-            try
-            {
-                #region open connection and transaction
-                currConn = _dbsqlConnection.GetConnection();
-                if (currConn.State != ConnectionState.Open)
-                {
-                    currConn.Open();
-                }
-                #endregion open connection and transaction
-                #region sql statement
-                sqlText = @"
-SELECT
-Id
-,  CategoryName Name
-   FROM COACategories
-WHERE  1=1 
-";
-
-                sqlText = sqlText + " ORDER BY CategoryName";
-
-                SqlCommand objComm = new SqlCommand(sqlText, currConn);
-                //objComm.Parameters.AddWithValue("@TransType", TransType);
-
-
-
-                SqlDataReader dr;
-                dr = objComm.ExecuteReader();
-                while (dr.Read())
-                {
-                    vm = new COAGroupVM();
-                    vm.Id = Convert.ToInt32(dr["Id"]);
-                    vm.Name = dr["Name"].ToString();
-                    VMs.Add(vm);
-                }
-                dr.Close();
-                #endregion
-            }
-            #region catch
-            catch (SqlException sqlex)
-            {
-                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
-            }
-            catch (Exception ex)
-            {
-                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
-            }
-            #endregion
-            #region finally
-            finally
-            {
-                if (currConn != null)
-                {
-                    if (currConn.State == ConnectionState.Open)
-                    {
-                        currConn.Close();
-                    }
-                }
-            }
-            #endregion
-            return VMs;
-        }
 
         public List<COAGroupVM> SelectAll(int Id = 0, string[] conditionFields = null, string[] conditionValues = null, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
         {
@@ -131,9 +61,11 @@ SELECT
  a.Id
 ,a.GroupId
 ,a.SubGroupId
+,a.CategoryId
 ,g.Name AS GroupName
 ,s.SubGroupName AS SubGroupName
-,a.CategoryName
+,c.CategoryName AS CategoryName
+,a.SubCategoryName
 ,isnull(a.Remarks,'') Remarks
 ,a.IsActive
 ,a.IsArchive
@@ -143,9 +75,10 @@ SELECT
 ,a.LastUpdateBy
 ,a.LastUpdateAt
 ,a.LastUpdateFrom
-FROM COACategories a
+FROM COASubCategories a
 left outer join COAGroups g on a.GroupId = g.Id
 left outer join COASubGroups s on a.SubGroupId = s.Id
+left outer join COACategories c on a.CategoryId = c.Id
 WHERE a.IsArchive = 0
 ";
 
@@ -196,9 +129,11 @@ WHERE a.IsArchive = 0
                     vm.Id = Convert.ToInt32(dr["Id"]);
                     vm.COAGroupId = dr["GroupId"].ToString();
                     vm.COASubGroupId = dr["SubGroupId"].ToString();
+                    vm.COACategoryId = dr["CategoryId"].ToString();
                     vm.GroupName = dr["GroupName"].ToString();
                     vm.SubGroupName = dr["SubGroupName"].ToString();
-                    vm.Name = dr["CategoryName"].ToString();           
+                    vm.CategoryName = dr["CategoryName"].ToString();
+                    vm.Name = dr["SubCategoryName"].ToString();
                     vm.Remarks = dr["Remarks"].ToString();
                     vm.IsActive = Convert.ToBoolean(dr["IsActive"]);
                     vm.IsArchive = Convert.ToBoolean(dr["IsArchive"]);
@@ -260,7 +195,7 @@ WHERE a.IsArchive = 0
             retResults[2] = Id.ToString();// Return Id
             retResults[3] = sqlText; //  SQL Query
             retResults[4] = "ex"; //catch ex
-            retResults[5] = "InsertCOACategories"; //Method Name
+            retResults[5] = "InsertCOASubCategories"; //Method Name
             SqlConnection currConn = null;
             SqlTransaction transaction = null;
             #endregion
@@ -294,18 +229,19 @@ WHERE a.IsArchive = 0
                 #endregion open connection and transaction
 
                 #region Save
-                vm.Id = _cDal.NextId("COACategories", currConn, transaction);
+                vm.Id = _cDal.NextId("COASubCategories", currConn, transaction);
                 if (vm != null)
                 {
-                    sqlText = @"INSERT INTO COACategories
-                                (GroupId, SubGroupId, CategoryName, Remarks, IsActive, IsArchive, CreatedBy, CreatedAt, CreatedFrom)
+                    sqlText = @"INSERT INTO COASubCategories
+                                (GroupId, SubGroupId, CategoryId, SubCategoryName, Remarks, IsActive, IsArchive, CreatedBy, CreatedAt, CreatedFrom)
                                 VALUES
-                                (@GroupId, @SubGroupId, @CategoryName, @Remarks, @IsActive, @IsArchive, @CreatedBy, @CreatedAt, @CreatedFrom)";
+                                (@GroupId, @SubGroupId, @CategoryId, @SubCategoryName, @Remarks, @IsActive, @IsArchive, @CreatedBy, @CreatedAt, @CreatedFrom)";
                     SqlCommand cmdInsert = new SqlCommand(sqlText, currConn, transaction);
 
                     cmdInsert.Parameters.AddWithValue("@GroupId", vm.COAGroupId);
                     cmdInsert.Parameters.AddWithValue("@SubGroupId", vm.COASubGroupId ?? Convert.DBNull);
-                    cmdInsert.Parameters.AddWithValue("@CategoryName", vm.Name);
+                    cmdInsert.Parameters.AddWithValue("@CategoryId", vm.COACategoryId ?? Convert.DBNull);
+                    cmdInsert.Parameters.AddWithValue("@SubCategoryName", vm.Name ?? Convert.DBNull);
                     cmdInsert.Parameters.AddWithValue("@Remarks", vm.Remarks ?? Convert.DBNull);
                     cmdInsert.Parameters.AddWithValue("@IsActive", true);
                     cmdInsert.Parameters.AddWithValue("@IsArchive", false);
@@ -366,7 +302,7 @@ WHERE a.IsArchive = 0
             retResults[2] = "0";
             retResults[3] = "sqlText"; //  SQL Query
             retResults[4] = "ex"; //catch ex
-            retResults[5] = "COACategories Update"; //Method Name
+            retResults[5] = "COASubCategories Update"; //Method Name
             int transResult = 0;
             string sqlText = "";
             SqlConnection currConn = null;
@@ -396,17 +332,18 @@ WHERE a.IsArchive = 0
                         currConn.Open();
                     }
                 }
-                if (transaction == null) { transaction = currConn.BeginTransaction("COACategories"); }
+                if (transaction == null) { transaction = currConn.BeginTransaction("COASubCategories"); }
                 #endregion open connection and transaction
 
                 if (vm != null)
                 {
                     #region Update Settings
                     sqlText = "";
-                    sqlText = "UPDATE COACategories SET ";
+                    sqlText = "UPDATE COASubCategories SET ";
                     sqlText += " GroupId = @GroupId";
                     sqlText += " , SubGroupId = @SubGroupId";
-                    sqlText += " , CategoryName = @CategoryName";
+                    sqlText += " , CategoryId = @CategoryId";
+                    sqlText += " , SubCategoryName = @SubCategoryName";
                     sqlText += " , Remarks = @Remarks";
                     sqlText += " , IsActive = @IsActive";
                     sqlText += " , LastUpdateBy = @LastUpdateBy";
@@ -418,7 +355,8 @@ WHERE a.IsArchive = 0
                     cmdUpdate.Parameters.AddWithValue("@Id", vm.Id);
                     cmdUpdate.Parameters.AddWithValue("@GroupId", vm.COAGroupId);
                     cmdUpdate.Parameters.AddWithValue("@SubGroupId", vm.COASubGroupId ?? Convert.DBNull);
-                    cmdUpdate.Parameters.AddWithValue("@CategoryName", vm.Name);
+                    cmdUpdate.Parameters.AddWithValue("@CategoryId", vm.COACategoryId ?? Convert.DBNull);
+                    cmdUpdate.Parameters.AddWithValue("@SubCategoryName", vm.Name ?? Convert.DBNull);
                     cmdUpdate.Parameters.AddWithValue("@Remarks", vm.Remarks ?? Convert.DBNull);
                     cmdUpdate.Parameters.AddWithValue("@IsActive", vm.IsActive);
                     cmdUpdate.Parameters.AddWithValue("@LastUpdateBy", vm.LastUpdateBy);
@@ -440,7 +378,7 @@ WHERE a.IsArchive = 0
                 }
                 else
                 {
-                    throw new ArgumentNullException("COACategories Update", "Could not found any item.");
+                    throw new ArgumentNullException("COASubCategories Update", "Could not found any item.");
                 }
 
                 if (iSTransSuccess == true)
@@ -457,7 +395,7 @@ WHERE a.IsArchive = 0
                 }
                 else
                 {
-                    retResults[1] = "Unexpected error to update COACategories.";
+                    retResults[1] = "Unexpected error to update COASubCategories.";
                     throw new ArgumentNullException("", "");
                 }
             }
