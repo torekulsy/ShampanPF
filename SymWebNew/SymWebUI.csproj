@@ -289,8 +289,13 @@
     <Compile Include="Areas\Common\Controllers\DesignationController.cs" />
     <!--<Compile Include="Areas\Payroll\Reports\rptSalarySheet.cs">-->
     <Compile Include="Areas\PF\Controllers\AutoJournalSetupController.cs" />
+    <Compile Include="Areas\PF\Controllers\COACategoryController.cs" />
     <Compile Include="Areas\PF\Controllers\COAGroupController.cs" />
     <Compile Include="Areas\PF\Controllers\COAController.cs" />
+    <Compile Include="Areas\PF\Controllers\COASubCategoryController.cs" />
+    <Compile Include="Areas\PF\Controllers\COASubGroupController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Areas\PF\Controllers\EmployeeInfoPFController.cs" />
     <Compile Include="Areas\PF\Controllers\EmployeePFPaymentController.cs" />
     <Compile Include="Areas\PF\Controllers\EmployeeForfeitureController.cs" />
@@ -4494,6 +4499,12 @@
     <Content Include="Areas\WPPF\Views\WPPF\IndexFiscalPeriod.cshtml" />
     <Content Include="Areas\WPPF\Views\WPPF\ProfitDistribution.cshtml" />
     <Content Include="Areas\WPPF\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\PF\Views\COASubGroup\Index.cshtml" />
+    <Content Include="Areas\PF\Views\COASubGroup\Create.cshtml" />
+    <Content Include="Areas\PF\Views\COACategory\Create.cshtml" />
+    <Content Include="Areas\PF\Views\COACategory\Index.cshtml" />
+    <Content Include="Areas\PF\Views\COASubCategory\Index.cshtml" />
+    <Content Include="Areas\PF\Views\COASubCategory\Create.cshtml" />
     <None Include="Properties\PublishProfiles\PFEGCB.pubxml" />
     <None Include="Properties\PublishProfiles\SymphonyHRM_New.pubxml" />
     <Content Include="Views\Home\ForgotPasswordView.cshtml" />

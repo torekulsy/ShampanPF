@@ -111,6 +111,9 @@
     <Compile Include="Loan\EmployeeLoanDAL.cs" />
     <Compile Include="Common\CompanyDAL.cs" />
     <Compile Include="PF\AutoJournalSetupDAL.cs" />
+    <Compile Include="PF\COACategoryDAL.cs" />
+    <Compile Include="PF\COASubCategoryDAL.cs" />
+    <Compile Include="PF\COASubGroupDAL.cs" />
     <Compile Include="PF\EmployeeInfoForPFDAL.cs" />
     <Compile Include="PF\EmployeePFDAL.cs">
       <SubType>Code</SubType>

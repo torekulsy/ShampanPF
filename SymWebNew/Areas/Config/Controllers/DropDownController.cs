@@ -56,6 +56,16 @@ namespace SymWebUI.Areas.Config.Controllers
             return Json(new SelectList(new COAGroupRepo().DropDown(TransType), "Id", "Name"), JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult PF_COASubGroup()
+        {
+            return Json(new SelectList(new COASubGroupRepo().DropDown(), "Id", "Name"), JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult PF_COACategory()
+        {
+            return Json(new SelectList(new COACategoryRepo().DropDown(), "Id", "Name"), JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult PF_COATypeOfReport(string TransType = "PF")
         {
             return Json(new SelectList(new COAGroupRepo().COATypeOfReportDropDown(TransType), "Id", "Name"), JsonRequestBehavior.AllowGet);

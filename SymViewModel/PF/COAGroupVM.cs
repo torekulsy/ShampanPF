@@ -10,6 +10,16 @@ namespace SymViewModel.PF
     public class COAGroupVM
     {
         public int Id { get; set; }
+        [Display(Name = "COA Group")]
+        public string COAGroupId { get; set; }
+        public string GroupName { get; set; }
+        [Display(Name = "COA Sub Group")]
+        public string COASubGroupId { get; set; }
+        public string SubGroupName { get; set; }
+        [Display(Name = "COA Category")]
+        public string COACategoryId { get; set; }
+        public string CategoryName { get; set; }
+
 
 public string Name   { get; set; }
 public string GroupType   { get; set; }
