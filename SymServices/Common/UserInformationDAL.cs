@@ -212,7 +212,7 @@ WHERE  1=1
 ,EmployeeInfo.PhotoName PhotoName
     From [User]  left outer join EmployeeInfo on EmployeeInfo.Id=[User].EmployeeId
 	left outer join UserGroup ug on [User].GroupId=ug.Id
-where  [User].LogId=@LogId and [User].Password=@Password and [User].BranchId=@BranchId  and [User].IsActive=@IsActive and [User].IsVerified=@IsVerified and [User].IsArchived=@IsArchived
+where  [User].LogId=@LogId and [User].Password=@Password and [User].IsActive=@IsActive and [User].IsVerified=@IsVerified and [User].IsArchived=@IsArchived
 ";
                 SqlCommand objComm = new SqlCommand();
                 objComm.Connection = currConn;
@@ -220,7 +220,7 @@ where  [User].LogId=@LogId and [User].Password=@Password and [User].BranchId=@Br
                 objComm.CommandType = CommandType.Text;
                 objComm.Parameters.AddWithValue("@LogId", vm.LogID);
                 objComm.Parameters.AddWithValue("@Password", vm.Password);
-                objComm.Parameters.AddWithValue("@BranchId", vm.BranchId);
+                //objComm.Parameters.AddWithValue("@BranchId", vm.BranchId);
                 objComm.Parameters.AddWithValue("@IsActive", true);
                 objComm.Parameters.AddWithValue("@IsVerified", true);
                 objComm.Parameters.AddWithValue("@IsArchived", false);

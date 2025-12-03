@@ -277,8 +277,7 @@ namespace SymWebUI.Controllers
                 string password = vm.Password;
 
                 string[] retResults = new string[2];
-                vm.Password = Ordinary.Encrypt(vm.Password, true);
-                vm.BranchId = 1;
+                vm.Password = Ordinary.Encrypt(vm.Password, true);              
                 Tuple<bool, UserLogsVM> result = userRepo.UserLogIn(vm);
                 CompanyRepo compRepo = new CompanyRepo();
                 CompanyVM company = compRepo.SelectAll().FirstOrDefault();
@@ -435,8 +434,9 @@ namespace SymWebUI.Controllers
                     }
                     else if (result.Item2.IsAdmin)
                     {
-                        return Redirect("/Company");
-//                        return Redirect("/Common/Home");
+                        Session["BranchId"] = vm.BranchId;
+                       // return Redirect("/Company");
+                        return Redirect("/Common/Home");
                     }
                   
                     else
