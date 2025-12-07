@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using SymWebUI.Areas.PF.Models;
 using SymRepository.Payroll;
 using System.Web;
+using SymServices.Common;
 
 namespace SymWebUI.Areas.PF.Controllers
 {
@@ -966,11 +967,16 @@ namespace SymWebUI.Areas.PF.Controllers
                 {
                     System.IO.File.Delete(fullPath + FileName);
                 }
-
-                // Fetch PF contribution data from repository
-                dt = _repo.ExportExcelFilePF(fullPath, FileName, ProjectId, DepartmentId, SectionId, DesignationId, CodeF, CodeT, fid, Orderby, BranchId);
-
-                // Create Excel package using EPPlus
+                string IsContributionNotSame = new SettingDAL().settingValue("PF", "IsContributionNotSame");
+                if (IsContributionNotSame=="Y")
+                {
+                    dt = _repo.ExportExcelFile_PF(fullPath, FileName, ProjectId, DepartmentId, SectionId, DesignationId, CodeF, CodeT, fid, Orderby, BranchId);
+                }
+                else
+                {
+                    dt = _repo.ExportExcelFilePF(fullPath, FileName, ProjectId, DepartmentId, SectionId, DesignationId, CodeF, CodeT, fid, Orderby, BranchId);
+                }
+              
                 ExcelPackage excel = new ExcelPackage();
                 var workSheet = excel.Workbook.Worksheets.Add("Contribution");
 

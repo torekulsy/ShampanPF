@@ -128,6 +128,11 @@ namespace SymRepository.PF
             return new PFDetailDAL().ExportExcelFilePF(Filepath, FileName, ProjectId, DepartmentId, SectionId, DesignationId, CodeF, CodeT, fid, Orderby, BranchId);
         }
 
+        public DataTable ExportExcelFile_PF(string Filepath, string FileName, string ProjectId, string DepartmentId, string SectionId, string DesignationId, string CodeF, string CodeT, int fid = 0, string Orderby = null, string BranchId = null)
+        {
+            return new PFDetailDAL().ExportExcelFile_PF(Filepath, FileName, ProjectId, DepartmentId, SectionId, DesignationId, CodeF, CodeT, fid, Orderby, BranchId);
+        }
+
         public string[] ImportExcelFile(string fullPath, string fileName, ShampanIdentityVM vm, int FYDId = 0, string PId="")
         {
             try

@@ -106,7 +106,7 @@ namespace SymServices.Common
                 retResults = PF_DBTableFieldAdd("ReturnOnInvestments", "IsBankDeposited", "bit", true, currConn, transaction);
                 retResults = PF_DBTableFieldAdd("ReturnOnBankInterests", "IsBankDeposited", "bit", true, currConn, transaction);
                 retResults = PF_DBTableFieldAdd("PFBankDeposits", "ReferenceId", "int", true, currConn, transaction);
-                retResults = PF_DBTableFieldAdd("PFDetails", "IsBankDeposited", "bit", true, currConn, transaction);
+                retResults = PF_DBTableFieldAdd("PFDetails", "IsBankDeposited", "bit", true, currConn, transaction);               
                 retResults = PF_DBTableFieldAdd("PFBankDeposits", "TransactionType", "nvarchar(100)", true, currConn, transaction);
                 retResults = PF_DBTableFieldAdd("PFBankDeposits", "Post", "bit", true, currConn, transaction);
                 retResults = PF_DBTableFieldAdd("ForfeitureAccounts", "TotalForfeitValue", "decimal(18, 2)", true, currConn, transaction);

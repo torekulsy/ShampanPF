@@ -2420,6 +2420,108 @@ order by SectionOrderNo ";
             return dt;
         }
 
+        public DataTable ExportExcelFile_PF(string Filepath, string FileName, string ProjectId, string DepartmentId, string SectionId, string DesignationId, string CodeF, string CodeT, int fid, string Orderby, string BranchId)
+        {
+            DataTable dt = new DataTable();
+            string[] results = new string[6];
+            try
+            {
+                #region Fiscal Period
+                FiscalYearDAL fdal = new FiscalYearDAL();
+                FiscalYearDetailVM fyDVM = new FiscalYearDetailVM();
+                fyDVM = fdal.FYPeriodDetail(fid, null, null).FirstOrDefault();
+                var fname = fyDVM.PeriodName;
+
+                string PeriodEnd = fyDVM.PeriodEnd;
+                string PeriodStart = fyDVM.PeriodStart;
+                #endregion
+
+                #region Variables
+                SqlConnection currConn = null;
+                SqlConnection currConnpf = null;
+                string sqlText = "";
+                int j = 2;
+                #endregion
+
+                #region open connection and transaction
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
+                currConnpf = _dbsqlConnection.GetConnection();
+                if (currConnpf.State != ConnectionState.Open)
+                {
+                    currConnpf.Open();
+                }
+
+                #endregion open connection and transaction
+
+                #region sql statement
+                sqlText = @"
+                 Select ve.Code EmpCode, ve.EmpName, JoinDate, 0 GradeSL,0 
+                 Grade,Designation,Department,ve.UnitName,ve.BasicSalary, ISNULL((ve.BasicSalary*.1),0) EmployeeContribution,ISNULL((ve.BasicSalary*.1),0) EmployerContribution,ISNULL((ve.BasicSalary*.1),0) Loan,0 FYDId 
+                 from ViewEmployeeInformation ve Left Outer Join PFDetails pd on pd.EmployeeId=ve.EmployeeId and FiscalYearDetailId=@FiscalYearDetailId  where 1=1 AND ve.IsActive=1 AND ve.IsArchive=0 ";
+
+                //if (ProjectId != "0_0" && ProjectId != "0" && ProjectId != "" && ProjectId != "null" && ProjectId != null)
+                //    sqlText += @" and ve.ProjectId='" + ProjectId + "'";
+                if (DepartmentId != "0_0" && DepartmentId != "0" && DepartmentId != "" && DepartmentId != "null" && DepartmentId != null)
+                    sqlText += @" and ve.DepartmentId='" + DepartmentId + "'";
+                //if (SectionId != "0_0" && SectionId != "0" && SectionId != "" && SectionId != "null" && SectionId != null)
+                //    sqlText += @" and ve.SectionId='" + SectionId + "'";
+                if (DesignationId != "0_0" && DesignationId != "0" && DesignationId != "" && DesignationId != "null" && DesignationId != null)
+                    sqlText += @" and ve.DesignationId='" + DesignationId + "'";
+                if (CodeF != "0_0" && CodeF != "0" && CodeF != "" && CodeF != "null" && CodeF != null)
+                    sqlText += @" and ve.Code >='" + CodeF + "'";
+                if (CodeT != "0_0" && CodeT != "0" && CodeT != "" && CodeT != "null" && CodeT != null)
+                    sqlText += @" and ve.Code<='" + CodeT + "'";
+                if (BranchId != "0_0" && CodeT != "0" && BranchId != "" && BranchId != "null" && BranchId != null)
+                    sqlText += @" and ve.BranchId='" + BranchId + "'";
+
+                if (Orderby == "CODE")
+                    sqlText += " ORDER BY  EmpCode";
+
+                SqlCommand objComm = new SqlCommand();
+                objComm.Connection = currConn;
+                objComm.CommandText = sqlText;
+
+                objComm.CommandType = CommandType.Text;
+                SqlDataAdapter da = new SqlDataAdapter(objComm);
+                da.SelectCommand.Parameters.AddWithValue("@FiscalYearDetailId", fid);
+
+                da.Fill(dt);
+                dt.Columns.Add("Fiscal Period");
+                dt.Columns.Add("Salary Period");
+                // dt.Columns.Add("Type");
+                dt.Columns.Remove("GradeSl");
+                dt.Columns.Remove("JoinDate");
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    row["Fiscal Period"] = fname;
+                    row["Salary Period"] = fname;
+                    // row["Type"] = "";
+                    row["FYDId"] = fid;
+                    // row["EDId"] = 0;
+                }
+                #endregion
+
+                #region Value Round
+
+                string[] columnNames = { "Amount" };
+
+                dt = Ordinary.DtValueRound(dt, columnNames);
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                results[4] = ex.Message.ToString(); //catch ex
+                //return results;
+                throw ex;
+            }
+            return dt;
+        }
 
         /// <summary>
         /// Inserts a new PF Details Header into the database with the provided details from the view model.
@@ -2615,6 +2717,29 @@ order by SectionOrderNo ";
         }
 
 
+        public void LoanUpdate(string employeeId, FiscalYearDetailVM FYDVM, SqlConnection currConn, SqlTransaction transaction)
+        {
+            string updateSql = @"
+        UPDATE EmployeeLoanDetail
+        SET 
+            IsPaid = 1,
+            PaymentDate = @CurrentDate
+        WHERE 
+            EmployeeId = @EmpId
+            AND PaymentScheduleDate BETWEEN @StartDate AND @EndDate
+            AND IsPaid = 0";
+
+            SqlCommand cmd = new SqlCommand(updateSql, currConn, transaction);             
+            cmd.Parameters.AddWithValue("@EmpId", employeeId);
+            cmd.Parameters.AddWithValue("@StartDate", FYDVM.PeriodStart);
+            cmd.Parameters.AddWithValue("@EndDate", FYDVM.PeriodEnd);
+            cmd.Parameters.AddWithValue("@CurrentDate", FYDVM.PeriodStart);
+            cmd.ExecuteNonQuery();
+           
+        }
+
+
+
         public string[] ImportExcelFile(string fullPath, string fileName, ShampanIdentityVM avm, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null, int FYDId = 0, string PId = "")
         {
             #region Initializ
@@ -2694,7 +2819,7 @@ order by SectionOrderNo ";
                 cmd2.Transaction = transaction;
                 var exeRes = cmd2.ExecuteScalar();
                 int nextId = Convert.ToInt32(exeRes);
-
+                string IsContributionNotSame = new SettingDAL().settingValue("PF", "IsContributionNotSame");
 
                 if (retResults[0] == "Success")
                 {
@@ -2714,12 +2839,6 @@ order by SectionOrderNo ";
                             }
                             else
                             {
-                                if (!Ordinary.IsNumeric(item["Amount"].ToString()))
-                                {
-                                    throw new ArgumentNullException("Please input the Numeric Value in Amount", "Please input the Numeric Value in Amount");
-                                }
-                                else
-                                {
                                     vm.PFHeaderId = nextId.ToString();
                                     vm.FiscalYearDetailId = FYDVM.Id;
                                     vm.PFStructureId = empVM.PFStructureId;
@@ -2728,8 +2847,17 @@ order by SectionOrderNo ";
                                     vm.SectionId = empVM.SectionId;
                                     vm.DesignationId = empVM.DesignationId;
                                     vm.EmployeeId = empVM.EmployeeId;
-                                    vm.EmployeePFValue = Convert.ToInt32(item["Amount"].ToString());
-                                    vm.EmployeerPFValue = Convert.ToInt32(item["Amount"].ToString());
+                                    if (IsContributionNotSame == "Y")
+                                    {
+                                        vm.EmployeePFValue = Convert.ToInt32(item["EmployeeContribution"].ToString());
+                                        vm.EmployeerPFValue = Convert.ToInt32(item["EmployerContribution"].ToString());
+                                        LoanUpdate(empVM.EmployeeId, FYDVM, currConn, transaction);
+                                    }
+                                    else
+                                    {
+                                        vm.EmployeePFValue = Convert.ToInt32(item["Amount"].ToString());
+                                        vm.EmployeerPFValue = Convert.ToInt32(item["Amount"].ToString());
+                                    }
                                     vm.Post = false;
                                     vm.Remarks = "";
                                     vm.IsActive = true;
@@ -2752,13 +2880,10 @@ order by SectionOrderNo ";
                                     {
                                         throw new ArgumentNullException("PF details not saved");
                                     }
-
                                     #region SuccessResult
                                     retResults[0] = "Success";
                                     retResults[1] = "Data Save Successfully.";
                                     #endregion SuccessResult
-
-                                }
                             }
                         }
                     }
