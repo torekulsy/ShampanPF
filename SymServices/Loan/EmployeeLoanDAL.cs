@@ -3260,7 +3260,7 @@ SET @query = '
     ORDER BY LoanNo, BranchId, LoanType_E, EmployeeId'
  
 -- Execute the dynamic SQL
-EXEC sp_executesql @query, N'@StartDate DATE, @EndDate DATE @BranchId INT', @StartDate, @EndDate,@BranchId;
+EXEC sp_executesql @query, N'@StartDate DATE, @EndDate DATE, @BranchId INT', @StartDate, @EndDate,@BranchId;
 
  ";
                 #endregion SqlText
