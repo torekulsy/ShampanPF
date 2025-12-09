@@ -105,7 +105,9 @@ namespace SymServices.PF
                                      ,Designation =@Designation
                                      ,DateOfBirth=@DateOfBirth   
                                      ,JoinDate=@JoinDate                                                       
-                                     ,IsActive=@IsActive 
+                                     ,IsActive=@IsActive
+                                     ,IsProfit=@IsProfit
+                                     ,IsNoInterest=@IsNoInterest 
                                      ,IsArchive=@IsArchive 
                                      ,CreatedBy=@CreatedBy 
                                      ,CreatedAt=@CreatedAt 
@@ -177,6 +179,8 @@ namespace SymServices.PF
                         {
                             cmdInsert.Parameters.AddWithValue("@IsActive", vm.IsActive);
                         }
+                        cmdInsert.Parameters.AddWithValue("@IsProfit", vm.IsProfit);
+                        cmdInsert.Parameters.AddWithValue("@IsNoInterest", vm.IsNoInterest);
                         cmdInsert.Parameters.AddWithValue("@NomineeName", vm.NomineeName ?? "");
                         cmdInsert.Parameters.AddWithValue("@NomineeRelation", vm.NomineeRelation ?? "");
                         cmdInsert.Parameters.AddWithValue("@NomineeAddress", vm.NomineeAddress ?? "");
@@ -757,6 +761,8 @@ namespace SymServices.PF
                     EmployeeInfoForPFVM.NomineeRemarks = dr["NomineeRemarks"].ToString();
                     EmployeeInfoForPFVM.Remarks = dr["Remarks"].ToString();
                     EmployeeInfoForPFVM.IsActive = Convert.ToBoolean(dr["IsActive"].ToString());
+                    EmployeeInfoForPFVM.IsProfit = Convert.ToBoolean(dr["IsProfit"].ToString());
+                    EmployeeInfoForPFVM.IsNoInterest = Convert.ToBoolean(dr["IsNoInterest"].ToString());
                     EmployeeInfoForPFVM.ContactNo = dr["ContactNo"].ToString();
                     EmployeeInfoForPFVM.Email = dr["Email"].ToString();
                     EmployeeInfoForPFVM.PhotoName = dr["PhotoName"].ToString();
