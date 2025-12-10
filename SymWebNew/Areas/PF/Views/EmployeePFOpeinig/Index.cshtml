@@ -57,8 +57,15 @@
                          "sWidth": "12%",
                          "sClass": "center",
                          "fnRender": function (oObj) {
-                             return '  &nbsp;  <a title="Click on for Edit" id="lnkEdit1" style="text-decoration:none;" Onclick="otherearningEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>'
-                                 + '&nbsp; <a title="Click on for Post" style="text-decoration:none;" data-url="/@ViewBag.TransType/EmployeePFOpeinig/MultiplePost" onclick="postedData(this, myDataTable,\'' + oObj.aData[0] + '\');"  class="sym-btn-post-row"></a>'
+                             if (oObj.aData[8] == "Posted")
+                             {
+                                 return '  &nbsp;  <a title="Click on for Edit" id="lnkEdit1" style="text-decoration:none;" Onclick="otherearningEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>'
+    + '&nbsp; <a title="Click on for Post" style="text-decoration:none;" data-url="/@ViewBag.TransType/EmployeePFOpeinig/MultiplePost" onclick="postedData(this, myDataTable,\'' + oObj.aData[0] + '\');"  class="sym-btn-post-row" style="opacity:0.45;pointer-events:none;cursor:default;"></a>'
+                             }
+                             else {
+                                 return '  &nbsp;  <a title="Click on for Edit" id="lnkEdit1" style="text-decoration:none;" Onclick="otherearningEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>'
+    + '&nbsp; <a title="Click on for Post" style="text-decoration:none;" data-url="/@ViewBag.TransType/EmployeePFOpeinig/MultiplePost" onclick="postedData(this, myDataTable,\'' + oObj.aData[0] + '\');"  class="sym-btn-post-row"></a>'
+                             }
                              ;
                          }
                      }

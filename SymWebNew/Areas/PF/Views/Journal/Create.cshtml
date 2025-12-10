@@ -92,6 +92,25 @@
                     </div>
                 }
 
+                <div class="col-md-4">
+                    <div class="editor-label">
+                        <label>JV Narration</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Remarks, new { @placeholder = "Narration", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Source</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Source, new { @placeholder = "Contribution Employee & Employer", @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.Source)
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -172,7 +191,7 @@
                         </div>
                         <div class="col-md-3 ">
                             <div class="editor-label">
-                                <label>Narration</label>
+                                <label>Description</label>
                             </div>
                         </div>
 
@@ -211,7 +230,7 @@
 
     </div>
 
-    <div class="thinbox">
+    @*<div class="thinbox">
         <div class="th_thinbox">
             @{
     if (Model.JournalType == 1)
@@ -244,7 +263,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
 
     <div class="headrow">
         @if (Model.Operation.ToLower() == "add")

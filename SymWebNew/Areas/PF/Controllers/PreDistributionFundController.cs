@@ -107,6 +107,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 , c.TransactionDate.ToString()
                 , c.TotalValue.ToString()
                 , c.Remarks.ToString()
+                , c.Post ? "Posted" : "Not Posted"
 
             };
             return Json(new
