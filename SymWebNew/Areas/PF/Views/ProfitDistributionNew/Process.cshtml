@@ -46,7 +46,23 @@
                     </div>
                 </div>
 
-             
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.PreDistributionFund.DistributionType)
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownListFor(model => model.PreDistributionFund.DistributionType,
+                            new List<SelectListItem>
+                            {
+                                new SelectListItem { Text = "Profit", Value = "Profit" },
+                                new SelectListItem { Text = "No Interest", Value = "No Interest" },
+                                new SelectListItem { Text = "Interest", Value = "Interest" }
+                            },
+                            "--- Select ---",
+                            new { @class = "form-control" }
+                        )
+                    </div>
+                </div>
             </div>
         </div>
     </div>

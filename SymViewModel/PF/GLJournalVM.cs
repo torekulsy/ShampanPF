@@ -48,5 +48,6 @@ namespace SymViewModel.PF
         public bool IsYearClosing { get; set; }
 
         public string BranchId { get; set; }
+        public string Source { get; set; }
     }
 }

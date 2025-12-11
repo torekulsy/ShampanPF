@@ -17,6 +17,7 @@
                 <th class="left">Transaction Date</th>
                 <th class="left">Total Value</th>
                 <th class="left">Remarks</th>
+                <th class="left">Post Status</th>
     
             </tr>
         </thead>
@@ -53,6 +54,13 @@
                     "sClass": "center",
                     "fnRender": function (oObj) {
                         var Code = encodeURIComponent(oObj.aData[1]);
+                        if (oObj.aData[5] == "Posted") {
+                            return '<a id="lnkEdit1" title="Click on for Edit" style="text-decoration:none;" href="/@ViewBag.TransType/PreDistributionFund/Edit/' + oObj.aData[0] + '" class="innerListLink sym-btn-edit-row"></a>'
+                            + '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/PreDistributionFund/Post" onclick=btnPostNoSplit(this); data-Post="' + oObj.aData[4] + '" data-Id="' + oObj.aData[0] + '" class="sym-btn-reject-row" style="opacity:0.45;pointer-events:none;cursor:default;"></a>'
+                            + '&nbsp; <a id="lnkEdit1" title="Click on for Report" style="text-decoration:none;" href="/@ViewBag.TransType/PreDistributionFund/reportVeiw/' + oObj.aData[0] + '" class="linkReport sym-btn-report-row"></a>'
+                            + '&nbsp; <a id="lnkEdit1" title="Click on for Distribution" style="text-decoration:none;" target="_blank" href="/@ViewBag.TransType/ProfitDistributionNew/Process?PreDistributionFundId=' + oObj.aData[0] + '" class="innerListLink sym-btn-add-row"></a>'
+                            + '<a title="Journal" class="sym-btn-bank-row" href="/@ViewBag.TransType/PreDistributionFund/JournalEntry/?Code=' + Code + '"></a>'
+                        }
                         return '<a id="lnkEdit1" title="Click on for Edit" style="text-decoration:none;" href="/@ViewBag.TransType/PreDistributionFund/Edit/' + oObj.aData[0] + '" class="innerListLink sym-btn-edit-row"></a>'
                             + '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/PreDistributionFund/Post" onclick=btnPostNoSplit(this); data-Post="' + oObj.aData[4] + '" data-Id="' + oObj.aData[0] + '" class="sym-btn-post-row"></a>'
                             + '&nbsp; <a id="lnkEdit1" title="Click on for Report" style="text-decoration:none;" href="/@ViewBag.TransType/PreDistributionFund/reportVeiw/' + oObj.aData[0] + '" class="linkReport sym-btn-report-row"></a>'
@@ -63,7 +71,8 @@
                 { "sName": "Code", "sWidth": "10%" },
                 { "sName": "TransactionDate", "sWidth": "10%" },
                 { "sName": "TotalValue", "sWidth": "10%" },
-                { "sName": "Remarks", "sWidth": "10%" }
+                { "sName": "Remarks", "sWidth": "10%" },
+                { "sName": "Post", "sWidth": "10%" }
             ]
         });
     });

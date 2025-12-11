@@ -264,6 +264,22 @@
                                 @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @class = "form-control" })
                             </div>
                         </div>
+                        <div class="col-sm-2">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.IsProfit)
+                            </div>
+                            <div class="editor-field">
+                                @Html.CheckBoxFor(model => model.IsProfit, new { @class = "form-control", id = "IsProfit" })
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.IsNoInterest)
+                            </div>
+                            <div class="editor-field">
+                                @Html.CheckBoxFor(model => model.IsNoInterest, new { @class = "form-control", id = "IsNoInterest" })
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -508,5 +524,21 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
+        $("#IsProfit").change(function () {
+            if ($(this).is(":checked")) {
+                $("#IsNoInterest").prop("disabled", true);
+            } else {
+                $("#IsNoInterest").prop("disabled", false);
+            }
+        });
+
+        $("#IsNoInterest").change(function () {
+            if ($(this).is(":checked")) {
+                $("#IsProfit").prop("disabled", true);
+            } else {
+                $("#IsProfit").prop("disabled", false);
+            }
+        });
     </script>
 }

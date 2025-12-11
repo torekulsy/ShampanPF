@@ -27,6 +27,9 @@ namespace SymViewModel.PF
         public decimal BasicSalary { get; set; }
         public decimal GrossSalary { get; set; }
         public bool IsActive { get; set; }
+        public bool IsProfit { get; set; }
+        [Display(Name = "IsNo-Interest")]
+        public bool IsNoInterest { get; set; }
         public string Remarks { get; set; }        
         public bool IsArchive { get; set; }
         public string CreatedBy { get; set; }

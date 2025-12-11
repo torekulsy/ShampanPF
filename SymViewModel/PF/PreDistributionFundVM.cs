@@ -45,7 +45,8 @@ namespace SymViewModel.PF
         [Display(Name = "Total Value")]
         public string TotalValue { get; set; }
         public string TransType { get; set; }
-
+        [Display(Name = "Distribution Type")]
+        public string DistributionType { get; set; }
         public string BranchId { get; set; }
     }
     public class ColumnDetails

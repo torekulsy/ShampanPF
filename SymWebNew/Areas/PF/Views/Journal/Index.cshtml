@@ -84,10 +84,19 @@
                     "sWidth": "10%",
                     "sClass": "center",
                     "fnRender": function (oObj) {
-                        return ''
-                            + '&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Id=""   class=" innerListLink  sym-btn-edit-row"   href=\"/@ViewBag.TransType/Journal/Edit/' + oObj.aData[0].split('~')[0] + '\"></a>'
-                            + '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/Journal/Post"  onclick=btnPostNoSplit(this); data-Id="' + oObj.aData[0] + '\" class="sym-btn-post-row"></a>'
-                            + '&nbsp; <a title="Click on for Voucher" data-url="/@ViewBag.TransType/Journal/ReportView"  onclick=reportData(this); data-Id="' + oObj.aData[0].split('~')[0] + '\" class="sym-btn-report-row"></a>'
+                        if (oObj.aData[4] == "Posted") {
+                            return ''
+    + '&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Id=""   class=" innerListLink  sym-btn-edit-row"   href=\"/@ViewBag.TransType/Journal/Edit/' + oObj.aData[0].split('~')[0] + '\"></a>'
+    + '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/Journal/Post"  onclick=btnPostNoSplit(this); data-Id="' + oObj.aData[0] + '\" class="sym-btn-reject-row" style="opacity:0.45;pointer-events:none;cursor:default;"></a>'
+    + '&nbsp; <a title="Click on for Voucher" data-url="/@ViewBag.TransType/Journal/ReportView"  onclick=reportData(this); data-Id="' + oObj.aData[0].split('~')[0] + '\" class="sym-btn-report-row"></a>'
+                        }
+                        else {
+                            return ''
+       + '&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Id=""   class=" innerListLink  sym-btn-edit-row"   href=\"/@ViewBag.TransType/Journal/Edit/' + oObj.aData[0].split('~')[0] + '\"></a>'
+       + '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/Journal/Post"  onclick=btnPostNoSplit(this); data-Id="' + oObj.aData[0] + '\" class="sym-btn-post-row"></a>'
+       + '&nbsp; <a title="Click on for Voucher" data-url="/@ViewBag.TransType/Journal/ReportView"  onclick=reportData(this); data-Id="' + oObj.aData[0].split('~')[0] + '\" class="sym-btn-report-row"></a>'
+                        }
+   
 ;
                     }
                 }, { "sName": "Code ", "sWidth": "15%" }

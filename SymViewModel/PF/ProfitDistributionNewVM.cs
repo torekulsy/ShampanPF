@@ -82,6 +82,7 @@ namespace SymViewModel.PF
 
         public string EmployeeCode { get; set; }
         public string TransType { get; set; }
+       
 
         public string BranchId { get; set; }
     }

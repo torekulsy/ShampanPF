@@ -285,7 +285,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 ,c.TotalEmployeeValue.ToString()
                 ,c.TotalEmployerValue.ToString()
                 ,c.TotalPF.ToString()
-                , c.Post?"Yes":"No"
+                , c.Post?"Posted":"Not Posted"
             };
             return Json(new
             {
