@@ -196,6 +196,7 @@ where  FiscalYearId=@FiscalYearId
 Id
 ,BranchId
 ,Year
+,FyscalYear
 ,YearStart
 ,YearEnd
 ,YearLock
@@ -228,6 +229,7 @@ where  BranchId=@BranchId
                     fiscalYearVM.BranchId = Convert.ToInt32(dr["BranchId"]);
 
                     fiscalYearVM.Year = Convert.ToInt32(dr["Year"]);
+                    fiscalYearVM.FyscalYear = dr["FyscalYear"].ToString();
                     fiscalYearVM.YearStart = Ordinary.StringToDate(dr["YearStart"].ToString());
                     fiscalYearVM.YearEnd = Ordinary.StringToDate(dr["YearEnd"].ToString());
                     fiscalYearVM.YearLock = Convert.ToBoolean(dr["YearLock"]);

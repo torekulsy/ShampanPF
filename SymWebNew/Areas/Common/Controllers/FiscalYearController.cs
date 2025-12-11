@@ -121,7 +121,7 @@ namespace SymWebUI.Areas.Common.Controllers
             var result = from c in displayedCompanies
                          select new[] { 
                 Convert.ToString(c.Id)
-                , c.Year.ToString() //+ "~" + Convert.ToString(c.Id)
+                , c.FyscalYear 
                 , c.YearStart
                 , c.YearEnd 
                 //, c.Remarks 
