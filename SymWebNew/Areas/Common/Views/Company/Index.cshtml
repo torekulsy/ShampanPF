@@ -1,129 +1,69 @@
-﻿@model IEnumerable<SymViewModel.Common.CompanyVM>
+﻿<div class="headrow">
+    @Html.ActionLink(" New", "Create", null, new { title = "Add New Company", @class = "sym-btn-add" })
+    <label class="pull-right">Company List</label>
+</div>
 
-@{
-    ViewBag.Title = "Index";
-}
-
-<p style="font-size: large; color: #007bff;">
-    @Html.ActionLink("Create New", "Create")
-</p>
-
-<style>
-    table.custom-table {
-        width: 60%; /* Adjust table width */
-        border-collapse: collapse;
-        margin: 20px 0;
-        font-size: 14px;
-        font-family: Arial, sans-serif;
-    }
-
-        table.custom-table th,
-        table.custom-table td {
-            border: 1px solid #ddd; /* Thin border */
-            padding: 8px; /* Space inside cell */
-            text-align: left;
-        }
-
-        table.custom-table th {
-            background-color: #4CAF50; /* Green header */
-            color: white;
-        }
-
-        table.custom-table tr:nth-child(even) {
-            background-color: #f9f9f9; /* Zebra effect */
-        }
-
-        table.custom-table tr:hover {
-            background-color: #f1f1f1; /* Hover effect */
-        }
-
-        table.custom-table a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-            table.custom-table a:hover {
-                text-decoration: underline;
-            }
-</style>
-<center>
-    <table class="custom-table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PostalCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Mobile)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fax)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Remarks)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-    {
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Company List</p>
+    </div>
+    <p></p>
+    <table id="myDataTable" class="display">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Code)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.City)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PostalCode)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Phone)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Mobile)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Fax)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Remarks)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsActive)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
+                <th class="center">Action</th>
+                <th class="left">Code</th>
+                <th class="left">Name</th>
+                <th class="left">Address</th>
+                @*<th class="left">City</th>*@
+                @*<th class="left">Postal Code</th>*@
+                <th class="left">Phone</th>
+                @*<th class="left">Mobile</th>
+                <th class="left">Fax</th>*@
+                <th class="left">Remarks</th>
+                <th class="left">Is Active</th>
             </tr>
-    }
-
+        </thead>
+        <tbody></tbody>
     </table>
-</center>
+    <br />
+</div>
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Common/Company/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                {
+                    "sName": "Id",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "sWidth": "8%",
+                    "sClass": "center",
+                    "fnRender": function (oObj) {
+                        return ' <a id="" title="Click on for Edit" style="text-decoration:none;" href="/Common/Company/Edit/' + oObj.aData[0] + '" class="sym-btn-edit-row"></a>'
+                            //+ '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Company/Delete" onclick="deletedData(this, myDataTable,\'' + oObj.aData[0] + '\');" class="sym-btn-remove-row"></a>';
+                    }
+                },
+                { "sCode": "Code", "sWidth": "7%" },
+                { "sName": "Name", "sWidth": "10%" },
+                { "sAddress": "Address", "sWidth": "30%" },
+                //{ "sCity": "City", "sWidth": "8%" },
+                //{ "sPostalCode": "Postal Code", "sWidth": "8%" },
+                { "sPhone": "Phone", "sWidth": "10%" },
+                //{ "sMobile": "Mobile", "sWidth": "10%" },
+                //{ "sFax": "Fax", "sWidth": "10%" },
+                { "sRemarks": "Remarks", "sWidth": "10%" },
+                { "sIsActive": "Is Active", "sWidth": "10%" }
+            ]
+        });
+    });
+</script>

@@ -1,4 +1,5 @@
-﻿using SymOrdinary;
+﻿using JQueryDataTables.Models;
+using SymOrdinary;
 using SymRepository.Common;
 using SymViewModel.Common;
 using System;
@@ -27,11 +28,66 @@ namespace SymWebUI.Areas.Common.Controllers
         /// <returns>View containing Company</returns>
         public ActionResult Index()
         {
-            List<CompanyVM> company = compRepo.SelectAll();
-            return View(company);
-            
-         // return  RedirectToAction("Edit");
+            //List<CompanyVM> company = compRepo.SelectAll();
+            //return View(company);
+            return View("~/Areas/Common/Views/Company/Index.cshtml");
         }
+
+        public ActionResult _index(JQueryDataTableParamModel param)
+        {
+           
+            var getAllData = compRepo.SelectAll();
+            IEnumerable<CompanyVM> filteredData;
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredData = getAllData.Where(c =>
+                    c.Code.ToLower().Contains(param.sSearch.ToLower()) ||
+                    c.Name.ToLower().Contains(param.sSearch.ToLower()) ||
+                    c.Address.ToLower().Contains(param.sSearch.ToLower()) ||
+                    c.City.ToLower().Contains(param.sSearch.ToLower()) ||
+                    c.PostalCode.ToLower().Contains(param.sSearch.ToLower()) ||
+                    c.Phone.ToLower().Contains(param.sSearch.ToLower()) ||
+                    c.Mobile.ToLower().Contains(param.sSearch.ToLower()) ||
+                    c.Fax.ToLower().Contains(param.sSearch.ToLower()) ||
+                    c.Remarks.ToLower().Contains(param.sSearch.ToLower()) ||
+                    c.IsActive.ToString().ToLower().Contains(param.sSearch.ToLower())
+                );
+            }
+            else
+            {
+                filteredData = getAllData;
+            }
+
+            var displayedCompanies = filteredData
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+            var result = from c in displayedCompanies
+                         select new[] 
+                 {
+                     Convert.ToString(c.Id),
+                     c.Code,
+                     c.Name,                              
+                     c.Address,                           
+                     //c.City,                              
+                     //c.PostalCode,                        
+                     c.Phone,                             
+                     //c.Mobile,                            
+                     //c.Fax,                               
+                     c.Remarks,                           
+                     c.IsActive ? "Yes" : "No"            
+                 };
+
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = getAllData.Count(),
+                iTotalDisplayRecords = filteredData.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
 
         /// <summary>
         /// Displays the view for creating a new entry. 
