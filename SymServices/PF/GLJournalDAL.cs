@@ -129,6 +129,7 @@ WHERE  1=1 AND IsArchive = 0
                     vm.LastUpdateAt = Ordinary.StringToDate(dr["LastUpdateAt"].ToString());
                     vm.LastUpdateBy = dr["LastUpdateBy"].ToString();
                     vm.LastUpdateFrom = dr["LastUpdateFrom"].ToString();
+                    vm.Source = dr["Remarks"].ToString();
 
                     VMs.Add(vm);
                 }

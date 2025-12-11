@@ -36,5 +36,7 @@ namespace SymViewModel.Common
 
 
         public List<FiscalYearDetailVM> FiscalYearDetailVM { get; set; }
+
+        public string FyscalYear { get; set; }
     }
 }
