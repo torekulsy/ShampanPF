@@ -11,7 +11,7 @@ namespace SymViewModel.Common
     public class UserLogsVM
     {
         public string Id { get; set; }
-          [Display(Name = "Branch")] 
+          [Display(Name = "Company")] 
         public int BranchId { get; set; }
         [Display(Name="User Id")]
         public string LogID { get; set; }
