@@ -561,6 +561,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rptLedger1.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Files\ReportFiles\PF\rptLedgerMultiple.cs">
       <DependentUpon>rptLedgerMultiple.rpt</DependentUpon>

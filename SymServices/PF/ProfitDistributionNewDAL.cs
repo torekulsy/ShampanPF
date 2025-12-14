@@ -296,8 +296,58 @@ FROM ProfitDistributionNew pd
                 string IsWeightedAverageMonth = _settingDal.settingValue("PF", "IsWeightedAverageMonth").Trim();
                 if (IsWeightedAverageMonth == "N")
                 {
+                    if (vm.PreDistributionFund.DistributionType == "IsProfit")
+                    {
 
-                    sqlText = @"
+                        sqlText = @"
+
+  SELECT 
+    EmployeeId,
+    ISNULL([1], 0) AS [11],
+    ISNULL([2], 0) AS [10],
+    ISNULL([3], 0) AS [9],
+    ISNULL([4], 0) AS [8],
+    ISNULL([5], 0) AS [7],
+    ISNULL([6], 0) AS [6],
+    ISNULL([7], 0) AS [5],
+    ISNULL([8], 0) AS [4],
+    ISNULL([9], 0) AS [3],
+    ISNULL([10], 0) AS [2],
+    ISNULL([11], 0) AS [1],
+    ISNULL([12], 0) AS [0],
+	  (
+        ISNULL([1], 0) + ISNULL([2], 0) + ISNULL([3], 0) + ISNULL([4], 0) + ISNULL([5], 0) +
+        ISNULL([6], 0) + ISNULL([7], 0) + ISNULL([8], 0) + ISNULL([9], 0) + ISNULL([10], 0) +
+        ISNULL([11], 0) + ISNULL([12], 0)
+    ) AS [TotalValue],
+	(
+	   (ISNULL([1], 0)*11 +ISNULL([2], 0)*10+ISNULL([3], 0)*9+ISNULL([4], 0)*8+ISNULL([5], 0)*7+ISNULL([6], 0)*6+ISNULL([7], 0)*5+ISNULL([8], 0)*4+ISNULL([9], 0)*3+ISNULL([10], 0)*2+ISNULL([11], 0)*1+ISNULL([12], 0)*0)/
+	   ( ISNULL([1], 0) + ISNULL([2], 0) + ISNULL([3], 0) + ISNULL([4], 0) + ISNULL([5], 0) +
+        ISNULL([6], 0) + ISNULL([7], 0) + ISNULL([8], 0) + ISNULL([9], 0) + ISNULL([10], 0) +
+        ISNULL([11], 0) + ISNULL([12], 0)
+		)
+	) AS Month
+FROM
+(
+    SELECT 
+        EmployeeId,
+        FiscalYearDetailId,
+        (EmployeePFValue + EmployeerPFValue) AS TotalPF
+        FROM PFDetails where EmployeeId in(Select Id from EmployeeInfo where IsProfit=1)
+) AS SourceTable
+PIVOT
+(
+    SUM(TotalPF)
+    FOR FiscalYearDetailId IN ([1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12])
+) AS PivotTable
+ORDER BY EmployeeId;
+
+";
+                    }
+
+                    else
+                    {
+                        sqlText = @"
 
   SELECT 
     EmployeeId,
@@ -341,6 +391,7 @@ PIVOT
 ORDER BY EmployeeId;
 
 ";
+            }
                     //                    sqlText = @"
                     //                    with cat as (
                     //                    select EmployeeId
@@ -589,6 +640,7 @@ ORDER BY EmployeeId;
                     "Select Count(ID) from ProfitDistributionNew where PreDistributionFundId=@PreDistributionFundId";
 
                 SqlCommand cmd = new SqlCommand(checkExistData, currConn, transaction);
+
                 cmd.Parameters.AddWithValue("@PreDistributionFundId", vm.PreDistributionFundId);
                 int count = (int)cmd.ExecuteScalar();
 
@@ -711,7 +763,7 @@ ORDER BY EmployeeId;
                         if (IsProfitCalculation == "Y")
                         {
 
-                            if (dataRow["IsNoProfit"].ToString() == "True")
+                            if (dataRow["IsNoInterest"].ToString() == "True")
                             {
                                 dtFinalDistributionNoProfit.Rows.Add(nextId, dataRow["EmployeeId"], vm.PreDistributionFundId, Ordinary.DateToString(vm.DistributionDate), "0",
                                 dataRow["EmployeeContribution"], dataRow["EmployerContribution"], dataRow["EmployeeProfit"],
