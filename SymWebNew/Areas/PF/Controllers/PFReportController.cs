@@ -594,11 +594,13 @@ namespace SymWebUI.Areas.PF.Controllers
 
         public ActionResult Year_Closing(string fydid)
         {
+            int fyear = Convert.ToInt32(fydid.ToString().Substring(0, 4));
+
             PFReportVM vm = new PFReportVM();
             string[] result = new string[6];
             try
             {
-                vm.YearTo = fydid;
+                vm.YearTo = fyear.ToString();
                  vm.BaseEntity.CreatedBy = identity.Name;
                  vm.BaseEntity.CreatedFrom = identity.WorkStationIP;
                  vm.TransType = AreaTypePFVM.TransType;

@@ -830,6 +830,7 @@ where @TransactionDate between PeriodStart and PeriodEnd
 Id
 ,BranchId
 ,Year
+,FyscalYear
 ,YearStart
 ,YearEnd
 ,YearLock
@@ -843,6 +844,7 @@ Id
  @Id
 ,@BranchId
 ,@Year
+,@FyscalYear
 ,@YearStart
 ,@YearEnd
 ,@YearLock
@@ -856,6 +858,8 @@ Id
                     _cmdInsert.Parameters.AddWithValue("@Id", vm.Id);
                     _cmdInsert.Parameters.AddWithValue("@BranchId", vm.BranchId);
                     _cmdInsert.Parameters.AddWithValue("@Year", vm.Year);
+                    string yearEnd = (vm.Year + 1).ToString(); 
+                    _cmdInsert.Parameters.AddWithValue("@FyscalYear", vm.Year.ToString() + "-" + yearEnd.ToString().Substring(2));
                     _cmdInsert.Parameters.AddWithValue("@YearStart", Ordinary.DateToString(vm.YearStart));
                     _cmdInsert.Parameters.AddWithValue("@YearEnd", Ordinary.DateToString(vm.YearEnd));
                     _cmdInsert.Parameters.AddWithValue("@YearLock", vm.YearLock);
@@ -1245,7 +1249,7 @@ ORDER BY PeriodStart";
 
                 sqlText = @"SELECT
 Id,
-Year Name
+Year Name, FyscalYear
    FROM FiscalYear
 WHERE IsArchive=0 and IsActive=1 and BranchId=@branch
     ORDER BY Year desc
@@ -1262,8 +1266,9 @@ WHERE IsArchive=0 and IsActive=1 and BranchId=@branch
                 while (dr.Read())
                 {
                     vm = new FiscalYearVM();
-                    vm.Id = dr["Id"].ToString();
-                    vm.Name = dr["Name"].ToString();
+                    //vm.Id = dr["Id"].ToString();
+                    vm.Id = dr["Name"].ToString();
+                    vm.Name = dr["FyscalYear"].ToString();                 
                     VMs.Add(vm);
                 }
                 dr.Close();

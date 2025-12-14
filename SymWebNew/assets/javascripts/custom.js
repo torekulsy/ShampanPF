@@ -1344,6 +1344,7 @@ function InitDropdownsCommon() {
 
     //alert(111);
     var fy = function () {
+        debugger;
         $('select.fpDetailsCom').html("");
         var FiscalPeriodDetails = "";
         var fYear = $('.fiscalyearCom').val();

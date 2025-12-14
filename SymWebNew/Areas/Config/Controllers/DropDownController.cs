@@ -191,10 +191,11 @@ namespace SymWebUI.Areas.Config.Controllers
             ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
             return Json(new SelectList(new SymRepository.Common.FiscalYearRepo().DropDownPeriod(Convert.ToInt32(identity.BranchId), FiscalYearId), "Id", "Name"), JsonRequestBehavior.AllowGet);
         }
-        public JsonResult DropDownPeriodByFYear(int year)
+        public JsonResult DropDownPeriodByFYear(string year)
         {
+            int fyear = Convert.ToInt32(year.ToString().Substring(0, 4));
             ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
-            return Json(new SelectList(new SymRepository.Common.FiscalYearRepo().DropDownPeriodByYear(Convert.ToInt32(identity.BranchId), year), "Id", "Name"), JsonRequestBehavior.AllowGet);
+            return Json(new SelectList(new SymRepository.Common.FiscalYearRepo().DropDownPeriodByYear(Convert.ToInt32(identity.BranchId), fyear), "Id", "Name"), JsonRequestBehavior.AllowGet);
         }
         public JsonResult DropDownPeriodByYearLockPayroll(int year)
         {
