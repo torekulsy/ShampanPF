@@ -27,6 +27,7 @@
     <link href="~/assets/css/SymphonyBtn.css" rel="stylesheet" />
     <link href="~/assets/css/dataTables.colVis.css" rel="stylesheet" />
     <link href="~/assets/css/select2.css" rel="stylesheet" />
+    
     @Styles.Render("~/Content/css")
     @*   @Scripts.Render("~/bundles/modernizr")*@
     @*    @{
@@ -51,6 +52,14 @@
             width: 15%;
         }
     </style>
+
+    @{
+        if (Session["UserId"] == null)
+        {
+            Response.Redirect(Url.Action("Index", "Home"));
+        }
+    }
+
     <script>
         $(document).ready(function () {
             toastr.options.positionClass = 'toast-top-center';
