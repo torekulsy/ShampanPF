@@ -54,7 +54,7 @@
     </style>
 
     @{
-        if (Session["UserId"] == null)
+        if (Session["User"] == null)
         {
             Response.Redirect(Url.Action("Index", "Home"));
         }
