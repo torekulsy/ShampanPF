@@ -2938,7 +2938,7 @@ order by SectionOrderNo ";
             #endregion
         }
 
-        public string[] AutoJournalSave(string TransactionMonth, string TransactionForm, string TransactionCode, string BranchId, SqlConnection currConn, SqlTransaction transaction, ShampanIdentityVM auditvm)
+        public string[] AutoJournalSave(string TransactionMonth, string TransactionForm, string TransactionCode, int TransactionId, string BranchId, SqlConnection currConn, SqlTransaction transaction, ShampanIdentityVM auditvm)
         {
             if (currConn == null)
             {
@@ -2996,6 +2996,10 @@ order by SectionOrderNo ";
 
                 GLJournalVM vmj = new GLJournalVM
                 {
+                    Source = TransactionCode,
+                    SourceId = Convert.ToInt32(TransactionId),
+
+
                     Id = 1,
                     CreatedAt = DateTime.Now.ToString(),
                     CreatedBy = "admin",
@@ -3033,7 +3037,8 @@ order by SectionOrderNo ";
                         }
                     }
                 };
-                vmj.Code = TransactionCode;
+                vmj.Source = TransactionCode;
+                vmj.SourceId = TransactionId;
                 vmj.TransactionDate = dtd.Rows[0][0].ToString();
                 vmj.BranchId = BranchId;
                 vmj.Remarks = "Contribution Employee & Employer";

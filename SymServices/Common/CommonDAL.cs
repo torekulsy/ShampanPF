@@ -6654,7 +6654,7 @@ WHERE TABLE_NAME = N'" + tableName + "'";
                 {
                     int CODEGENID = 0;
                     int transResultCodeGen = 0;
-                    TransactionDate = Convert.ToDateTime(Date);
+                    TransactionDate =Convert.ToDateTime(Ordinary.StringToDate(Date));
                     //new FiscalYearDAL().SelectAll_FiscalYearDetailByDate(TransactionDate, currConn, transaction).Year;
                     year = new FiscalYearDAL().SelectAll_FiscalYearDetailByDate(Ordinary.DateToString( TransactionDate.ToString()), currConn, transaction).Year.ToString();
 

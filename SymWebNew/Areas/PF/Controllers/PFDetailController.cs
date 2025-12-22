@@ -1098,7 +1098,7 @@ namespace SymWebUI.Areas.PF.Controllers
             }
         }
 
-        public ActionResult InsertAutoJournal(string TransactionMonth, string TransactionForm, string TransactionCode)
+        public ActionResult InsertAutoJournal(string TransactionMonth, string TransactionForm, string TransactionCode, int TransactionId)
         {
             string[] result = new string[6];
             string BranchId = Session["BranchId"].ToString();
@@ -1114,7 +1114,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 BranchId = Session["BranchId"].ToString()
             };
 
-            result = _repo.InsertAutoJournal(TransactionMonth, TransactionForm, TransactionCode, BranchId, vm);
+            result = _repo.InsertAutoJournal(TransactionMonth, TransactionForm, TransactionCode, TransactionId, BranchId, vm);
             Session["result"] = result[0] + "~" + result[1];
 
             return View("~/Areas/PF/Views/PFDetail/IndexFiscalPeriod.cshtml");

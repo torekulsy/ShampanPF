@@ -1524,7 +1524,7 @@ WHERE  1=1 AND  inv.IsArchive = 0
             return dt;
         }
 
-        public string[] AutoJournalSave(string JournalType, string TransactionForm, string TransactionCode, string BranchId, SqlConnection currConn, SqlTransaction transaction, ShampanIdentityVM auditvm)
+        public string[] AutoJournalSave(string JournalType, string TransactionForm, string TransactionCode, string TransactionId, string BranchId, SqlConnection currConn, SqlTransaction transaction, ShampanIdentityVM auditvm)
         {
             if (currConn == null)
             {
@@ -1576,6 +1576,8 @@ WHERE  1=1 AND  inv.IsArchive = 0
 
                 GLJournalVM vmj = new GLJournalVM
                 {
+                    
+
                     Id = 1,
                     CreatedAt = DateTime.Now.ToString(),
                     CreatedBy = "admin",
@@ -1606,7 +1608,8 @@ WHERE  1=1 AND  inv.IsArchive = 0
                         }
                     }
                 };
-                vmj.Code = TransactionCode;
+                vmj.Source = TransactionCode;
+                vmj.SourceId = Convert.ToInt32(TransactionId);
                 vmj.BranchId = BranchId;
                 GLJournalDAL glJournalDal = new GLJournalDAL();
                 retResults = glJournalDal.Insert(vmj);

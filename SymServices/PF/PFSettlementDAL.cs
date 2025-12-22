@@ -1867,7 +1867,7 @@ AND PFSettlements.EmployeeId=@EmployeeId
             return retResults;
         }
 
-        public string[] AutoJournalSave(string JournalType, string TransactionForm, string TransactionCode, string BranchId, SqlConnection currConn, SqlTransaction transaction, ShampanIdentityVM auditvm)
+        public string[] AutoJournalSave(string JournalType, string TransactionForm, string TransactionCode, int Id, string BranchId, SqlConnection currConn, SqlTransaction transaction, ShampanIdentityVM auditvm)
         {
             if (currConn == null)
             {
@@ -1991,7 +1991,8 @@ AND PFSettlements.EmployeeId=@EmployeeId
                         }
                     }
                 };
-                vmj.Code = TransactionCode;
+                vmj.Source = TransactionCode;
+                vmj.SourceId = Id;
                 vmj.BranchId = BranchId;
                 GLJournalDAL glJournalDal = new GLJournalDAL();
                 retResults = glJournalDal.Insert(vmj);

@@ -433,7 +433,10 @@ WHERE  1=1
                         ,CreatedFrom
                         ,Post
                         ,TransType
-                        ,IsYearClosing,BranchId
+                        ,IsYearClosing
+                        ,BranchId
+                        ,Source
+                        ,SourceId
 
                         ) VALUES (
                         @Code
@@ -448,7 +451,10 @@ WHERE  1=1
                         ,@CreatedFrom
                         ,@Post
                         ,@TransType
-                        ,@IsYearClosing,@BranchId
+                        ,@IsYearClosing
+                        ,@BranchId
+                        ,@Source
+                        ,@SourceId
                         ) 
                         select scope_Identity();
                         ";
@@ -467,6 +473,8 @@ WHERE  1=1
                     cmdInsert.Parameters.AddWithValue("@Post", false);
                     cmdInsert.Parameters.AddWithValue("@TransType", vm.TransType ?? "PF");
                     cmdInsert.Parameters.AddWithValue("@BranchId", vm.BranchId);
+                    cmdInsert.Parameters.AddWithValue("@Source", vm.Source);
+                    cmdInsert.Parameters.AddWithValue("@SourceId", vm.SourceId);
 
 
 

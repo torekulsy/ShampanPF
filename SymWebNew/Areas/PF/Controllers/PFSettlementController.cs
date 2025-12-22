@@ -444,7 +444,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public ActionResult JournalEntry(string Code)
+        public ActionResult JournalEntry(string Code, int Id)
         {
             string[] result = new string[6];
 
@@ -464,7 +464,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 BranchId = BranchId
             };
 
-            result = _repo.InsertAutoJournal("1", "4", Code, BranchId, vm);
+            result = _repo.InsertAutoJournal("1", "4", Code, Id, BranchId, vm);
 
             Session["result"] = result[0] + "~" + result[1];
 

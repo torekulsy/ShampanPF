@@ -87,7 +87,7 @@
                                 }
 
                                 var reportLink = '&nbsp; <a id="lnkEdit1" title="Click on for Report" style="text-decoration:none;" href="/@ViewBag.TransType/PFDetail/reportVeiw/' + id + '" class=" linkReport sym-btn-report-row"></a>';
-                                var journalLink = '&nbsp; <a title="Click on for Journal" href="/@ViewBag.TransType/PFDetail/InsertAutoJournal?TransactionMonth=' + fiscalMonth + '&TransactionForm=Contribution&TransactionCode=' + code + '" class="sym-btn-bank-row"></a>';
+                                    var journalLink = '&nbsp; <a title="Click on for Journal" href="/@ViewBag.TransType/PFDetail/InsertAutoJournal?TransactionMonth=' + fiscalMonth + '&TransactionForm=Contribution&TransactionCode=' + code + ' &TransactionId=' + id + '" class="sym-btn-bank-row"></a>';
 
                                 return detailLink + postLink + reportLink + journalLink;
                             }
