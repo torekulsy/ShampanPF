@@ -27,12 +27,10 @@ namespace SymWebUI.Areas.Common.Controllers
          
             HomePageInfoDashboardRepo _Repo = new HomePageInfoDashboardRepo();
             BranchRepo BranchRepo = new BranchRepo();
-
             int BranchId = Convert.ToInt32(Session["BranchId"].ToString());
-
             BranchVM branch = BranchRepo.SelectById(Convert.ToInt32(BranchId));
-
             Session["BranchId"] = branch.Id;
+
             vm.BranchVM = branch;
             vmPf = _Repo.GetPfInfoDashboard();
             vm.PfInfoDashboardVMS = vmPf;
