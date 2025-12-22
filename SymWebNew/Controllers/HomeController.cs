@@ -441,7 +441,11 @@ namespace SymWebUI.Controllers
                   
                     else
                     {
-                        return Redirect("/");
+                        Session["BranchId"] = vm.BranchId;
+                        // return Redirect("/Company");
+                        return Redirect("/PF/Home");
+
+                        //return Redirect("/");
                     }
                     #endregion
 

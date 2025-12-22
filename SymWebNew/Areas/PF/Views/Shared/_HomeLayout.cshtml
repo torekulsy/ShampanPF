@@ -53,12 +53,12 @@
         }
     </style>
 
-    @{
+    @*@{
         if (Session["User"] == null)
         {
             Response.Redirect(Url.Action("Index", "Home"));
         }
-    }
+    }*@
 
     <script>
         $(document).ready(function () {
