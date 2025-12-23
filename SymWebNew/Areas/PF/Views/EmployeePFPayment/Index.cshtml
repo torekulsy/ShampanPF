@@ -1,6 +1,22 @@
 ﻿@using UIHelper.MVC
+@using System.Threading;
+@using NPOI.SS.Formula.Functions
+@using UIHelper.MVC
+@using SymOrdinary
 @{
     ViewBag.Title = "Index";
+}
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
 }
 <div class="headrow">
     <button type="button" title="Add New Employee PF Payment" data-url="/@ViewBag.TransType/EmployeePFPayment/SingleEmployeePFPaymentEdit?PFOpeinigId=&Operation=add" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
@@ -56,10 +72,17 @@
                          "sWidth": "12%",
                          "sClass": "center",
                          "fnRender": function (oObj) {
+
+                             if ('@identity.IsAdmin'.toLowerCase() == "true")
+                             {
+                                 return '  &nbsp;  <a title="Click on for Edit" id="lnkEdit1" style="text-decoration:none;" Onclick="otherearningEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>'
+                                + '&nbsp; <a title="Click on for Post" style="text-decoration:none;" data-url="/@ViewBag.TransType/EmployeePFPayment/MultiplePost" onclick="postedData(this, myDataTable,\'' + oObj.aData[0] + '\');"  class="sym-btn-post-row"></a>'
+                                 ;
+                             }
+                             else {
+                                 return '  &nbsp;  <a title="Click on for Edit" id="lnkEdit1" style="text-decoration:none;" Onclick="otherearningEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>';
+                             }
                             
-                             return '  &nbsp;  <a title="Click on for Edit" id="lnkEdit1" style="text-decoration:none;" Onclick="otherearningEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>'
-                                 + '&nbsp; <a title="Click on for Post" style="text-decoration:none;" data-url="/@ViewBag.TransType/EmployeePFPayment/MultiplePost" onclick="postedData(this, myDataTable,\'' + oObj.aData[0] + '\');"  class="sym-btn-post-row"></a>'
-                             ;
                          }
                      }
                       , { "sName": "Code", "sWidth": "10%" }
