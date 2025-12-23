@@ -1,4 +1,18 @@
-﻿<div class="headrow">
+﻿@using SymOrdinary
+@using System.Threading;
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+<div class="headrow">
     <button type="button" title="Add New PF Bank Deposit" data-url="/@ViewBag.TransType/LoanSattlement/Create" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>
     <label class="pull-right">PF Loan Sattlement </label>
 </div>
@@ -48,26 +62,24 @@
                                 "sClass": "center",
                                 "bVisible": true,
                                 "fnRender": function (oObj) {
-                                    if (oObj.aData[6] == "Posted") {
-                                        return ' '
-                                       + '&nbsp; <a id=""  title="Click on for Edit"  style="text-decoration:none;"  href=\"/@ViewBag.TransType/LoanSattlement/Edit/' + oObj.aData[0] + '\" class="  sym-btn-edit-row"></a>'
-                                       + '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/LoanSattlement/Post"  onclick=btnPostNew(this);  data-Id="' + oObj.aData[0] + "~" + oObj.aData[6] + '\" class="sym-btn-post-row"></a>'
-                                       //+ '&nbsp; <a id=""  title="Click to view Transaction Report" target="_blank"    href=\"/@ViewBag.TransType/LoanSattlement/GLTransactionReport?id=' + oObj.aData[0] + '\" class="  sym-btn-report-row"></a>'
-                                       + '&nbsp; <a id="lnkEdit1"  title="Click on for Report" style="text-decoration:none;"    href=\"/@ViewBag.TransType/LoanSattlement/reportVeiw/' + oObj.aData[0] + '\" class=" linkReport sym-btn-report-row"></a>'
-                                       + '&nbsp; <a title="Click on for Journal" target="_blank"  href="/@ViewBag.TransType/Journal/Create?JournalType=1' + '&TransactionForm=LoanEarlySettlement' + '&TransactionId=' + oObj.aData[0] + '\" class="sym-btn-bank-row"></a>'
+
+                                    if ('@identity.IsAdmin'.toLowerCase() == "true") {
+                                        if (oObj.aData[6] == "Posted") {
+                                            return ' '
+                                           + '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/LoanSattlement/Post"  onclick=btnPostNew(this);  data-Id="' + oObj.aData[0] + "~" + oObj.aData[6] + '\" class="sym-btn-post-row"></a>'
+                                        }
+                                        else {
+
+                                            return ' '
+                                                + '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/LoanSattlement/Post"  onclick=btnPostNew(this);  data-Id="' + oObj.aData[0] + "~" + oObj.aData[6] + '\" class="sym-btn-post-row"></a>'
+                                        };
                                     }
                                     else
-                                    {
-
+                                        {}
                                     return ' '
-                                        + '&nbsp; <a id=""  title="Click on for Edit"  style="text-decoration:none;"  href=\"/@ViewBag.TransType/LoanSattlement/Edit/' + oObj.aData[0] + '\" class="  sym-btn-edit-row"></a>'
-                                        + '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/LoanSattlement/Post"  onclick=btnPostNew(this);  data-Id="' + oObj.aData[0] + "~" + oObj.aData[6] + '\" class="sym-btn-post-row"></a>'
-                                        //+ '&nbsp; <a id=""  title="Click to view Transaction Report" target="_blank"    href=\"/@ViewBag.TransType/LoanSattlement/GLTransactionReport?id=' + oObj.aData[0] + '\" class="  sym-btn-report-row"></a>'
-                                        + '&nbsp; <a id="lnkEdit1"  title="Click on for Report" style="text-decoration:none;"    href=\"/@ViewBag.TransType/LoanSattlement/reportVeiw/' + oObj.aData[0] + '\" class=" linkReport sym-btn-report-row"></a>'
-                                        //+ '&nbsp; <a title="Click on for Journal" target="_blank"  href="/@ViewBag.TransType/Journal/Create?JournalType=1' + '&TransactionForm=LoanEarlySettlement' + '&TransactionId=' + oObj.aData[0] + '\" class="sym-btn-bank-row"></a>'
-                                    }
-
-                                    ;
+                                      + '&nbsp; <a id=""  title="Click on for Edit"  style="text-decoration:none;"  href=\"/@ViewBag.TransType/LoanSattlement/Edit/' + oObj.aData[0] + '\" class="  sym-btn-edit-row"></a>'                                  
+                                      + '&nbsp; <a id="lnkEdit1"  title="Click on for Report" style="text-decoration:none;"    href=\"/@ViewBag.TransType/LoanSattlement/reportVeiw/' + oObj.aData[0] + '\" class=" linkReport sym-btn-report-row"></a>'       
+                                      + '&nbsp; <a title="Click on for Journal" target="_blank"  href="/@ViewBag.TransType/Journal/Create?JournalType=1' + '&TransactionForm=LoanEarlySettlement' + '&TransactionId=' + oObj.aData[0] + '\" class="sym-btn-bank-row"></a>'
                                 }
                             }
                             , { "sName": "Code", "sWidth": "15%" }

@@ -1,4 +1,18 @@
-﻿<div class="headrow">
+﻿@using SymOrdinary
+@using System.Threading;
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+<div class="headrow">
     <button type="button" title="New Employee Settlement" data-url="/@ViewBag.TransType/PFSettlement/IndexResignEmployee" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>
     <label class="pull-right">PF Settlement </label>
 </div>
@@ -50,24 +64,29 @@
                                 "bSortable": false,
                                 "sWidth": "16%",
                                 "sClass": "center",
-                                "fnRender": function (oObj) {
-                                    var Code = encodeURIComponent(oObj.aData[1]);
-                                    if (oObj.aData[8] == "Posted") {
-                                        return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">'
-                                        @*+ '&nbsp; <a id=""  title="Click on for Edit"    href=\"/@ViewBag.TransType/PFSettlement/Edit/' + oObj.aData[0] + '\" class=" sym-btn-edit-row"></a>'*@
-                                        @*+ '&nbsp; <a id=""  title="Click to view GL Transaction Report" target="_blank"    href=\"/@ViewBag.TransType/PFSettlement/PFSettlement_GLTransactionReport?id=' + oObj.aData[0] + '\" class="  sym-btn-detail-row"></a>'*@
-                                        + '&nbsp; <a title="Click on for Report" target="_blank" href="/@ViewBag.TransType/PFSettlement/ReportView?Id=' + oObj.aData[0] + '\" class="sym-btn-report-row"></a>'
-                                        + '&nbsp; <a title="Click on for Post"   data-url="/@ViewBag.TransType/PFSettlement/Post"   onclick=btnPostNew(this);       data-Post="' + oObj.aData[7] + '" data-Id="' + oObj.aData[0] + '\" class="sym-btn-reject-row" style="opacity:0.45;pointer-events:none;cursor:default;"></a>'
-                                        + '<a title="Journal" class="sym-btn-bank-row" href="/@ViewBag.TransType/PFSettlement/JournalEntry/?Code=' + Code + '&Id=' + oObj.aData[0] + '"></a>'
-                                    }
-                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">'
-                                        @*+ '&nbsp; <a id=""  title="Click on for Edit"    href=\"/@ViewBag.TransType/PFSettlement/Edit/' + oObj.aData[0] + '\" class=" sym-btn-edit-row"></a>'*@
-                                        @*+ '&nbsp; <a id=""  title="Click to view GL Transaction Report" target="_blank"    href=\"/@ViewBag.TransType/PFSettlement/PFSettlement_GLTransactionReport?id=' + oObj.aData[0] + '\" class="  sym-btn-detail-row"></a>'*@
-                                        + '&nbsp; <a title="Click on for Report" target="_blank" href="/@ViewBag.TransType/PFSettlement/ReportView?Id=' + oObj.aData[0] + '\" class="sym-btn-report-row"></a>'
-                                        + '&nbsp; <a title="Click on for Post"   data-url="/@ViewBag.TransType/PFSettlement/Post"   onclick=btnPostNew(this);       data-Post="' + oObj.aData[7] + '" data-Id="' + oObj.aData[0] + '\" class="sym-btn-post-row"></a>'
-                                        + '<a title="Journal" class="sym-btn-bank-row" href="/@ViewBag.TransType/PFSettlement/JournalEntry/?Code=' + Code + '&Id=' + oObj.aData[0] + '"></a>';
-                                     
-                                }
+                            fnRender: function (oObj) {
+    var Code = encodeURIComponent(oObj.aData[1]);
+
+    // Admin check
+    if ('@identity.IsAdmin'.toLowerCase() == "true") {
+        if (oObj.aData[8] == "Posted") {
+            // If "Posted", show disabled Post button
+            return ''
+                + '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/PFSettlement/Post" onclick="btnPostNew(this);" data-Post="' + oObj.aData[7] + '" data-Id="' + oObj.aData[0] + '" class="sym-btn-reject-row" style="opacity:0.45;pointer-events:none;cursor:default;"></a>';
+        } else {
+            // If not posted, show enabled Post button
+            return ''
+                + '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/PFSettlement/Post" onclick="btnPostNew(this);" data-Post="' + oObj.aData[7] + '" data-Id="' + oObj.aData[0] + '" class="sym-btn-post-row"></a>';
+        }
+    }
+
+    // Always render the following buttons for all users (admin or non-admin)
+    return ''
+        + ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">'
+        + '&nbsp; <a title="Click on for Report" target="_blank" href="/@ViewBag.TransType/PFSettlement/ReportView?Id=' + oObj.aData[0] + '" class="sym-btn-report-row"></a>'
+        + '&nbsp; <a title="Journal" class="sym-btn-bank-row" href="/@ViewBag.TransType/PFSettlement/JournalEntry/?Code=' + Code + '&Id=' + oObj.aData[0] + '"></a>';
+}
+
                             }
                             , { "sName": "Code", "sWidth": "10%" }
                             , { "sName": "EmpName", "sWidth": "10%" }

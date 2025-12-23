@@ -1,6 +1,19 @@
 ﻿@model SymViewModel.PF.InvestmentVM
 @using UIHelper.MVC
-
+@using SymOrdinary
+@using System.Threading;
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
 <div class="headrow">
     <button type="button" title="Add New Investment" data-url="/@ViewBag.TransType/Investment/Create" onclick="GoTo(this)" id=""  class=" sym-btn-add ">&nbsp;New</button>
     <button type="button" data-url="/@ViewBag.TransType/Investment/DownloadExcel" onclick="GoTo(this)" id="" title="Click to Download the Report" class="sym-btn-Excel-Export">&nbsp;Download</button>
@@ -68,31 +81,31 @@
                                 "bSortable": false,
                                 "sWidth": "12%",
                                 "sClass": "left",
-                                "fnRender": function (oObj) {
+                               fnRender: function (oObj) {
+    var result = '';
+
+    // Admin check
+    if ('@identity.IsAdmin'.toLowerCase() == "true") {
+        if (oObj.aData[8] == "Posted") {
+            // Show the "Post" button with disabled style (when already posted)
+            result += '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/Investment/Post" onclick="btnPostNew(this);" data-Id="' + oObj.aData[0] + '" class="sym-btn-reject-row" style="opacity:0.45;pointer-events:none;cursor:default;"></a>';
+        } else {
+            // Show the active "Post" button (when not posted yet)
+            result += '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/Investment/Post" onclick="btnPostNew(this);" data-Id="' + oObj.aData[0] + '" class="sym-btn-post-row"></a>';
+        }
+    }
+
+    // Always show the following buttons
+    result += '&nbsp; <a title="Click on for Journal" href="/@ViewBag.TransType/Investment/JournalEntry?TransactionId=' + oObj.aData[0] + '&Code=' + oObj.aData[2] + '" class="sym-btn-bank-row"></a>'
+        + '&nbsp; <a title="Click on for Edit" href="/@ViewBag.TransType/Investment/Edit/' + oObj.aData[0] + '" class="sym-btn-edit-row"></a>'
+        + '&nbsp; <a title="Click on for Report" href="/@ViewBag.TransType/Investment/reportVeiw/' + oObj.aData[0] + '" class="linkReport sym-btn-report-row"></a>'
+        + '&nbsp; <a title="Click on for Renew/Encash" target="_blank" href="/@ViewBag.TransType/InvestmentRenew/Index?investmentId=' + oObj.aData[0] + '" class="sym-btn-add-row"></a>';
+
+    return result;
+}
 
 
-                                    if (oObj.aData[8] == "Posted") {
-                                        return '  '
-                                       + '&nbsp; <a id=""  title="Click on for Journal"    href="/@ViewBag.TransType/Investment/JournalEntry?TransactionId=' + oObj.aData[0] + '&Code=' + oObj.aData[2] + '" class=" sym-btn-bank-row"></a>'
-                                       + '&nbsp; <a id=""  title="Click on for Edit"   href=\"/@ViewBag.TransType/Investment/Edit/' + oObj.aData[0] + '\" class=" sym-btn-edit-row"></a>'
-                                       + '&nbsp; <a id="lnkEdit1"  title="Click on for Report" style="text-decoration:none;"    href=\"/@ViewBag.TransType/Investment/reportVeiw/' + oObj.aData[0] + '\" class=" linkReport sym-btn-report-row"></a>'
-                                       + '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/Investment/Post"  onclick=btnPostNew(this); data-Id="' + oObj.aData[0] + '\" class="sym-btn-reject-row" style="opacity:0.45;pointer-events:none;cursor:default;"></a>'
-                                   //+ '&nbsp; <a title="Click on for Journal" target="_blank"  href="/@ViewBag.TransType/Journal/Create?JournalType=2' + '&TransactionForm=Investment' + '&TransactionId=' + oObj.aData[0] + '\" class="sym-btn-bank-row"></a>'
-                                       + '&nbsp; <a title="Click on for Renew" target="_blank"  href="/@ViewBag.TransType/InvestmentRenew/Index?investmentId=' + oObj.aData[0] + '\" class="sym-btn-add-row"></a>'
-                                    }
-                                    else {
-                                        return '  '
-                                      + '&nbsp; <a id=""  title="Click on for Journal"    href="/@ViewBag.TransType/Investment/JournalEntry?TransactionId=' + oObj.aData[0] + '&Code=' + oObj.aData[2] + '" class=" sym-btn-bank-row"></a>'
-                                      + '&nbsp; <a id=""  title="Click on for Edit"   href=\"/@ViewBag.TransType/Investment/Edit/' + oObj.aData[0] + '\" class=" sym-btn-edit-row"></a>'
-                                      + '&nbsp; <a id="lnkEdit1"  title="Click on for Report" style="text-decoration:none;"    href=\"/@ViewBag.TransType/Investment/reportVeiw/' + oObj.aData[0] + '\" class=" linkReport sym-btn-report-row"></a>'
-                                      + '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/Investment/Post"  onclick=btnPostNew(this); data-Id="' + oObj.aData[0] + '\" class="sym-btn-post-row"></a>'
-                                  //+ '&nbsp; <a title="Click on for Journal"   href="#'+ '\" class="sym-btn-bank-row"></a>'
-                                      + '&nbsp; <a title="Click on for Renew/Encash" target="_blank"  href="/@ViewBag.TransType/InvestmentRenew/Index?investmentId=' + oObj.aData[0] + '\" class="sym-btn-add-row"></a>'
-                                    }
 
-
-                                    ;
-                                }
                             }
 
                             , { "sName": "ReferenceNo", "sWidth": "10%" }
