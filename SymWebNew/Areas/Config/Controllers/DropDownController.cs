@@ -193,7 +193,11 @@ namespace SymWebUI.Areas.Config.Controllers
         }
         public JsonResult DropDownPeriodByFYear(string year)
         {
-            int fyear = Convert.ToInt32(year.ToString().Substring(0, 4));
+            int fyear = 0;
+            if (year.Length > 4)
+            {
+                fyear = Convert.ToInt32(year.ToString().Substring(5, 4));
+            }
             ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
             return Json(new SelectList(new SymRepository.Common.FiscalYearRepo().DropDownPeriodByYear(Convert.ToInt32(identity.BranchId), fyear), "Id", "Name"), JsonRequestBehavior.AllowGet);
         }

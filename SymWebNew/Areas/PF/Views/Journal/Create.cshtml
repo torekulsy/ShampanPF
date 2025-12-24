@@ -1,6 +1,19 @@
 ﻿@model SymViewModel.PF.GLJournalVM
-
+@using System.Threading;
 @using UIHelper.MVC
+@using SymOrdinary
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
 @{
     ViewBag.Title = Model.Id > 0 ? "Edit" : "Create";
 }
@@ -26,8 +39,10 @@
         else
         {
             <button type="button" name="btnName" value="Update" title="Update Data" onclick="UpdateData()" class="sym-btn-update">&nbsp;Update</button>
-
-            <button type="button" title="Post Data" onclick="PostData(this)" class="sym-btn-post">&nbsp;Post</button>
+            if(@identity.IsAdmin == true)
+            {
+                <button type="button" title="Post Data" onclick="PostData(this)" class="sym-btn-post">&nbsp;Post</button>
+            }    
             <button type="button" title="Click for Report" data-url="/@ViewBag.TransType/Journal/ReportView" onclick="reportData(this);" id="" class="sym-btn-report">&nbsp;Report</button>
             <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/Journal?JournalType=@Model.JournalType" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
             <a title="Delete Journal Entry" href="/@ViewBag.TransType/Journal/Create?JournalType=@Model.JournalType" id="" class="sym-btn-add">&nbsp;New</a>
@@ -274,7 +289,11 @@
         {
             <button type="button" name="btnName" value="Update" title="Update Data" onclick="UpdateData()" class="sym-btn-update">&nbsp;Update</button>
 
-            <button type="button" title="Post Data" onclick="PostData(this)" class="sym-btn-post">&nbsp;Post</button>
+            if(@identity.IsAdmin == true)
+            {
+                <button type="button" title="Post Data" onclick="PostData(this)" class="sym-btn-post">&nbsp;Post</button>
+            }    
+            
             <button type="button" title="Click for Report" data-url="/@ViewBag.TransType/Journal/ReportView" onclick="reportData(this);" id="" class="sym-btn-report">&nbsp;Report</button>
             <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/Journal?JournalType=@Model.JournalType" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
             <a title="Delete Journal Entry" href="/@ViewBag.TransType/Journal/Create?JournalType=@Model.JournalType" id="" class="sym-btn-add">&nbsp;New</a>

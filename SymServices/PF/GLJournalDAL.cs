@@ -395,6 +395,7 @@ WHERE  1=1
                 cmd2.Parameters.AddWithValue("@TransactionType", vm.TransactionType);
                 var idExecuteScalar = cmd2.ExecuteScalar();
                 int nextId = Convert.ToInt32(idExecuteScalar);
+                if (vm.SourceId == 0) { vm.SourceId = nextId; vm.Source = "From Journal"; }
 
                 if (vm.Code == null || vm.Code == "0")
                 {

@@ -7837,7 +7837,7 @@ and transactionDate <=@FirstEnd
 and isnull(IsYearClosing,0)=0 
 and TransType in(@TransType)
 and isnull(IsRetainedEarning,0)=0
-and COAType in ('Asset','Members Fund and Liabilities','OwnersEquity','Revenue') 
+and COAType in ('Asset','Members Fund and Liabilities','OwnersEquity') 
 group by TransType, CoaId
 
 insert into #TempNetChangeNew(TransType,OperationType,COAId,TransactionAmount)
