@@ -86,6 +86,7 @@ gl.Id
 ,gl.LastUpdateAt
 ,gl.LastUpdateFrom
 ,gl.Post
+,gl.IsApprove
 from GLJournals gl left outer join EnumJournalType jt on gl.JournalType = jt.Id
  left outer join EnumJournalTransactionType jtt on gl.TransactionType= jtt.Id
 
@@ -123,6 +124,7 @@ WHERE  1=1 AND IsArchive = 0
                     vm.JournalTypeName = dr["JournalTypeName"].ToString();
                     vm.IsActive = Convert.ToBoolean(dr["IsActive"]);
                     vm.IsArchive = Convert.ToBoolean(dr["IsArchive"]);
+                    vm.IsApprove = Convert.ToBoolean(dr["IsApprove"]);
                     vm.CreatedAt = Ordinary.StringToDate(dr["CreatedAt"].ToString());
                     vm.CreatedBy = dr["CreatedBy"].ToString();
                     vm.CreatedFrom = dr["CreatedFrom"].ToString();
@@ -1290,7 +1292,94 @@ INSERT INTO GLJournalDetails (
             #endregion
             return retResults;
         }
+        public string[] Approve(string[] ids, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
+        {
+            #region Variables
+            string[] retResults = new string[6];
+            retResults[0] = "Fail";//Success or Fail
+            retResults[1] = "Fail";// Success or Fail Message
+            retResults[2] = "0";// Return Id
+            retResults[3] = "sqlText"; //  SQL Query
+            retResults[4] = "ex"; //catch ex
+            retResults[5] = "Loan"; //Method Name
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+            #endregion
+            try
+            {
+                #region open connection and transaction
+                #region New open connection and transaction
+                if (VcurrConn != null)
+                {
+                    currConn = VcurrConn;
+                }
+                if (Vtransaction != null)
+                {
+                    transaction = Vtransaction;
+                }
+                #endregion New open connection and transaction
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+                if (transaction == null) { transaction = currConn.BeginTransaction("Post"); }
+                #endregion open connection and transaction
+                if (ids.Length >= 1)
+                {
+                    #region Update Settings
+                    for (int i = 0; i < ids.Length - 1; i++)
+                    {
+                        retResults = _cDal.FielApproved("GLJournals", "Id", ids[i], currConn, transaction);
+                        if (retResults[0].ToLower() == "fail")
+                        {
+                            throw new ArgumentNullException("GLJournals Post", ids[i] + " could not Post.");
+                        }
+                    }
+                    #endregion Update Settings
+                }
+                else
+                {
+                    throw new ArgumentNullException("GLJournals Post - Could not found any item.", "");
+                }
 
+                #region Commit
+
+                if (Vtransaction == null && transaction != null)
+                {
+                    transaction.Commit();
+                }
+
+                retResults[0] = "Success";
+                retResults[1] = "Data Posted Successfully.";
+                #endregion
+            }
+            #region catch
+            catch (Exception ex)
+            {
+                retResults[0] = "Fail";//Success or Fail
+                retResults[4] = ex.Message; //catch ex
+                return retResults;
+            }
+            finally
+            {
+                if (VcurrConn == null)
+                {
+                    if (currConn != null)
+                    {
+                        if (currConn.State == ConnectionState.Open)
+                        {
+                            currConn.Close();
+                        }
+                    }
+                }
+            }
+            #endregion
+            return retResults;
+        }
 
         ////==================Report=================
         /// <summary>

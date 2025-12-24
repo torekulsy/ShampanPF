@@ -356,5 +356,24 @@ namespace SymWebUI.Areas.PF.Controllers
 
             return Json(result[1], JsonRequestBehavior.AllowGet);
         }
+
+        [Authorize(Roles = "Admin")]
+        public JsonResult Approve(string ids)
+        {
+            Session["permission"] = _repoSUR.SymRoleSession(identity.UserId, "10010", "edit").ToString();
+            string[] a = ids.Split('~');
+
+            GLJournalVM vm = _glJournalRepo.SelectById(Convert.ToInt32(a[0])).FirstOrDefault();
+            if (vm.IsApprove)
+            {
+                return Json("Already Posted", JsonRequestBehavior.AllowGet);
+
+            }
+
+            string[] result = new string[6];
+            result = _glJournalRepo.Approve(a);
+
+            return Json(result[1], JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -55,6 +55,8 @@ namespace SymViewModel.Common
         public bool IsAdmin { get; set; }
         [Display(Name = "User Type")] 
         public string UserType { get; set; }
+        public bool IsApprove { get; set; }       
+
         [Display(Name = "Active")] 
         public bool IsActive { get; set; }       
         public bool IsVerified { get; set; }

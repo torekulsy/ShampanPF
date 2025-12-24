@@ -206,6 +206,7 @@ WHERE  1=1
 ,isnull(ug.IsTAX,0)IsTAX
 ,isnull(ug.IsPF,0)IsPF
 ,isnull(ug.IsGF,0)IsGF
+,isnull([User].IsApprove,0)IsApprove
 
 
 ,EmployeeInfo.Code EmployeeCode
@@ -244,6 +245,8 @@ where  [User].LogId=@LogId and [User].Password=@Password and [User].IsActive=@Is
                     userLogsVM.IsTAX = Convert.ToBoolean(dr["IsTAX"]);
                     userLogsVM.IsPF = Convert.ToBoolean(dr["IsPF"]);
                     userLogsVM.IsGF = Convert.ToBoolean(dr["IsGF"]);
+                    userLogsVM.IsApprove = Convert.ToBoolean(dr["IsApprove"]);
+                    
                     isLogin = true;
                 }
                 dr.Close();
@@ -1764,6 +1767,7 @@ SELECT top 1
 ,IsActive
 ,isnull(IsVerified,0)IsVerified
 ,IsArchived
+,IsApprove
 From [User]
 Where 1=1  
 ";
@@ -1796,6 +1800,7 @@ Where 1=1
                     vm.IsActive = Convert.ToBoolean(dr["IsActive"]);
                     vm.IsVerified = Convert.ToBoolean(dr["IsVerified"]);
                     vm.IsArchived = Convert.ToBoolean(dr["IsArchived"]);
+                    vm.IsApprove = Convert.ToBoolean(dr["IsApprove"]);
                 }
                 dr.Close();
                 #endregion
@@ -2068,6 +2073,7 @@ Id
                     sqlText += "  IsActive=@IsActive,";
                     sqlText += "  IsVerified=@IsVerified,";
                     sqlText += "  IsArchived=@IsArchived,";
+                    sqlText += "  IsApprove=@IsApprove,";
                     sqlText += "   LastUpdateBy=@LastUpdateBy,";
                     sqlText += " LastUpdateAt=@LastUpdateAt,";
                     sqlText += " LastUpdateFrom=@LastUpdateFrom";
@@ -2085,6 +2091,7 @@ Id
                     cmdUpdate.Parameters.AddWithValue("@IsActive", true);
                     cmdUpdate.Parameters.AddWithValue("@IsVerified", true);
                     cmdUpdate.Parameters.AddWithValue("@IsArchived", false);
+                    cmdUpdate.Parameters.AddWithValue("@IsApprove", vm.IsApprove);
                     cmdUpdate.Parameters.AddWithValue("@LastUpdateBy", vm.LastUpdateBy);
                     cmdUpdate.Parameters.AddWithValue("@LastUpdateAt", vm.LastUpdateAt);
                     cmdUpdate.Parameters.AddWithValue("@LastUpdateFrom", vm.LastUpdateFrom);

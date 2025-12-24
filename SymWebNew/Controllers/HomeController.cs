@@ -391,7 +391,7 @@ namespace SymWebUI.Controllers
                                                                             , false
                                                                             , false
                                                                             , false
-                                                                            , false
+                                                                            , result.Item2.IsApprove
                                                                             , false
                                                                             , false
 

@@ -49,8 +49,17 @@
                     @Html.ValidationMessageFor(model => model.Email)
                 </div>
             </div>
+            <div class="col-md-1">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.IsApprove)
+                </div>
+                <div class="editor-field">
+                    @Html.CheckBoxFor(model => model.IsApprove, new { @class = " form-control" })
+                </div>
+            </div>
 
-            
+
+           
             
             @*<div class="passwordAreaB">
                 <label>&nbsp;</label>

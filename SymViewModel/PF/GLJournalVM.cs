@@ -31,6 +31,7 @@ namespace SymViewModel.PF
         [Display(Name = "Active")]
         public bool IsActive { get; set; }
         public bool IsArchive { get; set; }
+        public bool IsApprove { get; set; }
         public string CreatedBy { get; set; }
         public string CreatedAt { get; set; }
         public string CreatedFrom { get; set; }

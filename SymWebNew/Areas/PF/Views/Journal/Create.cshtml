@@ -27,6 +27,7 @@
     @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.Operation)
     @Html.HiddenFor(model => model.Post)
+    @Html.HiddenFor(model => model.IsApprove)
     @Html.HiddenFor(model => model.JournalType)
     string PF_COAUrl = "/Config/DropDown/PF_COA?TransType=" + @ViewBag.TransType;
 
@@ -46,11 +47,11 @@
             <button type="button" title="Click for Report" data-url="/@ViewBag.TransType/Journal/ReportView" onclick="reportData(this);" id="" class="sym-btn-report">&nbsp;Report</button>
             <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/Journal?JournalType=@Model.JournalType" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
             <a title="Delete Journal Entry" href="/@ViewBag.TransType/Journal/Create?JournalType=@Model.JournalType" id="" class="sym-btn-add">&nbsp;New</a>
-
-
+            if (@identity.HaveApproval == true && @Model.Post == true)
+            {
+                <button type="button" title="Approve Data" onclick="Approve(this)" class="sym-btn-post">&nbsp;Approve</button>
+            }  
         }
-
-
 
     </div>
     <div class="thinbox">
@@ -245,41 +246,7 @@
 
     </div>
 
-    @*<div class="thinbox">
-        <div class="th_thinbox">
-            @{
-    if (Model.JournalType == 1)
-    {
-        <p class="thinHead">Journal Voucher Narration</p>
-
-    }
-    else if (Model.JournalType == 2)
-    {
-        <p class="thinHead">Payment Voucher Narration</p>
-
-    }
-    else if (Model.JournalType == 3)
-    {
-        <p class="thinHead">Receipt Voucher Narration</p>
-    }
-            }
-
-        </div>
-        <div class="JournalEntry">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Remarks)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Narration", @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Remarks)
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>*@
-
+  
     <div class="headrow">
         @if (Model.Operation.ToLower() == "add")
         {
@@ -297,7 +264,10 @@
             <button type="button" title="Click for Report" data-url="/@ViewBag.TransType/Journal/ReportView" onclick="reportData(this);" id="" class="sym-btn-report">&nbsp;Report</button>
             <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/Journal?JournalType=@Model.JournalType" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
             <a title="Delete Journal Entry" href="/@ViewBag.TransType/Journal/Create?JournalType=@Model.JournalType" id="" class="sym-btn-add">&nbsp;New</a>
-
+            if (@identity.HaveApproval == true && @Model.Post == true)
+            {
+                <button type="button" title="Approve Data" onclick="Approve(this)" class="sym-btn-post">&nbsp;Approve</button>
+            }    
 
         }
     </div>
@@ -486,6 +456,21 @@
             return;
         }
         var url = '/@ViewBag.TransType/Journal/Post?ids=' + Id + '~';
+        var questionMSG = "Are you sure to Post Data!";
+        singlePostDlete(questionMSG, url);
+    }
+</script>
+
+<script>
+    function Approve(sender) {
+        debugger;
+        var Id = $("#Id").val();
+        var Approve = $("#IsApprove").val();
+        if (Approve.toLowerCase() == 'true') {
+            ShowResult("Fail", "Data Already Approved!");
+            return;
+        }
+        var url = '/@ViewBag.TransType/Journal/Approve?ids=' + Id + '~';
         var questionMSG = "Are you sure to Post Data!";
         singlePostDlete(questionMSG, url);
     }
