@@ -431,6 +431,7 @@ WHERE  1=1
                         ,Remarks
                         ,IsActive
                         ,IsArchive
+                        ,IsApprove
                         ,CreatedBy
                         ,CreatedAt
                         ,CreatedFrom
@@ -449,6 +450,7 @@ WHERE  1=1
                         ,@Remarks
                         ,@IsActive
                         ,@IsArchive
+                        ,@IsApprove
                         ,@CreatedBy
                         ,@CreatedAt
                         ,@CreatedFrom
@@ -470,6 +472,7 @@ WHERE  1=1
                     cmdInsert.Parameters.AddWithValue("@Remarks", vm.Remarks ?? Convert.DBNull);
                     cmdInsert.Parameters.AddWithValue("@IsActive", true);
                     cmdInsert.Parameters.AddWithValue("@IsArchive", false);
+                    cmdInsert.Parameters.AddWithValue("@IsApprove", false);
                     cmdInsert.Parameters.AddWithValue("@CreatedBy", vm.CreatedBy);
                     cmdInsert.Parameters.AddWithValue("@CreatedAt", Ordinary.DateToString(vm.CreatedAt));
                     cmdInsert.Parameters.AddWithValue("@CreatedFrom", vm.CreatedFrom);
