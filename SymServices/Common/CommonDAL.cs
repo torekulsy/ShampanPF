@@ -5912,6 +5912,146 @@ FROM SuperAdministrator";
             return retResults;
         }
 
+        public string[] FielReject(string tableName, string conditionField, string conditionValue,
+      SqlConnection VcurrConn, SqlTransaction Vtransaction)
+        {
+            #region Variables
+
+            string[] retResults = new string[6];
+            retResults[0] = "Fail"; //Success or Fail
+            retResults[1] = "Fail"; // Success or Fail Message
+            retResults[2] = "0"; // Return Id
+            retResults[3] = "sqlText"; //  SQL Query
+            retResults[4] = "ex"; //catch ex
+            retResults[5] = "Post" + tableName; //Method Name
+            int transResult = 0;
+            string sqlText = "";
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+            bool iSTransSuccess = false;
+
+            #endregion
+
+            try
+            {
+                #region open connection and transaction
+
+                #region New open connection and transaction
+
+                if (VcurrConn != null)
+                {
+                    currConn = VcurrConn;
+                }
+
+                if (Vtransaction != null)
+                {
+                    transaction = Vtransaction;
+                }
+
+                #endregion New open connection and transaction
+
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+
+                if (transaction == null)
+                {
+                    transaction = currConn.BeginTransaction("PostTo" + tableName);
+                }
+
+                #endregion open connection and transaction
+
+                #region Check is  it used
+
+                #endregion Check is  it used
+
+                #region Update Settings
+
+                sqlText = "";
+                sqlText = "UPDATE " + tableName + " SET";
+                sqlText += " IsApprove=@IsApprove";
+                sqlText += " ,Post=@Post";
+                sqlText += " WHERE 1=1 AND";
+                sqlText += " " + conditionField + "=@ConditionValue";
+                SqlCommand cmdUpdate = new SqlCommand(sqlText, currConn);
+                cmdUpdate.Parameters.AddWithValue("@IsApprove", false);
+                cmdUpdate.Parameters.AddWithValue("@Post", false);
+                cmdUpdate.Parameters.AddWithValue("@ConditionValue", conditionValue);
+                cmdUpdate.Transaction = transaction;
+                var exeRes = cmdUpdate.ExecuteNonQuery();
+                transResult = Convert.ToInt32(exeRes);
+                retResults[2] = ""; // Return Id
+                retResults[3] = sqlText; //  SQL Query
+
+                #region Commit
+
+                if (transResult <= 0)
+                {
+                    //////throw new ArgumentNullException("Post", conditionValue + " could not Post.");
+                }
+
+                #endregion Commit
+
+                #endregion Update Settings
+
+                iSTransSuccess = true;
+                if (iSTransSuccess == true)
+                {
+                    if (Vtransaction == null)
+                    {
+                        if (transaction != null)
+                        {
+                            transaction.Commit();
+                        }
+                    }
+
+                    retResults[0] = "Success";
+                    retResults[1] = "Data Posted Successfully.";
+                }
+                else
+                {
+                    retResults[1] = "Unexpected error to Post " + tableName + ".";
+                    throw new ArgumentNullException("", "");
+                }
+            }
+
+            #region catch
+
+            catch (Exception ex)
+            {
+                retResults[0] = "Fail"; //Success or Fail
+                retResults[4] = ex.Message; //catch ex
+                if (Vtransaction == null)
+                {
+                    transaction.Rollback();
+                }
+
+                return retResults;
+            }
+            finally
+            {
+                if (VcurrConn == null)
+                {
+                    if (currConn != null)
+                    {
+                        if (currConn.State == ConnectionState.Open)
+                        {
+                            currConn.Close();
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
+            return retResults;
+        }
+
         public string[] FieldUpdate(string tableName, string field, string conditionField, string conditionValue,
             SqlConnection VcurrConn, SqlTransaction Vtransaction)
         {

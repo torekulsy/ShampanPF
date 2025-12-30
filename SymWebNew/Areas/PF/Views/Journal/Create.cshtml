@@ -47,9 +47,17 @@
             <button type="button" title="Click for Report" data-url="/@ViewBag.TransType/Journal/ReportView" onclick="reportData(this);" id="" class="sym-btn-report">&nbsp;Report</button>
             <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/Journal?JournalType=@Model.JournalType" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
             <a title="Delete Journal Entry" href="/@ViewBag.TransType/Journal/Create?JournalType=@Model.JournalType" id="" class="sym-btn-add">&nbsp;New</a>
-            if (@identity.HaveApproval == true && @Model.Post == true)
+            if (@identity.HaveApproval == true)
             {
-                <button type="button" title="Approve Data" onclick="Approve(this)" class="sym-btn-post">&nbsp;Approve</button>
+                if( @Model.Post == true)
+                {
+                     <button type="button" title="Approve Data" onclick="Reject(this)" class="sym-btn-reject">&nbsp;Reject</button>                   
+                }
+                else
+                {
+                    <button type="button" title="Approve Data" onclick="Approve(this)" class="sym-btn-post">&nbsp;Approve</button>
+                }
+                
             }  
         }
 
@@ -264,9 +272,16 @@
             <button type="button" title="Click for Report" data-url="/@ViewBag.TransType/Journal/ReportView" onclick="reportData(this);" id="" class="sym-btn-report">&nbsp;Report</button>
             <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/Journal?JournalType=@Model.JournalType" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
             <a title="Delete Journal Entry" href="/@ViewBag.TransType/Journal/Create?JournalType=@Model.JournalType" id="" class="sym-btn-add">&nbsp;New</a>
-            if (@identity.HaveApproval == true && @Model.Post == true)
+            if (@identity.HaveApproval == true)
             {
-                <button type="button" title="Approve Data" onclick="Approve(this)" class="sym-btn-post">&nbsp;Approve</button>
+                if( @Model.Post == true)
+                {
+                     <button type="button" title="Approve Data" onclick="Reject(this)" class="sym-btn-reject">&nbsp;Reject</button>                   
+                }
+                else
+                {
+                    <button type="button" title="Approve Data" onclick="Approve(this)" class="sym-btn-post">&nbsp;Approve</button>
+                }
             }    
 
         }
@@ -471,7 +486,17 @@
             return;
         }
         var url = '/@ViewBag.TransType/Journal/Approve?ids=' + Id + '~';
-        var questionMSG = "Are you sure to Post Data!";
+        var questionMSG = "Are you sure to Approve Data!";
+        singlePostDlete(questionMSG, url);
+    }
+</script>
+
+<script>
+    function Reject(sender) {
+        debugger;
+        var Id = $("#Id").val();        
+        var url = '/@ViewBag.TransType/Journal/Reject?ids=' + Id + '~';
+        var questionMSG = "Are you sure to Reject Data!";
         singlePostDlete(questionMSG, url);
     }
 </script>

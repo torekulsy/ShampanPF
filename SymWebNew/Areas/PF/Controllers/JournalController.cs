@@ -375,5 +375,17 @@ namespace SymWebUI.Areas.PF.Controllers
 
             return Json(result[1], JsonRequestBehavior.AllowGet);
         }
+
+        [Authorize(Roles = "Admin")]
+        public JsonResult Reject(string ids)
+        {
+            Session["permission"] = _repoSUR.SymRoleSession(identity.UserId, "10010", "edit").ToString();
+            string[] a = ids.Split('~');
+
+            string[] result = new string[6];
+            result = _glJournalRepo.Reject(a);
+
+            return Json(result[1], JsonRequestBehavior.AllowGet);
+        }
     }
 }

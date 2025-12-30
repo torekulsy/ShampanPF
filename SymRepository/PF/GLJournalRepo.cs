@@ -100,6 +100,17 @@ namespace SymRepository.PF
                 throw ex;
             }
         }
+        public string[] Reject(string[] ids)
+        {
+            try
+            {
+                return new GLJournalDAL().Reject(ids);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public DataTable Report(GLJournalVM vm, string[] conditionFields = null, string[] conditionValues = null)
         {
             try
