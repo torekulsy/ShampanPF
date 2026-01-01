@@ -1339,14 +1339,14 @@ INSERT INTO GLJournalDetails (
                         retResults = _cDal.FielApproved("GLJournals", "Id", ids[i], currConn, transaction);
                         if (retResults[0].ToLower() == "fail")
                         {
-                            throw new ArgumentNullException("GLJournals Post", ids[i] + " could not Post.");
+                            throw new ArgumentNullException("GLJournals Approve", ids[i] + " could not Approve.");
                         }
                     }
                     #endregion Update Settings
                 }
                 else
                 {
-                    throw new ArgumentNullException("GLJournals Post - Could not found any item.", "");
+                    throw new ArgumentNullException("GLJournals Approve - Could not found any item.", "");
                 }
 
                 #region Commit
@@ -1357,7 +1357,7 @@ INSERT INTO GLJournalDetails (
                 }
 
                 retResults[0] = "Success";
-                retResults[1] = "Data Posted Successfully.";
+                retResults[1] = "Data Approved Successfully.";
                 #endregion
             }
             #region catch
@@ -1428,14 +1428,14 @@ INSERT INTO GLJournalDetails (
                         retResults = _cDal.FielReject("GLJournals", "Id", ids[i], currConn, transaction);
                         if (retResults[0].ToLower() == "fail")
                         {
-                            throw new ArgumentNullException("GLJournals Post", ids[i] + " could not Post.");
+                            throw new ArgumentNullException("GLJournals Reject", ids[i] + " could not Reject.");
                         }
                     }
                     #endregion Update Settings
                 }
                 else
                 {
-                    throw new ArgumentNullException("GLJournals Post - Could not found any item.", "");
+                    throw new ArgumentNullException("GLJournals Reject - Could not found any item.", "");
                 }
 
                 #region Commit
@@ -1446,7 +1446,7 @@ INSERT INTO GLJournalDetails (
                 }
 
                 retResults[0] = "Success";
-                retResults[1] = "Data Posted Successfully.";
+                retResults[1] = "Data Rejected Successfully.";
                 #endregion
             }
             #region catch

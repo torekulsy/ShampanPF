@@ -6008,7 +6008,7 @@ FROM SuperAdministrator";
                     }
 
                     retResults[0] = "Success";
-                    retResults[1] = "Data Posted Successfully.";
+                    retResults[1] = "Data Rejected Successfully.";
                 }
                 else
                 {
