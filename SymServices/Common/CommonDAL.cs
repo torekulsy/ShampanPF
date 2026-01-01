@@ -6002,12 +6002,9 @@ FROM SuperAdministrator";
                 iSTransSuccess = true;
                 if (iSTransSuccess == true)
                 {
-                    if (Vtransaction == null)
+                    if (transaction != null)
                     {
-                        if (transaction != null)
-                        {
-                            transaction.Commit();
-                        }
+                        transaction.Commit();
                     }
 
                     retResults[0] = "Success";

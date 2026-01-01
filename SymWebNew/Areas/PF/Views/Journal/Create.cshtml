@@ -40,25 +40,33 @@
         else
         {
             <button type="button" name="btnName" value="Update" title="Update Data" onclick="UpdateData()" class="sym-btn-update">&nbsp;Update</button>
-            if(@identity.IsAdmin == true)
+            if (@identity.IsAdmin == true)
             {
-                <button type="button" title="Post Data" onclick="PostData(this)" class="sym-btn-post">&nbsp;Post</button>
-            }    
+                 if (@Model.Post == false)
+                {
+                    <button type="button" title="Post Data" onclick="PostData(this)" class="sym-btn-post">&nbsp;Post</button>
+                }
+            }
             <button type="button" title="Click for Report" data-url="/@ViewBag.TransType/Journal/ReportView" onclick="reportData(this);" id="" class="sym-btn-report">&nbsp;Report</button>
             <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/Journal?JournalType=@Model.JournalType" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
             <a title="Delete Journal Entry" href="/@ViewBag.TransType/Journal/Create?JournalType=@Model.JournalType" id="" class="sym-btn-add">&nbsp;New</a>
             if (@identity.HaveApproval == true)
             {
-                if( @Model.Post == true)
+                if (@Model.Post == true && @Model.IsApprove == false)
                 {
-                     <button type="button" title="Approve Data" onclick="Reject(this)" class="sym-btn-reject">&nbsp;Reject</button>                   
+                    <button type="button" title="Approve Data" onclick="Approve(this)" class="sym-btn-post">&nbsp;Approve</button>
+
                 }
                 else
                 {
-                    <button type="button" title="Approve Data" onclick="Approve(this)" class="sym-btn-post">&nbsp;Approve</button>
+                    if (@Model.IsApprove == true)
+                    {
+                        <button type="button" title="Approve Data" onclick="Reject(this)" class="sym-btn-reject">&nbsp;Reject</button>
+                    }
+
                 }
-                
-            }  
+
+            }
         }
 
     </div>
@@ -254,35 +262,43 @@
 
     </div>
 
-  
+
     <div class="headrow">
         @if (Model.Operation.ToLower() == "add")
         {
-            <button type="button" name="btnName" value="Update" title="Update Data" onclick="SaveData()" class="sym-btn-save">&nbsp;Save</button>         
+            <button type="button" name="btnName" value="Update" title="Update Data" onclick="SaveData()" class="sym-btn-save">&nbsp;Save</button>
         }
         else
         {
             <button type="button" name="btnName" value="Update" title="Update Data" onclick="UpdateData()" class="sym-btn-update">&nbsp;Update</button>
 
-            if(@identity.IsAdmin == true)
+            if (@identity.IsAdmin == true)
             {
-                <button type="button" title="Post Data" onclick="PostData(this)" class="sym-btn-post">&nbsp;Post</button>
-            }    
-            
+                if (@Model.Post == false)
+                {
+                    <button type="button" title="Post Data" onclick="PostData(this)" class="sym-btn-post">&nbsp;Post</button>
+                }
+            }
+
             <button type="button" title="Click for Report" data-url="/@ViewBag.TransType/Journal/ReportView" onclick="reportData(this);" id="" class="sym-btn-report">&nbsp;Report</button>
             <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/Journal?JournalType=@Model.JournalType" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
             <a title="Delete Journal Entry" href="/@ViewBag.TransType/Journal/Create?JournalType=@Model.JournalType" id="" class="sym-btn-add">&nbsp;New</a>
             if (@identity.HaveApproval == true)
             {
-                if( @Model.Post == true)
+                if (@Model.Post == true && @Model.IsApprove == false)
                 {
-                     <button type="button" title="Approve Data" onclick="Reject(this)" class="sym-btn-reject">&nbsp;Reject</button>                   
+                    <button type="button" title="Approve Data" onclick="Approve(this)" class="sym-btn-post">&nbsp;Approve</button>
+
                 }
                 else
                 {
-                    <button type="button" title="Approve Data" onclick="Approve(this)" class="sym-btn-post">&nbsp;Approve</button>
+                    if (@Model.IsApprove == true)
+                    {
+                        <button type="button" title="Approve Data" onclick="Reject(this)" class="sym-btn-reject">&nbsp;Reject</button>
+                    }
+
                 }
-            }    
+            }
 
         }
     </div>
@@ -494,7 +510,7 @@
 <script>
     function Reject(sender) {
         debugger;
-        var Id = $("#Id").val();        
+        var Id = $("#Id").val();
         var url = '/@ViewBag.TransType/Journal/Reject?ids=' + Id + '~';
         var questionMSG = "Are you sure to Reject Data!";
         singlePostDlete(questionMSG, url);
