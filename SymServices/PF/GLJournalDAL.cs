@@ -1636,6 +1636,7 @@ gl.Id
 ,gl.LastUpdateAt
 ,gl.LastUpdateFrom
 ,gl.Post
+,gl.IsApprove
 from GLJournals gl left outer join EnumJournalType jt on gl.JournalType = jt.Id
  left outer join EnumJournalTransactionType jtt on gl.TransactionType= jtt.Id
 
@@ -1679,6 +1680,7 @@ WHERE  1=1 AND IsArchive = 0
                     vm.LastUpdateAt = Ordinary.StringToDate(dr["LastUpdateAt"].ToString());
                     vm.LastUpdateBy = dr["LastUpdateBy"].ToString();
                     vm.LastUpdateFrom = dr["LastUpdateFrom"].ToString();
+                    vm.IsApprove = Convert.ToBoolean(dr["IsApprove"]);
 
                     VMs.Add(vm);
                 }

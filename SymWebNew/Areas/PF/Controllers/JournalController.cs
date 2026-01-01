@@ -92,7 +92,8 @@ namespace SymWebUI.Areas.PF.Controllers
                     c.TransactionDate.ToLower().Contains(param.sSearch.ToLower()) ||
                     //c.TransactionTypeName.ToLower().Contains(param.sSearch.ToLower()) ||
                     c.TransactionValue.ToString().ToLower().Contains(param.sSearch.ToLower()) ||
-                    (c.Post ? "Yes" : "No").ToLower().Contains(param.sSearch.ToLower())
+                    (c.Post ? "Yes" : "No").ToLower().Contains(param.sSearch.ToLower()) ||
+                    (c.IsApprove ? "Approve" : "Not Approve").ToLower().Contains(param.sSearch.ToLower())
                 );
             }
             else
@@ -112,7 +113,8 @@ namespace SymWebUI.Areas.PF.Controllers
                      c.TransactionDate,
                      //c.TransactionTypeName,
                      c.TransactionValue.ToString(),
-                     c.Post ? "Posted" : "Not Posted"
+                     c.Post ? "Posted" : "Not Posted",
+                     c.IsApprove ? "Approve" : "Not Approve"
                  };
 
             return Json(new
