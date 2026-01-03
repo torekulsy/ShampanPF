@@ -63,9 +63,9 @@ namespace SymWebUI.Areas.PF.Controllers
                 Operation = "add",
                 JournalType = Convert.ToInt32(JournalType),
                 TransactionType = TransactionType,
-                TransType=AreaTypePFVM.TransType
-
+                TransType=AreaTypePFVM.TransType            
             };
+
             return View("~/Areas/PF/Views/Journal/Create.cshtml", vm);
 
         }
