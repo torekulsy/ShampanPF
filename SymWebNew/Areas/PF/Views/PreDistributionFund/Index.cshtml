@@ -32,6 +32,7 @@
                 <th class="left">Total Value</th>
                 <th class="left">Remarks</th>
                 <th class="left">Post Status</th>
+                <th class="left">Approve Status</th>
     
             </tr>
         </thead>
@@ -79,7 +80,7 @@
                     if ('@identity.IsAdmin'.toLowerCase() == "true") {
                         if (oObj.aData[5] == "Posted") {
                             // If posted, show post button with disabled style
-                            result += '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/PreDistributionFund/Post" onclick=btnPostNoSplit(this); data-Post="' + oObj.aData[4] + '" data-Id="' + oObj.aData[0] + '" class="sym-btn-reject-row" style="opacity:0.45;pointer-events:none;cursor:default;"></a>';
+                            result += '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/PreDistributionFund/Post" onclick=btnPostNoSplit(this); data-Post="' + oObj.aData[4] + '" data-Id="' + oObj.aData[0] + '" class="sym-btn-post-row" style="opacity:0.45;pointer-events:none;cursor:default;"></a>';
                         } else {
                             // If not posted, show enabled post button
                             result += '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/PreDistributionFund/Post" onclick=btnPostNoSplit(this); data-Post="' + oObj.aData[4] + '" data-Id="' + oObj.aData[0] + '" class="sym-btn-post-row"></a>';
@@ -95,7 +96,8 @@
                 { "sName": "TransactionDate", "sWidth": "10%" },
                 { "sName": "TotalValue", "sWidth": "10%" },
                 { "sName": "Remarks", "sWidth": "10%" },
-                { "sName": "Post", "sWidth": "10%" }
+                { "sName": "Post", "sWidth": "10%" },
+                { "sName": "Approve", "sWidth": "10%" }
             ]
         });
     });

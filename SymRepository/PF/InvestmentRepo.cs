@@ -125,5 +125,28 @@ namespace SymRepository.PF
                 throw ex;
             }
         }
+
+        public string[] Approve(string[] ids)
+        {
+            try
+            {
+                return new InvestmentDAL().Approve(ids);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public string[] Reject(string[] ids)
+        {
+            try
+            {
+                return new InvestmentDAL().Reject(ids);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

@@ -134,5 +134,8 @@ namespace SymViewModel.PF
         public string PeriodStart { get; set; }
         public string PeriodEnd { get; set; }
         public string TransType { get; set; }
+        public bool IsApprove { get; set; }
+        public string ApprovedBy { get; set; }
+        public string ApprovedAt { get; set; }
     }
 }

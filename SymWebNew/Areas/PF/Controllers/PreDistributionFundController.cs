@@ -108,6 +108,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 , c.TotalValue.ToString()
                 , c.Remarks.ToString()
                 , c.Post ? "Posted" : "Not Posted"
+                , c.IsApprove ? "Approve" : "Not Approve"
 
             };
             return Json(new
@@ -646,6 +647,37 @@ namespace SymWebUI.Areas.PF.Controllers
             {
                 return Json(new { error = ex.Message });
             }
+        }
+
+        [Authorize(Roles = "Admin")]
+        public JsonResult Approve(string ids)
+        {
+            Session["permission"] = _repoSUR.SymRoleSession(identity.UserId, "10010", "edit").ToString();
+            string[] a = ids.Split('~');
+
+            PreDistributionFundVM vm = _repo.SelectAll(Convert.ToInt32(a[0])).FirstOrDefault();
+            if (vm.IsApprove)
+            {
+                return Json("Already Posted", JsonRequestBehavior.AllowGet);
+
+            }
+
+            string[] result = new string[6];
+            result = _repo.Approve(a);
+
+            return Json(result[1], JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public JsonResult Reject(string ids)
+        {
+            Session["permission"] = _repoSUR.SymRoleSession(identity.UserId, "10010", "edit").ToString();
+            string[] a = ids.Split('~');
+
+            string[] result = new string[6];
+            result = _repo.Reject(a);
+
+            return Json(result[1], JsonRequestBehavior.AllowGet);
         }
     }
 

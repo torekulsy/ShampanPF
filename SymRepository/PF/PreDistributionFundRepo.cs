@@ -100,5 +100,28 @@ namespace SymRepository.PF
                 throw ex;
             }
         }
+
+        public string[] Approve(string[] ids)
+        {
+            try
+            {
+                return new PreDistributionFundDAL().Approve(ids);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public string[] Reject(string[] ids)
+        {
+            try
+            {
+                return new PreDistributionFundDAL().Reject(ids);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

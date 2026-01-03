@@ -286,6 +286,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 ,c.TotalEmployerValue.ToString()
                 ,c.TotalPF.ToString()
                 , c.Post?"Posted":"Not Posted"
+                , c.IsApprove?"Approve":"Not Approve"
             };
             return Json(new
             {

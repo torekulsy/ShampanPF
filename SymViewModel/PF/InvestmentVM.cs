@@ -81,5 +81,9 @@ namespace SymViewModel.PF
         public decimal AitInterest { get; set; }
 
         public string BranchId { get; set; }
+
+        public bool IsApprove { get; set; }
+        public string ApprovedBy { get; set; }
+        public string ApprovedAt { get; set; }
     }
 }

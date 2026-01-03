@@ -1,17 +1,20 @@
-﻿@*
-    InvestmentType
-    InvestmentAddress
-    InvestmentDate
-    FromDate
-    ToDate
-    MaturityDate
-    InvestmentRate
-    InvestmentValue
-*@
-
-@model SymViewModel.PF.InvestmentVM
+﻿@model SymViewModel.PF.InvestmentVM
 @using NPOI.SS.Formula.Functions
 @using UIHelper.MVC
+@using System.Threading;
+@using SymOrdinary
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
 @using (Html.BeginForm("CreateEdit", "Investment", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmInvestment" }))
 {
     @Html.ValidationSummary(true)
@@ -20,6 +23,7 @@
     @Html.HiddenFor(model => model.Post)
     @Html.HiddenFor(model => model.ReferenceId)
     @Html.HiddenFor(model => model.IsEncashed)
+    @Html.HiddenFor(model => model.IsApprove)
     string InvestmentNameUrl = "/Config/DropDown/PF_InvestmentName?TransType=" + @ViewBag.TransType;
 
     <div class="headrow">
@@ -31,7 +35,14 @@
         else
         {
             <button type="button" title="Update Data" onclick="UpdateData()" class="sym-btn-update">&nbsp;Update</button>
-            <button type="button" title="Post Data" onclick="PostData(this)" class="sym-btn-post">&nbsp;Post</button>
+            if (@identity.IsAdmin == true)
+            {
+                if (@Model.Post == false)
+                {
+                   <button type="button" title="Post Data" onclick="PostData(this)" class="sym-btn-post">&nbsp;Post</button>
+                }
+            }
+           
             if (Model.Post)
             {
                 <button type="button" title="A Click on for Journal" onclick="window.open('/@ViewBag.TransType/Journal/Create?JournalType=2&TransactionForm=Investment&TransactionId=@Model.Id')" id="" class=" sym-btn-bank-row">&nbsp;Journal</button>
@@ -45,7 +56,23 @@
         }
         <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/Investment" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
         @*<button type="button" title="Add New Investment" data-url="/@ViewBag.TransType/Investment/Create" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>*@
+        @if (@identity.HaveApproval == true)
+        {
+            if (@Model.Post == true && @Model.IsApprove == false)
+            {
+                <button type="button" title="Approve Data" onclick="Approve(this)" class="sym-btn-post">&nbsp;Approve</button>
 
+            }
+            else
+            {
+                if (@Model.IsApprove == true)
+                {
+                    <button type="button" title="Approve Data" onclick="Reject(this)" class="sym-btn-reject">&nbsp;Reject</button>
+                }
+
+            }
+
+        }
     </div>
     <div class="thinbox">
         <div class="th_thinbox">
@@ -190,7 +217,14 @@
         else
         {
             <button type="button" title="Update Data" onclick="UpdateData()" class="sym-btn-update">&nbsp;Update</button>
-            <button type="button" title="Post Data" onclick="PostData(this)" class="sym-btn-post">&nbsp;Post</button>
+            if (@identity.IsAdmin == true)
+            {
+                if (@Model.Post == false)
+                {
+                   <button type="button" title="Post Data" onclick="PostData(this)" class="sym-btn-post">&nbsp;Post</button>
+                }
+            }
+           
             if (Model.Post)
             {
                 <button type="button" title="A Click on for Journal" onclick="window.open('/@ViewBag.TransType/Journal/Create?JournalType=2&TransactionForm=Investment&TransactionId=@Model.Id')" id="" class=" sym-btn-bank-row">&nbsp;Journal</button>
@@ -201,7 +235,23 @@
         }
         <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/Investment" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
         @*<button type="button" title="Add New Investment" data-url="/@ViewBag.TransType/Investment/Create" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>*@
+        @if (@identity.HaveApproval == true)
+        {
+            if (@Model.Post == true && @Model.IsApprove == false)
+            {
+                <button type="button" title="Approve Data" onclick="Approve(this)" class="sym-btn-post">&nbsp;Approve</button>
 
+            }
+            else
+            {
+                if (@Model.IsApprove == true)
+                {
+                    <button type="button" title="Approve Data" onclick="Reject(this)" class="sym-btn-reject">&nbsp;Reject</button>
+                }
+
+            }
+
+        }
     </div>
 }
 <script>
@@ -229,7 +279,26 @@
         var questionMSG = "Are you sure to Post Data!";
         singlePostDlete(questionMSG, url);
     }
+    function Approve(sender) {
+        debugger;
+        var Id = $("#Id").val();
+        var Approve = $("#IsApprove").val();
+        if (Approve.toLowerCase() == 'true') {
+            ShowResult("Fail", "Data Already Approved!");
+            return;
+        }
+        var url = '/@ViewBag.TransType/Investment/Approve?ids=' + Id + '~';
+        var questionMSG = "Are you sure to Approve Data!";
+        singlePostDlete(questionMSG, url);
+    }
 
+    function Reject(sender) {
+        debugger;
+        var Id = $("#Id").val();
+        var url = '/@ViewBag.TransType/Investment/Reject?ids=' + Id + '~';
+        var questionMSG = "Are you sure to Reject Data!";
+        singlePostDlete(questionMSG, url);
+    }
 
 </script>
 
