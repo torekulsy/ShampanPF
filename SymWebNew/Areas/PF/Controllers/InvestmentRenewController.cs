@@ -107,10 +107,14 @@ namespace SymWebUI.Areas.PF.Controllers
                          select new[] { 
                 Convert.ToString(c.Id)
                 , c.TransactionCode            
-                , c.InvestmentDate         
+                , c.InvestmentDate
+                ,c.InvestmentValue.ToString()
+                ,c.MaturityDate
+                ,c.Interest.ToString()
+                ,c.AIT.ToString()
                 , c.ReferenceNo         
                 , c.Post ? "Posted" : "Not Posted"               
-                , c.IsEncashed ? "Encashed" : "Not Encashed"        
+                , c.IsEncashed ? "True" : "False"        
             };
             return Json(new
             {
