@@ -368,7 +368,7 @@ namespace SymWebUI.Areas.PF.Controllers
             GLJournalVM vm = _glJournalRepo.SelectById(Convert.ToInt32(a[0])).FirstOrDefault();
             if (vm.IsApprove)
             {
-                return Json("Already Posted", JsonRequestBehavior.AllowGet);
+                return Json("Already Approved", JsonRequestBehavior.AllowGet);
 
             }
 

@@ -40,13 +40,16 @@
         else
         {
             <button type="button" name="btnName" value="Update" title="Update Data" onclick="UpdateData()" class="sym-btn-update">&nbsp;Update</button>
-            if (@identity.IsAdmin == true)
+
+            if (@Model.Post == true)
             {
-                 if (@Model.Post == false)
-                {
-                    <button type="button" title="Post Data" onclick="PostData(this)" class="sym-btn-post">&nbsp;Post</button>
-                }
+                <button type="button" title="Post Data" onclick="PostData(this)" style="opacity:0.45;pointer-events:none;cursor:default;" class="sym-btn-post">&nbsp;Post</button>
             }
+            else
+            {
+                <button type="button" title="Post Data" onclick="PostData(this)" class="sym-btn-post">&nbsp;Post</button>
+            }
+
             <button type="button" title="Click for Report" data-url="/@ViewBag.TransType/Journal/ReportView" onclick="reportData(this);" id="" class="sym-btn-report">&nbsp;Report</button>
             <button type="button" title="Go To Index" data-url="/@ViewBag.TransType/Journal?JournalType=@Model.JournalType" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
             <a title="Delete Journal Entry" href="/@ViewBag.TransType/Journal/Create?JournalType=@Model.JournalType" id="" class="sym-btn-add">&nbsp;New</a>
@@ -272,12 +275,13 @@
         {
             <button type="button" name="btnName" value="Update" title="Update Data" onclick="UpdateData()" class="sym-btn-update">&nbsp;Update</button>
 
-            if (@identity.IsAdmin == true)
+            if (@Model.Post == true)
             {
-                if (@Model.Post == false)
-                {
-                    <button type="button" title="Post Data" onclick="PostData(this)" class="sym-btn-post">&nbsp;Post</button>
-                }
+                <button type="button" title="Post Data" onclick="PostData(this)" style="opacity:0.45;pointer-events:none;cursor:default;" class="sym-btn-post">&nbsp;Post</button>
+            }
+            else
+            {
+                <button type="button" title="Post Data" onclick="PostData(this)" class="sym-btn-post">&nbsp;Post</button>
             }
 
             <button type="button" title="Click for Report" data-url="/@ViewBag.TransType/Journal/ReportView" onclick="reportData(this);" id="" class="sym-btn-report">&nbsp;Report</button>
