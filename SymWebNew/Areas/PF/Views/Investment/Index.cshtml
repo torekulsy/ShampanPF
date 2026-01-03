@@ -36,6 +36,7 @@
                 <th class="left">Maturity Date</th>
                 <th class="left">Investment Value</th>
                 <th class="left">Post</th>
+                <th class="left">Approve Status</th>
                 <th class="left">Encashed</th>
 
 
@@ -88,7 +89,7 @@
     if ('@identity.IsAdmin'.toLowerCase() == "true") {
         if (oObj.aData[8] == "Posted") {
             // Show the "Post" button with disabled style (when already posted)
-            result += '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/Investment/Post" onclick="btnPostNew(this);" data-Id="' + oObj.aData[0] + '" class="sym-btn-reject-row" style="opacity:0.45;pointer-events:none;cursor:default;"></a>';
+            result += '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/Investment/Post" onclick="btnPostNew(this);" data-Id="' + oObj.aData[0] + '" class="sym-btn-post-row" style="opacity:0.45;pointer-events:none;cursor:default;"></a>';
         } else {
             // Show the active "Post" button (when not posted yet)
             result += '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/Investment/Post" onclick="btnPostNew(this);" data-Id="' + oObj.aData[0] + '" class="sym-btn-post-row"></a>';
@@ -116,6 +117,7 @@
                             , { "sName": "MaturityDate", "sWidth": "10%" }
                             , { "sName": "InvestmentValue", "sWidth": "10%" }
                             , { "sName": "Post", "sWidth": "8%" }
+                            , { "sName": "Approve", "sWidth": "10%" }
                             , { "sName": "IsEncashed", "sWidth": "10%" }
 
             ]

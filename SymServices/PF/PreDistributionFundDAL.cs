@@ -88,7 +88,7 @@ SELECT
 ,pdf.LastUpdateBy
 ,pdf.LastUpdateAt
 ,pdf.LastUpdateFrom
-
+,pdf.IsApprove
 FROM PreDistributionFunds pdf
 WHERE  1=1 AND IsArchive = 0
 ";
@@ -161,6 +161,9 @@ WHERE  1=1 AND IsArchive = 0
                     vm.LastUpdateAt = Ordinary.StringToDate(dr["LastUpdateAt"].ToString());
                     vm.LastUpdateBy = dr["LastUpdateBy"].ToString();
                     vm.LastUpdateFrom = dr["LastUpdateFrom"].ToString();
+                    vm.IsApprove = dr["IsApprove"] == DBNull.Value ? false : Convert.ToBoolean(dr["IsApprove"]);
+
+
                     VMs.Add(vm);
                 }
                 dr.Close();
@@ -1073,6 +1076,184 @@ FROM PreDistributionFunds pdf
             return retResults;
             #endregion
 
+        }
+
+        public string[] Approve(string[] ids, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
+        {
+            #region Variables
+            string[] retResults = new string[6];
+            retResults[0] = "Fail";//Success or Fail
+            retResults[1] = "Fail";// Success or Fail Message
+            retResults[2] = "0";// Return Id
+            retResults[3] = "sqlText"; //  SQL Query
+            retResults[4] = "ex"; //catch ex
+            retResults[5] = "Loan"; //Method Name
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+            #endregion
+            try
+            {
+                #region open connection and transaction
+                #region New open connection and transaction
+                if (VcurrConn != null)
+                {
+                    currConn = VcurrConn;
+                }
+                if (Vtransaction != null)
+                {
+                    transaction = Vtransaction;
+                }
+                #endregion New open connection and transaction
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+                if (transaction == null) { transaction = currConn.BeginTransaction("Post"); }
+                #endregion open connection and transaction
+                if (ids.Length >= 1)
+                {
+                    #region Update Settings
+                    for (int i = 0; i < ids.Length - 1; i++)
+                    {
+                        retResults = _cDal.FielApproved("PreDistributionFunds", "Id", ids[i], currConn, transaction);
+                        if (retResults[0].ToLower() == "fail")
+                        {
+                            throw new ArgumentNullException("PreDistributionFunds Post", ids[i] + " could not Post.");
+                        }
+                    }
+                    #endregion Update Settings
+                }
+                else
+                {
+                    throw new ArgumentNullException("PreDistributionFunds Post - Could not found any item.", "");
+                }
+
+                #region Commit
+
+                if (Vtransaction == null && transaction != null)
+                {
+                    transaction.Commit();
+                }
+
+                retResults[0] = "Success";
+                retResults[1] = "Data Approved Successfully.";
+                #endregion
+            }
+            #region catch
+            catch (Exception ex)
+            {
+                retResults[0] = "Fail";//Success or Fail
+                retResults[4] = ex.Message; //catch ex
+                return retResults;
+            }
+            finally
+            {
+                if (VcurrConn == null)
+                {
+                    if (currConn != null)
+                    {
+                        if (currConn.State == ConnectionState.Open)
+                        {
+                            currConn.Close();
+                        }
+                    }
+                }
+            }
+            #endregion
+            return retResults;
+        }
+
+        public string[] Reject(string[] ids, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
+        {
+            #region Variables
+            string[] retResults = new string[6];
+            retResults[0] = "Fail";//Success or Fail
+            retResults[1] = "Fail";// Success or Fail Message
+            retResults[2] = "0";// Return Id
+            retResults[3] = "sqlText"; //  SQL Query
+            retResults[4] = "ex"; //catch ex
+            retResults[5] = "Loan"; //Method Name
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+            #endregion
+            try
+            {
+                #region open connection and transaction
+                #region New open connection and transaction
+                if (VcurrConn != null)
+                {
+                    currConn = VcurrConn;
+                }
+                if (Vtransaction != null)
+                {
+                    transaction = Vtransaction;
+                }
+                #endregion New open connection and transaction
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+                if (transaction == null) { transaction = currConn.BeginTransaction("Post"); }
+                #endregion open connection and transaction
+                if (ids.Length >= 1)
+                {
+                    #region Update Settings
+                    for (int i = 0; i < ids.Length - 1; i++)
+                    {
+                        retResults = _cDal.FielReject("PreDistributionFunds", "Id", ids[i], currConn, transaction);
+                        if (retResults[0].ToLower() == "fail")
+                        {
+                            throw new ArgumentNullException("PreDistributionFunds Post", ids[i] + " could not Post.");
+                        }
+                    }
+                    #endregion Update Settings
+                }
+                else
+                {
+                    throw new ArgumentNullException("PreDistributionFunds Post - Could not found any item.", "");
+                }
+
+                #region Commit
+
+                if (Vtransaction == null && transaction != null)
+                {
+                    transaction.Commit();
+                }
+
+                retResults[0] = "Success";
+                retResults[1] = "Data Rejected Successfully.";
+                #endregion
+            }
+            #region catch
+            catch (Exception ex)
+            {
+                retResults[0] = "Fail";//Success or Fail
+                retResults[4] = ex.Message; //catch ex
+                return retResults;
+            }
+            finally
+            {
+                if (VcurrConn == null)
+                {
+                    if (currConn != null)
+                    {
+                        if (currConn.State == ConnectionState.Open)
+                        {
+                            currConn.Close();
+                        }
+                    }
+                }
+            }
+            #endregion
+            return retResults;
         }
 
         #endregion

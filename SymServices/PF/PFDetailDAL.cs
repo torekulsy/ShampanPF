@@ -430,7 +430,7 @@ pfd.Id
 ,pfd.EmployeePFValue EmployeePFValue
 ,pfd.EmployeerPFValue EmployerPFValue
 ,pfd.EmployeePFValue + pfd.EmployeerPFValue TotalPF
-
+,pfd.IsApprove
 FROM PFHeader pfd
 ";
 
@@ -489,6 +489,8 @@ FROM PFHeader pfd
                     vm.TotalEmployerValue = Convert.ToDecimal(dr["EmployerPFValue"]);
                     vm.TotalPF = Convert.ToDecimal(dr["TotalPF"]);
                     vm.Post = Convert.ToBoolean(dr["Post"]);
+                    vm.IsApprove = dr["IsApprove"] == DBNull.Value ? false : Convert.ToBoolean(dr["IsApprove"]);
+
 
                     VMs.Add(vm);
                 }

@@ -132,7 +132,8 @@ namespace SymWebUI.Areas.PF.Controllers
                 , c.InvestmentDate            
                 , c.MaturityDate              
                 , c.InvestmentValue.ToString()
-                , c.Post ? "Posted" : "Not Posted"               
+                , c.Post ? "Posted" : "Not Posted" 
+                , c.IsApprove ? "Approve" : "Not Approve"
                 , c.IsEncashed ? "Encashed" : "Not Encashed"               
      
             };
@@ -851,6 +852,37 @@ namespace SymWebUI.Areas.PF.Controllers
         {
             Stream stream = rptDoc.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
             return File(stream, "application/PDF");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public JsonResult Approve(string ids)
+        {
+            Session["permission"] = _repoSUR.SymRoleSession(identity.UserId, "10010", "edit").ToString();
+            string[] a = ids.Split('~');
+
+            InvestmentVM vm = _repo.SelectAll(Convert.ToInt32(a[0])).FirstOrDefault();
+            if (vm.IsApprove)
+            {
+                return Json("Already Posted", JsonRequestBehavior.AllowGet);
+
+            }
+
+            string[] result = new string[6];
+            result = _repo.Approve(a);
+
+            return Json(result[1], JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public JsonResult Reject(string ids)
+        {
+            Session["permission"] = _repoSUR.SymRoleSession(identity.UserId, "10010", "edit").ToString();
+            string[] a = ids.Split('~');
+
+            string[] result = new string[6];
+            result = _repo.Reject(a);
+
+            return Json(result[1], JsonRequestBehavior.AllowGet);
         }
 
     }

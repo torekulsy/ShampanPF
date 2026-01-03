@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using SymViewModel.PF;
 using SymViewModel.Common;
 using SymphonySofttech.Utilities;
+using System.Threading;
 //using Microsoft.SqlServer.Management.Smo;
 
 //using Microsoft.SqlServer.Management.Smo;
@@ -5793,7 +5794,7 @@ FROM SuperAdministrator";
             bool iSTransSuccess = false;
 
             #endregion
-
+            ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
             try
             {
                 #region open connection and transaction
@@ -5837,11 +5838,15 @@ FROM SuperAdministrator";
                 sqlText = "";
                 sqlText = "UPDATE " + tableName + " SET";
                 sqlText += " IsApprove=@IsApprove";
+                sqlText += " ,ApprovedBy=@ApprovedBy";
+                sqlText += " ,ApprovedAt=@ApprovedAt";
                 sqlText += " WHERE 1=1 AND";
                 sqlText += " " + conditionField + "=@ConditionValue";
                 SqlCommand cmdUpdate = new SqlCommand(sqlText, currConn);
                 cmdUpdate.Parameters.AddWithValue("@IsApprove", true);
                 cmdUpdate.Parameters.AddWithValue("@ConditionValue", conditionValue);
+                cmdUpdate.Parameters.AddWithValue("@ApprovedBy", identity.FullName);
+                cmdUpdate.Parameters.AddWithValue("@ApprovedAt",DateTime.Now);
                 cmdUpdate.Transaction = transaction;
                 var exeRes = cmdUpdate.ExecuteNonQuery();
                 transResult = Convert.ToInt32(exeRes);
@@ -6008,7 +6013,7 @@ FROM SuperAdministrator";
                     }
 
                     retResults[0] = "Success";
-                    retResults[1] = "Data Posted Successfully.";
+                    retResults[1] = "Data Rejected Successfully.";
                 }
                 else
                 {
