@@ -91,6 +91,7 @@ inv.Id
 ,inv.LastUpdateAt
 ,inv.LastUpdateFrom
 ,isnull(inv.IsEncashed,0)IsEncashed
+,Inv.AIT
 
 from InvestmentRenew inv
 WHERE  1=1 AND inv.IsArchive = 0
@@ -164,9 +165,8 @@ WHERE  1=1 AND inv.IsArchive = 0
                     vm.BankExciseDuty = Convert.ToDecimal(dr["BankExciseDuty"].ToString());
                     vm.SourceTaxDeduct = Convert.ToDecimal(dr["SourceTaxDeduct"].ToString());
                     vm.OtherCharge = Convert.ToDecimal(dr["OtherCharge"].ToString());
-
                     vm.Interest = Convert.ToDecimal(dr["Interest"].ToString());
-
+                    vm.AIT = Convert.ToDecimal(dr["AIT"].ToString());
 
                     vm.IsEncashed = Convert.ToBoolean(dr["IsEncashed"]);
                     vm.Post = Convert.ToBoolean(dr["Post"]);

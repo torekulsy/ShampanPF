@@ -16,7 +16,11 @@
                  
                 <th class="center">Action</th>
                 <th class="center">Transaction Code</th>
-                <th class="center">Renew Date</th>
+                <th class="center">Investment Date</th>
+                <th class="center">Investment Value</th>
+                <th class="center">Maturity Date</th>
+                <th class="center">Interest</th>
+                <th class="center">AIT</th>
                 <th class="center">Reference Value</th>
                 <th class="center">Post</th>
                 <th class="center">Encashed</th>
@@ -65,9 +69,13 @@
                                             //+ '&nbsp; <a id=""  title="Click to view Transaction Report" target="_blank"    href=\"/@ViewBag.TransType/InvestmentRenew/InvestmentRenew?id=' + oObj.aData[0] + '\" class="  sym-btn-report-row"></a>'
                                            // + '&nbsp; <a id="lnkEdit1"  title="Click on for Report" style="text-decoration:none;"    href=\"/@ViewBag.TransType/InvestmentRenew/reportVeiw/' + oObj.aData[0] + '\" class=" linkReport sym-btn-report-row"></a>'
                                             + '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/InvestmentRenew/Post"  onclick=btnPostNew(this); data-Id="' + oObj.aData[0] + '\" class="sym-btn-post-row"></a>'
+<<<<<<< HEAD
                                         @*+ '&nbsp; <a title="Click on for Journal" target="_blank"  href="/@ViewBag.TransType/Journal/Create?JournalType=1' + '&TransactionForm=RenewInvestment' + '&TransactionId=' + oObj.aData[0] + '\" class="sym-btn-bank-row"></a>'*@
 
                                         + '&nbsp; <a title="Click on for Journal" href="/@ViewBag.TransType/InvestmentRenew/JournalEntry?TransactionId=' + oObj.aData[0] + '&Code=' + oObj.aData[1] + '" class="sym-btn-bank-row"></a>'
+=======
+                                        + '&nbsp; <a title="Click on for Journal" target="_blank"  href="/@ViewBag.TransType/Journal/Create?JournalType=1' + '&TransactionForm=MaturityJournal' + '&TransactionId=' + oObj.aData[0] + '\" class="sym-btn-bank-row"></a>'
+>>>>>>> 6e06eb8278358019324b728f2915cc718361873f
                                     }
                                     else
                                     {
@@ -80,7 +88,7 @@
                                            //+ '&nbsp; <a id=""  title="Click to view Transaction Report" target="_blank"    href=\"/@ViewBag.TransType/InvestmentRenew/InvestmentRenew?id=' + oObj.aData[0] + '\" class="  sym-btn-report-row"></a>'
                                            //+ '&nbsp; <a id="lnkEdit1"  title="Click on for Report" style="text-decoration:none;"    href=\"/@ViewBag.TransType/InvestmentRenew/reportVeiw/' + oObj.aData[0] + '\" class=" linkReport sym-btn-report-row"></a>'
                                            + '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/InvestmentRenew/Post"  onclick=btnPostNew(this); data-Id="' + oObj.aData[0] + '\" class="sym-btn-post-row"></a>'
-                                       //+ '&nbsp; <a title="Click on for Journal" target="_blank"  href="/@ViewBag.TransType/Journal/Create?JournalType=1' + '&TransactionForm=RenewInvestment' + '&TransactionId=' + oObj.aData[0] + '\" class="sym-btn-bank-row"></a>'
+                                      + '&nbsp; <a title="Click on for Journal" target="_blank"  href="/@ViewBag.TransType/Journal/Create?JournalType=1' + '&TransactionForm=MaturityJournal' + '&TransactionId=' + oObj.aData[0] + '\" class="sym-btn-bank-row"></a>'
                                     }
                                     ;
                                 }
@@ -88,8 +96,12 @@
 
                             , { "sName": "TransactionCode", "sWidth": "10%" }
                             , { "sName": "InvestmentDate", "sWidth": "10%" }
+                             , { "sName": "InvestmentValue", "sWidth": "10%" }
+                             , { "sName": "MaturityDate", "sWidth": "10%" }
+                             , { "sName": "Interest", "sWidth": "10%" }
+                             , { "sName": "AIT", "sWidth": "5%" }
                             , { "sName": "ReferenceNo", "sWidth": "10%" }
-      , { "sName": "Post", "sWidth": "10%" }
+                            , { "sName": "Post", "sWidth": "5%" }
                             , { "sName": "IsEncashed", "sWidth": "10%" }
             ]
         });
