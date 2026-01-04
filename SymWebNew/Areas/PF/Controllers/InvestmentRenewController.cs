@@ -482,5 +482,34 @@ namespace SymWebUI.Areas.PF.Controllers
             Stream stream = rptDoc.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
             return File(stream, "application/PDF");
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public ActionResult JournalEntry(string TransactionId, string Code)
+        {
+            string[] result = new string[6];
+
+            Session["permission"] = _repoSUR.SymRoleSession(identity.UserId, "10003", "edit").ToString();
+
+
+            string BranchId = Session["BranchId"].ToString();
+
+            ShampanIdentityVM vm = new ShampanIdentityVM
+            {
+                LastUpdateAt = DateTime.Now.ToString("yyyyMMddHHmmss"),
+                LastUpdateBy = identity.Name,
+                LastUpdateFrom = identity.WorkStationIP,
+                CreatedAt = DateTime.Now.ToString("yyyyMMddHHmmss"),
+                CreatedBy = identity.Name,
+                CreatedFrom = identity.WorkStationIP,
+                BranchId = BranchId
+            };
+
+            result = _repo.InsertAutoJournal("1", "7", Code, TransactionId, BranchId, vm);
+
+            Session["result"] = result[0] + "~" + result[1];
+
+            return View("~/Areas/PF/Views/InvestmentRenew/Index.cshtml");
+        }
     }
 }
