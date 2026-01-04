@@ -858,8 +858,8 @@ Id
                     _cmdInsert.Parameters.AddWithValue("@Id", vm.Id);
                     _cmdInsert.Parameters.AddWithValue("@BranchId", vm.BranchId);
                     _cmdInsert.Parameters.AddWithValue("@Year", vm.Year);
-                    string yearEnd = (vm.Year + 1).ToString(); 
-                    _cmdInsert.Parameters.AddWithValue("@FyscalYear", vm.Year.ToString() + "-" + yearEnd.ToString().Substring(2));
+                    string yearStart = (vm.Year - 1).ToString();
+                    _cmdInsert.Parameters.AddWithValue("@FyscalYear", yearStart.ToString() + "-" + vm.Year.ToString());
                     _cmdInsert.Parameters.AddWithValue("@YearStart", Ordinary.DateToString(vm.YearStart));
                     _cmdInsert.Parameters.AddWithValue("@YearEnd", Ordinary.DateToString(vm.YearEnd));
                     _cmdInsert.Parameters.AddWithValue("@YearLock", vm.YearLock);
