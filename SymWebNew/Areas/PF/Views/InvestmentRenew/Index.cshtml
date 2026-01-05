@@ -69,7 +69,13 @@
                                             //+ '&nbsp; <a id=""  title="Click to view Transaction Report" target="_blank"    href=\"/@ViewBag.TransType/InvestmentRenew/InvestmentRenew?id=' + oObj.aData[0] + '\" class="  sym-btn-report-row"></a>'
                                            // + '&nbsp; <a id="lnkEdit1"  title="Click on for Report" style="text-decoration:none;"    href=\"/@ViewBag.TransType/InvestmentRenew/reportVeiw/' + oObj.aData[0] + '\" class=" linkReport sym-btn-report-row"></a>'
                                             + '&nbsp; <a title="Click on for Post" data-url="/@ViewBag.TransType/InvestmentRenew/Post"  onclick=btnPostNew(this); data-Id="' + oObj.aData[0] + '\" class="sym-btn-post-row"></a>'
+<<<<<<< HEAD
+                                        @*+ '&nbsp; <a title="Click on for Journal" target="_blank"  href="/@ViewBag.TransType/Journal/Create?JournalType=1' + '&TransactionForm=RenewInvestment' + '&TransactionId=' + oObj.aData[0] + '\" class="sym-btn-bank-row"></a>'*@
+
+                                        + '&nbsp; <a title="Click on for Journal" href="/@ViewBag.TransType/InvestmentRenew/JournalEntry?TransactionId=' + oObj.aData[0] + '&Code=' + oObj.aData[1] + '" class="sym-btn-bank-row"></a>'
+=======
                                         + '&nbsp; <a title="Click on for Journal" target="_blank"  href="/@ViewBag.TransType/Journal/Create?JournalType=1' + '&TransactionForm=MaturityJournal' + '&TransactionId=' + oObj.aData[0] + '\" class="sym-btn-bank-row"></a>'
+>>>>>>> 6e06eb8278358019324b728f2915cc718361873f
                                     }
                                     else
                                     {

@@ -78,5 +78,17 @@ namespace SymRepository.PF
             }
         }
 
+        public string[] InsertAutoJournal(string JournalType, string TransactionForm, string TransactionCode, string TransactionId, string BranchId, ShampanIdentityVM vm)
+        {
+            try
+            {
+                return new InvestmentRenewDAL().AutoJournalSave(JournalType, TransactionForm, TransactionCode, TransactionId, BranchId, null, null, vm);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

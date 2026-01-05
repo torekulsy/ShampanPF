@@ -1,6 +1,6 @@
 ﻿using SymOrdinary;
 using SymServices.Common;
-
+using SymViewModel.Common;
 using SymViewModel.PF;
 using System;
 using System.Collections.Generic;
@@ -1127,6 +1127,143 @@ WHERE  1=1 AND  inv.IsArchive = 0
             }
             #endregion
             return dt;
+        }
+
+        public string[] AutoJournalSave(string JournalType, string TransactionForm, string TransactionCode, string TransactionId, string BranchId, SqlConnection currConn, SqlTransaction transaction, ShampanIdentityVM auditvm)
+        {
+            if (currConn == null)
+            {
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
+            }
+
+            string[] retResults = new string[6];
+            retResults[0] = "Fail";//Success or Fail
+            retResults[1] = "Fail";// Success or Fail Message
+
+     
+            string MTBL_TEJ_CD = "";
+            string AIT_FDR = "";
+            string MTBL_TEJ_FDR = "";
+            string Interest_Receivable_FDR = "";
+            string Interest_Income_FDR = "";
+
+            string Journal = @"SELECT
+                                c.Name as JournalName,COAID
+                                FROM AutoJournalSetup js
+								Left Join COAs c on c.Id=js.COAID
+                                WHERE  1=1 AND JournalFor = @JournalFor and js.IsActive=1";
+            SqlCommand cmdj = new SqlCommand(Journal, currConn, transaction);
+            cmdj.Parameters.AddWithValue("@JournalFor", TransactionForm);
+            SqlDataAdapter adapterj = new SqlDataAdapter(cmdj);
+            DataTable dtj = new DataTable();
+            adapterj.Fill(dtj);
+            if (dtj.Rows.Count > 0)
+            {
+                MTBL_TEJ_CD = dtj.Rows[0]["COAID"].ToString();
+                AIT_FDR = dtj.Rows[1]["COAID"].ToString();
+                MTBL_TEJ_FDR = dtj.Rows[2]["COAID"].ToString();
+                Interest_Receivable_FDR = dtj.Rows[3]["COAID"].ToString();
+                Interest_Income_FDR = dtj.Rows[4]["COAID"].ToString();
+
+            }
+
+            SettingDAL _settingDal = new SettingDAL();
+            string IsAutoJournal = _settingDal.settingValue("PF", "IsAutoJournal").Trim();
+
+            if (IsAutoJournal == "Y")
+            {
+
+                string id = @"SELECT
+                            InvestmentValue
+                            FROM Investments
+                            WHERE  1=1 AND TransactionCode = @TransactionCode";
+                SqlCommand cmdid = new SqlCommand(id, currConn, transaction);
+                cmdid.Parameters.AddWithValue("@TransactionCode", TransactionCode);
+                SqlDataAdapter adapterid = new SqlDataAdapter(cmdid);
+                DataTable dtpf = new DataTable();
+                adapterid.Fill(dtpf);
+
+                GLJournalVM vmj = new GLJournalVM
+                {
+
+
+                    Id = 1,
+                    CreatedAt = DateTime.Now.ToString(),
+                    CreatedBy = "admin",
+                    CreatedFrom = "",
+                    TransactionDate = DateTime.Now.ToString(),
+                    TransactionType = 31,
+                    JournalType = 1,
+                    TransType = "PF",
+                    TransactionValue = Convert.ToDecimal(dtpf.Rows[0]["InvestmentValue"].ToString()),
+
+                    GLJournalDetails = new List<GLJournalDetailVM>
+                    {
+                         new GLJournalDetailVM
+                        {
+                            COAId =Convert.ToInt32(MTBL_TEJ_CD),
+                            CrAmount = Convert.ToDecimal(dtpf.Rows[0]["Total"].ToString()),
+                            IsDr = false,
+                            IsYearClosing = false,
+                            Post = false
+                        }
+                        ,
+                        new GLJournalDetailVM
+                        {                                  
+                            COAId =Convert.ToInt32(AIT_FDR),
+                            DrAmount = Convert.ToDecimal(dtpf.Rows[0]["EmployeeTotalContribution"].ToString()),
+                            IsDr = true,
+                            IsYearClosing = false,
+                            Post = false
+                        },
+                        new GLJournalDetailVM
+                        {                                  
+                            COAId =Convert.ToInt32(MTBL_TEJ_FDR),
+                            DrAmount = Convert.ToDecimal(dtpf.Rows[0]["EmployerTotalContribution"].ToString()),
+                            IsDr = true,
+                            IsYearClosing = false,
+                            Post = false
+                        },
+                       
+                        new GLJournalDetailVM
+                        {
+                            COAId =Convert.ToInt32(Interest_Receivable_FDR),
+                            DrAmount = Convert.ToDecimal(dtpf.Rows[0]["EmployeeProfitValue"].ToString()),
+                            IsDr = true,
+                            IsYearClosing = false,
+                            Post = false
+                        }
+                                                ,
+                        new GLJournalDetailVM
+                        {
+                            COAId =Convert.ToInt32(Interest_Income_FDR),
+                            DrAmount = Convert.ToDecimal(dtpf.Rows[0]["EmployerProfitValue"].ToString()),
+                            IsDr = true,
+                            IsYearClosing = false,
+                            Post = false
+                        }
+                    }
+                };
+                vmj.Source = TransactionCode;
+                vmj.SourceId = Convert.ToInt32(TransactionId);
+                vmj.BranchId = BranchId;
+                GLJournalDAL glJournalDal = new GLJournalDAL();
+                retResults = glJournalDal.Insert(vmj);
+
+                #region SuccessResult
+                retResults[0] = "Success";
+                retResults[1] = "Data Save Successfully.";
+                #endregion SuccessResult
+            }
+
+            #region Results
+            return retResults;
+            #endregion
+
         }
 
 
