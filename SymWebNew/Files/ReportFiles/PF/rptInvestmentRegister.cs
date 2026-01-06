@@ -191,6 +191,14 @@ namespace SymWebUI.Files.ReportFiles.PF {
                 return this.ReportDefinition.Sections[17];
             }
         }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section PageFooterSection2 {
+            get {
+                return this.ReportDefinition.Sections[18];
+            }
+        }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]

@@ -431,12 +431,6 @@
     <Compile Include="Files\ReportFiles\PF\rptEmployeeLoanClosed.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Files\ReportFiles\PF\rptEmployeeLoanClosed1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>rptEmployeeLoanClosed.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Files\ReportFiles\PF\rptEmployeeLoanSettelment.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
