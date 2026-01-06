@@ -760,9 +760,9 @@ namespace SymServices.PF
                     EmployeeInfoForPFVM.NomineeNID = dr["NomineeNID"].ToString();
                     EmployeeInfoForPFVM.NomineeRemarks = dr["NomineeRemarks"].ToString();
                     EmployeeInfoForPFVM.Remarks = dr["Remarks"].ToString();
-                    EmployeeInfoForPFVM.IsActive = Convert.ToBoolean(dr["IsActive"].ToString());
-                    EmployeeInfoForPFVM.IsProfit = Convert.ToBoolean(dr["IsProfit"].ToString());
-                    EmployeeInfoForPFVM.IsNoInterest = Convert.ToBoolean(dr["IsNoInterest"].ToString());
+                    EmployeeInfoForPFVM.IsActive = Convert.ToBoolean(dr["IsActive"] == DBNull.Value ? false : dr["IsActive"]);
+                    EmployeeInfoForPFVM.IsProfit = Convert.ToBoolean(dr["IsProfit"] == DBNull.Value ? false : dr["IsProfit"]);
+                    EmployeeInfoForPFVM.IsNoInterest = Convert.ToBoolean(dr["IsNoInterest"] == DBNull.Value ? false : dr["IsNoInterest"]);
                     EmployeeInfoForPFVM.ContactNo = dr["ContactNo"].ToString();
                     EmployeeInfoForPFVM.Email = dr["Email"].ToString();
                     EmployeeInfoForPFVM.PhotoName = dr["PhotoName"].ToString();

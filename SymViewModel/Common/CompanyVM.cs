@@ -59,5 +59,7 @@ namespace SymViewModel.Common
         //Only for data pass
         [Display(Name = "Current Branch")]
         public int CurrentBranch { get; set; }
+
+        public string LogoName { get; set; }
     }
 }
