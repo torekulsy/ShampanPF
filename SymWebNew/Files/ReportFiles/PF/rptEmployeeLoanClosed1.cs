@@ -16,14 +16,14 @@ namespace SymWebUI.Files.ReportFiles.PF {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class rptGLTransaction : ReportClass {
+    public class rptEmployeeLoanClosed : ReportClass {
         
-        public rptGLTransaction() {
+        public rptEmployeeLoanClosed() {
         }
         
         public override string ResourceName {
             get {
-                return "rptGLTransaction.rpt";
+                return "rptEmployeeLoanClosed.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace SymWebUI.Files.ReportFiles.PF {
         
         public override string FullResourceName {
             get {
-                return "SymWebUI.Files.ReportFiles.PF.rptGLTransaction.rpt";
+                return "SymWebUI.Files.ReportFiles.PF.rptEmployeeLoanClosed.rpt";
             }
             set {
                 // Do nothing
@@ -66,7 +66,7 @@ namespace SymWebUI.Files.ReportFiles.PF {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section PageHeaderSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section PageHeaderSection2 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -74,7 +74,7 @@ namespace SymWebUI.Files.ReportFiles.PF {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section PageHeaderSection4 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -82,7 +82,7 @@ namespace SymWebUI.Files.ReportFiles.PF {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section PageHeaderSection2 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
             get {
                 return this.ReportDefinition.Sections[4];
             }
@@ -90,7 +90,7 @@ namespace SymWebUI.Files.ReportFiles.PF {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section PageHeaderSection3 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
             get {
                 return this.ReportDefinition.Sections[5];
             }
@@ -98,41 +98,17 @@ namespace SymWebUI.Files.ReportFiles.PF {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section PageFooterSection1 {
             get {
                 return this.ReportDefinition.Sections[6];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section DetailSection1 {
-            get {
-                return this.ReportDefinition.Sections[7];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
-            get {
-                return this.ReportDefinition.Sections[8];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
-            get {
-                return this.ReportDefinition.Sections[9];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedrptGLTransaction : Component, ICachedReport {
+    public class CachedrptEmployeeLoanClosed : Component, ICachedReport {
         
-        public CachedrptGLTransaction() {
+        public CachedrptEmployeeLoanClosed() {
         }
         
         [Browsable(false)]
@@ -169,7 +145,7 @@ namespace SymWebUI.Files.ReportFiles.PF {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            rptGLTransaction rpt = new rptGLTransaction();
+            rptEmployeeLoanClosed rpt = new rptEmployeeLoanClosed();
             rpt.Site = this.Site;
             return rpt;
         }

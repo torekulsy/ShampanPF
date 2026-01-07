@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SymWebUI.Files.ReportFiles.Loan {
+namespace SymWebUI.Files.ReportFiles.PF {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -41,7 +41,7 @@ namespace SymWebUI.Files.ReportFiles.Loan {
         
         public override string FullResourceName {
             get {
-                return "SymWebUI.Files.ReportFiles.Loan.rptLoanEGCB.rpt";
+                return "SymWebUI.Files.ReportFiles.PF.rptLoanEGCB.rpt";
             }
             set {
                 // Do nothing
