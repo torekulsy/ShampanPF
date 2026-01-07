@@ -4,6 +4,7 @@ using SymRepository.Common;
 using SymViewModel.Common;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web;
@@ -130,7 +131,7 @@ namespace SymWebUI.Areas.Common.Controllers
         /// </remarks>
         [Authorize(Roles = "Master,Admin,Account")]
         [HttpPost]
-        public ActionResult Create(CompanyVM company)
+        public ActionResult Create(CompanyVM company, HttpPostedFileBase file)
         {
             string[] result = new string[6];
             company.CreatedAt = DateTime.Now.ToString("yyyyMMddHHmmss");
@@ -139,6 +140,22 @@ namespace SymWebUI.Areas.Common.Controllers
             try
             {
                 result = compRepo.Insert(company);
+
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        string logoName = "LOGO_Sym.png";
+                        var photoResult = compRepo.UpdatePhoto( logoName);
+                        if (photoResult[0] == "Success")
+                        {
+                            string dirPath = Server.MapPath("~/Images/");
+                            if (!Directory.Exists(dirPath))
+                                Directory.CreateDirectory(dirPath);
+
+                            string filePath = Path.Combine(dirPath, logoName);
+                            file.SaveAs(filePath);
+                        }
+                    }
+
                 Session["result"] = result[0] + "~" + result[1];
                 return RedirectToAction("Index");
             }
@@ -159,10 +176,11 @@ namespace SymWebUI.Areas.Common.Controllers
         /// </returns>
         [Authorize(Roles = "Master,Admin,Account")]
         [HttpGet]
-        public ActionResult Edit()
+        public ActionResult Edit(int Id)
         {
             ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
             CompanyVM company = compRepo.SelectById(Convert.ToInt32(identity.CompanyId));
+
             return View(company);
         }
 
@@ -176,7 +194,7 @@ namespace SymWebUI.Areas.Common.Controllers
         /// </returns>
         [Authorize(Roles = "Master,Admin,Account")]
         [HttpPost]
-        public ActionResult Edit(CompanyVM company)
+        public ActionResult Edit(CompanyVM company, HttpPostedFileBase file)
         { 
             string[] result = new string[6];            
             ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
@@ -187,7 +205,24 @@ namespace SymWebUI.Areas.Common.Controllers
             try
             {
                 result = compRepo.Update(company);
+
+                if (file != null && file.ContentLength > 0)
+                {
+                    string logoName = "LOGO_Sym.png";
+                    var photoResult = compRepo.UpdatePhoto(logoName);
+                    if (photoResult[0] == "Success")
+                    {
+                        string dirPath = Server.MapPath("~/Images/");
+                        if (!Directory.Exists(dirPath))
+                            Directory.CreateDirectory(dirPath);
+
+                        string filePath = Path.Combine(dirPath, logoName);
+                        file.SaveAs(filePath);
+                    }
+                }
+
                 Session["result"] = result[0] + "~" + result[1];
+                return RedirectToAction("Index");
             }
             catch (Exception)
             {

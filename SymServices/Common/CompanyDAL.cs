@@ -68,6 +68,7 @@ Id
 ,LastUpdateBy
 ,LastUpdateAt
 ,LastUpdateFrom
+,LogoName
     From Company
 Where IsArchive=0
     ORDER BY Code
@@ -81,7 +82,7 @@ Where IsArchive=0
                 while (dr.Read())
                 {
                     vm = new CompanyVM();
-                    vm.Id = Convert.ToInt32(dr["Id"]);
+                    vm.Id = Convert.ToInt32(dr["Id"] == DBNull.Value ? 0 : dr["Id"]);
                     vm.Code = dr["Code"].ToString();
                     vm.Name = dr["Name"].ToString();
 
@@ -108,6 +109,7 @@ Where IsArchive=0
                     vm.LastUpdateAt = Ordinary.StringToDate(dr["LastUpdateAt"].ToString());
                     vm.LastUpdateBy = dr["LastUpdateBy"].ToString();
                     vm.LastUpdateFrom = dr["LastUpdateFrom"].ToString();
+                    vm.LogoName = dr["LogoName"] == DBNull.Value ? "default-logo.png" : dr["LogoName"].ToString();
                     VMs.Add(vm);
                 }
                 dr.Close();
@@ -199,6 +201,7 @@ Id
 ,LastUpdateFrom
 ,YearStart
 ,Year
+,LogoName
     From Company
 where  id=@Id
      
@@ -244,6 +247,7 @@ where  id=@Id
                     vm.LastUpdateFrom = dr["LastUpdateFrom"].ToString();
                     vm.YearStart = Ordinary.StringToDate(dr["YearStart"].ToString());
                     vm.Year = dr["Year"].ToString();
+                    vm.LogoName = dr["LogoName"].ToString();
 
                 }
                 dr.Close();
@@ -391,11 +395,11 @@ where  id=@Id
                                             Code,Name
                                             ,Address,District,Division,Country,City,PostalCode,Phone,Mobile,Fax
 ,TaxId,RegistrationNumber,Mail,NumberOfEmployees
-                                ,Remarks,IsActive,IsArchive,CreatedBy,CreatedAt,CreatedFrom,VATNo) 
+                                ,Remarks,IsActive,IsArchive,CreatedBy,CreatedAt,CreatedFrom,VATNo, LogoName) 
                                 VALUES (@Code,@Name
                                         ,@Address,@District,@Division,@Country,@City,@PostalCode,@Phone,@Mobile,@Fax
 ,@TaxId,@RegistrationNumber,@Mail,@NumberOfEmployees
-                                        ,@Remarks,@IsActive,@IsArchive,@CreatedBy,@CreatedAt,@CreatedFrom,@VATNo) 
+                                        ,@Remarks,@IsActive,@IsArchive,@CreatedBy,@CreatedAt,@CreatedFrom,@VATNo, @LogoName) 
                                         SELECT SCOPE_IDENTITY()";
 
                     SqlCommand cmdInsert = new SqlCommand(sqlText, currConn);
@@ -426,7 +430,7 @@ where  id=@Id
                     cmdInsert.Parameters.AddWithValue("@CreatedBy", vm.CreatedBy);
                     cmdInsert.Parameters.AddWithValue("@CreatedAt", vm.CreatedAt);
                     cmdInsert.Parameters.AddWithValue("@CreatedFrom", vm.CreatedFrom);
-
+                    cmdInsert.Parameters.AddWithValue("@LogoName", vm.LogoName ?? Convert.DBNull);
                     cmdInsert.Transaction = transaction;
 					var exeRes = cmdInsert.ExecuteScalar();
 					Id = Convert.ToInt32(exeRes);
@@ -657,7 +661,8 @@ where  id=@Id
                     sqlText += " LastUpdateAt=@LastUpdateAt,";
                     sqlText += " LastUpdateFrom=@LastUpdateFrom,";
                     sqlText += " YearStart=@YearStart,";
-                    sqlText += " Year=@Year";
+                    sqlText += " Year=@Year,";
+                    sqlText += " LogoName=@LogoName";
                     sqlText += " where Id=@Id";
 
                     SqlCommand cmdUpdate = new SqlCommand(sqlText, currConn);
@@ -680,7 +685,7 @@ where  id=@Id
                     cmdUpdate.Parameters.AddWithValue("@Mail", vm.Email ?? Convert.DBNull);
                     cmdUpdate.Parameters.AddWithValue("@NumberOfEmployees", vm.NumberOfEmployees);
 
-                    cmdUpdate.Parameters.AddWithValue("@Remarks", vm.Remarks);
+                    cmdUpdate.Parameters.AddWithValue("@Remarks", vm.Remarks ?? Convert.DBNull);
                     cmdUpdate.Parameters.AddWithValue("@IsActive", true);
                     cmdUpdate.Parameters.AddWithValue("@IsArchive", false);
                     cmdUpdate.Parameters.AddWithValue("@LastUpdateBy", vm.LastUpdateBy);
@@ -688,6 +693,7 @@ where  id=@Id
                     cmdUpdate.Parameters.AddWithValue("@LastUpdateFrom", vm.LastUpdateFrom);
                     cmdUpdate.Parameters.AddWithValue("@YearStart",Ordinary.DateToString(fiscalYearVM.YearStart));
                     cmdUpdate.Parameters.AddWithValue("@Year", fiscalYearVM.Year);
+                    cmdUpdate.Parameters.AddWithValue("@LogoName", vm.LogoName ?? Convert.DBNull);
 
                     cmdUpdate.Transaction = transaction;
 					var exeRes = cmdUpdate.ExecuteNonQuery();
@@ -1121,6 +1127,128 @@ Id
 
             #endregion
             return VMs;
+        }
+
+        public string[] UpdatePhoto( string LogoName, SqlConnection VcurrConn, SqlTransaction Vtransaction)
+        {
+            #region Variables
+            string[] retResults = new string[6];
+            retResults[0] = "Fail";//Success or Fail
+            retResults[1] = "Fail";// Success or Fail Message
+            retResults[2] = "0";
+            retResults[3] = "sqlText"; //  SQL Query
+            retResults[4] = "ex"; //catch ex
+            retResults[5] = "Logo Update"; //Method Name
+            int transResult = 0;
+            string sqlText = "";
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+            bool iSTransSuccess = false;
+            #endregion
+            try
+            {
+                #region open connection and transaction
+                #region New open connection and transaction
+                if (VcurrConn != null)
+                {
+                    currConn = VcurrConn;
+                }
+                if (Vtransaction != null)
+                {
+                    transaction = Vtransaction;
+                }
+                #endregion New open connection and transaction
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+                if (transaction == null) { transaction = currConn.BeginTransaction("UpdateToCompanyLogo"); }
+                #endregion open connection and transaction
+                if (!string.IsNullOrWhiteSpace(LogoName))
+                {
+                    #region Update Settings
+                    sqlText = "";
+                    sqlText = "update Company set";
+                    sqlText += " LogoName=@LogoName";
+                    //sqlText += " where Id=@Id";
+                    SqlCommand cmdUpdate = new SqlCommand(sqlText, currConn);
+                    cmdUpdate.Parameters.AddWithValue("@LogoName", LogoName);
+                    //cmdUpdate.Parameters.AddWithValue("@Id", EmployeeId);
+                    cmdUpdate.Transaction = transaction;
+                    var exeRes = cmdUpdate.ExecuteNonQuery();
+                    transResult = Convert.ToInt32(exeRes);
+                    //retResults[2] = EmployeeId.ToString();
+                    retResults[3] = sqlText; //  SQL Query
+                    #region Commit
+                    if (transResult <= 0)
+                    {
+                        // throw new ArgumentNullException("Education Update", EmployeeInfoVM.BranchId + " could not updated.");
+                    }
+                    #endregion Commit
+                    #endregion Update Settings
+                    iSTransSuccess = true;
+                }
+                else
+                {
+                    throw new ArgumentNullException("Company Logo Update", "Could not found any item.");
+                }
+                if (iSTransSuccess == true)
+                {
+                    if (Vtransaction == null)
+                    {
+                        if (transaction != null)
+                        {
+                            transaction.Commit();
+                        }
+                    }
+                    retResults[0] = "Success";
+                    retResults[1] = "Data Update Successfully.";
+                }
+                else
+                {
+                    retResults[1] = "Unexpected error to update Company Logo.";
+                    throw new ArgumentNullException("", "");
+                }
+            }
+            #region catch
+            catch (Exception ex)
+            {
+                retResults[0] = "Fail";//Success or Fail
+                retResults[4] = ex.Message; //catch ex
+                if (Vtransaction != null)
+                {
+                    try
+                    {
+                        if (Vtransaction == null) { transaction.Rollback(); }
+                    }
+                    catch (Exception)
+                    {
+                        retResults[1] = "Unexpected error to update Company Logo.";
+                        return retResults;
+                        // throw new ArgumentNullException("Unexpected error to update EmployeeInfo.", "EmployeeInfo");
+                    }
+                }
+                return retResults;
+            }
+            finally
+            {
+                if (VcurrConn == null)
+                {
+                    if (currConn != null)
+                    {
+                        if (currConn.State == ConnectionState.Open)
+                        {
+                            currConn.Close();
+                        }
+                    }
+                }
+            }
+            #endregion
+            return retResults;
         }
     }
 }

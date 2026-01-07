@@ -95,6 +95,18 @@ namespace SymRepository.Common
                 throw ex;
             }
         }
+
+        public string[] UpdatePhoto( string LogoName)
+        {
+            try
+            {
+                return new CompanyDAL().UpdatePhoto( LogoName, null, null);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         #endregion
     }
 }
