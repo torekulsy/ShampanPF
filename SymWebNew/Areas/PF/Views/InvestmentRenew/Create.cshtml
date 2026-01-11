@@ -264,7 +264,7 @@
                             @Html.LabelFor(model => model.AditionAmount)
                         </div>
                         <div class="editor-field">
-                            @Html.TextBoxFor(model => model.AditionAmount, new { @placeholder = "Adition Amount", @class = " required form-control" })
+                            @Html.TextBoxFor(model => model.AditionAmount, new { @placeholder = "Adition Amount", @class = " required NumberCheck form-control" })
                             @Html.ValidationMessageFor(model => model.AditionAmount)
                         </div>
                     </div>
@@ -274,7 +274,7 @@
                             @Html.LabelFor(model => model.EncashAmount)
                         </div>
                         <div class="editor-field">
-                            @Html.TextBoxFor(model => model.EncashAmount, new { @placeholder = "Encash Amount", @class = " required form-control" })
+                            @Html.TextBoxFor(model => model.EncashAmount, new { @placeholder = "Encash Amount", @class = " required NumberCheck form-control" })
                             @Html.ValidationMessageFor(model => model.EncashAmount)
                         </div>
                     </div>
@@ -326,7 +326,7 @@
                             @Html.LabelFor(model => model.InvestmentMonth)
                         </div>
                         <div class="editor-field">
-                            @Html.TextBoxFor(model => model.InvestmentMonth, new { @placeholder = "Investment Month", @class = "form-control" })
+                            @Html.TextBoxFor(model => model.InvestmentMonth, new { @placeholder = "Investment Month", @class = "form-control NumberCheck" })
                             @Html.ValidationMessageFor(model => model.InvestmentMonth)
                         </div>
                     </div>

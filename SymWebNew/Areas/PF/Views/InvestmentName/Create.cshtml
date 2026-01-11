@@ -113,7 +113,7 @@ BankAccountNo
                             @Html.LabelFor(model => model.AitRate)
                         </div>
                         <div class="editor-field">
-                            @Html.TextBoxFor(model => model.AitRate, new { @placeholder = "Ait Rate", @class = "form-control" })
+                            @Html.TextBoxFor(model => model.AitRate, new { @placeholder = "Ait Rate", @class = "form-control", type = "number" })
                             @Html.ValidationMessageFor(model => model.AitRate)
                         </div>
                     </div>

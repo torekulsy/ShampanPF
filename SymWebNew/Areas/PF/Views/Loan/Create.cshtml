@@ -123,7 +123,7 @@
                     @Html.LabelFor(model => model.PrincipalAmount)
                 </div>
                 <div class="editor-field">
-                    @Html.TextBoxFor(model => model.PrincipalAmount, new { @onchange = "LoanSchudele();", @placeholder = "Principal Amount", @class = " right required form-control" })
+                    @Html.TextBoxFor(model => model.PrincipalAmount, new { @onchange = "LoanSchudele();", @placeholder = "Principal Amount", @class = " right required NumberCheck form-control" })
                     @Html.ValidationMessageFor(model => model.PrincipalAmount)
                 </div>
             </div>
@@ -132,7 +132,7 @@
                     @Html.LabelFor(model => model.NumberOfInstallment)
                 </div>
                 <div class="editor-field">
-                    @Html.TextBoxFor(model => model.NumberOfInstallment, new { @onchange = "LoanSchudele()", @placeholder = "Number Of Installment", @class = " right  required form-control" })
+                    @Html.TextBoxFor(model => model.NumberOfInstallment, new { @onchange = "LoanSchudele()", @placeholder = "Number Of Installment", @class = " right  required NumberCheck form-control" })
                     @Html.ValidationMessageFor(model => model.NumberOfInstallment)
                 </div>
             </div>
@@ -204,7 +204,7 @@
                     @Html.LabelFor(model => model.InterestRate)
                 </div>
                 <div class="editor-field">
-                    @Html.TextBoxFor(model => model.InterestRate, new { @onchange = "LoanSchudele()", @placeholder = "Interest Rate", @class = "intRate right form-control" })
+                    @Html.TextBoxFor(model => model.InterestRate, new { @onchange = "LoanSchudele()", @placeholder = "Interest Rate", @class = "intRate right NumberCheck form-control" })
                     @Html.ValidationMessageFor(model => model.InterestRate)
                 </div>
 
@@ -224,7 +224,7 @@
                     @Html.LabelFor(model => model.InterestAmount)
                 </div>
                 <div class="editor-field">
-                    @Html.TextBoxFor(model => model.InterestAmount, new { @onchange = "LoanSchudele()", @placeholder = "Interest Amount", @class = " right form-control" })
+                    @Html.TextBoxFor(model => model.InterestAmount, new { @onchange = "LoanSchudele()", @placeholder = "Interest Amount", @class = " right NumberCheck form-control" })
                     @Html.ValidationMessageFor(model => model.InterestAmount)
                 </div>
             </div>
@@ -233,7 +233,7 @@
                     @Html.LabelFor(model => model.TotalAmount)
                 </div>
                 <div class="editor-field">
-                    @Html.TextBoxFor(model => model.TotalAmount, new { @placeholder = "Total Amount", @class = " right form-control", @readonly = "readonly" })
+                    @Html.TextBoxFor(model => model.TotalAmount, new { @placeholder = "Total Amount", @class = " right form-control NumberCheck", @readonly = "readonly" })
                     @Html.ValidationMessageFor(model => model.TotalAmount)
                 </div>
             </div>
