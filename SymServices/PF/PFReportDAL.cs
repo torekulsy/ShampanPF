@@ -1424,7 +1424,9 @@ where InvestmentTypeId=3
 
                 SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
                 da.SelectCommand.Transaction = transaction;
-                da.SelectCommand.Parameters.AddWithValue("@Year", Year);
+                //da.SelectCommand.Parameters.AddWithValue("@Year", Year).ToString();
+                da.SelectCommand.Parameters.Add("@Year", SqlDbType.VarChar, 4).Value = Year;
+
            
                 da.Fill(dt);
 
@@ -5329,49 +5331,55 @@ END Designation
 ,pd.EmployeerPFValue
 
 from PFDetails pd
+Left Outer Join PFHeader ph on ph.Id=pd.PFHeaderId
 left outer join ViewEmployeeInformation e on pd.EmployeeId=e.EmployeeId
 left outer join   ViewEmployeeInformation eOld  on pd.EmployeeId=eold.EmployeeId
 left outer join FiscalYearDetail fd on pd.FiscalYearDetailId=fd.Id
 
-WHERE  1=1   
+WHERE  1=1   And e.EmployeeId=@EmployeeId and ph.FiscalYearDetailId>=@FyStart and ph.FiscalYearDetailId<=@FyEnd
 
 ";
 
-                string cField = "";
-                if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
-                {
-                    for (int i = 0; i < conditionFields.Length; i++)
-                    {
-                        if (string.IsNullOrWhiteSpace(conditionFields[i]) || string.IsNullOrWhiteSpace(conditionValues[i]))
-                        {
-                            continue;
-                        }
-                        cField = conditionFields[i].ToString();
-                        cField = Ordinary.StringReplacing(cField);
-                        sqlText += " AND " + conditionFields[i] + "=@" + cField;
-                    }
-                }
+                //string cField = "";
+                //if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
+                //{
+                //    for (int i = 0; i < conditionFields.Length; i++)
+                //    {
+                //        if (string.IsNullOrWhiteSpace(conditionFields[i]) || string.IsNullOrWhiteSpace(conditionValues[i]))
+                //        {
+                //            continue;
+                //        }
+                //        cField = conditionFields[i].ToString();
+                //        cField = Ordinary.StringReplacing(cField);
+                //        sqlText += " AND " + conditionFields[i] + "@" + cField;
+                //    }
+                //}
                 #endregion SqlText
 
                 #region SqlExecution
 
                 sqlText += @" order by fd.PeriodId,Project,Department,Section,Code ";
 
-                SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
+                SqlCommand cmd = new SqlCommand(sqlText, currConn);
+                cmd.Parameters.AddWithValue("@EmployeeId", conditionValues[0]);
+                cmd.Parameters.AddWithValue("@FyStart", conditionValues[1]);
+                cmd.Parameters.AddWithValue("@FyEnd", conditionValues[2]);
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.SelectCommand.Transaction = transaction;
-                if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
-                {
-                    for (int j = 0; j < conditionFields.Length; j++)
-                    {
-                        if (string.IsNullOrWhiteSpace(conditionFields[j]) || string.IsNullOrWhiteSpace(conditionValues[j]))
-                        {
-                            continue;
-                        }
-                        cField = conditionFields[j].ToString();
-                        cField = Ordinary.StringReplacing(cField);
-                        da.SelectCommand.Parameters.AddWithValue("@" + cField, conditionValues[j]);
-                    }
-                }
+               
+                //if (conditionFields != null && conditionValues != null && conditionFields.Length == conditionValues.Length)
+                //{
+                //    for (int j = 0; j < conditionFields.Length; j++)
+                //    {
+                //        if (string.IsNullOrWhiteSpace(conditionFields[j]) || string.IsNullOrWhiteSpace(conditionValues[j]))
+                //        {
+                //            continue;
+                //        }
+                //        cField = conditionFields[j].ToString();
+                //        cField = Ordinary.StringReplacing(cField);
+                //        da.SelectCommand.Parameters.AddWithValue("@" + cField, conditionValues[j]);
+                //    }
+                //}
 
                 da.Fill(dt);
 
@@ -9098,6 +9106,97 @@ WHERE  1=1 AND pd.IsArchive = 0
                 retResults[1] = ex.Message;
                 throw ex;
             }
+            return dt;
+        }
+
+        public DataTable GetFiscalPeriod(string DateFrom, string DateTo, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
+        {
+            #region Variables
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+            string sqlText = "";
+            DataTable dt = new DataTable();
+            #endregion
+            try
+            {
+                #region open connection and transaction
+                #region New open connection and transaction
+                if (VcurrConn != null)
+                {
+                    currConn = VcurrConn;
+                }
+                if (Vtransaction != null)
+                {
+                    transaction = Vtransaction;
+                }
+                #endregion New open connection and transaction
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+                if (transaction == null)
+                {
+                    transaction = currConn.BeginTransaction("");
+                }
+                #endregion open connection and transaction
+
+
+                #region sql statement
+
+                sqlText = @"
+          SELECT
+    (SELECT TOP 1 ISNULL(Id, 0)
+     FROM FiscalYearDetail
+     WHERE PeriodStart <= @StartFId
+     ORDER BY Id DESC) AS StartFId,
+
+    (SELECT TOP 1 ISNULL(Id, 0)
+     FROM FiscalYearDetail
+     WHERE PeriodEnd <= @EndFId
+     ORDER BY Id DESC) AS EndFId;
+";
+
+                #region More Conditions
+
+                #endregion
+
+                SqlDataAdapter da = new SqlDataAdapter(sqlText, currConn);
+                da.SelectCommand.Transaction = transaction;
+                da.SelectCommand.CommandTimeout = 500;
+                da.SelectCommand.Parameters.AddWithValue("@StartFId",Ordinary.DateToString(DateFrom));
+                da.SelectCommand.Parameters.AddWithValue("@EndFId", Ordinary.DateToString(DateTo));
+
+                da.Fill(dt);
+
+                if (Vtransaction == null && transaction != null)
+                {
+                    transaction.Commit();
+                }
+                #endregion
+            }
+            #region catch
+            catch (SqlException sqlex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+            #endregion
+            #region finally
+            finally
+            {
+                if (VcurrConn == null && currConn != null && currConn.State == ConnectionState.Open)
+                {
+                    currConn.Close();
+                }
+            }
+            #endregion
             return dt;
         }
 

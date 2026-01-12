@@ -537,6 +537,18 @@ namespace SymRepository.PF
                   throw ex;
               }
           }
+
+          public DataTable GetFiscalPeriod(string DateFrom, string DateTo, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
+          {
+              try
+              {
+                  return new PFReportDAL().GetFiscalPeriod(DateFrom, DateTo);
+              }
+              catch (Exception ex)
+              {
+                  throw ex;
+              }
+          }
         
         #endregion        
         
