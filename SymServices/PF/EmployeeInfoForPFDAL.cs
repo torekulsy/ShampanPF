@@ -1133,8 +1133,8 @@ namespace SymServices.PF
                     DataTable returnDt = new DataTable();
                     string Department = dr["Department"].ToString().Trim();
                     string Designation = dr["Designation"].ToString().Trim();
-                    //string Project = dr["Project"].ToString().Trim();
-                    //string Section = dr["Section"].ToString().Trim();
+                    string Project = dr["Project"].ToString().Trim();
+                    string Section = dr["Section"].ToString().Trim();
 
 
                     #region Finding DepartmentId Using Department
@@ -1161,30 +1161,30 @@ namespace SymServices.PF
                         throw new ArgumentNullException(retResults[1], "");
                     }
                     #endregion Finding DesignationId Using Designation
-                    //#region Finding ProjectId Using Project
-                    //returnDt = _cDal.SelectByCondition("Project", "Name", Project, currConn, transaction);
-                    //if (returnDt != null && returnDt.Rows.Count > 0)
-                    //{
-                    //    vEmployeeInfoVM.Project = returnDt.Rows[0]["Id"].ToString();
-                    //}
-                    //else
-                    //{
-                    //    retResults[1] = "Project Not Found for " + Project;
-                    //    throw new ArgumentNullException(retResults[1], "");
-                    //}
-                    //#endregion Finding ProjectId Using Project
-                    //#region Finding SectionId Using Section
-                    //returnDt = _cDal.SelectByCondition("Section", "Name", Section, currConn, transaction);
-                    //if (returnDt != null && returnDt.Rows.Count > 0)
-                    //{
-                    //    vEmployeeInfoVM.Section = returnDt.Rows[0]["Id"].ToString();
-                    //}
-                    //else
-                    //{
-                    //    retResults[1] = "Section Not Found for " + Section;
-                    //    throw new ArgumentNullException(retResults[1], "");
-                    //}
-                    //#endregion Finding SectionId Using Section
+                    #region Finding ProjectId Using Project
+                    returnDt = _cDal.SelectByCondition("Project", "Name", Project, currConn, transaction);
+                    if (returnDt != null && returnDt.Rows.Count > 0)
+                    {
+                        vEmployeeInfoVM.Project = returnDt.Rows[0]["Id"].ToString();
+                    }
+                    else
+                    {
+                        retResults[1] = "Project Not Found for " + Project;
+                        throw new ArgumentNullException(retResults[1], "");
+                    }
+                    #endregion Finding ProjectId Using Project
+                    #region Finding SectionId Using Section
+                    returnDt = _cDal.SelectByCondition("Section", "Name", Section, currConn, transaction);
+                    if (returnDt != null && returnDt.Rows.Count > 0)
+                    {
+                        vEmployeeInfoVM.Section = returnDt.Rows[0]["Id"].ToString();
+                    }
+                    else
+                    {
+                        retResults[1] = "Section Not Found for " + Section;
+                        throw new ArgumentNullException(retResults[1], "");
+                    }
+                    #endregion Finding SectionId Using Section
 
                     vEmployeeInfoVM.Code = dr["Code"].ToString();
                     vEmployeeInfoVM.Name = dr["Name"].ToString();

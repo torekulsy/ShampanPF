@@ -7837,7 +7837,7 @@ and transactionDate <=@FirstEnd
 and isnull(IsYearClosing,0)=0 
 and TransType in(@TransType)
 and isnull(IsRetainedEarning,0)=0
-and COAType in ('Asset','Members Fund and Liabilities','OwnersEquity') 
+and COAType in ('Asset','Members Fund and Liabilities') 
 group by TransType, CoaId
 
 insert into #TempNetChangeNew(TransType,OperationType,COAId,TransactionAmount)
@@ -7854,7 +7854,7 @@ and transactionDate <=@LastEnd
 and isnull(IsRetainedEarning,0)=0
 and isnull(IsYearClosing,0)=0 
 and TransType in(@TransType)
-and COAType in ('Asset','Members Fund and Liabilities','OwnersEquity') 
+and COAType in ('Asset','Members Fund and Liabilities') 
 group by TransType, CoaId
 
 insert into #TempNetChangeNew(TransType,OperationType,COAId,TransactionAmount)
@@ -7901,7 +7901,7 @@ from View_COA_New c
 left outer join    TempNetChangeNew  t on c.COAId=t.COAId
 where 1=1 and GroupSL<>6
 and (t.TransactionAmount<>0 or t.OpeningAmount<>0 or t.NetChange<>0 or t.ClosingAmount<>0)
-and c.COAType in ('Asset','Members Fund and Liabilities','OwnersEquity') 
+and c.COAType in ('Asset','Members Fund and Liabilities') 
  and isnull(c.TransType,'PF') in(@TransType)
  order by sl,GroupSL,COASL,COACode
 
@@ -9078,7 +9078,8 @@ SELECT
 ve.Code
 ,ve.EmpName
 ,pd.DistributionDate
-,pd.TotalProfit
+,pd.EmployeeProfit
+,pd.EmployerProfit
 FROM ProfitDistributionNew pd
 LEFT OUTER JOIN [dbo].FiscalYearDetail fydFrom ON pd.FiscalYearDetailId=fydFrom.Id
 LEFT OUTER JOIN [dbo].ViewEmployeeInformation ve ON ve.EmployeeId=pd.EmployeeId

@@ -112,7 +112,8 @@ namespace SymWebUI.Areas.PF.Controllers
                     ,c.EmployeeCode
                     ,c.EmployeeName
                     , c.DistributionDate
-                    , c.TotalProfit.ToString()
+                    , c.EmployeeProfit.ToString()
+                    , c.EmployerProfit.ToString()
                     , c.Post ? "Posted" : "Not Posted"
                     , c.IsPaid ? "Paid" : "Not Paid"
      
