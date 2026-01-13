@@ -15,16 +15,17 @@
    <h4> Contribution Report</h4>
     <div class="thinbox">
         <div class="EnumEEHead">
-            @*<div class="row">
+            <div class="row">
                 <label class="col-sm-3">
                     <label>Code</label>
                 </label>
                 <div class="col-sm-9">
-                    @Html.TextBoxFor(model => model.Code, new { @placeholder = "Code", @class = " form-control" })
+                    @*@Html.TextBoxFor(model => model.Code, new { @placeholder = "Code", @class = " form-control" })*@
+                    @Html.SimpleDropDownFor(model => model.EmployeeId, "/Config/DropDown/EmployeeCodeNameId", new { @class = "codeFCom form-control selectDropdown" })
                 </div>
-            </div>*@
+            </div>
             
-            <div class="row">
+            @*<div class="row">
                 <div class="col-md-12">
                     <div class="editor-label">
                         <label>Employee Code</label>
@@ -34,8 +35,8 @@
                     </div>
 
                 </div>
-                </div>
-                @*<div class="row">
+                </div>*@
+                <div class="row">
 
                     <label class="col-sm-3">
                         @Html.LabelFor(model => model.DateFrom)
@@ -54,7 +55,7 @@
                         @Html.TextBoxFor(model => model.DateTo, new { @placeholder = "Date To", @class = "customDatePicker form-control" })
                         @Html.ValidationMessageFor(model => model.DateTo)
                     </div>
-                </div>*@
+                </div>
                 <div class="row">
                     &nbsp;
                 </div>
@@ -84,7 +85,7 @@
         InitDropDowns();
         //InitDropdownsCommon();
 
-        //InitDateTimePickers();
+        InitDateTimePickers();
 
         $("#Clear").on('click', function () {
             // Clear all input, select, and textarea fields within the form

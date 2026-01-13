@@ -981,7 +981,7 @@ namespace SymReporting.PF
 
                 #region Report Populating
 
-                ReportHead = "There is no data to Preview for FDR";
+                ReportHead = "There is no data to Preview for Sanchayapatra";
                 if (dt.Rows.Count > 0)
                 {
                     ReportHead = ReportName;

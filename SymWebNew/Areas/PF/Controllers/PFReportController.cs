@@ -1438,11 +1438,14 @@ namespace SymWebUI.Areas.PF.Controllers
         {
             try
             {
-
                 PFReportRepo _repo = new PFReportRepo();
 
-                string[] conditionFields = { "e.EmployeeId" };
-                string[] conditionValues = { vm.EmployeeId};
+                DataTable dtfy = _repo.GetFiscalPeriod(vm.DateFrom,vm.DateTo);
+
+
+
+                string[] conditionFields = { "e.EmployeeId=", "ph.FiscalYearDetailId>=", "ph.FiscalYearDetailId<=" };
+                string[] conditionValues = { vm.EmployeeId, dtfy.Rows[0][0].ToString(), dtfy.Rows[0][1].ToString() };
 
                 DataTable dt = _repo.PFContribution_Statement(conditionFields, conditionValues);
 
