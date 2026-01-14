@@ -16,6 +16,7 @@ using System.IO;
 using SymRepository.Common;
 using SymWebUI.Areas.PF.Models;
 using SymViewModel.Common;
+using SymServices.Common;
 
 namespace SymWebUI.Areas.PF.Controllers
 {
@@ -50,6 +51,10 @@ namespace SymWebUI.Areas.PF.Controllers
         {
              int  TransactionType =0;
             EnumJournalTypeRepo _JournalTypeRepo = new EnumJournalTypeRepo();
+
+            SettingDAL _settingDal = new SettingDAL();
+            string CashCOAId = _settingDal.settingValue("PF", "CashCOAId").Trim();
+            
              
             var getAllData = _JournalTypeRepo.SelectAllJournalTransactionType(0, new[] { "NameTrim", "TransType" }, new[] { TransactionForm, AreaTypePFVM.TransType });
             if (getAllData.Count>0 )
@@ -63,7 +68,8 @@ namespace SymWebUI.Areas.PF.Controllers
                 Operation = "add",
                 JournalType = Convert.ToInt32(JournalType),
                 TransactionType = TransactionType,
-                TransType=AreaTypePFVM.TransType            
+                TransType=AreaTypePFVM.TransType, 
+                CashCOAId = CashCOAId
             };
 
             return View("~/Areas/PF/Views/Journal/Create.cshtml", vm);

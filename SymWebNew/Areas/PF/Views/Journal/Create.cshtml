@@ -165,6 +165,7 @@
                 <div style="font-size:14px" class="editor-field">
                     @Html.SimpleDropDownFor(model => model.GLJournalDetails.FirstOrDefault().COAId, PF_COAUrl, new { @class = "COAId  form-control selectDropdown" })
                     @Html.HiddenFor(model => model.GLJournalDetails.FirstOrDefault().COAId)
+                    @Html.HiddenFor(model => model.CashCOAId)
                 </div>
             </div>
             <div class="col-md-2">
@@ -321,9 +322,11 @@
     function AddRow(container) {
         debugger;
 
-
         var journalType = parseInt($("#JournalType").val());
         if (journalType == 2) {
+            var cashCOAId = $("select.CashCOAId").val()
+                || $(".selectDropdown.CashCOAId").val()
+                || $("input[type='hidden'][name$='CashCOAId']").val();
             var selectedCOAId = $("select.COAId").val()
                 || $(".selectDropdown.COAId").val()
                 || $("input[type='hidden'][name$='COAId']").val()
@@ -332,13 +335,16 @@
 
             var drAmount = parseFloat($(".drAmount").val());
 
-            if (selectedCOAId === 21 && drAmount >= 0) {
+            if (selectedCOAId == cashCOAId && drAmount >= 0) {
                 ShowResult("Fail", "Add Row is not allowed.");
                 return;
             }
         }
 
         if (journalType == 3) {
+            var cashCOAId = $("select.CashCOAId").val()
+               || $(".selectDropdown.CashCOAId").val()
+               || $("input[type='hidden'][name$='CashCOAId']").val();
             var selectedCOAId = $("select.COAId").val()
                 || $(".selectDropdown.COAId").val()
                 || $("input[type='hidden'][name$='COAId']").val()
@@ -347,7 +353,7 @@
 
             var crAmount = parseFloat($(".crAmount").val());
 
-            if (selectedCOAId === 21 && crAmount >= 0) {
+            if (selectedCOAId == cashCOAId && crAmount >= 0) {
                 ShowResult("Fail", "Add Row is not allowed.");
                 return;
             }

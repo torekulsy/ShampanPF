@@ -34,7 +34,7 @@
                 <th class="left">Investment Name</th>
                 <th class="left">Investment Date</th>
                 <th class="left">Maturity Date</th>
-                <th class="left">Investment Value</th>
+                <th >Investment Value</th>
                 <th class="left">Post</th>
                 <th class="left">Approve Status</th>
                 <th class="left">Encashed</th>
@@ -115,7 +115,11 @@
                             , { "sName": "InvestmentName", "sWidth": "18%" }
                             , { "sName": "InvestmentDate", "sWidth": "10%" }
                             , { "sName": "MaturityDate", "sWidth": "10%" }
-                            , { "sName": "InvestmentValue", "sWidth": "10%" }
+                            , {
+                                "sName": "InvestmentValue", "sWidth": "10%", "sClass": "right", "fnRender": function (oObj) {
+                                    return formatNumberWithCommas(oObj.aData[7]);
+                                }
+                            }
                             , { "sName": "Post", "sWidth": "8%" }
                             , { "sName": "Approve", "sWidth": "10%" }
                             , { "sName": "IsEncashed", "sWidth": "10%" }

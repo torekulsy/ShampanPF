@@ -81,10 +81,26 @@
                      }
                       , { "sName": "Code", "sWidth": "10%" }
                                 , { "sName": "Name", "sWidth": "14%" }
-                                , { "sName": "EmployeeContribution", "sWidth": "10%", "sType": "numeric" }
-                                , { "sName": "EmployerContribution", "sWidth": "10%", "sType": "numeric" }
-                                , { "sName": "EmployeeProfit", "sWidth": "10%", "sType": "numeric" }
-                                , { "sName": "EmployerProfit", "sWidth": "10%", "sType": "numeric" }
+                                , {
+                                    "sName": "EmployeeContribution", "sWidth": "10%", "sType": "numeric", "sClass": "right", "fnRender": function (oObj) {
+                                        return formatNumberWithCommas(oObj.aData[3]);
+                                    }
+                                }
+                                , {
+                                    "sName": "EmployerContribution", "sWidth": "10%", "sType": "numeric", "sClass": "right", "fnRender": function (oObj) {
+                                        return formatNumberWithCommas(oObj.aData[4]);
+                                    }
+                                }
+                                , {
+                                    "sName": "EmployeeProfit", "sWidth": "10%", "sType": "numeric", "sClass": "right", "fnRender": function (oObj) {
+                                        return formatNumberWithCommas(oObj.aData[5]);
+                                    }
+                                }
+                                , {
+                                    "sName": "EmployerProfit", "sWidth": "10%", "sType": "numeric", "sClass": "right", "fnRender": function (oObj) {
+                                        return formatNumberWithCommas(oObj.aData[6]);
+                                    }
+                                }
                                 , { "sName": "OpeningDate", "sClass": "center", "sWidth": "10%" }
                                 , { "sName": "Post", "sClass": "right", "sWidth": "18%" }
                 ]

@@ -14,6 +14,9 @@ using SymViewModel.Common;
 using SymViewModel.PF;
 using SymWebUI.Areas.PF.Models;
 using OfficeOpenXml.Style;
+using CrystalDecisions.CrystalReports.Engine;
+using SymReporting.PF;
+using Newtonsoft.Json;
 
 namespace SymWebUI.Areas.PF.Controllers
 {
@@ -29,6 +32,7 @@ namespace SymWebUI.Areas.PF.Controllers
         SymUserRoleRepo _repoSUR = new SymUserRoleRepo();
         ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
         ProfitDistributionNewRepo _repo = new ProfitDistributionNewRepo();
+        PFReportRepo rep = new PFReportRepo();
 
         [Authorize(Roles = "Admin")]
         public ActionResult Index(string PreDistributionFundId)
@@ -52,7 +56,7 @@ namespace SymWebUI.Areas.PF.Controllers
             //06     //IsPaid
 
             #region Search and Filter Data
-            int PreDistributionFundId = Convert.ToInt32(Session["PreDistributionFundId"].ToString());
+            var PreDistributionFundId = Convert.ToInt32(Session["PreDistributionFundId"].ToString());
             var getAllData = _repo.SelectAll(PreDistributionFundId);
             IEnumerable<ProfitDistributionNewVM> filteredData;
             if (!string.IsNullOrEmpty(param.sSearch))
@@ -290,5 +294,65 @@ namespace SymWebUI.Areas.PF.Controllers
             workSheet.Cells[GrandTotalRow, 1].LoadFromText("Grand Total");
             #endregion
         }
+
+        private FileStreamResult RenderReportAsPDF(ReportDocument rptDoc)
+        {
+            Stream stream = rptDoc.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+            return File(stream, "application/PDF");
+        }
+
+        public ActionResult ReportView()
+        {
+
+
+            try
+            {
+                string ReportHead = "";
+                string rptLocation = "";
+                PFReport report = new PFReport();
+
+
+                string[] cFields = {  };
+                string[] cValues = {  };
+
+                ReportDocument doc = new ReportDocument();
+                DataTable dt = new DataTable();
+
+                var Result = rep.ProfitDistributionSummery();
+
+                dt = JsonConvert.DeserializeObject<DataTable>(JsonConvert.SerializeObject(Result));
+
+
+                ReportHead = "There are no data to Preview";
+                if (dt.Rows.Count > 0)
+                {
+                    ReportHead = "Profit Distribution Summery";
+                }
+                dt.TableName = "dtProfitDistributionSummery";
+                rptLocation = AppDomain.CurrentDomain.BaseDirectory + @"Files\ReportFiles\PF\\rptProfitDistributionSummery.rpt";
+
+                doc.Load(rptLocation);
+                doc.SetDataSource(dt);
+                string companyLogo = AppDomain.CurrentDomain.BaseDirectory + "Images\\COMPANYLOGO.png";
+                FormulaFieldDefinitions ffds = doc.DataDefinition.FormulaFields;
+                CompanyRepo _CompanyRepo = new CompanyRepo();
+                CompanyVM cvm = _CompanyRepo.SelectAll().FirstOrDefault();
+
+                doc.DataDefinition.FormulaFields["ReportHeaderA4"].Text = "'" + companyLogo + "'";
+                doc.DataDefinition.FormulaFields["ReportHead"].Text = "'" + ReportHead + "'";
+                doc.DataDefinition.FormulaFields["TransType"].Text = "'" + AreaTypePFVM.TransType + "'";
+                doc.DataDefinition.FormulaFields["Address"].Text = "'" + cvm.Address + "'";
+                doc.DataDefinition.FormulaFields["CompanyName"].Text = "'" + cvm.Name + "'";
+                doc.DataDefinition.FormulaFields["BranchName"].Text = "'" + Session["BranchName"].ToString() + "'";
+                var rpt = RenderReportAsPDF(doc);
+                doc.Close();
+                return rpt;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

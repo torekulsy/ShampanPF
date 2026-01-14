@@ -389,6 +389,9 @@
                 return false;
             });
             $(".loading").fadeOut(200).hide("slow")
+
+
+
         });
 
 
@@ -407,7 +410,13 @@
             }
         });
 
-
+        function formatNumberWithCommas(value) {
+            //if (value == null || value === '') return '';
+            value = parseFloat(value).toFixed(2);
+            var parts = value.split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return parts[0] + '.' + parts[1];
+        }
     </script>
 </head>
 <body onload="window.scroll(0, 150)">

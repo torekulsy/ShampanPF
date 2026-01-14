@@ -74,7 +74,11 @@
                             }
                             , { "sName": "Code", "sWidth": "15%" }
                             , { "sName": "DepositDate", "sWidth": "15%" }
-                            , { "sName": "DepositAmount", "sWidth": "15%" }
+                            , {
+                                "sName": "DepositAmount", "sWidth": "15%", "sClass": "right", "fnRender": function (oObj) {
+                                    return formatNumberWithCommas(oObj.aData[3]);
+                                }
+                            }
                             , { "sName": "BankBranchName", "sWidth": "15%" }
                             , { "sName": "Post", "sWidth": "15%" }
 

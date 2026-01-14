@@ -36,5 +36,7 @@ namespace SymViewModel.PF
         public string TransType { get; set; }
         public bool IsYearClosing { get; set; }        
         public string COAName { get; set; }
+
+        public int CashCOAId { get; set; }
     }
 }

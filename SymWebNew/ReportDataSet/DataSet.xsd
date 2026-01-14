@@ -299,6 +299,16 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="dtProfitDistributionSummery" msprop:Generator_TableClassName="dtProfitDistributionSummeryDataTable" msprop:Generator_TableVarName="tabledtProfitDistributionSummery" msprop:Generator_RowChangedName="dtProfitDistributionSummeryRowChanged" msprop:Generator_TablePropName="dtProfitDistributionSummery" msprop:Generator_RowDeletingName="dtProfitDistributionSummeryRowDeleting" msprop:Generator_RowChangingName="dtProfitDistributionSummeryRowChanging" msprop:Generator_RowEvHandlerName="dtProfitDistributionSummeryRowChangeEventHandler" msprop:Generator_RowDeletedName="dtProfitDistributionSummeryRowDeleted" msprop:Generator_RowClassName="dtProfitDistributionSummeryRow" msprop:Generator_UserTableName="dtProfitDistributionSummery" msprop:Generator_RowEvArgName="dtProfitDistributionSummeryRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Code" msprop:Generator_ColumnVarNameInTable="columnCode" msprop:Generator_ColumnPropNameInRow="Code" msprop:Generator_ColumnPropNameInTable="CodeColumn" msprop:Generator_UserColumnName="Code" type="xs:string" minOccurs="0" />
+              <xs:element name="EmpName" msprop:Generator_ColumnVarNameInTable="columnEmpName" msprop:Generator_ColumnPropNameInRow="EmpName" msprop:Generator_ColumnPropNameInTable="EmpNameColumn" msprop:Generator_UserColumnName="EmpName" type="xs:string" minOccurs="0" />
+              <xs:element name="DistributionDate" msprop:Generator_ColumnVarNameInTable="columnDistributionDate" msprop:Generator_ColumnPropNameInRow="DistributionDate" msprop:Generator_ColumnPropNameInTable="DistributionDateColumn" msprop:Generator_UserColumnName="DistributionDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="TotalProfit" msprop:Generator_ColumnVarNameInTable="columnTotalProfit" msprop:Generator_ColumnPropNameInRow="TotalProfit" msprop:Generator_ColumnPropNameInTable="TotalProfitColumn" msprop:Generator_UserColumnName="TotalProfit" type="xs:double" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:choice>
     </xs:complexType>
   </xs:element>

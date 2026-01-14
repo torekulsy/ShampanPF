@@ -93,9 +93,21 @@
                             , { "sName": "EmpName", "sWidth": "10%" }
                             , { "sName": "Designation", "sWidth": "10%" }
                             , { "sName": "Department", "sWidth": "10%" }
-                            , { "sName": "TotalPayableAmount", "sWidth": "10%" }
-                            , { "sName": "AlreadyPaidAmount", "sWidth": "10%" }
-                            , { "sName": "NetPayAmount", "sWidth": "10%" }
+                            , {
+                                "sName": "TotalPayableAmount", "sWidth": "10%", "sClass": "right", "fnRender": function (oObj) {
+                                    return formatNumberWithCommas(oObj.aData[5]);
+                                }
+                            }
+                            , {
+                                "sName": "AlreadyPaidAmount", "sWidth": "10%", "sClass": "right", "fnRender": function (oObj) {
+                                    return formatNumberWithCommas(oObj.aData[6]);
+                                }
+                            }
+                            , {
+                                "sName": "NetPayAmount", "sWidth": "10%", "sClass": "right", "fnRender": function (oObj) {
+                                    return formatNumberWithCommas(oObj.aData[7]);
+                                }
+                            }
                             , { "sName": "Post", "sWidth": "10%" }
 
             ]

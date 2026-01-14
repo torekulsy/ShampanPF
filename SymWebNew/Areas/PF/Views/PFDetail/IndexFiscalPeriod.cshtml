@@ -116,9 +116,21 @@
                             , { "sName": "Code", "sWidth": "10%" }
                             , { "sName": "ProjectName", "sWidth": "20%" }
                             , { "sName": "FiscalPeriod", "sWidth": "10%" }
-                            , { "sName": "EmployeePFValue", "sWidth": "10%" }
-                            , { "sName": "EmployeerPFValue", "sWidth": "10%" }
-                            , { "sName": "TotalPF", "sWidth": "10%" }
+                            , {
+                                "sName": "EmployeePFValue", "sWidth": "10%", "sClass": "right", "fnRender": function (oObj) {
+                                    return formatNumberWithCommas(oObj.aData[4]);
+                                }
+                            }
+                            , {
+                                "sName": "EmployeerPFValue", "sWidth": "10%", "sClass": "right", "fnRender": function (oObj) {
+                                    return formatNumberWithCommas(oObj.aData[5]);
+                                }
+                            }
+                            , {
+                                "sName": "TotalPF", "sWidth": "10%", "sClass": "right", "fnRender": function (oObj) {
+                                    return formatNumberWithCommas(oObj.aData[6]);
+                                }
+                            }
                             , { "sName": "Post", "sWidth": "10%" }
                             , { "sName": "Approve", "sWidth": "12%" }
             ]

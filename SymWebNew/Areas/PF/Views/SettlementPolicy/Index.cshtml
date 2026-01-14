@@ -67,8 +67,16 @@ Remarks
                             }
                             , { "sName": "PolicyName", "sWidth": "10%" }
                             , { "sName": "JobAgeInMonth", "sWidth": "10%" }
-                            , { "sName": "EmployeeContributionRatio ", "sWidth": "10%" }
-                            , { "sName": "EmployeerContributionRatio", "sWidth": "10%" }
+                            , {
+                                "sName": "EmployeeContributionRatio ", "sWidth": "10%", "sClass": "right", "fnRender": function (oObj) {
+                                    return formatNumberWithCommas(oObj.aData[3]);
+                                }
+                            }
+                            , {
+                                "sName": "EmployeerContributionRatio", "sWidth": "10%", "sClass": "right", "fnRender": function (oObj) {
+                                    return formatNumberWithCommas(oObj.aData[4]);
+                                }
+                            }
                             , { "sName": "Remarks", "sWidth": "10%" }
                            
 

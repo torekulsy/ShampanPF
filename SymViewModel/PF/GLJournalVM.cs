@@ -51,5 +51,7 @@ namespace SymViewModel.PF
         public string BranchId { get; set; }
         public int SourceId { get; set; }
         public string Source { get; set; }
+
+        public string CashCOAId { get; set; }
     }
 }

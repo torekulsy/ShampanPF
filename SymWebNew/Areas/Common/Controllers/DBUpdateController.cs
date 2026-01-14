@@ -49,7 +49,9 @@ namespace SymWebUI.Areas.Common.Controllers
                 result = _repo.settingsDataInsert(vm, "PF", "FromDOJ", "Boolean", "N");
                 result = _repo.settingsDataInsert(vm, "PF", "IsAutoJournal", "Boolean", "Y");
                 result = _repo.settingsDataInsert(vm, "PF", "IsContributionNotSame", "Boolean", "Y");
-               
+
+                result = _repo.settingsDataInsert(vm, "PF", "CashCOAId", "int", "22");
+            
 
                 #region HR-Payroll
 
