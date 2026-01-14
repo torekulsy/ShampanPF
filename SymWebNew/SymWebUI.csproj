@@ -4511,6 +4511,7 @@
     <Content Include="Areas\PF\Views\COACategory\Index.cshtml" />
     <Content Include="Areas\PF\Views\COASubCategory\Index.cshtml" />
     <Content Include="Areas\PF\Views\COASubCategory\Create.cshtml" />
+    <Content Include="Areas\PF\Views\ProfitDistributionNew\Index.cshtml" />
     <None Include="Properties\PublishProfiles\PFEGCB.pubxml" />
     <None Include="Properties\PublishProfiles\SymphonyHRM_New.pubxml" />
     <Content Include="Views\Home\ForgotPasswordView.cshtml" />
@@ -4680,7 +4681,6 @@
     <Content Include="Areas\PF\Views\InvestmentRenew\Report.cshtml" />
     <Content Include="Areas\PF\Views\ProfitDistributionNew\_detail.cshtml" />
     <Content Include="Areas\PF\Views\ProfitDistributionNew\Create.cshtml" />
-    <Content Include="Areas\PF\Views\ProfitDistributionNew\Index.cshtml" />
     <Content Include="Areas\PF\Views\ProfitDistributionNew\IndexPreDistributionFund.cshtml" />
     <Content Include="Areas\PF\Views\ProfitDistributionNew\Process.cshtml" />
     <Content Include="Areas\PF\Views\LoanMonthlyPayment\Create.cshtml" />

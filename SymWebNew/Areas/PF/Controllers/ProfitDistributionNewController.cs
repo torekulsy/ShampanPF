@@ -348,6 +348,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 var rpt = RenderReportAsPDF(doc);
                 doc.Close();
                 return rpt;
+               
             }
             catch (Exception)
             {

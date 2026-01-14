@@ -7032,7 +7032,9 @@ namespace SymWebUI.ReportDataSet {
             
             private global::System.Data.DataColumn columnDistributionDate;
             
-            private global::System.Data.DataColumn columnTotalProfit;
+            private global::System.Data.DataColumn columnEmployeeProfit;
+            
+            private global::System.Data.DataColumn columnEmployerProfit;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -7093,9 +7095,17 @@ namespace SymWebUI.ReportDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn TotalProfitColumn {
+            public global::System.Data.DataColumn EmployeeProfitColumn {
                 get {
-                    return this.columnTotalProfit;
+                    return this.columnEmployeeProfit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EmployerProfitColumn {
+                get {
+                    return this.columnEmployerProfit;
                 }
             }
             
@@ -7136,13 +7146,14 @@ namespace SymWebUI.ReportDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtProfitDistributionSummeryRow AdddtProfitDistributionSummeryRow(string Code, string EmpName, System.DateTime DistributionDate, double TotalProfit) {
+            public dtProfitDistributionSummeryRow AdddtProfitDistributionSummeryRow(string Code, string EmpName, System.DateTime DistributionDate, double EmployeeProfit, double EmployerProfit) {
                 dtProfitDistributionSummeryRow rowdtProfitDistributionSummeryRow = ((dtProfitDistributionSummeryRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Code,
                         EmpName,
                         DistributionDate,
-                        TotalProfit};
+                        EmployeeProfit,
+                        EmployerProfit};
                 rowdtProfitDistributionSummeryRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdtProfitDistributionSummeryRow);
                 return rowdtProfitDistributionSummeryRow;
@@ -7168,7 +7179,8 @@ namespace SymWebUI.ReportDataSet {
                 this.columnCode = base.Columns["Code"];
                 this.columnEmpName = base.Columns["EmpName"];
                 this.columnDistributionDate = base.Columns["DistributionDate"];
-                this.columnTotalProfit = base.Columns["TotalProfit"];
+                this.columnEmployeeProfit = base.Columns["EmployeeProfit"];
+                this.columnEmployerProfit = base.Columns["EmployerProfit"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -7180,8 +7192,10 @@ namespace SymWebUI.ReportDataSet {
                 base.Columns.Add(this.columnEmpName);
                 this.columnDistributionDate = new global::System.Data.DataColumn("DistributionDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDistributionDate);
-                this.columnTotalProfit = new global::System.Data.DataColumn("TotalProfit", typeof(double), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTotalProfit);
+                this.columnEmployeeProfit = new global::System.Data.DataColumn("EmployeeProfit", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEmployeeProfit);
+                this.columnEmployerProfit = new global::System.Data.DataColumn("EmployerProfit", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEmployerProfit);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -13305,18 +13319,35 @@ namespace SymWebUI.ReportDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public double TotalProfit {
+            public double EmployeeProfit {
                 get {
                     try {
-                        return ((double)(this[this.tabledtProfitDistributionSummery.TotalProfitColumn]));
+                        return ((double)(this[this.tabledtProfitDistributionSummery.EmployeeProfitColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TotalProfit\' in table \'dtProfitDistributionSummery\' is DBNu" +
-                                "ll.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'EmployeeProfit\' in table \'dtProfitDistributionSummery\' is D" +
+                                "BNull.", e);
                     }
                 }
                 set {
-                    this[this.tabledtProfitDistributionSummery.TotalProfitColumn] = value;
+                    this[this.tabledtProfitDistributionSummery.EmployeeProfitColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double EmployerProfit {
+                get {
+                    try {
+                        return ((double)(this[this.tabledtProfitDistributionSummery.EmployerProfitColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EmployerProfit\' in table \'dtProfitDistributionSummery\' is D" +
+                                "BNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtProfitDistributionSummery.EmployerProfitColumn] = value;
                 }
             }
             
@@ -13358,14 +13389,26 @@ namespace SymWebUI.ReportDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsTotalProfitNull() {
-                return this.IsNull(this.tabledtProfitDistributionSummery.TotalProfitColumn);
+            public bool IsEmployeeProfitNull() {
+                return this.IsNull(this.tabledtProfitDistributionSummery.EmployeeProfitColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetTotalProfitNull() {
-                this[this.tabledtProfitDistributionSummery.TotalProfitColumn] = global::System.Convert.DBNull;
+            public void SetEmployeeProfitNull() {
+                this[this.tabledtProfitDistributionSummery.EmployeeProfitColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEmployerProfitNull() {
+                return this.IsNull(this.tabledtProfitDistributionSummery.EmployerProfitColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEmployerProfitNull() {
+                this[this.tabledtProfitDistributionSummery.EmployerProfitColumn] = global::System.Convert.DBNull;
             }
         }
         

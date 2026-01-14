@@ -20,7 +20,7 @@
     <Shape ID="DesignTable:EmployeeInfo" ZOrder="4" X="191" Y="50" Height="28" Width="189" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="252" SplitterPosition="24" />
     <Shape ID="DesignTable:dtWPPFReport" ZOrder="3" X="385" Y="48" Height="28" Width="152" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="139" SplitterPosition="24" />
     <Shape ID="DesignTable:dtWPPFProfitDistribution" ZOrder="2" X="544" Y="50" Height="28" Width="215" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="101" SplitterPosition="24" />
-    <Shape ID="DesignTable:dtProfitDistributionSummery" ZOrder="1" X="763" Y="50" Height="28" Width="222" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="101" SplitterPosition="24" />
+    <Shape ID="DesignTable:dtProfitDistributionSummery" ZOrder="1" X="763" Y="50" Height="28" Width="236" AdapterExpanded="true" DataTableExpanded="false" OldAdapterHeight="0" OldDataTableHeight="120" SplitterPosition="24" />
   </Shapes>
   <Connectors />
 </DiagramLayout>
