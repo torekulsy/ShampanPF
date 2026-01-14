@@ -1249,7 +1249,7 @@ ORDER BY PeriodStart";
 
                 sqlText = @"SELECT
 Id,
-Year Name, FyscalYear
+Year Name, FiscalYear
    FROM FiscalYear
 WHERE IsArchive=0 and IsActive=1 and BranchId=@branch
     ORDER BY Year desc
@@ -1268,7 +1268,7 @@ WHERE IsArchive=0 and IsActive=1 and BranchId=@branch
                     vm = new FiscalYearVM();
                     //vm.Id = dr["Id"].ToString();
                     vm.Id = dr["Name"].ToString();
-                    vm.Name = dr["FyscalYear"].ToString();                 
+                    vm.Name = dr["FiscalYear"].ToString();                 
                     VMs.Add(vm);
                 }
                 dr.Close();
