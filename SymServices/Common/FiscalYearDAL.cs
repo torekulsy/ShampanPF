@@ -196,7 +196,7 @@ where  FiscalYearId=@FiscalYearId
 Id
 ,BranchId
 ,Year
-,FyscalYear
+,FiscalYear
 ,YearStart
 ,YearEnd
 ,YearLock
@@ -210,7 +210,6 @@ Id
 ,LastUpdateFrom
 
     From FiscalYear
-where  BranchId=@BranchId
      
 ";
 
@@ -218,8 +217,6 @@ where  BranchId=@BranchId
                 objComm.Connection = currConn;
                 objComm.CommandText = sqlText;
                 objComm.CommandType = CommandType.Text;
-                objComm.Parameters.AddWithValue("@BranchId", BranchId);
-
                 SqlDataReader dr;
                 dr = objComm.ExecuteReader();
                 while (dr.Read())
@@ -229,7 +226,7 @@ where  BranchId=@BranchId
                     fiscalYearVM.BranchId = Convert.ToInt32(dr["BranchId"]);
 
                     fiscalYearVM.Year = Convert.ToInt32(dr["Year"]);
-                    fiscalYearVM.FyscalYear = dr["FyscalYear"].ToString();
+                    fiscalYearVM.FyscalYear = dr["FiscalYear"].ToString();
                     fiscalYearVM.YearStart = Ordinary.StringToDate(dr["YearStart"].ToString());
                     fiscalYearVM.YearEnd = Ordinary.StringToDate(dr["YearEnd"].ToString());
                     fiscalYearVM.YearLock = Convert.ToBoolean(dr["YearLock"]);
