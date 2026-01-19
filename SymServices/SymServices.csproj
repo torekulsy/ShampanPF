@@ -115,6 +115,7 @@
     <Compile Include="PF\COASubCategoryDAL.cs" />
     <Compile Include="PF\COASubGroupDAL.cs" />
     <Compile Include="PF\EmployeeInfoForPFDAL.cs" />
+    <Compile Include="PF\EmployeeLeftInformationDAL.cs" />
     <Compile Include="PF\EmployeePFDAL.cs">
       <SubType>Code</SubType>
     </Compile>

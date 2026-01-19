@@ -307,6 +307,7 @@
     <Compile Include="Areas\PF\Controllers\BankBranchController.cs" />
     <Compile Include="Areas\PF\Controllers\JournalController.cs" />
     <Compile Include="Areas\PF\Controllers\BankChargeController.cs" />
+    <Compile Include="Areas\PF\Controllers\LeftController.cs" />
     <Compile Include="Areas\PF\Controllers\LoanController.cs" />
     <Compile Include="Areas\PF\Controllers\LoanSattlementController.cs" />
     <Compile Include="Areas\PF\Controllers\LoanRepaymentToBankController.cs" />
@@ -4512,6 +4513,10 @@
     <Content Include="Areas\PF\Views\COASubCategory\Index.cshtml" />
     <Content Include="Areas\PF\Views\COASubCategory\Create.cshtml" />
     <Content Include="Areas\PF\Views\ProfitDistributionNew\Index.cshtml" />
+    <Content Include="Areas\PF\Views\left\Index.cshtml" />
+    <Content Include="Areas\PF\Views\left\Left.cshtml" />
+    <Content Include="Areas\PF\Views\left\_left.cshtml" />
+    <Content Include="Areas\PF\Views\left\_leftDetail.cshtml" />
     <None Include="Properties\PublishProfiles\PFEGCB.pubxml" />
     <None Include="Properties\PublishProfiles\SymphonyHRM_New.pubxml" />
     <Content Include="Views\Home\ForgotPasswordView.cshtml" />

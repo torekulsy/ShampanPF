@@ -1584,15 +1584,7 @@ SELECT DISTINCT
  Id
 ,BranchId
 ,EmpName ,Code, Designation, Branch, Department, Section, Project 
-,Salutation_E
-,MiddleName
-,LastName
 ,JoinDate
-,Other1
-,Other2
-,Other3
-,Other4
-,Other5
 From ViewEmployeeInformation 
 Where IsArchive=0 AND IsActive=1
 ";
@@ -1622,9 +1614,6 @@ Where IsArchive=0 AND IsActive=1
                     vm.Id = dr["Id"].ToString();
                     vm.BranchId = Convert.ToInt32(dr["BranchId"]);
                     vm.Code = dr["Code"].ToString();
-                    vm.Salutation_E = dr["Salutation_E"].ToString();
-                    vm.MiddleName = dr["MiddleName"].ToString();
-                    vm.LastName = dr["LastName"].ToString();
                     vm.JoinDate = Ordinary.StringToDate(dr["JoinDate"].ToString());
                     vm.EmpName = dr["EmpName"].ToString();
                     vm.Code = dr["Code"].ToString();
@@ -1633,11 +1622,6 @@ Where IsArchive=0 AND IsActive=1
                     vm.Department = dr["Department"].ToString();
                     vm.Section = dr["Section"].ToString();
                     vm.Project = dr["Project"].ToString();
-                    vm.Other1 = dr["Other1"].ToString();
-                    vm.Other2 = dr["Other2"].ToString();
-                    vm.Other3 = dr["Other3"].ToString();
-                    vm.Other4 = dr["Other4"].ToString();
-                    vm.Other5 = dr["Other5"].ToString();
                     VMs.Add(vm);
                 }
                 dr.Close();
@@ -2068,12 +2052,12 @@ SELECT
                 }
                 #endregion open connection and transaction
                 #region sql statement
-                sqlText = @"select e.id, e.Code, e.Salutation_E, e.MiddleName, e.LastName 
+                sqlText = @"select e.id, e.Code
 ,e.Department ,e.DepartmentId
 ,e.Designation,e.DesignationId
 ,e.JoinDate
 ,e.EmpName
-,e.Branch
+,e.BranchId
 ,e.Project ,e.Id ProjectId
 ,e.Section ,e.Id SectionId
 ,ty.Name EmploymentType_E
@@ -2083,15 +2067,12 @@ SELECT
 ,ed.Gender_E
 ,ed.Religion
 ,e.Grade
-,e.GradeId
-,e.GradeSL
+
 ,ed.BloodGroup_E
 ,ed.Email
 ,e.BasicSalary
 ,e.GrossSalary
-,e.AttnUserId
-,e.StepName 
-,e.StepSL
+
 from ViewEmployeeInformation e
 left outer join employeeJob j on j.EmployeeId=e.Id
 left outer join EnumEmploymentType ty on ty.id=j.EmploymentType_E
@@ -2112,10 +2093,6 @@ ORDER BY e.Department, e.EmpName desc
                     vm = new EmployeeInfoVM();
                     vm.Id = dr["Id"].ToString();
                     vm.Code = dr["Code"].ToString();
-                    vm.AttnUserId = dr["AttnUserId"].ToString();
-                    vm.Salutation_E = dr["Salutation_E"].ToString();
-                    vm.MiddleName = dr["MiddleName"].ToString();
-                    vm.LastName = dr["LastName"].ToString();
                     //gmployeeInfoVM.AttnUserId = dr["AttnUserId"].ToString();
                     vm.JoinDate = Ordinary.StringToDate(dr["JoinDate"].ToString());
                     vm.EmpName = dr["EmpName"].ToString();
@@ -2125,12 +2102,13 @@ ORDER BY e.Department, e.EmpName desc
                     vm.Project = dr["Project"].ToString();
                     vm.Section = dr["Section"].ToString();
                     vm.Grade = dr["Grade"].ToString();
-                    vm.GradeId = dr["GradeId"].ToString();
+                    //vm.GradeId = dr["GradeId"].ToString();
                     vm.BasicSalary = Convert.ToDecimal(dr["BasicSalary"].ToString());
                     vm.GrossSalary = Convert.ToDecimal(dr["GrossSalary"].ToString());
-                    vm.AttnUserId = dr["AttnUserId"].ToString();
-                    vm.StepName = dr["StepName"].ToString();
-                    vm.StepSL = dr["StepSL"].ToString();
+                    //vm.AttnUserId = dr["AttnUserId"].ToString();
+                    //vm.StepName = dr["StepName"].ToString();
+                    //vm.StepSL = dr["StepSL"].ToString();
+                    vm.BranchId = Convert.ToInt32(dr["BranchId"]);
                 }
                 dr.Close();
                 #endregion

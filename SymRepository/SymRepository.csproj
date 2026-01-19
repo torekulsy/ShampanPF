@@ -74,6 +74,7 @@
     <Compile Include="PF\COASubCategoryRepo.cs" />
     <Compile Include="PF\COASubGroupRepo.cs" />
     <Compile Include="PF\EmployeeInfoForPFRepo.cs" />
+    <Compile Include="PF\EmployeeLeftInformationRepo.cs" />
     <Compile Include="PF\EmployeePFPaymentRepo.cs" />
     <Compile Include="PF\EmployeePFRepo.cs">
       <SubType>Code</SubType>
