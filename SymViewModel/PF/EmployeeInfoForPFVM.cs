@@ -112,5 +112,8 @@ namespace SymViewModel.PF
          public int EmployeeBankNameId { get; set; }
          [Display(Name = "Bank Name")]
          public int NomineeBankNameId { get; set; }
+
+
+         public EmployeeNomineeVM nomineeVM { get; set; }
     }
 }

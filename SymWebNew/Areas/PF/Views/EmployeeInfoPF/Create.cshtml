@@ -52,6 +52,10 @@
 {
     @Html.HiddenFor(model => model.Id)
 
+       <div class="headrow">
+           <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+          <button type="button" title="Go To Index" onclick="location.href='@Url.Action("Index", "EmployeeInfoPF", new { area = "PF" })'" class="sym-btn-detail">Index</button>
+      </div>
     <div class="thinbox">
         <div class="th_thinbox">
             <p>Employee Info</p>
@@ -281,186 +285,16 @@
 
                 </div>
  
-            <div class="th_thinbox">
-                <p>Nominee Details</p>
-            </div>
-       <br />
-            <div class="row">
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineeName)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineeName, new { @placeholder = "Nominee Name", @class = "form-control" })
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineeDateofBirth)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineeDateofBirth, new { @placeholder = "Date of Birth", @class = " customDatePicker form-control" })
-                        @Html.ValidationMessageFor(model => model.DateOfBirth)
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineeRelation)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineeRelation, new { @placeholder = " Relation", @class = "form-control" })
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineeAddress)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineeAddress, new { @placeholder = " Address", @class = "form-control" })
-                    </div>
-                </div>
 
-         
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineeCountry)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineeCountry, new { @placeholder = "Country ", @class = "form-control" })
-                    </div>
-                </div>
 
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineeDivision)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineeDivision, new { @placeholder = "Division ", @class = "form-control" })
-                    </div>
-                </div>
-             
-            </div>
-            
-            <div class="row">
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineeDistrict)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineeDistrict, new { @placeholder = "District ", @class = "form-control" })
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineeCity)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineeCity, new { @placeholder = "City ", @class = "form-control" })
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineePostalCode)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineePostalCode, new { @placeholder = "Postal Code ", @class = "form-control" })
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineePhone)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineePhone, new { @placeholder = "Phone ", @class = "form-control" })
-                    </div>              
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineeBirthCertificateNo)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineeBirthCertificateNo, new { @placeholder = "Birth Certificate No ", @class = "form-control" })
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineeMobile)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineeMobile, new { @placeholder = "Mobile ", @class = "form-control" })
-                    </div>
-                </div>
-            </div>
-            <div class="row">   
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineeFax)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineeFax, new { @placeholder = "Fax ", @class = "form-control" })
-                    </div>
-                </div>
-       
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineeNID)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineeNID, new { @placeholder = "NID  ", @class = "form-control" })
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineeFileName)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineeFileName, new { @placeholder = "File Name  ", @class = "form-control" })
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineeBankNameId)
-                    </div>
-                    <div class="editor-field">
-                        @Html.SimpleDropDownFor(model => model.NomineeBankNameId, "/Config/DropDown/PF_BankName", new { @class = "  form-control" })
-                        @Html.ValidationMessageFor(model => model.NomineeBankNameId)
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.EmployeeBankAccountNumber)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineeBankAccountNumber, new { @placeholder = "Bank Account Number", @class = "form-control" })
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineeShare)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextBoxFor(model => model.NomineeShare, new { @placeholder = "Nominee Share(%)", @class = "form-control NumberCheck" })
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.NomineeRemarks)
-                    </div>
-                    <div class="editor-field">
-                        @Html.TextAreaFor(model => model.NomineeRemarks, new { @placeholder = "Remarks  ", @class = "form-control" })
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div>
-                <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
-                <button type="button" title="Cancel Data" id="cancel" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
-            </div>
+
         </div>
     </div>
-
+      <div class="headrow">
+           <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+          <button type="button" title="Go To Index" onclick="location.href='@Url.Action("Index", "EmployeeInfoPF", new { area = "PF" })'" class="sym-btn-detail">Index</button>
+      </div>
+    
 }
 <script>
     $(function () {

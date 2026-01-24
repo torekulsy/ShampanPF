@@ -4517,6 +4517,8 @@
     <Content Include="Areas\PF\Views\left\Left.cshtml" />
     <Content Include="Areas\PF\Views\left\_left.cshtml" />
     <Content Include="Areas\PF\Views\left\_leftDetail.cshtml" />
+    <Content Include="Areas\PF\Views\EmployeeInfoPF\_nominee.cshtml" />
+    <Content Include="Areas\PF\Views\EmployeeInfoPF\_editNominee.cshtml" />
     <None Include="Properties\PublishProfiles\PFEGCB.pubxml" />
     <None Include="Properties\PublishProfiles\SymphonyHRM_New.pubxml" />
     <Content Include="Views\Home\ForgotPasswordView.cshtml" />

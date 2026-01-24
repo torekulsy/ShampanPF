@@ -279,6 +279,7 @@
     <Compile Include="PF\EmployeeBreakMonthPFVM.cs" />
     <Compile Include="PF\EmployeeInfoForPFVM.cs" />
     <Compile Include="PF\EmployeeLeftInformationVM.cs" />
+    <Compile Include="PF\EmployeeNomineeVM.cs" />
     <Compile Include="PF\EmployeePFForfeitureVM.cs" />
     <Compile Include="PF\EmployeePFPaymentVM.cs" />
     <Compile Include="PF\EmployeeTransferVM.cs" />

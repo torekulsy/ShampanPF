@@ -597,5 +597,18 @@ namespace SymWebUI.Areas.Config.Controllers
         {
             return Json(new SelectList(new EmployeeInfoRepo().GetAccountNatureList(), "Name", "Name"), JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult CountryEN(bool? isContact = null)
+        {
+            return Json(new SelectList(new EnumCountryRepo().DropDown(isContact), "Name", "Name"), JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult Division(string country)
+        {
+            return Json(new SelectList(new EmployeeInfoForPFRepo().DivisionDropDown(country), "Name", "Name"), JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult District(string division)
+        {
+            return Json(new SelectList(new EmployeeInfoForPFRepo().DistrictDropDown(division), "Name", "Name"), JsonRequestBehavior.AllowGet);
+        }
     }
 }

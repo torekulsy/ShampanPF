@@ -5,6 +5,7 @@ using SymOrdinary;
 using SymServices.Common;
 using SymViewModel.Common;
 using SymViewModel.PF;
+using SymViewModel.Enum;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -1783,7 +1784,941 @@ namespace SymServices.PF
             #endregion
             return retResults;
         }
-      
 
+
+
+
+        public List<EmployeeNomineeVM> SelectAllByEmployeeNominee(string EmployeeId)
+        {
+
+            #region Variables
+
+            SqlConnection currConn = null;
+            string sqlText = "";
+            List<EmployeeNomineeVM> employeeNomineeVMs = new List<EmployeeNomineeVM>();
+            EmployeeNomineeVM employeeNomineeVM;
+            #endregion
+            try
+            {
+                #region open connection and transaction
+
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
+
+                #endregion open connection and transaction
+
+                #region sql statement
+
+                sqlText = @"SELECT
+Id
+,EmployeeId
+,Name
+,Relation
+,Address
+,BirthCertificateNo
+,District
+,NID
+,Division
+,Country
+,City
+,PostalCode
+,PostOffice
+,DateofBirth
+,Phone
+,Mobile
+,Fax
+,Passport
+,Remarks
+,IsActive
+,IsArchive
+,CreatedBy
+,CreatedAt
+,CreatedFrom
+,LastUpdateBy
+,LastUpdateAt
+,LastUpdateFrom
+    From EmployeeNominee
+Where IsArchive=0 and EmployeeId=@EmployeeId
+    ORDER BY Name
+";
+                SqlCommand objComm = new SqlCommand();
+                objComm.Connection = currConn;
+                objComm.CommandText = sqlText;
+                objComm.CommandType = CommandType.Text;
+                objComm.Parameters.AddWithValue("@EmployeeId", EmployeeId);
+                //,ISNULL(j.IsVaccineDose1Complete, 0) IsVaccineDose1Complete
+                SqlDataReader dr;
+                dr = objComm.ExecuteReader();
+                while (dr.Read())
+                {
+                    employeeNomineeVM = new EmployeeNomineeVM();
+                    employeeNomineeVM.Id = Convert.ToInt32(dr["Id"]);
+                    employeeNomineeVM.EmployeeId = dr["EmployeeId"].ToString();
+                    employeeNomineeVM.Name = dr["Name"].ToString();
+                    employeeNomineeVM.Relation = dr["Relation"].ToString();
+                    employeeNomineeVM.Address = dr["Address"].ToString();
+                    employeeNomineeVM.BirthReg = dr["BirthCertificateNo"].ToString();
+                    employeeNomineeVM.DateofBirth = Ordinary.StringToDate(dr["DateofBirth"].ToString());
+                    employeeNomineeVM.District = dr["District"].ToString();
+                    employeeNomineeVM.NID = dr["NID"].ToString();
+                    employeeNomineeVM.Division = dr["Division"].ToString();
+                    employeeNomineeVM.Country = dr["Country"].ToString();
+                    employeeNomineeVM.City = dr["City"].ToString();
+                    employeeNomineeVM.PostalCode = dr["PostalCode"].ToString();
+                    employeeNomineeVM.PostOffice = dr["PostOffice"].ToString();
+                    employeeNomineeVM.Phone = dr["Phone"].ToString();
+                    employeeNomineeVM.Mobile = dr["Mobile"].ToString();
+                    employeeNomineeVM.Fax = dr["Fax"].ToString();
+                    employeeNomineeVM.Passport = dr["Passport"].ToString();
+                    employeeNomineeVM.Remarks = dr["Remarks"].ToString();
+                    employeeNomineeVM.IsActive = Convert.ToBoolean(dr["IsActive"]);
+                    employeeNomineeVM.CreatedAt = Ordinary.StringToDate(dr["CreatedAt"].ToString());
+                    employeeNomineeVM.CreatedBy = dr["CreatedBy"].ToString();
+                    employeeNomineeVM.CreatedFrom = dr["CreatedFrom"].ToString();
+                    employeeNomineeVM.LastUpdateAt = Ordinary.StringToDate(dr["LastUpdateAt"].ToString());
+                    employeeNomineeVM.LastUpdateBy = dr["LastUpdateBy"].ToString();
+                    employeeNomineeVM.LastUpdateFrom = dr["LastUpdateFrom"].ToString();
+                    employeeNomineeVMs.Add(employeeNomineeVM);
+                }
+                dr.Close();
+
+
+                #endregion
+            }
+            #region catch
+
+
+            catch (SqlException sqlex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+
+            #endregion
+            #region finally
+
+            finally
+            {
+                if (currConn != null)
+                {
+                    if (currConn.State == ConnectionState.Open)
+                    {
+                        currConn.Close();
+                    }
+                }
+            }
+
+            #endregion
+
+            return employeeNomineeVMs;
+        }
+
+        public string[] InsertNominee(EmployeeNomineeVM vm, SqlConnection VcurrConn, SqlTransaction Vtransaction)
+        {
+
+            #region Initializ
+            string sqlText = "";
+            int Id = 0;
+            string[] retResults = new string[6];
+            retResults[0] = "Fail";//Success or Fail
+            retResults[1] = "Fail";// Success or Fail Message
+            retResults[2] = Id.ToString();// Return Id
+            retResults[3] = sqlText; //  SQL Query
+            retResults[4] = "ex"; //catch ex
+            retResults[5] = "InsertEmployeeNominee"; //Method Name
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+
+            #endregion
+
+            #region Try
+
+            try
+            {
+
+                #region Validation
+                if (string.IsNullOrEmpty(vm.Name))
+                {
+                    retResults[1] = "Please Input Employee Nominee Name";
+                    return retResults;
+                }
+                #endregion Validation
+
+
+
+                #region open connection and transaction
+                #region New open connection and transaction
+                if (VcurrConn != null)
+                {
+                    currConn = VcurrConn;
+                }
+
+                if (Vtransaction != null)
+                {
+                    transaction = Vtransaction;
+                }
+
+                #endregion New open connection and transaction
+
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+
+                if (transaction == null)
+                {
+                    transaction = currConn.BeginTransaction("");
+                }
+
+                #endregion open connection and transaction
+
+
+                #region Save
+                if (vm != null)
+                {
+
+                    sqlText = "  ";
+                    sqlText += @" INSERT INTO EmployeeNominee(EmployeeId,Name,Relation,Address,District,NID,Division,Country
+                         ,City,PostalCode,PostOffice,Mobile,Phone,Fax,DateofBirth,BirthCertificateNo,Remarks,IsActive,IsArchive,CreatedBy,CreatedAt,CreatedFrom,Passport) 
+                         VALUES (@EmployeeId,@Name,@Relation,@Address,@District,@NID,@Division,@Country,@City,@PostalCode,@PostOffice,@Mobile,@Phone,@Fax
+                                 ,@DateofBirth,@BirthCertificateNo,@Remarks,@IsActive,@IsArchive,@CreatedBy,@CreatedAt,@CreatedFrom,@Passport) SELECT SCOPE_IDENTITY()";
+
+                    SqlCommand cmdInsert = new SqlCommand(sqlText, currConn);
+
+                    cmdInsert.Parameters.AddWithValue("@EmployeeId", vm.EmployeeId ?? Convert.DBNull);
+                    cmdInsert.Parameters.AddWithValue("@Name", vm.Name);
+                    cmdInsert.Parameters.AddWithValue("@Relation", vm.Relation);
+                    cmdInsert.Parameters.AddWithValue("@Address", vm.Address ?? Convert.DBNull);
+                    cmdInsert.Parameters.AddWithValue("@District", vm.District ?? Convert.DBNull);
+                    cmdInsert.Parameters.AddWithValue("@NID", vm.NID ?? Convert.DBNull);
+                    cmdInsert.Parameters.AddWithValue("@Division", vm.Division ?? Convert.DBNull);
+                    cmdInsert.Parameters.AddWithValue("@Country", vm.Country ?? Convert.DBNull);
+                    cmdInsert.Parameters.AddWithValue("@City", vm.City ?? Convert.DBNull);
+                    cmdInsert.Parameters.AddWithValue("@PostalCode", vm.PostalCode ?? Convert.DBNull);
+                    cmdInsert.Parameters.AddWithValue("@PostOffice", vm.PostOffice ?? Convert.DBNull);
+                    cmdInsert.Parameters.AddWithValue("@Mobile", vm.Mobile ?? Convert.DBNull);
+                    cmdInsert.Parameters.AddWithValue("@Phone", vm.Phone ?? Convert.DBNull);
+                    cmdInsert.Parameters.AddWithValue("@Fax", vm.Fax ?? Convert.DBNull);
+                    cmdInsert.Parameters.AddWithValue("@DateofBirth", Ordinary.DateToString(vm.DateofBirth));
+                    cmdInsert.Parameters.AddWithValue("@BirthCertificateNo", vm.BirthReg ?? Convert.DBNull);
+                    cmdInsert.Parameters.AddWithValue("@Remarks", vm.Remarks ?? Convert.DBNull);
+                    cmdInsert.Parameters.AddWithValue("@IsActive", true);
+                    cmdInsert.Parameters.AddWithValue("@IsArchive", false);
+                    cmdInsert.Parameters.AddWithValue("@CreatedBy", vm.CreatedBy);
+                    cmdInsert.Parameters.AddWithValue("@CreatedAt", vm.CreatedAt);
+                    cmdInsert.Parameters.AddWithValue("@CreatedFrom", vm.CreatedFrom);
+                    cmdInsert.Parameters.AddWithValue("@Passport", vm.Passport ?? Convert.DBNull);
+
+                    cmdInsert.Transaction = transaction;
+                    var exeRes = cmdInsert.ExecuteScalar();
+                    Id = Convert.ToInt32(exeRes);
+
+                    if (Id <= 0)
+                    {
+                        retResults[1] = "Please Input Employee Nominee Value";
+                        retResults[3] = sqlText;
+                        throw new ArgumentNullException("Please Input Employee Nominee Value", "");
+                    }
+                }
+                else
+                {
+                    retResults[1] = "This Employee Nominee already used";
+                    throw new ArgumentNullException("This Employee Nominee already used", "");
+                }
+
+
+                #endregion Save
+                #region Commit
+                if (Vtransaction == null)
+                {
+                    if (transaction != null)
+                    {
+                        transaction.Commit();
+                    }
+                }
+                #endregion Commit
+
+                #region SuccessResult
+
+                retResults[0] = "Success";
+                retResults[1] = "Data Save Successfully.";
+                retResults[2] = Id.ToString();
+
+                #endregion SuccessResult
+
+            }
+
+            #endregion try
+
+            #region Catch and Finall
+
+
+
+            catch (Exception ex)
+            {
+                retResults[0] = "Fail";//Success or Fail
+                retResults[4] = ex.Message.ToString(); //catch ex
+
+                if (Vtransaction == null) { transaction.Rollback(); }
+                return retResults;
+            }
+
+            finally
+            {
+                if (VcurrConn == null)
+                {
+                    if (currConn != null)
+                    {
+                        if (currConn.State == ConnectionState.Open)
+                        {
+                            currConn.Close();
+                        }
+                    }
+                }
+            }
+
+
+            #endregion
+
+            #region Results
+
+            return retResults;
+            #endregion
+
+
+        }
+
+        public string[] UpdateNominee(EmployeeNomineeVM vm, SqlConnection VcurrConn, SqlTransaction Vtransaction)
+        {
+            #region Variables
+
+            string[] retResults = new string[6];
+            retResults[0] = "Fail";//Success or Fail
+            retResults[1] = "Fail";// Success or Fail Message
+            retResults[2] = "0";
+            retResults[3] = "sqlText"; //  SQL Query
+            retResults[4] = "ex"; //catch ex
+            retResults[5] = "Employee Nominee Update"; //Method Name
+
+            int transResult = 0;
+
+            string sqlText = "";
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+            bool iSTransSuccess = false;
+
+            #endregion
+            try
+            {
+
+
+
+                #region open connection and transaction
+                #region New open connection and transaction
+                if (VcurrConn != null)
+                {
+                    currConn = VcurrConn;
+                }
+
+                if (Vtransaction != null)
+                {
+                    transaction = Vtransaction;
+                }
+
+                #endregion New open connection and transaction
+
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+
+                if (transaction == null) { transaction = currConn.BeginTransaction("UpdateToNominee"); }
+
+                #endregion open connection and transaction
+                if (vm != null)
+                {
+                    #region Update Settings
+                    sqlText = "";
+                    sqlText = "update EmployeeNominee set";
+                    sqlText += " EmployeeId=@EmployeeId,";
+                    sqlText += " Name=@Name,";
+                    sqlText += " Relation=@Relation,";
+                    sqlText += " Address=@Address,";
+                    sqlText += " BirthCertificateNo=@BirthCertificateNo,";
+                    sqlText += " District=@District,";
+                    sqlText += "NID=@NID, ";
+                    sqlText += " Division=@Division,";
+                    sqlText += " Country=@Country,";
+                    sqlText += " City=@City,";
+                    sqlText += " PostalCode=@PostalCode,";
+                    sqlText += " PostOffice=@PostOffice,";
+                    sqlText += " Phone=@Phone,";
+                    sqlText += " Mobile=@Mobile,";
+                    sqlText += " Fax=@Fax,";
+                    sqlText += " Passport=@Passport,";
+                    sqlText += " Remarks=@Remarks,";
+                    sqlText += " LastUpdateBy=@LastUpdateBy,";
+                    sqlText += " LastUpdateAt=@LastUpdateAt,";
+                    sqlText += " LastUpdateFrom=@LastUpdateFrom";
+                    sqlText += " where Id=@Id";
+
+                    SqlCommand cmdUpdate = new SqlCommand(sqlText, currConn);
+                    cmdUpdate.Parameters.AddWithValue("@Id", vm.Id);
+                    cmdUpdate.Parameters.AddWithValue("@EmployeeId", vm.EmployeeId);
+                    cmdUpdate.Parameters.AddWithValue("@Name", vm.Name);
+                    cmdUpdate.Parameters.AddWithValue("@Relation", vm.Relation);
+                    cmdUpdate.Parameters.AddWithValue("@Address", vm.Address ?? Convert.DBNull);
+                    cmdUpdate.Parameters.AddWithValue("@BirthCertificateNo", vm.BirthReg ?? Convert.DBNull);
+                    cmdUpdate.Parameters.AddWithValue("@District", vm.District ?? Convert.DBNull);
+                    cmdUpdate.Parameters.AddWithValue("NID", vm.NID ?? Convert.DBNull);
+                    cmdUpdate.Parameters.AddWithValue("@Division", vm.Division ?? Convert.DBNull);
+                    cmdUpdate.Parameters.AddWithValue("@Country", vm.Country ?? Convert.DBNull);
+                    cmdUpdate.Parameters.AddWithValue("@City", vm.City ?? Convert.DBNull);
+                    cmdUpdate.Parameters.AddWithValue("@PostalCode", vm.PostalCode ?? Convert.DBNull);
+                    cmdUpdate.Parameters.AddWithValue("@PostOffice", vm.PostOffice ?? Convert.DBNull);
+                    cmdUpdate.Parameters.AddWithValue("@Phone", vm.Phone ?? Convert.DBNull);
+                    cmdUpdate.Parameters.AddWithValue("@Mobile", vm.Mobile ?? Convert.DBNull);
+                    cmdUpdate.Parameters.AddWithValue("@Fax", vm.Fax ?? Convert.DBNull);
+                    cmdUpdate.Parameters.AddWithValue("@Passport", vm.Passport ?? Convert.DBNull);
+                    cmdUpdate.Parameters.AddWithValue("@Remarks", vm.Remarks ?? Convert.DBNull);
+                    cmdUpdate.Parameters.AddWithValue("@DateofBirth", Ordinary.DateToString(vm.DateofBirth));
+                    cmdUpdate.Parameters.AddWithValue("@LastUpdateBy", vm.LastUpdateBy);
+                    cmdUpdate.Parameters.AddWithValue("@LastUpdateAt", vm.LastUpdateAt);
+                    cmdUpdate.Parameters.AddWithValue("@LastUpdateFrom", vm.LastUpdateFrom);
+
+
+                    cmdUpdate.Transaction = transaction;
+                    var exeRes = cmdUpdate.ExecuteNonQuery();
+                    transResult = Convert.ToInt32(exeRes);
+
+                    retResults[2] = vm.Id.ToString();// Return Id
+                    retResults[3] = sqlText; //  SQL Query
+
+                    #region Commit
+
+                    if (transResult <= 0)
+                    {
+                    }
+
+                    #endregion Commit
+
+                    #endregion Update Settings
+                    iSTransSuccess = true;
+                }
+                else
+                {
+                    throw new ArgumentNullException("Nominee Update", "Could not found any item.");
+                }
+
+
+                if (iSTransSuccess == true)
+                {
+                    if (Vtransaction == null)
+                    {
+                        if (transaction != null)
+                        {
+                            transaction.Commit();
+                        }
+                    }
+                    retResults[0] = "Success";
+                    retResults[1] = "Data Update Successfully.";
+
+                }
+                else
+                {
+                    retResults[1] = "Unexpected error to update Nominee.";
+                    throw new ArgumentNullException("", "");
+                }
+
+            }
+            #region catch
+            catch (Exception ex)
+            {
+                retResults[0] = "Fail";//Success or Fail
+                retResults[4] = ex.Message; //catch ex
+                if (Vtransaction == null) { transaction.Rollback(); }
+                return retResults;
+            }
+            finally
+            {
+                if (VcurrConn == null)
+                {
+                    if (currConn != null)
+                    {
+                        if (currConn.State == ConnectionState.Open)
+                        {
+                            currConn.Close();
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
+            return retResults;
+        }
+
+        public string[] DeleteNominee(EmployeeNomineeVM EmployeeNomineeVM, string[] ids, SqlConnection VcurrConn, SqlTransaction Vtransaction)
+        {
+            #region Variables
+
+            string[] retResults = new string[6];
+            retResults[0] = "Fail";//Success or Fail
+            retResults[1] = "Fail";// Success or Fail Message
+            retResults[2] = "0";// Return Id
+            retResults[3] = "sqlText"; //  SQL Query
+            retResults[4] = "ex"; //catch ex
+            retResults[5] = "DeleteNominee"; //Method Name
+
+            int transResult = 0;
+            int countId = 0;
+            string sqlText = "";
+            SqlConnection currConn = null;
+            SqlTransaction transaction = null;
+            bool iSTransSuccess = false;
+
+            #endregion
+            try
+            {
+
+
+
+                #region open connection and transaction
+                #region New open connection and transaction
+                if (VcurrConn != null)
+                {
+                    currConn = VcurrConn;
+                }
+
+                if (Vtransaction != null)
+                {
+                    transaction = Vtransaction;
+                }
+
+                #endregion New open connection and transaction
+
+                if (currConn == null)
+                {
+                    currConn = _dbsqlConnection.GetConnection();
+                    if (currConn.State != ConnectionState.Open)
+                    {
+                        currConn.Open();
+                    }
+                }
+
+                if (transaction == null) { transaction = currConn.BeginTransaction("DeleteToNominee"); }
+
+                #endregion open connection and transaction
+                #region Check is  it used
+
+                #endregion Check is  it used
+
+                if (ids.Length >= 1)
+                {
+                    #region Update Settings
+                    for (int i = 0; i < ids.Length - 1; i++)
+                    {
+                        sqlText = "";
+                        sqlText = "update EmployeeNominee set";
+                        sqlText += " IsArchive=@IsArchive,";
+                        sqlText += " LastUpdateBy=@LastUpdateBy,";
+                        sqlText += " LastUpdateAt=@LastUpdateAt,";
+                        sqlText += " LastUpdateFrom=@LastUpdateFrom";
+                        sqlText += " where Id=@Id";
+
+                        SqlCommand cmdUpdate = new SqlCommand(sqlText, currConn);
+                        cmdUpdate.Parameters.AddWithValue("@Id", ids[i]);
+                        cmdUpdate.Parameters.AddWithValue("@IsArchive", true);
+                        cmdUpdate.Parameters.AddWithValue("@LastUpdateBy", EmployeeNomineeVM.LastUpdateBy);
+                        cmdUpdate.Parameters.AddWithValue("@LastUpdateAt", EmployeeNomineeVM.LastUpdateAt);
+                        cmdUpdate.Parameters.AddWithValue("@LastUpdateFrom", EmployeeNomineeVM.LastUpdateFrom);
+
+                        cmdUpdate.Transaction = transaction;
+                        var exeRes = cmdUpdate.ExecuteNonQuery();
+                        transResult = Convert.ToInt32(exeRes);
+                    }
+
+
+                    retResults[2] = "";// Return Id
+                    retResults[3] = sqlText; //  SQL Query
+
+                    #region Commit
+
+                    if (transResult <= 0)
+                    {
+                        throw new ArgumentNullException("Nominee Delete", EmployeeNomineeVM.Id + " could not Delete.");
+                    }
+
+                    #endregion Commit
+
+                    #endregion Update Settings
+                    iSTransSuccess = true;
+                }
+                else
+                {
+                    throw new ArgumentNullException("Nominee Information Delete", "Could not found any item.");
+                }
+
+
+                if (iSTransSuccess == true)
+                {
+                    if (Vtransaction == null)
+                    {
+                        if (transaction != null)
+                        {
+                            transaction.Commit();
+                        }
+                    }
+                    retResults[0] = "Success";
+                    retResults[1] = "Data Delete Successfully.";
+
+                }
+                else
+                {
+                    retResults[1] = "Unexpected error to delete Nominee Information.";
+                    throw new ArgumentNullException("", "");
+                }
+
+            }
+            #region catch
+            catch (Exception ex)
+            {
+                retResults[0] = "Fail";//Success or Fail
+                retResults[4] = ex.Message; //catch ex
+                if (Vtransaction == null) { transaction.Rollback(); }
+                return retResults;
+            }
+            finally
+            {
+                if (VcurrConn == null)
+                {
+                    if (currConn != null)
+                    {
+                        if (currConn.State == ConnectionState.Open)
+                        {
+                            currConn.Close();
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
+            return retResults;
+        }
+
+        public EmployeeNomineeVM SelectByIdNominee(int Id)
+        {
+
+            #region Variables
+
+            SqlConnection currConn = null;
+            string sqlText = "";
+            EmployeeNomineeVM employeeNomineeVM = new EmployeeNomineeVM();
+
+            #endregion
+            try
+            {
+                #region open connection and transaction
+
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
+
+                #endregion open connection and transaction
+
+                #region sql statement
+
+                sqlText = @"SELECT
+Id
+,EmployeeId
+,Name
+,Relation
+,Address
+,District
+,NID
+,Division
+,Country
+,City
+,PostalCode
+,PostOffice
+,DateofBirth
+,BirthCertificateNo
+,Phone
+,Mobile
+,Fax
+,Passport
+,Remarks
+,IsActive
+,IsArchive
+,CreatedBy
+,CreatedAt
+,CreatedFrom
+,LastUpdateBy
+,LastUpdateAt
+,LastUpdateFrom
+    From EmployeeNominee
+where  id=@Id
+     
+";
+
+                SqlCommand objComm = new SqlCommand();
+                objComm.Connection = currConn;
+                objComm.CommandText = sqlText;
+                objComm.CommandType = CommandType.Text;
+                objComm.Parameters.AddWithValue("@Id", Id);
+                //,ISNULL(j.IsVaccineDose1Complete, 0) IsVaccineDose1Complete
+                SqlDataReader dr;
+                dr = objComm.ExecuteReader();
+                while (dr.Read())
+                {
+                    employeeNomineeVM.Id = Convert.ToInt32(dr["Id"]);
+                    employeeNomineeVM.EmployeeId = dr["EmployeeId"].ToString();
+                    employeeNomineeVM.Name = dr["Name"].ToString();
+                    employeeNomineeVM.Relation = dr["Relation"].ToString();
+                    employeeNomineeVM.Address = dr["Address"].ToString();
+                    employeeNomineeVM.BirthReg = dr["BirthCertificateNo"].ToString();
+                    employeeNomineeVM.District = dr["District"].ToString();
+                    employeeNomineeVM.NID = dr["NID"].ToString();
+                    employeeNomineeVM.Division = dr["Division"].ToString();
+                    employeeNomineeVM.Country = dr["Country"].ToString();
+                    employeeNomineeVM.City = dr["City"].ToString();
+                    employeeNomineeVM.DateofBirth = Ordinary.StringToDate(dr["DateofBirth"].ToString());
+                    employeeNomineeVM.PostalCode = dr["PostalCode"].ToString();
+                    employeeNomineeVM.PostOffice = dr["PostOffice"].ToString();
+                    employeeNomineeVM.Phone = dr["Phone"].ToString();
+                    employeeNomineeVM.Mobile = dr["Mobile"].ToString();
+                    employeeNomineeVM.Fax = dr["Fax"].ToString();
+                    employeeNomineeVM.Passport = dr["Passport"].ToString();
+                    employeeNomineeVM.Remarks = dr["Remarks"].ToString();
+                    employeeNomineeVM.IsActive = Convert.ToBoolean(dr["IsActive"]);
+                    employeeNomineeVM.CreatedAt = Ordinary.StringToDate(dr["CreatedAt"].ToString());
+                    employeeNomineeVM.CreatedBy = dr["CreatedBy"].ToString();
+                    employeeNomineeVM.CreatedFrom = dr["CreatedFrom"].ToString();
+                    employeeNomineeVM.LastUpdateAt = Ordinary.StringToDate(dr["LastUpdateAt"].ToString());
+                    employeeNomineeVM.LastUpdateBy = dr["LastUpdateBy"].ToString();
+                    employeeNomineeVM.LastUpdateFrom = dr["LastUpdateFrom"].ToString();
+
+                }
+                dr.Close();
+
+
+                #endregion
+            }
+            #region catch
+
+
+            catch (SqlException sqlex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+
+            #endregion
+            #region finally
+
+            finally
+            {
+                if (currConn != null)
+                {
+                    if (currConn.State == ConnectionState.Open)
+                    {
+                        currConn.Close();
+                    }
+                }
+            }
+
+            #endregion
+
+            return employeeNomineeVM;
+        }
+
+        public List<EnumDivisionVM> DivisionDropDown(string country)
+        {
+            if (country == null)
+            {
+                country = "";
+            }
+            #region Variables
+
+            SqlConnection currConn = null;
+            string sqlText = "";
+            List<EnumDivisionVM> VMs = new List<EnumDivisionVM>();
+            EnumDivisionVM vm;
+            #endregion
+            try
+            {
+                #region open connection and transaction
+
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
+
+                #endregion open connection and transaction
+
+                #region sql statement
+
+                sqlText = @"SELECT
+Id,
+Name
+   FROM EnumDivision
+WHERE IsArchive=0 and IsActive=1  and Country_E=@Country_E
+    ORDER BY Name
+";
+
+                SqlCommand _objComm = new SqlCommand();
+                _objComm.Connection = currConn;
+                _objComm.CommandText = sqlText;
+                _objComm.CommandType = CommandType.Text;
+                _objComm.Parameters.AddWithValue("@Country_E", country);
+
+                SqlDataReader dr;
+                dr = _objComm.ExecuteReader();
+                while (dr.Read())
+                {
+                    vm = new EnumDivisionVM();
+                    vm.Id = Convert.ToInt32(dr["Id"]);
+                    vm.Name = dr["Name"].ToString();
+                    VMs.Add(vm);
+                }
+                dr.Close();
+
+
+                #endregion
+            }
+            #region catch
+
+
+            catch (SqlException sqlex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+
+            #endregion
+            #region finally
+
+            finally
+            {
+                if (currConn != null)
+                {
+                    if (currConn.State == ConnectionState.Open)
+                    {
+                        currConn.Close();
+                    }
+                }
+            }
+
+            #endregion
+
+            return VMs;
+        }
+
+        public List<EnumDistrictVM> DistrictDropDown(string division)
+        {
+
+            #region Variables
+
+            SqlConnection currConn = null;
+            string sqlText = "";
+            List<EnumDistrictVM> VMs = new List<EnumDistrictVM>();
+            EnumDistrictVM vm;
+            #endregion
+            try
+            {
+                #region open connection and transaction
+
+                currConn = _dbsqlConnection.GetConnection();
+                if (currConn.State != ConnectionState.Open)
+                {
+                    currConn.Open();
+                }
+
+                #endregion open connection and transaction
+
+                #region sql statement
+
+                sqlText = @"SELECT
+Id,
+Name
+   FROM EnumDistrict
+WHERE IsArchive=0 and IsActive=1 and  Division_E=@division
+    ORDER BY Name
+";
+
+                SqlCommand _objComm = new SqlCommand();
+                _objComm.Connection = currConn;
+                _objComm.CommandText = sqlText;
+                _objComm.CommandType = CommandType.Text;
+                _objComm.Parameters.AddWithValue("@division", division ?? Convert.DBNull);
+
+                SqlDataReader dr;
+                dr = _objComm.ExecuteReader();
+                while (dr.Read())
+                {
+                    vm = new EnumDistrictVM();
+                    vm.Id = Convert.ToInt32(dr["Id"]);
+                    vm.Name = dr["Name"].ToString();
+                    VMs.Add(vm);
+                }
+                dr.Close();
+
+
+                #endregion
+            }
+            #region catch
+
+
+            catch (SqlException sqlex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + sqlex.Message.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentNullException("", "SQL:" + sqlText + FieldDelimeter + ex.Message.ToString());
+            }
+
+            #endregion
+            #region finally
+
+            finally
+            {
+                if (currConn != null)
+                {
+                    if (currConn.State == ConnectionState.Open)
+                    {
+                        currConn.Close();
+                    }
+                }
+            }
+
+            #endregion
+
+            return VMs;
+        }
     }
 }

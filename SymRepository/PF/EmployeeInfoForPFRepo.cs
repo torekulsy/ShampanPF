@@ -2,6 +2,7 @@
 using SymServices.PF;
 using SymViewModel.Common;
 using SymViewModel.PF;
+using SymViewModel.Enum;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -118,6 +119,97 @@ namespace SymRepository.PF
             try
             {
                 return new EmployeeInfoForPFDAL().UpdatePhoto(EmployeeId, PhotoName, null, null);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+
+        public List<EnumDivisionVM> DivisionDropDown(string country)
+        {
+            try
+            {
+                EmployeeInfoForPFDAL dal = new EmployeeInfoForPFDAL();
+                return dal.DivisionDropDown(country);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<EnumDistrictVM> DistrictDropDown(string division)
+        {
+            try
+            {
+                EmployeeInfoForPFDAL dal = new EmployeeInfoForPFDAL();
+                return dal.DistrictDropDown(division);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+
+        public List<EmployeeNomineeVM> SelectAllByEmployeeNominee(string employeeId)
+        {
+            try
+            {
+                return new EmployeeInfoForPFDAL().SelectAllByEmployeeNominee(employeeId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        public string[] InsertNominee(EmployeeNomineeVM employeeNomineeVM)
+        {
+            try
+            {
+                return new EmployeeInfoForPFDAL().InsertNominee(employeeNomineeVM, null, null);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public string[] UpdateNominee(EmployeeNomineeVM employeeNomineeVM)
+        {
+            try
+            {
+                return new EmployeeInfoForPFDAL().UpdateNominee(employeeNomineeVM, null, null);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public string[] DeleteNominee(EmployeeNomineeVM employeeNomineeVM, string[] ids)
+        {
+            try
+            {
+                return new EmployeeInfoForPFDAL().DeleteNominee(employeeNomineeVM, ids, null, null);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public EmployeeNomineeVM SelectByIdNominee(int Id)
+        {
+            try
+            {
+                return new EmployeeInfoForPFDAL().SelectByIdNominee(Id);
             }
             catch (Exception ex)
             {

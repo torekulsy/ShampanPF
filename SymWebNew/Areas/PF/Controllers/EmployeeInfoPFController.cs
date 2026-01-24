@@ -8,7 +8,7 @@ using SymRepository.Common;
 
 using SymRepository.PF;
 using SymViewModel.Common;
-using SymViewModel.HRM;
+
 using SymViewModel.PF;
 using SymWebUI.Areas.PF.Models;
 using System;
@@ -418,8 +418,6 @@ namespace SymWebUI.Areas.PF.Controllers
             return View("Index");
         }
 
-
-
         [HttpPost]
         public ActionResult CreateEdit(EmployeeInfoForPFVM vm, HttpPostedFileBase file)
         {
@@ -488,6 +486,143 @@ namespace SymWebUI.Areas.PF.Controllers
                 return View(vm);
             }
         }
+
+        //////// Nominee Part ////////
+
+        [HttpGet]
+        public ActionResult Nominee(int EmployeeId, int Id)
+        {
+            EmployeeInfoForPFRepo _infoRepo = new EmployeeInfoForPFRepo();
+            EmployeeInfoForPFVM vm = _infoRepo.SelectById(EmployeeId);
+
+            if (Id != 0)
+            {
+                vm.nomineeVM = new EmployeeInfoForPFRepo().SelectByIdNominee(Id);
+
+            }
+            else
+            {
+                EmployeeNomineeVM nom = new EmployeeNomineeVM();
+                nom.EmployeeId = EmployeeId.ToString();
+                vm.nomineeVM = nom;
+            }
+            return PartialView("_editNominee", vm);
+        }
+
+        public ActionResult _indexNominee(JQueryDataTableParamVM param, string Id)
+        {
+
+            EmployeeInfoForPFRepo _empNoRepo = new EmployeeInfoForPFRepo();
+            var getAllData = _empNoRepo.SelectAllByEmployeeNominee(Id);
+            IEnumerable<EmployeeNomineeVM> filteredData;
+            //Check whether the companies should be filtered by keyword
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+
+                //Optionally check whether the columns are searchable at all 
+                var isSearchable1 = Convert.ToBoolean(Request["bSearchable_1"]);
+                var isSearchable2 = Convert.ToBoolean(Request["bSearchable_2"]);
+                var isSearchable3 = Convert.ToBoolean(Request["bSearchable_3"]);
+                var isSearchable4 = Convert.ToBoolean(Request["bSearchable_4"]);
+
+                filteredData = getAllData
+                   .Where(c => isSearchable1 && c.Name.ToLower().Contains(param.sSearch.ToLower())
+                               ||
+                               isSearchable2 && c.Relation.ToLower().Contains(param.sSearch.ToLower())
+                               ||
+                                isSearchable3 && c.Mobile.ToLower().Contains(param.sSearch.ToLower())
+                               ||
+                               isSearchable4 && c.Phone.ToLower().Contains(param.sSearch.ToLower()));
+            }
+            else
+            {
+                filteredData = getAllData;
+            }
+
+            var isSortable_1 = Convert.ToBoolean(Request["bSortable_1"]);
+            var isSortable_2 = Convert.ToBoolean(Request["bSortable_2"]);
+            var isSortable_3 = Convert.ToBoolean(Request["bSortable_3"]);
+            var isSortable_4 = Convert.ToBoolean(Request["bSortable_4"]);
+            var sortColumnIndex = Convert.ToInt32(Request["iSortCol_0"]);
+            Func<EmployeeNomineeVM, string> orderingFunction = (c => sortColumnIndex == 1 && isSortable_1 ? c.Name :
+                                                           sortColumnIndex == 2 && isSortable_2 ? c.Relation :
+                                                           sortColumnIndex == 3 && isSortable_3 ? c.Mobile :
+                                                           sortColumnIndex == 3 && isSortable_4 ? c.Phone :
+                                                           "");
+
+            var sortDirection = Request["sSortDir_0"]; // asc or desc
+            if (sortDirection == "asc")
+                filteredData = filteredData.OrderBy(orderingFunction);
+            else
+                filteredData = filteredData.OrderByDescending(orderingFunction);
+
+            var displayedCompanies = filteredData.Skip(param.iDisplayStart).Take(param.iDisplayLength);
+            var result = from c in displayedCompanies
+                         select new[] 
+                 { 
+                     Convert.ToString(c.Id)
+                     , c.Name //+ "~" + Convert.ToString(c.Id)
+                     , c.Relation
+                     , c.Mobile
+                     , c.Phone 
+                 };
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = getAllData.Count(),
+                iTotalDisplayRecords = filteredData.Count(),
+                aaData = result
+            },
+                        JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize(Roles = "Master,Admin,Account")]
+        [HttpPost]
+        public ActionResult Nominee(EmployeeInfoForPFVM vm)
+        {
+            //Session["permission"] = _reposur.SymRoleSession(identity.UserId, "1_18", "add").ToString();
+
+            string[] retResults = new string[6];
+            string[] result = new string[6];
+            EmployeeInfoForPFRepo empNonApp = new EmployeeInfoForPFRepo();
+            EmployeeNomineeVM non = vm.nomineeVM;
+            if (non.Id <= 0)
+            {
+                non.CreatedAt = DateTime.Now.ToString("yyyyMMddHHmmss");
+                non.CreatedBy = identity.Name;
+                non.CreatedFrom = identity.WorkStationIP;
+                result = empNonApp.InsertNominee(non);
+            }
+            else
+            {
+                non.LastUpdateAt = DateTime.Now.ToString("yyyyMMddHHmmss");
+                non.LastUpdateBy = identity.Name;
+                non.LastUpdateFrom = identity.WorkStationIP;
+                result = empNonApp.UpdateNominee(non);
+            }
+            var mgs = result[0] + "~" + result[1];
+
+            Session["mgs"] = "mgs";
+            return RedirectToAction("Index", new { Id = non.EmployeeId, mgs = mgs });
+        }
+
+        [Authorize(Roles = "Master,Admin,Account")]
+        public JsonResult NomineeDelete(string ids)
+        {
+            EmployeeInfoForPFRepo empNonApp = new EmployeeInfoForPFRepo();
+            EmployeeNomineeVM vm = new EmployeeNomineeVM();
+
+            ShampanIdentity identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+            string[] a = ids.Split('~');
+            string[] result = new string[6];
+
+            vm.LastUpdateAt = DateTime.Now.ToString("yyyyMMddHHmmss");
+            vm.LastUpdateBy = identity.Name;
+            vm.LastUpdateFrom = identity.WorkStationIP;
+            result = empNonApp.DeleteNominee(vm, a);
+            return Json(result[1], JsonRequestBehavior.AllowGet);
+        }
+
 
     }
 }
