@@ -918,7 +918,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
                 PFReportRepo _repo = new PFReportRepo();
 
-                string[] conditionFields = { "e.EmployeeId" };
+                string[] conditionFields = { "e.Code" };
                 string[] conditionValues = { vm.EmployeeId };
 
                 DataTable dt = _repo.EmployeePFOpeinig_Statement(conditionFields, conditionValues);
