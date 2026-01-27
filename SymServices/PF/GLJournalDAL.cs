@@ -430,8 +430,7 @@ WHERE  1=1
                 if (vm != null)
                 {
                     sqlText = "  ";
-                    sqlText += @" 
-                        Delete from GLJournals where Source=@Source;                         
+                    sqlText += @"                                  
                         INSERT INTO GLJournals(
                         Code
                         ,TransactionDate
