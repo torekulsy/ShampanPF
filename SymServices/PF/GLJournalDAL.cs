@@ -381,14 +381,23 @@ WHERE  1=1
 
                 vm.Id = _cDal.NextId("GLJournals", currConn, transaction);
 
-                if (vm.Code != null)
+                if (vm.Source != null)
                 {
-                    string glcode = "SELECT * FROM GLJournals WHERE Code = @Code";
+                    string glcode = "SELECT * FROM GLJournals WHERE Source = @Source";
                     SqlCommand cmd = new SqlCommand(glcode, currConn);
-                    cmd.Parameters.AddWithValue("@Code", vm.Code);
+                    cmd.Parameters.AddWithValue("@Source", vm.Source);
                     cmd.Transaction = transaction;
                     SqlDataReader reader = cmd.ExecuteReader();
                     dt.Load(reader);
+                   
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        retResults[0] = "Fail";
+                        retResults[1] = "Journal Already Created!!";
+
+                        return retResults;
+                    }                   
                 }
                 
                 sqlText = "select isnull(count(id),0)+1 FROM  GLJournals where TransactionType=@TransactionType";
@@ -399,7 +408,7 @@ WHERE  1=1
                 int nextId = Convert.ToInt32(idExecuteScalar);
                 if (vm.SourceId == 0) { vm.SourceId = nextId; vm.Source = "From Journal"; }
 
-                if (vm.Code == null || vm.Code == "0")
+                if (vm.Code==null || vm.Code=="0")
                 {
                   
                     if (vm.JournalType == 1)
@@ -422,7 +431,7 @@ WHERE  1=1
                 {
                     sqlText = "  ";
                     sqlText += @" 
-                        Delete from GLJournals where Code=@code;                         
+                        Delete from GLJournals where Source=@Source;                         
                         INSERT INTO GLJournals(
                         Code
                         ,TransactionDate
