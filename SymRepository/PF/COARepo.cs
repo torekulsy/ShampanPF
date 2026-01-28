@@ -35,11 +35,11 @@ namespace SymRepository.PF
 
 
 
-        public List<COAVM> SelectAll(int Id = 0, string[] conditionFields = null, string[] conditionValues = null)
+        public List<COAVM> SelectAll(string branchId, int Id = 0, string[] conditionFields = null, string[] conditionValues = null)
         {
             try
             {
-               return new COADAL().SelectAll(Id, conditionFields, conditionValues);
+                return new COADAL().SelectAll(branchId, Id, conditionFields, conditionValues);
             }
             catch (Exception ex)
             {

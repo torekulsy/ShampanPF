@@ -46,7 +46,8 @@ namespace SymWebUI.Areas.PF.Controllers
         public ActionResult _index(JQueryDataTableParamModel param)
         {           
             #region Search and Filter Data
-            var getAllData = _repo.SelectAll(0, new[] { "COAs.TransType" }, new[] { AreaTypePFVM.TransType });
+            string branchId = Session["BranchId"].ToString();
+            var getAllData = _repo.SelectAll(branchId, 0, new[] { "COAs.TransType" }, new[] { AreaTypePFVM.TransType });
 
             IEnumerable<COAVM> filteredData;
             if (!string.IsNullOrEmpty(param.sSearch))
@@ -166,7 +167,7 @@ namespace SymWebUI.Areas.PF.Controllers
                     vm.CreatedBy = identity.Name;
                     vm.CreatedFrom = identity.WorkStationIP;
                     vm.TransType = AreaTypePFVM.TransType;
-
+                    vm.BranchId = Session["BranchId"].ToString();
                     //vm.BranchId = Convert.ToInt32(identity.BranchId);
                     result = _repo.Insert(vm);
                     Session["result"] = result[0] + "~" + result[1];
@@ -210,7 +211,7 @@ namespace SymWebUI.Areas.PF.Controllers
             Session["permission"] = _repoSUR.SymRoleSession(identity.UserId, "70001", "edit").ToString();
             COAVM vm = new COAVM();
             vm.TransType = AreaTypePFVM.TransType;
-            vm = _repo.SelectAll(Convert.ToInt32(id)).FirstOrDefault();
+            vm = _repo.SelectAll(Session["BranchId"].ToString(),Convert.ToInt32(id)).FirstOrDefault();
             vm.Operation = "update";
             return View("~/Areas/PF/Views/COA/Create.cshtml", vm);
         }

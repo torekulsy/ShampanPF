@@ -43,6 +43,7 @@ namespace SymViewModel.PF
         public bool IsDepreciation { get; set; }
         [Display(Name = "Type")]
         public string COAType { get; set; }
+        public string BranchId { get; set; }
 
 
     }
