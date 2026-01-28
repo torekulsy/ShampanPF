@@ -7677,7 +7677,7 @@ else 0 end,0) OpenCr
 
 from View_COA_New c 
 left outer join    TempNetChangeNew  t on c.COAId=t.COAId
-where 1=1 
+where 1=1  and c.BranchId=@BranchId
 and (   t.ClosingAmount<>0)
  and isnull(c.TransType,'PF') in(@TransType)
  order by sl,GroupSL,COASL,COACode
@@ -7703,6 +7703,7 @@ drop table #TempNetChangeNew
                 da.SelectCommand.Parameters.AddWithValue("@MonthTo", vm.MonthTo);
                 //da.SelectCommand.Parameters.AddWithValue("MonthTo", Ordinary.DateToString(vm.DateFrom));
                 da.SelectCommand.Parameters.AddWithValue("@TransType", vm.TransType);
+                da.SelectCommand.Parameters.AddWithValue("@BranchId", vm.BranchId);
 
                 da.Fill(ds);
 
@@ -7907,7 +7908,7 @@ else 0 end,0) Cr
 
 from View_COA_New c 
 left outer join    TempNetChangeNew  t on c.COAId=t.COAId
-where 1=1 and GroupSL<>6
+where 1=1 and GroupSL<>6 and c.BranchId=@BranchId
 and (t.TransactionAmount<>0 or t.OpeningAmount<>0 or t.NetChange<>0 or t.ClosingAmount<>0)
 and c.COAType in ('Asset','Members Fund and Liabilities') 
  and isnull(c.TransType,'PF') in(@TransType)
@@ -7936,6 +7937,7 @@ drop table #TempNetChangeNew
                 da.SelectCommand.Parameters.AddWithValue("@MonthTo", vm.MonthTo);
                 //da.SelectCommand.Parameters.AddWithValue("MonthTo", Ordinary.DateToString(vm.DateFrom));
                 da.SelectCommand.Parameters.AddWithValue("@TransType", vm.TransType);
+                da.SelectCommand.Parameters.AddWithValue("@BranchId", vm.BranchId);
 
                 da.Fill(ds);
 
@@ -8128,7 +8130,7 @@ else 0 end,0) Cr
 
 from View_COA_New c 
 left outer join    TempNetChangeNew  t on c.COAId=t.COAId
-where 1=1 
+where 1=1 and c.BranchId=@BranchId
 and (t.TransactionAmount<>0 or t.OpeningAmount<>0 or t.NetChange<>0 or t.ClosingAmount<>0)
 and c.COAType in ('Revenue','Expense','OwnersEquity') 
  and isnull(c.TransType,'PF') in(@TransType)
@@ -8161,6 +8163,7 @@ drop table #TempNetChangeNew
                 da.SelectCommand.Parameters.AddWithValue("@MonthTo", vm.MonthTo);
                 //da.SelectCommand.Parameters.AddWithValue("MonthTo", Ordinary.DateToString(vm.DateFrom));
                 da.SelectCommand.Parameters.AddWithValue("@TransType", vm.TransType);
+                da.SelectCommand.Parameters.AddWithValue("@BranchId", vm.BranchId);
 
                 da.Fill(ds);
 

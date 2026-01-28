@@ -1955,7 +1955,8 @@ namespace SymWebUI.Areas.PF.Controllers
                  DataTable dt1 = new DataTable();
                  DataSet ds = new DataSet();
                  vm.TransType = AreaTypePFVM.TransType;
-               
+                 vm.BranchId = Session["BranchId"].ToString();
+
                  ds = _repo.IFRSReports(vm);
                  dt = ds.Tables[0];
               
