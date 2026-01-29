@@ -8,11 +8,11 @@ namespace SymRepository.PF
     public class COARepo
     {
 
-        public List<COAVM> DropDown(string TransType = "PF")
+        public List<COAVM> DropDown(string TransType = "PF", string BranchId="")
         {
             try
             {
-                return new COADAL().DropDown(TransType);
+                return new COADAL().DropDown(TransType, BranchId);
             }
             catch (Exception ex)
             {
