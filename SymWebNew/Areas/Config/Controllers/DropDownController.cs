@@ -49,7 +49,8 @@ namespace SymWebUI.Areas.Config.Controllers
 
         public JsonResult PF_COA(string TransType = "PF")
         {
-            return Json(new SelectList(new COARepo().DropDown(TransType), "Id", "Name"), JsonRequestBehavior.AllowGet);
+            string BranchId = Session["BranchId"].ToString();
+            return Json(new SelectList(new COARepo().DropDown(TransType, BranchId), "Id", "Name"), JsonRequestBehavior.AllowGet);
         }
         public JsonResult PF_COAGroup(string TransType = "PF")
         {

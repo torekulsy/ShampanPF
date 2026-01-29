@@ -30,8 +30,9 @@ namespace SymServices.PF
         /// Thrown when a SQL or general exception occurs during data retrieval, including the SQL query in the message.
         /// </exception>
 
-        public List<COAVM> DropDown( string TransType="PF")
+        public List<COAVM> DropDown( string TransType="PF", string BranchId="")
         {
+           
             #region Variables
             SqlConnection currConn = null;
             string sqlText = "";
@@ -53,13 +54,14 @@ SELECT
 Id
 ,'[ '+Code+' ] '+ Name Name
    FROM COAs
-WHERE  1=1 and TransType=@TransType
-";
+WHERE  1=1 and TransType=@TransType and BranchId=@BranchId
+"; 
 
                 sqlText = sqlText + " ORDER BY Name";
 
                 SqlCommand objComm = new SqlCommand(sqlText, currConn);
                 objComm.Parameters.AddWithValue("@TransType", TransType);
+                objComm.Parameters.AddWithValue("@BranchId", BranchId);
 
 
               
