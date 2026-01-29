@@ -85,10 +85,10 @@ namespace SymWebUI.Areas.PF.Controllers
         public ActionResult _index(JQueryDataTableParamModel param, int JournalType =1)
         {
 
-
+            string branchId = Session["BranchId"].ToString();
             EmployeeInfoRepo _empRepo = new EmployeeInfoRepo();
             //List<GLJournalVM> getAllData = new List<GLJournalVM>();
-            var getAllData = _glJournalRepo.SelectAll(JournalType);
+            var getAllData = _glJournalRepo.SelectAll(branchId, JournalType);
             IEnumerable<GLJournalVM> filteredData;
 
             if (!string.IsNullOrEmpty(param.sSearch))

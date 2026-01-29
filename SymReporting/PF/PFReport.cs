@@ -120,8 +120,8 @@ namespace SymReporting.PF
                 #endregion
 
                 #region Data Call
-
-                var Result = _ROBDAL.SelectAll(Convert.ToInt32(id));
+                string branchId = varROIVM.BranchId;
+                var Result = _ROBDAL.SelectAll(branchId, Convert.ToInt32(id));
 
                 dt = JsonConvert.DeserializeObject<DataTable>(JsonConvert.SerializeObject(Result));
 

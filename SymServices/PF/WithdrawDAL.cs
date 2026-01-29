@@ -252,7 +252,7 @@ LEFT OUTER JOIN BankNames bn ON bb.BankId=bn.Id
         /// <param name="VcurrConn">An optional SQL connection. If not provided, a new connection is established.</param>
         /// <param name="Vtransaction">An optional SQL transaction. If not provided, a new transaction is created and committed.</param>
         /// <returns>A list of <see cref="WithdrawVM"/> representing the Withdraw matching the criteria.</returns>
-        public List<WithdrawVM> SelectAll(int Id = 0, string[] conditionFields = null, string[] conditionValues = null
+        public List<WithdrawVM> SelectAll(string branchId, int Id = 0, string[] conditionFields = null, string[] conditionValues = null
             , SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
         {
             #region Variables
@@ -321,7 +321,7 @@ FROM Withdraws w
 LEFT OUTER JOIN BankBranchs bb  ON w.BankBranchId = bb.Id
 LEFT OUTER JOIN BankNames b ON bb.BankId = b.Id
 LEFT OUTER JOIN TransactionMedias tm ON w.TransactionMediaId = tm.Id
-WHERE  1=1  AND w.IsArchive = 0
+WHERE  1=1  AND w.IsArchive = 0 and w.BranchId = @BranchId
 
 ";
 
@@ -369,6 +369,7 @@ WHERE  1=1  AND w.IsArchive = 0
                 {
                     objComm.Parameters.AddWithValue("@Id", Id);
                 }
+                objComm.Parameters.AddWithValue("@BranchId", branchId);
                 SqlDataReader dr;
                 dr = objComm.ExecuteReader();
                 while (dr.Read())
@@ -400,6 +401,7 @@ WHERE  1=1  AND w.IsArchive = 0
                     vm.LastUpdateAt = Ordinary.StringToDate(dr["LastUpdateAt"].ToString());
                     vm.LastUpdateBy = dr["LastUpdateBy"].ToString();
                     vm.LastUpdateFrom = dr["LastUpdateFrom"].ToString();
+                    vm.BranchId = branchId;
                     VMs.Add(vm);
                 }
                 dr.Close();
@@ -525,7 +527,7 @@ Id
 
 ,Post
 ,TransType
-,Remarks,IsActive,IsArchive,CreatedBy,CreatedAt,CreatedFrom
+,Remarks,IsActive,IsArchive,CreatedBy,CreatedAt,CreatedFrom,BranchId
 ) VALUES (
 @Id
 ,@IsInvested
@@ -540,7 +542,7 @@ Id
 
 ,@Post
 ,@TransType
-,@Remarks,@IsActive,@IsArchive,@CreatedBy,@CreatedAt,@CreatedFrom
+,@Remarks,@IsActive,@IsArchive,@CreatedBy,@CreatedAt,@CreatedFrom,@BranchId
 ) 
 ";
                     //WithdrawDate
@@ -569,6 +571,7 @@ Id
                     cmdInsert.Parameters.AddWithValue("@CreatedBy", vm.CreatedBy);
                     cmdInsert.Parameters.AddWithValue("@CreatedAt", vm.CreatedAt);
                     cmdInsert.Parameters.AddWithValue("@CreatedFrom", vm.CreatedFrom);
+                    cmdInsert.Parameters.AddWithValue("@BranchId", vm.BranchId);
                     var exeRes = cmdInsert.ExecuteNonQuery();
                     transResult = Convert.ToInt32(exeRes);
                     if (transResult <= 0)
@@ -833,6 +836,7 @@ Id
                         currConn.Open();
                     }
                 }
+                string branchId = vm.BranchId;
                 if (transaction == null) { transaction = currConn.BeginTransaction("Delete"); }
                 #endregion open connection and transaction
                 if (ids.Length >= 1)
@@ -842,7 +846,7 @@ Id
                     for (int i = 0; i < ids.Length - 1; i++)
                     {
                         WithdrawVM varWithdrawVM = new WithdrawVM();
-                        varWithdrawVM = SelectAll(Convert.ToInt32(ids[i]), null, null, currConn, transaction).FirstOrDefault();
+                        varWithdrawVM = SelectAll(branchId, Convert.ToInt32(ids[i]), null, null, currConn, transaction).FirstOrDefault();
                         if (varWithdrawVM.Post)
                         {
                             retResults[0] = "Fail";

@@ -180,7 +180,7 @@ WHERE  1=1
         /// <param name="Vtransaction">An optional SQL transaction. If not provided, a new transaction is created and committed.</param>
         /// <returns>A list of <see cref="BankChargeVM"/> representing the bank branches matching the criteria.</returns>
 
-        public List<BankChargeVM> SelectAll(int Id = 0, string[] conditionFields = null, string[] conditionValues = null
+        public List<BankChargeVM> SelectAll(string branchId, int Id = 0, string[] conditionFields = null, string[] conditionValues = null
              , SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
         {
             #region Variables
@@ -238,7 +238,7 @@ robi.Id
 ,bb.BranchName BankBranchName
 FROM BankCharge robi
 LEFT OUTER JOIN BankBranchs bb ON robi.BankBranchId = bb.Id
-WHERE  1=1
+WHERE  1=1 and robi.BranchId=@BranchId
 ";
 
                 if (Id > 0)
@@ -280,6 +280,7 @@ WHERE  1=1
                 {
                     objComm.Parameters.AddWithValue("@Id", Id);
                 }
+                objComm.Parameters.AddWithValue("@BranchId", branchId);
                 SqlDataReader dr;
                 dr = objComm.ExecuteReader();
                 while (dr.Read())
@@ -302,7 +303,7 @@ WHERE  1=1
                     vm.LastUpdateFrom = dr["LastUpdateFrom"].ToString();
 
                     vm.BankBranchName = dr["BankBranchName"].ToString();
-                    
+                    vm.BranchId = branchId;
                     VMs.Add(vm);
                 }
                 dr.Close();

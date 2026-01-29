@@ -33,6 +33,8 @@ namespace SymViewModel.PF
         public string LastUpdateFrom { get; set; }
         public string Operation { get; set; }
         public string TransType { get; set; }
+        public string BranchId { get; set; }
+
 
     }
 }

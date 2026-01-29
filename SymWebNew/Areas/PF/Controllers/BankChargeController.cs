@@ -54,7 +54,8 @@ namespace SymWebUI.Areas.PF.Controllers
 
 
             #region Search and Filter Data
-            var getAllData = _repo.SelectAll(0, new string[] { "robi.TransType" }, new string[] { AreaTypePFVM.TransType });
+            string branchId = Session["BranchId"].ToString();
+            var getAllData = _repo.SelectAll(branchId, 0, new string[] { "robi.TransType" }, new string[] { AreaTypePFVM.TransType });
             IEnumerable<BankChargeVM> filteredData;
             if (!string.IsNullOrEmpty(param.sSearch))
             {
@@ -180,7 +181,7 @@ namespace SymWebUI.Areas.PF.Controllers
             Session["permission"] = _repoSUR.SymRoleSession(identity.UserId, "10003", "edit").ToString();
             BankChargeVM vm = new BankChargeVM();
             vm.TransType = AreaTypePFVM.TransType;
-            vm = _repo.SelectAll(Convert.ToInt32(id)).FirstOrDefault();
+            vm = _repo.SelectAll(Session["BranchId"].ToString(), Convert.ToInt32(id)).FirstOrDefault();
             vm.Operation = "update";
             return View("~/Areas/PF/Views/BankCharge/Create.cshtml", vm);
         }
@@ -192,7 +193,7 @@ namespace SymWebUI.Areas.PF.Controllers
             Session["permission"] = _repoSUR.SymRoleSession(identity.UserId, "10003", "edit").ToString();
             BankChargeVM vm = new BankChargeVM();
             vm.TransType = AreaTypePFVM.TransType;
-            vm = _repo.SelectAll(Convert.ToInt32(id)).FirstOrDefault();
+            vm = _repo.SelectAll(Session["BranchId"].ToString(), Convert.ToInt32(id)).FirstOrDefault();
             return View("~/Areas/PF/Views/BankCharge/Detail.cshtml", vm);
         }
 
@@ -230,7 +231,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
             BankChargeVM vm = new BankChargeVM();
             vm.TransType = AreaTypePFVM.TransType;
-            vm = _repo.SelectAll(Convert.ToInt32(id)).FirstOrDefault();
+            vm = _repo.SelectAll(Session["BranchId"].ToString(), Convert.ToInt32(id)).FirstOrDefault();
 
             return Json(vm, JsonRequestBehavior.AllowGet);
         }
@@ -307,7 +308,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 BankChargeVM BankChargevm = new BankChargeVM();
                 BankChargevm.TransType = AreaTypePFVM.TransType;
 
-                var Result = _repo.SelectAll(0, cFields, cValues);
+                var Result = _repo.SelectAll(Session["BranchId"].ToString(), 0, cFields, cValues);
 
 
                 dt = JsonConvert.DeserializeObject<DataTable>(JsonConvert.SerializeObject(Result));
@@ -353,7 +354,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
 
                 PFReport report = new PFReport();
-                BankChargevm = _repo.SelectAll(Convert.ToInt32(id)).FirstOrDefault();
+                BankChargevm = _repo.SelectAll(Session["BranchId"].ToString(), Convert.ToInt32(id)).FirstOrDefault();
                 vm.Id = id;
                 vm.Code = BankChargevm.Code;
                 return PartialView("~/Areas/PF/Views/BankCharge/reportVeiw.cshtml", vm);
@@ -382,7 +383,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
                 BankChargeVM BankChargevm = new BankChargeVM();
 
-                var Result = _repo.SelectAll(0, cFields, cValues);
+                var Result = _repo.SelectAll(Session["BranchId"].ToString(), 0, cFields, cValues);
           
 
                 dt = JsonConvert.DeserializeObject<DataTable>(JsonConvert.SerializeObject(Result));

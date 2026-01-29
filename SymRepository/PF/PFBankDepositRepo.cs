@@ -15,11 +15,11 @@ namespace SymRepository.PF
 {
     public class PFBankDepositRepo
     {
-        public List<PFBankDepositVM> SelectAll(int Id = 0, string[] conditionFields = null, string[] conditionValues = null)
+        public List<PFBankDepositVM> SelectAll(string branchId, int Id = 0, string[] conditionFields = null, string[] conditionValues = null)
         {
             try
             {
-                return new PFBankDepositDAL().SelectAll(Id, conditionFields, conditionValues);
+                return new PFBankDepositDAL().SelectAll(branchId, Id, conditionFields, conditionValues);
             }
             catch (Exception ex)
             {

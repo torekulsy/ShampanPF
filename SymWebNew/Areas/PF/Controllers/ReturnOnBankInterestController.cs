@@ -57,8 +57,8 @@ namespace SymWebUI.Areas.PF.Controllers
 
             string[] conditionFields = { "robi.TransType" };
             string[] conditionValues = { AreaTypePFVM.TransType };
-
-            var getAllData = _repo.SelectAll(0, conditionFields, conditionValues);
+            string branchId = Session["BranchId"].ToString();
+            var getAllData = _repo.SelectAll(branchId, 0, conditionFields, conditionValues);
             IEnumerable<ReturnOnBankInterestVM> filteredData;
             if (!string.IsNullOrEmpty(param.sSearch))
             {
@@ -182,7 +182,7 @@ namespace SymWebUI.Areas.PF.Controllers
             Session["permission"] = _repoSUR.SymRoleSession(identity.UserId, "10003", "edit").ToString();
             ReturnOnBankInterestVM vm = new ReturnOnBankInterestVM();
             vm.TransType = AreaTypePFVM.TransType;
-            vm = _repo.SelectAll(Convert.ToInt32(id)).FirstOrDefault();
+            vm = _repo.SelectAll(Session["BranchId"].ToString(), Convert.ToInt32(id)).FirstOrDefault();
             vm.Operation = "update";
             return View("~/Areas/PF/Views/ReturnOnBankInterest/Create.cshtml", vm);
 
@@ -195,7 +195,7 @@ namespace SymWebUI.Areas.PF.Controllers
             Session["permission"] = _repoSUR.SymRoleSession(identity.UserId, "10003", "edit").ToString();
             ReturnOnBankInterestVM vm = new ReturnOnBankInterestVM();
             vm.TransType = AreaTypePFVM.TransType;
-            vm = _repo.SelectAll(Convert.ToInt32(id)).FirstOrDefault();
+            vm = _repo.SelectAll(Session["BranchId"].ToString(), Convert.ToInt32(id)).FirstOrDefault();
             return View("~/Areas/PF/Views/ReturnOnBankInterest/Detail.cshtml", vm);
 
         }
@@ -234,7 +234,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
             ReturnOnBankInterestVM vm = new ReturnOnBankInterestVM();
             vm.TransType = AreaTypePFVM.TransType;
-            vm = _repo.SelectAll(Convert.ToInt32(id)).FirstOrDefault();
+            vm = _repo.SelectAll(Session["BranchId"].ToString(), Convert.ToInt32(id)).FirstOrDefault();
 
             return Json(vm, JsonRequestBehavior.AllowGet);
         }
@@ -312,7 +312,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
                 WithdrawVM Withdrawvm = new WithdrawVM();
 
-                var Result = _repo.SelectAll(0, cFields, cValues);
+                var Result = _repo.SelectAll(Session["BranchId"].ToString(), 0, cFields, cValues);
 
                 dt = JsonConvert.DeserializeObject<DataTable>(JsonConvert.SerializeObject(Result));
 
@@ -362,7 +362,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 PFReportVM vm = new PFReportVM();
                 ReturnOnBankInterestVM ReturnOnBankInterestvm = new ReturnOnBankInterestVM();
                 PFReport report = new PFReport();
-                ReturnOnBankInterestvm = _repo.SelectAll(Convert.ToInt32(id)).FirstOrDefault();
+                ReturnOnBankInterestvm = _repo.SelectAll(Session["BranchId"].ToString(), Convert.ToInt32(id)).FirstOrDefault();
                 vm.Id = id;
                 vm.Code = ReturnOnBankInterestvm.Code;
                 vm.TransType = AreaTypePFVM.TransType;
@@ -411,7 +411,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
                 WithdrawVM Withdrawvm = new WithdrawVM();
 
-                var Result = _repo.SelectAll(0, cFields, cValues);
+                var Result = _repo.SelectAll(Session["BranchId"].ToString(), 0, cFields, cValues);
 
                 dt = JsonConvert.DeserializeObject<DataTable>(JsonConvert.SerializeObject(Result));
 

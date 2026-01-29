@@ -64,6 +64,7 @@ namespace SymViewModel.PF
         [Display(Name = "Date To")]
         public string DateTo { get; set; }
         public string TransType { get; set; }
+        public string BranchId { get; set; }
 
 
 

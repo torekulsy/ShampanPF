@@ -38,14 +38,14 @@ namespace SymRepository.PF
             }
         }
 
-        
 
 
-        public List<WithdrawVM> SelectAll(int Id = 0, string[] conditionFields = null, string[] conditionValues = null)
+
+        public List<WithdrawVM> SelectAll(string branchId, int Id = 0, string[] conditionFields = null, string[] conditionValues = null)
         {
             try
             {
-                return new WithdrawDAL().SelectAll(Id, conditionFields, conditionValues);
+                return new WithdrawDAL().SelectAll(branchId, Id, conditionFields, conditionValues);
             }
             catch (Exception ex)
             {

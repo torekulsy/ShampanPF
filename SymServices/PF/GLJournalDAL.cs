@@ -1585,7 +1585,7 @@ where 1=1
         }
 
 
-        public List<GLJournalVM> SelectAll(int JournalType, string[] conditionFields = null, string[] conditionValues = null
+        public List<GLJournalVM> SelectAll(string branchId, int JournalType, string[] conditionFields = null, string[] conditionValues = null
                  , SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
         {
             #region Variables
@@ -1648,7 +1648,7 @@ gl.Id
 from GLJournals gl left outer join EnumJournalType jt on gl.JournalType = jt.Id
  left outer join EnumJournalTransactionType jtt on gl.TransactionType= jtt.Id
 
-WHERE  1=1 AND IsArchive = 0
+WHERE  1=1 AND IsArchive = 0 and BranchId=@BranchId
 ";
 
                 if (JournalType > 0)
@@ -1662,6 +1662,7 @@ WHERE  1=1 AND IsArchive = 0
                 {
                     objComm.Parameters.AddWithValue("@Id", JournalType);
                 }
+                objComm.Parameters.AddWithValue("@BranchId", branchId);
                 SqlDataReader dr;
                 dr = objComm.ExecuteReader();
                 while (dr.Read())
@@ -1689,7 +1690,7 @@ WHERE  1=1 AND IsArchive = 0
                     vm.LastUpdateBy = dr["LastUpdateBy"].ToString();
                     vm.LastUpdateFrom = dr["LastUpdateFrom"].ToString();
                     vm.IsApprove = Convert.ToBoolean(dr["IsApprove"]);
-
+                    vm.BranchId = branchId;
                     VMs.Add(vm);
                 }
                 dr.Close();

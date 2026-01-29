@@ -56,7 +56,8 @@ namespace SymWebUI.Areas.PF.Controllers
 
             string[] conditionFields = { "w.TransType" };
             string[] conditionValues = { AreaTypePFVM.TransType };
-            var getAllData = _repo.SelectAll(0, conditionFields, conditionValues);
+            string branchId = Session["BranchId"].ToString();
+            var getAllData = _repo.SelectAll(branchId, 0, conditionFields, conditionValues);
             IEnumerable<WithdrawVM> filteredData;
             if (!string.IsNullOrEmpty(param.sSearch))
             {
@@ -137,7 +138,7 @@ namespace SymWebUI.Areas.PF.Controllers
                     vm.CreatedBy = identity.Name;
                     vm.CreatedFrom = identity.WorkStationIP;
                     vm.TransType = AreaTypePFVM.TransType;
-
+                    vm.BranchId = Session["BranchId"].ToString();
                     result = _repo.Insert(vm);
                     Session["result"] = result[0] + "~" + result[1];
                     if (result[0].ToLower() == "success")
@@ -180,7 +181,7 @@ namespace SymWebUI.Areas.PF.Controllers
             Session["permission"] = _repoSUR.SymRoleSession(identity.UserId, "10003", "edit").ToString();
             WithdrawVM vm = new WithdrawVM();
             vm.TransType = AreaTypePFVM.TransType;
-            vm = _repo.SelectAll(Convert.ToInt32(id)).FirstOrDefault();
+            vm = _repo.SelectAll(Session["BranchId"].ToString(), Convert.ToInt32(id)).FirstOrDefault();
             //vm.detailVMs = _repoDetail.SelectByMasterId(Convert.ToInt32(id));
 
             vm.Operation = "update";
@@ -234,7 +235,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
             WithdrawVM vm = new WithdrawVM();
 
-            vm = _repo.SelectAll(Convert.ToInt32(id)).FirstOrDefault();
+            vm = _repo.SelectAll(Session["BranchId"].ToString(), Convert.ToInt32(id)).FirstOrDefault();
 
             return Json(vm, JsonRequestBehavior.AllowGet);
         }
@@ -307,7 +308,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 DataTable dt = new DataTable();
 
                 WithdrawVM Withdrawvm = new WithdrawVM();
-                var Result = _repo.SelectAll(0, cFields, cValues);
+                var Result = _repo.SelectAll(Session["BranchId"].ToString(), 0, cFields, cValues);
 
                 dt = JsonConvert.DeserializeObject<DataTable>(JsonConvert.SerializeObject(Result));
 
@@ -353,7 +354,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 string[] cFields = { "w.Id", };
                 string[] cValues = { id.ToString() == "0" ? "" : id.ToString() };
 
-                Withdrawvm = _repo.SelectAll(0,cFields,cValues).FirstOrDefault();
+                Withdrawvm = _repo.SelectAll(Session["BranchId"].ToString(), 0, cFields, cValues).FirstOrDefault();
                 vm.Id = id;
                 vm.Code = Withdrawvm.Code;
                 return PartialView("~/Areas/PF/Views/Withdraw/reportVeiw.cshtml", vm);
@@ -386,7 +387,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
                 WithdrawVM Withdrawvm = new WithdrawVM();
 
-                var Result = _repo.SelectAll(0, cFields, cValues);
+                var Result = _repo.SelectAll(Session["BranchId"].ToString(), 0, cFields, cValues);
 
                 dt = JsonConvert.DeserializeObject<DataTable>(JsonConvert.SerializeObject(Result));
 

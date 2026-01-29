@@ -55,8 +55,8 @@ namespace SymWebUI.Areas.PF.Controllers
 
             string[] conditionFields = { "pfbd.TransType" };
             string[] conditionValues = { AreaTypePFVM.TransType };
-
-            var getAllData = _repo.SelectAll(0, conditionFields, conditionValues);
+            string branchId = Session["BranchId"].ToString();
+            var getAllData = _repo.SelectAll(branchId, 0, conditionFields, conditionValues);
 
             IEnumerable<PFBankDepositVM> filteredData;
             if (!string.IsNullOrEmpty(param.sSearch))
@@ -161,6 +161,7 @@ namespace SymWebUI.Areas.PF.Controllers
                     vm.CreatedBy = identity.Name;
                     vm.CreatedFrom = identity.WorkStationIP;
                     vm.TransType = AreaTypePFVM.TransType;
+                    vm.BranchId = Session["BranchId"].ToString();
                     result = _repo.Insert(vm);
                     Session["result"] = result[0] + "~" + result[1];
                     if (result[0].ToLower() == "success")
@@ -214,7 +215,7 @@ namespace SymWebUI.Areas.PF.Controllers
         {
             Session["permission"] = _repoSUR.SymRoleSession(identity.UserId, "10003", "edit").ToString();
             PFBankDepositVM vm = new PFBankDepositVM();
-            vm = _repo.SelectAll(Convert.ToInt32(id)).FirstOrDefault();
+            vm = _repo.SelectAll(Session["BranchId"].ToString(), Convert.ToInt32(id)).FirstOrDefault();
             vm.TransType = AreaTypePFVM.TransType;
 
             vm.Operation = "update";
@@ -273,7 +274,7 @@ namespace SymWebUI.Areas.PF.Controllers
 
             PFBankDepositVM vm = new PFBankDepositVM();
             vm.TransType = AreaTypePFVM.TransType;
-            vm = _repo.SelectAll(Convert.ToInt32(id)).FirstOrDefault();
+            vm = _repo.SelectAll(Session["BranchId"].ToString(), Convert.ToInt32(id)).FirstOrDefault();
 
             return Json(vm, JsonRequestBehavior.AllowGet);
         }
@@ -313,7 +314,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 //PFBankDepositVM vm = new PFBankDepositVM();
                 string[] cFields = {  "pfbd.Id" };
                 string[] cValues = { id.ToString() == "0" ? "" : id.ToString() };
-                var Result = _repo.SelectAll(0, cFields, cValues);
+                var Result = _repo.SelectAll(Session["BranchId"].ToString(), 0, cFields, cValues);
 
                 dt = JsonConvert.DeserializeObject<DataTable>(JsonConvert.SerializeObject(Result));
 
@@ -355,7 +356,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 PFReportVM vm = new PFReportVM();
                 PFBankDepositVM PFBankDepositvm = new PFBankDepositVM();
                 PFReport report = new PFReport();
-                PFBankDepositvm = _repo.SelectAll(Convert.ToInt32(id)).FirstOrDefault();
+                PFBankDepositvm = _repo.SelectAll(Session["BranchId"].ToString(), Convert.ToInt32(id)).FirstOrDefault();
                 vm.Id = id;
                 vm.Code = PFBankDepositvm.Code;
                 vm.TransType = AreaTypePFVM.TransType;
@@ -393,7 +394,7 @@ namespace SymWebUI.Areas.PF.Controllers
                 //PFBankDepositVM vm = new PFBankDepositVM();
                 string[] cFields = { "pfbd.Code", "pfbd.Id", "pfbd.DepositDate>", "pfbd.DepositDate<", "pfbd.TransType" };
                 string[] cValues = { vm.Code, vm.Id.ToString() == "0" ? "" : vm.Id.ToString(), Ordinary.DateToString(vm.DateFrom), Ordinary.DateToString(vm.DateTo), AreaTypePFVM.TransType };
-                var Result = _repo.SelectAll(0, cFields, cValues);
+                var Result = _repo.SelectAll(Session["BranchId"].ToString(), 0, cFields, cValues);
 
                dt = JsonConvert.DeserializeObject<DataTable>(JsonConvert.SerializeObject(Result));
 

@@ -69,6 +69,7 @@ namespace SymViewModel.PF
         public int TransactionMediaId { get; set; }
 
         public string TransType { get; set; }
+        public string BranchId { get; set; }
 
     }
 }

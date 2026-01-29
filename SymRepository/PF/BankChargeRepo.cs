@@ -27,11 +27,11 @@ namespace SymRepository.PF
             }
         }
 
-        public List<BankChargeVM> SelectAll(int Id = 0, string[] conditionFields = null, string[] conditionValues = null)
+        public List<BankChargeVM> SelectAll(string branchId, int Id = 0, string[] conditionFields = null, string[] conditionValues = null)
         {
             try
             {
-                return new BankChargeDAL().SelectAll(Id, conditionFields, conditionValues);
+                return new BankChargeDAL().SelectAll(branchId, Id, conditionFields, conditionValues);
             }
             catch (Exception ex)
             {

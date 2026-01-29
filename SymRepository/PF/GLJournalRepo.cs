@@ -37,13 +37,13 @@ namespace SymRepository.PF
             }
         }
 
-        public List<GLJournalVM> SelectAll(int JournalType, string[] conditionFields = null, string[] conditionValues = null
+        public List<GLJournalVM> SelectAll(string branchId, int JournalType, string[] conditionFields = null, string[] conditionValues = null
     , SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
         {
             try
             {
 
-                return glJournalDal.SelectAll(JournalType, conditionFields, conditionValues);
+                return glJournalDal.SelectAll(branchId, JournalType, conditionFields, conditionValues);
             }
             catch (Exception ex)
             {

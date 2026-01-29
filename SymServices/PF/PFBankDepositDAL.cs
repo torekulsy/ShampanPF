@@ -31,7 +31,7 @@ namespace SymServices.PF
         /// <param name="VcurrConn">An optional SQL connection. If not provided, a new connection is established.</param>
         /// <param name="Vtransaction">An optional SQL transaction. If not provided, a new transaction is created and committed.</param>
         /// <returns>A list of <see cref="BankBranchVM"/> representing the Bank Deposit matching the criteria.</returns>
-        public List<PFBankDepositVM> SelectAll(int Id = 0, string[] conditionFields = null, string[] conditionValues = null, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
+        public List<PFBankDepositVM> SelectAll(string branchId, int Id = 0, string[] conditionFields = null, string[] conditionValues = null, SqlConnection VcurrConn = null, SqlTransaction Vtransaction = null)
         {
             #region Variables
             SqlConnection currConn = null;
@@ -109,7 +109,7 @@ LEFT OUTER JOIN BankNames b ON bb.BankId = b.Id
 LEFT OUTER JOIN TransactionMedias tm ON pfbd.TransactionMediaId = tm.Id
 ";
                 sqlText += " LEFT OUTER JOIN [dbo].[FiscalYearDetail] fyd ON pfbd.FiscalYearDetailId=fyd.Id";
-                sqlText += @" WHERE  1=1  AND pfbd.IsArchive = 0
+                sqlText += @" WHERE  1=1  AND pfbd.IsArchive = 0 and pfbd.BranchId = @BranchId
 ";
                 if (Id > 0)
                 {
@@ -151,6 +151,7 @@ LEFT OUTER JOIN TransactionMedias tm ON pfbd.TransactionMediaId = tm.Id
                 {
                     objComm.Parameters.AddWithValue("@Id", Id);
                 }
+                objComm.Parameters.AddWithValue("@BranchId", branchId);
                 SqlDataReader dr;
                 dr = objComm.ExecuteReader();
                 while (dr.Read())
@@ -189,6 +190,7 @@ LEFT OUTER JOIN TransactionMedias tm ON pfbd.TransactionMediaId = tm.Id
                     vm.PeriodName = dr["PeriodName"].ToString();
                     vm.PeriodStart = dr["PeriodStart"].ToString();
                     vm.PeriodEnd = dr["PeriodEnd"].ToString();
+                    vm.BranchId = branchId;
                     VMs.Add(vm);
                 }
                 dr.Close();
@@ -314,7 +316,7 @@ Id
 ,ReferenceId
 ,TransType
 
-,Remarks,IsActive,IsArchive,CreatedBy,CreatedAt,CreatedFrom
+,Remarks,IsActive,IsArchive,CreatedBy,CreatedAt,CreatedFrom,BranchId
 ) VALUES (
 @Id
 ,@Code
@@ -332,7 +334,7 @@ Id
 ,@ReferenceId
 ,@TransType
 
-,@Remarks,@IsActive,@IsArchive,@CreatedBy,@CreatedAt,@CreatedFrom
+,@Remarks,@IsActive,@IsArchive,@CreatedBy,@CreatedAt,@CreatedFrom,@BranchId
 ) 
 ";
                     #endregion SqlText
@@ -365,7 +367,7 @@ Id
                     cmdInsert.Parameters.AddWithValue("@CreatedAt", vm.CreatedAt);
                     cmdInsert.Parameters.AddWithValue("@CreatedFrom", vm.CreatedFrom);
 	                cmdInsert.Parameters.AddWithValue("@TransType", vm.TransType ?? "PF");
-
+                    cmdInsert.Parameters.AddWithValue("@BranchId", vm.BranchId);
                     var exeRes = cmdInsert.ExecuteNonQuery();
                     transResult = Convert.ToInt32(exeRes);
                     if (transResult <= 0)
@@ -635,6 +637,7 @@ Id
                         currConn.Open();
                     }
                 }
+                string branchId = vm.BranchId;
                 if (transaction == null) { transaction = currConn.BeginTransaction("Delete"); }
                 #endregion open connection and transaction
                 if (ids.Length >= 1)
@@ -643,7 +646,7 @@ Id
                     for (int i = 0; i < ids.Length - 1; i++)
                     {
                         PFBankDepositVM varPFBankDepositVM = new PFBankDepositVM();
-                        varPFBankDepositVM = SelectAll(Convert.ToInt32(ids[i]), null, null, currConn, transaction).FirstOrDefault();
+                        varPFBankDepositVM = SelectAll(branchId,Convert.ToInt32(ids[i]), null, null, currConn, transaction).FirstOrDefault();
                         ////retVal = _cDal.SelectFieldValue("PFBankDeposits", "Post", "Id", ids[i].ToString(), currConn, transaction);
                         ////vm.Post = Convert.ToBoolean(retVal);
                         if (varPFBankDepositVM.Post)
